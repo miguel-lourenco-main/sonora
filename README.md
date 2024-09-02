@@ -1,11 +1,38 @@
-# Makerkit - Supabase SaaS Starter Kit - Turbo Edition
+# Frontend
 
-This is a Starter Kit for building SaaS applications using Supabase, Next.js, and Tailwind CSS.
+## Mirror
 
-This version uses Turborepo to manage multiple packages in a single repository.
+### Setup
+```bash
+git remote add remote/makerkit git@github.com:makerkit/next-supabase-saas-kit-turbo.git
+git fetch remote/makerkit main
 
-**This project is stable but still under development. Please update the repository daily**.
+# create mirror/makerkit
+git checkout -b mirror/makerkit remote/makerkit/main
+git push origin mirror/makerkit
+git branch --set-upstream-to=origin/mirror/makerkit mirror/makerkit
 
-A demo version of this project can be found at [makerkit/next-supabase-saas-kit-turbo-demo](https://github.com/makerkit/next-supabase-saas-kit-turbo-demo). This version contains a tasks functionality that is not present in the original version, multiple languages, and other various modifications.
+# create subtree/apps-web
+git subtree split --prefix=apps/web --branch=subtree/apps-web
+git checkout subtree/apps-web
+git push origin subtree/apps-web
+git branch --set-upstream-to=origin/subtree/apps-web subtree/apps-web
+```
 
-[Please follow the documentation to get started](https://makerkit.dev/docs/next-supabase-turbo/introduction).
+### Pull
+```bash
+# Save current branch 
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+
+# Fetch and update our mirror branch
+git fetch remote/makerkit main
+git checkout mirror/makerkit
+git merge remote/makerkit/main
+git push origin mirror/makerkit
+
+# Merge skeleton makerkit into current branch
+git checkout $current_branch
+git merge mirror/makerkit
+
+
+```
