@@ -21,10 +21,18 @@ git branch --set-upstream-to=origin/subtree/apps-web subtree/apps-web
 
 ### Pull
 ```bash
+# Save current branch 
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+
 # Fetch and update our mirror branch
 git fetch remote/makerkit main
 git checkout mirror/makerkit
 git merge remote/makerkit/main
 git push origin mirror/makerkit
+
+# Merge skeleton makerkit into current branch
+git checkout $current_branch
+git merge mirror/makerkit
+
 
 ```
