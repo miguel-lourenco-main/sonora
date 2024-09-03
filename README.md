@@ -1,8 +1,13 @@
-# Frontend
 
-## Mirror
+# Structure
 
-### Setup
+- `apps/web`: a template app for all other apps. Edit this one if you want to proliferate a change into every app
+- `packages/`: packages common to all apps
+
+
+# Update from Makerkit
+
+## Setup
 ```bash
 git remote add remote/makerkit git@github.com:makerkit/next-supabase-saas-kit-turbo.git
 git fetch remote/makerkit main
@@ -19,7 +24,7 @@ git push origin subtree/apps-web
 git branch --set-upstream-to=origin/subtree/apps-web subtree/apps-web
 ```
 
-### Pull
+## Pull
 ```bash
 git checkout update_makerkit
 
@@ -39,7 +44,7 @@ git merge mirror/makerkit
 git checkout main
 git pull
 
-# Delete update_makerkit branch locallt (on remote, it was probably deleted in the MR process)
+# Delete update_makerkit branch locally (on remote, it was probably deleted in the MR process)
 git branch -D update_makerkit
 
 # Update subtree
@@ -47,7 +52,7 @@ git subtree split --prefix=apps/web --branch=subtree/apps-web
 git push origin subtree/apps-web
 ```
 
-### Proliferate app subtree's new updates into app submodules
+## Proliferate app subtree's new updates into app submodules
 ```bash
 cd apps/polydoc
 
