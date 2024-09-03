@@ -1,4 +1,5 @@
 import type { SignInWithOAuthCredentials } from '@supabase/supabase-js';
+//PREVIOUS: import type { SignInWithOAuthCredentials } from '@supabase/gotrue-js';
 
 import { useMutation } from '@tanstack/react-query';
 

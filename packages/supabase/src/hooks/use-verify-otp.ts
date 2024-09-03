@@ -1,4 +1,5 @@
 import type { VerifyOtpParams } from '@supabase/supabase-js';
+//PREVIOUS: import type { VerifyOtpParams } from '@supabase/gotrue-js';
 
 import { useMutation } from '@tanstack/react-query';
 
