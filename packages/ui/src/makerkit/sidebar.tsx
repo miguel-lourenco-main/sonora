@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext, useId, useState } from 'react';
+import { useContext, useEffect, useId, useState } from 'react';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -22,6 +22,8 @@ import { If } from './if';
 import type { NavigationConfigSchema } from './navigation-config.schema';
 import { Trans } from './trans';
 
+import { checkCollpaseSidebar } from "@kit/shared/utils"
+
 export type SidebarConfig = z.infer<typeof NavigationConfigSchema>;
 
 export function Sidebar(props: {
@@ -42,9 +44,28 @@ export function Sidebar(props: {
 
   const ctx = { collapsed, setCollapsed };
 
+  const currentPath = usePathname()
+
+  const mouseEnterSidebar = () => {
+    if(checkCollpaseSidebar(currentPath)) setCollapsed(false)
+  }
+
+  const mouseLeaveSidebar = () => {
+    if(checkCollpaseSidebar(currentPath)) setCollapsed(true)
+  }
+
+  useEffect(() => {
+    if(checkCollpaseSidebar(currentPath)){
+      setCollapsed(true)
+    }else{
+      setCollapsed(false)
+    }
+
+  }, [currentPath])
+
   return (
     <SidebarContext.Provider value={ctx}>
-      <div className={className}>
+      <div className={className} onMouseEnter={mouseEnterSidebar} onMouseLeave={mouseLeaveSidebar}>
         {typeof props.children === 'function'
           ? props.children(ctx)
           : props.children}
