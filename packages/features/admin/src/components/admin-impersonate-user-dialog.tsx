@@ -150,7 +150,7 @@ function useSetSession(tokens: { accessToken: string; refreshToken: string }) {
       });
 
       // use a hard refresh to avoid hitting cached pages
-      window.location.replace('/home');
+      window.location.replace('/app');
     },
   });
 }

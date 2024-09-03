@@ -49,7 +49,7 @@ export function PersonalAccountDropdown({
   signOutRequested: () => unknown;
 
   paths: {
-    home: string;
+    app: string;
   };
 
   features: {

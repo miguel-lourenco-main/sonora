@@ -155,5 +155,5 @@ export const renewInvitationAction = enhanceAction(
 );
 
 function revalidateMemberPage() {
-  revalidatePath('/home/[account]/members', 'page');
+  revalidatePath('/app/[account]/members', 'page');
 }

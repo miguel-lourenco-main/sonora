@@ -36,7 +36,7 @@ export const createTeamAccountAction = enhanceAction(
 
     logger.info(ctx, `Team account created`);
 
-    const accountHomePath = '/home/' + data.slug;
+    const accountHomePath = '/app/' + data.slug;
 
     redirect(accountHomePath);
   },
