@@ -4,11 +4,14 @@ import { ColumnDef } from "@tanstack/react-table"
 import { Checkbox } from "../../shadcn/checkbox"
 import { DataTableColumnHeader} from "../data-tables"
 import { TranslationFile } from "../_lib/interface"
-import { Download, Eye } from "lucide-react"
+import { BanIcon, CheckCircle2Icon, CheckCircleIcon, CirclePause, Download, Eye, Loader2Icon, XCircleIcon } from "lucide-react"
 import PDFViewerDrawer from "../simple/pdf-viewer-drawer"
 import TooltipComponent from "../simple/tooltip-component"
 import { useTranslation } from "react-i18next"
 import PDFViewerDialog from "../simple/pdf-viewer-dialog"
+import { Progress } from "../../shadcn/progress"
+import { ReactNode, useEffect, useState } from "react"
+import { cn } from "../../utils"
 
 // TODO: check why row.getValue is not working
 export function columns(
@@ -78,10 +81,23 @@ export function columns(
         
       ),
       cell: ({ row }) => {
-    
+
+        //TODO: Make sure if when it fails, the usage is not counted
+
+        const usage: () => ReactNode = () => {
+          switch(row.getValue("status")){
+            case "completed":
+              return row.getValue("usage")
+            case "failed":
+              return "Translation failed. No usage."
+            default:
+              return "Waiting for translation to end..."
+          }
+        }
+         
         return (
           <div className="relative flex flex-1 truncate items-start">
-            {row.getValue("usage")}    
+            {usage()}    
           </div>
         )
       },
@@ -93,10 +109,61 @@ export function columns(
         
       ),
       cell: ({ row }) => {
+
+        // TODO: add status icon with the possibility of op
+
+        const icon = () => {
+          switch(row.getValue("status")){
+            case "in_progress":
+              return <TooltipComponent
+                trigger={
+                  <CirclePause className="h-[18px] w-[18px] stroke-yellow-600 cursor-pointer"/>
+                }
+                content={t("inProgress")}
+              />
+            case "completed":
+              return <TooltipComponent
+                trigger={
+                  <CheckCircle2Icon className="h-[18px] w-[18px] stroke-green-500 cursor-pointer"/>
+                }
+                content={t("completed")}
+              />
+            case "failed":
+              return <TooltipComponent
+                trigger={
+                  <BanIcon className="h-[18px] w-[18px] stroke-red-500 cursor-pointer"/>
+                }
+                content={t("failed")}
+              />
+            default:
+              return <></>
+          }
+        }
+
+        const [progress, setProgress] = useState(13)
+ 
+        useEffect(() => {
+          const timer = setTimeout(() => setProgress(66), 500)
+          return () => clearTimeout(timer)
+        }, [])
+
+        const status = () => {
+         switch(row.getValue("status")){
+          case "in_progress":
+            return <Progress value={progress} className="w-[100px]"/>
+          case "completed":
+            return t("completed")
+          case "failed":
+            return t("failed")
+          default:
+            return t("waitingForTranslationToEnd")
+         }
+        }
     
         return (
-          <div className="relative flex flex-1 truncate items-start">
-            {row.getValue("status")}    
+          <div className="relative flex flex-1 truncate items-center gap-x-2">
+            {icon()}
+            {status()}    
           </div>
         )
       },
@@ -111,17 +178,18 @@ export function columns(
           <PDFViewerDialog 
             file={file ?? null} 
             trigger={ 
-              <button
-                className="flex size-fit items-center p-1.5 font-medium gap-x-2 text-foreground hover:text-foreground/60 bg-muted rounded-lg"
-              >
-                <TooltipComponent 
-                  trigger={
+              <TooltipComponent 
+                trigger={
+                  <button
+                    disabled={row.getValue("status") !== "completed"}
+                    className={cn("flex size-fit items-center p-1.5 font-medium gap-x-2 text-foreground hover:text-foreground/60 bg-muted rounded-lg", row.getValue("status") !== "completed" ? "text-foreground/60 bg-muted/60" : "")}
+                  >
                     <Eye className="h-[18px] w-[18px]"/>
-                  }
-                  content={t("viewFiles")}
-                />
-              </button>
-            } 
+                  </button>
+                }
+                content={t("viewFile")}
+              />
+            }            
           />
         )
 
@@ -129,7 +197,8 @@ export function columns(
           <TooltipComponent
             trigger={
               <button
-                className="flex flex-row w-fit items-center p-1.5 font-medium gap-x-2 text-foreground hover:text-foreground/60 bg-muted rounded-lg"
+                disabled={row.getValue("status") !== "completed"}
+                className={cn("flex size-fit items-center p-1.5 font-medium gap-x-2 text-foreground hover:text-foreground/60 bg-muted rounded-lg", row.getValue("status") !== "completed" ? "text-foreground/60 bg-muted/60" : "")}
               >
                 <Download className="h-[18px] w-[18px]"/>
               </button>

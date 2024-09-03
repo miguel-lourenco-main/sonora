@@ -15,29 +15,9 @@ import { Button } from "../../shadcn/button";
 import { useTranslation } from "react-i18next";
 
 // Polyfill for environments where window is not available (e.g., server-side rendering)
-if (typeof Promise.withResolvers === 'undefined') {
-  if (typeof window !== 'undefined') {
-    window.Promise.withResolvers = function <T>() {
-      let resolve!: (value: T | PromiseLike<T>) => void;
-      let reject!: (reason?: any) => void;
-      const promise = new Promise<T>((res, rej) => {
-        resolve = res;
-        reject = rej;
-      });
-      return { promise, resolve, reject };
-    };
-  } else {
-    global.Promise.withResolvers = function <T>() {
-      let resolve!: (value: T | PromiseLike<T>) => void;
-      let reject!: (reason?: any) => void;
-      const promise = new Promise<T>((res, rej) => {
-        resolve = res;
-        reject = rej;
-      });
-      return { promise, resolve, reject };
-    };
-  }
-}
+import { withResolvers } from '../../utils/resolvers-polyfill'; // Create this file if needed
+
+const { promise, resolve, reject } = withResolvers();
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 

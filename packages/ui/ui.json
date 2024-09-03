@@ -56,5 +56,9 @@
     "compareDocuments": "Compare documents",
     "original": "Original",
     "translated": "Translated",
-    "outputLanguage": "Output Language"
+    "outputLanguage": "Output Language",
+    "inProgress": "In Progress",
+    "completed": "Completed",
+    "failed": "Failed",
+    "waitingForTranslationToEnd": "Waiting for translation to end..."
 }

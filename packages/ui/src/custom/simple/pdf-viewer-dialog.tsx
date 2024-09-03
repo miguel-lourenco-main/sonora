@@ -81,18 +81,18 @@ export default function PDFViewerDialog({
                         <TabsTrigger
                             onClick={() => setLoaded(false)}
                             value="original"
-                            className="flex h-9 rounded-md items-center justify-center px-auto py-3 gap-x-2 font-semibold text-muted-foreground shadow-none transition-none data-[state=active]:bg-primary data-[state=active]:text-foreground data-[state=active]:shadow-none"
+                            className="flex h-9 rounded-md items-center justify-center px-auto py-3 gap-x-2 font-semibold text-muted-foreground shadow-none transition-none data-[state=active]:bg-primary data-[state=active]:text-background data-[state=active]:shadow-none"
                         >
                             <File className="size-5" />
-                            Original
+                            {t("original")}
                         </TabsTrigger>
                         <TabsTrigger
                             onClick={() => setLoaded(false)}
                             value="translated"
-                            className="flex h-9 rounded-md items-center justify-center px-auto py-3 gap-x-2 font-semibold text-muted-foreground shadow-none transition-none data-[state=active]:bg-primary data-[state=active]:text-foreground data-[state=active]:shadow-none"
+                            className="flex h-9 rounded-md items-center justify-center px-auto py-3 gap-x-2 font-semibold text-muted-foreground shadow-none transition-none data-[state=active]:bg-primary data-[state=active]:text-background data-[state=active]:shadow-none"
                         >
                             <FileType2 className="size-5" />
-                            Translated
+                            {t("translated")}
                         </TabsTrigger>
                     </TabsList>
                     <div className="flex-1 w-full overflow-hidden">

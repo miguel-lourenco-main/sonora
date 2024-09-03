@@ -9,10 +9,6 @@ import { FileBrowserInput } from "./file-browser-input";
 import FilesGrid from "./files-grid";
 import ComboboxAvatar from "./combox_avatar";
 import { useTranslation } from "react-i18next";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
 
 const languages = [
     { value: "en", label: "English", flag: "🇬🇧" },
@@ -27,29 +23,9 @@ const languages = [
     { value: "ko", label: "Korean", flag: "🇰🇷" },
   ]
 
-  const FormSchema = z.object({
-    language: z.string({
-      required_error: "Please select a language.",
-    }),
-  })
-
 export default function DragNDropGrid({ files, setFiles }: { files: File[], setFiles: Dispatch<SetStateAction<File[]>> }) {
-  
-  const { t } = useTranslation('ui')
 
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
-  })
-
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    toast.success("You submitted the following values:", {
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    })
-  }
+    const { t } = useTranslation('ui')
 
   return (
     <div className="flex flex-col justify-start size-full gap-4">
@@ -67,16 +43,17 @@ export default function DragNDropGrid({ files, setFiles }: { files: File[], setF
                             />
                         </Button>
                     )}
-                    acceptsTypes=".docx, .pdf"
+                    acceptsTypes=".pdf"
                     addDroppedFiles={(files) => {
-                      setFiles(prevFiles => [...prevFiles, ...files]);
+                        setFiles(prevFiles => [...prevFiles, ...files]);
                     }}
                 />
             </div>
-            <ComboboxAvatar list={languages} tooltip={t('ui:outputLanguage')}/>
-            <div className="flex gap-x-1 px-2 text-sm text-muted-foreground whitespace-nowrap">{files.length} {files.length === 1 ? t('ui:file') : t('ui:files')} {t('ui:added')}</div>
+            <ComboboxAvatar list={languages} />
+            <div className="flex gap-x-1 px-2 text-sm text-muted-foreground">{files.length} {files.length === 1 ? t('ui:file') : t('ui:files')} {t('ui:added')}</div>
         </div>
         <CustomFileUploader
+            acceptFiles={{"application/pdf": [".pdf"]}}
             files={files}
             setFiles={(files) => (files ? setFiles(files) : {})}
         >

@@ -51,7 +51,7 @@ export default function TranslatedFilesTable({
       return {
         id: i.toString(),
         name: file.name,
-        status: 'to process',
+        status: 'in_progress',
         usage: (Math.random() * 100).toString(),
       } as TranslationFile;
     });

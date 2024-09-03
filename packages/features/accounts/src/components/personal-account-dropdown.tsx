@@ -8,6 +8,7 @@ import type { User } from '@supabase/supabase-js';
 
 import {
   EllipsisVertical,
+  Globe,
   Home,
   LogOut,
   MessageCircleQuestion,
@@ -149,7 +150,22 @@ export function PersonalAccountDropdown({
         <DropdownMenuItem asChild>
           <Link
             className={'s-full flex items-center space-x-2'}
-            href={paths.home}
+            href={"/"}
+          >
+            <Globe className={'h-5'} />
+
+            <span>
+              <Trans i18nKey={'common:landingPage'} />
+            </span>
+          </Link>
+        </DropdownMenuItem>
+
+        <DropdownMenuSeparator />
+
+        <DropdownMenuItem asChild>
+          <Link
+            className={'s-full flex items-center space-x-2'}
+            href={paths.app}
           >
             <Home className={'h-5'} />
 

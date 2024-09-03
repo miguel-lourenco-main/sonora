@@ -22,7 +22,7 @@ import { If } from './if';
 import type { NavigationConfigSchema } from './navigation-config.schema';
 import { Trans } from './trans';
 
-import { checkCollpaseSidebar } from "@kit/shared/utils"
+import { checkCollapseSidebar } from "@kit/shared/utils"
 
 export type SidebarConfig = z.infer<typeof NavigationConfigSchema>;
 
@@ -47,15 +47,15 @@ export function Sidebar(props: {
   const currentPath = usePathname()
 
   const mouseEnterSidebar = () => {
-    if(checkCollpaseSidebar(currentPath)) setCollapsed(false)
+    if(checkCollapseSidebar(currentPath)) setCollapsed(false)
   }
 
   const mouseLeaveSidebar = () => {
-    if(checkCollpaseSidebar(currentPath)) setCollapsed(true)
+    if(checkCollapseSidebar(currentPath)) setCollapsed(true)
   }
 
   useEffect(() => {
-    if(checkCollpaseSidebar(currentPath)){
+    if(checkCollapseSidebar(currentPath)){
       setCollapsed(true)
     }else{
       setCollapsed(false)
