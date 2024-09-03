@@ -21,8 +21,7 @@ git branch --set-upstream-to=origin/subtree/apps-web subtree/apps-web
 
 ### Pull
 ```bash
-# Save current branch 
-current_branch=$(git rev-parse --abbrev-ref HEAD)
+git checkout update_makerkit
 
 # Fetch and update our mirror branch
 git fetch remote/makerkit main
@@ -30,9 +29,36 @@ git checkout mirror/makerkit
 git merge remote/makerkit/main
 git push origin mirror/makerkit
 
-# Merge skeleton makerkit into current branch
-git checkout $current_branch
+# Merge skeleton makerkit into update_makerkit
+git checkout update_makerkit
 git merge mirror/makerkit
 
+##### Create MR and merge to main WITHOUT SQUASHING COMMITS (we want makerkit's commits intact)
 
+# Pull main
+git checkout main
+git pull
+
+# Delete update_makerkit branch locallt (on remote, it was probably deleted in the MR process)
+git branch -D update_makerkit
+
+# Update subtree
+git subtree split --prefix=apps/web --branch=subtree/apps-web
+git push origin subtree/apps-web
+```
+
+### Proliferate app subtree's new updates into app submodules
+```bash
+cd apps/polydoc
+
+# Fetch and update our mirror branch
+git fetch remote/frontend subtree/apps-web
+git checkout mirror/apps-web
+git merge remote/frontend/subtree/apps-web
+git push origin mirror/apps-web
+
+# Merge mirror into main
+git checkout main
+git merge mirror/apps-web
+git push origin
 ```
