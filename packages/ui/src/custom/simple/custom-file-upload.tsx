@@ -259,7 +259,7 @@ const FileSvgDraw = () => {
         &nbsp; {t("orDragAndDrop")}
       </p>
       <p className="text-xs text-gray-500 dark:text-gray-400">
-        DOCX or PDF
+        .PDF
       </p>
     </div>
   );

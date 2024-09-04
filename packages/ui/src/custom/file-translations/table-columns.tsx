@@ -187,7 +187,7 @@ export function columns(
                     <Eye className="h-[18px] w-[18px]"/>
                   </button>
                 }
-                content={t("viewFile")}
+                content={t("viewFiles")}
               />
             }            
           />
