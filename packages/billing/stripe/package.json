@@ -9,7 +9,8 @@
     "typecheck": "tsc --noEmit",
     "login": "docker run --rm -it --name=stripe -v ~/.config/stripe:/root/.config/stripe stripe/stripe-cli:latest login",
     "logout": "docker run --rm -it --name=stripe -v ~/.config/stripe:/root/.config/stripe stripe/stripe-cli:latest logout",
-    "start": "docker run --rm -it --name=stripe -v ~/.config/stripe:/root/.config/stripe --network host stripe/stripe-cli:latest listen --forward-to http://localhost:3000/api/billing/webhook"  },
+    "start": "docker run --rm -it --name=stripe -v ~/.config/stripe:/root/.config/stripe --network host stripe/stripe-cli:latest listen --forward-to http://localhost:3000/api/billing/webhook"
+  },
   "prettier": "@kit/prettier-config",
   "exports": {
     ".": "./src/index.ts",

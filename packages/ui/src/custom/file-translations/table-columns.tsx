@@ -68,7 +68,7 @@ export function columns(
         const file = files.find(file => file.name === row.getValue("name"))
 
         return(
-          <PDFViewerDrawer file={file ?? null} trigger={ <div className="w-[100px] whitespace-nowrap hover:underline hover:cursor-pointer">{row.getValue("name")}</div>} />
+          <PDFViewerDrawer file={file ?? null} trigger={ <div className="w-[70%] truncate hover:underline hover:cursor-pointer">{row.getValue("name")}</div>} />
         )
       },
       enableSorting: false,
