@@ -60,5 +60,6 @@
     "inProgress": "In Progress",
     "completed": "Completed",
     "failed": "Failed",
-    "waitingForTranslationToEnd": "Waiting for translation to end..."
+    "waitingForTranslationToEnd": "Waiting for translation to end...",
+    "selectLanguage": "Select language"
 }

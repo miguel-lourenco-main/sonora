@@ -49,8 +49,8 @@ export default function DragNDropGrid({ files, setFiles }: { files: File[], setF
                     }}
                 />
             </div>
-            <ComboboxAvatar list={languages} />
-            <div className="flex gap-x-1 px-2 text-sm text-muted-foreground">{files.length} {files.length === 1 ? t('ui:file') : t('ui:files')} {t('ui:added')}</div>
+            <ComboboxAvatar list={languages} tooltip={t('ui:selectLanguage')} />
+            <div className="flex gap-x-1 px-2 text-sm text-muted-foreground whitespace-nowrap">{files.length} {files.length === 1 ? t('ui:file') : t('ui:files')} {t('ui:added')}</div>
         </div>
         <CustomFileUploader
             acceptFiles={{"application/pdf": [".pdf"]}}
