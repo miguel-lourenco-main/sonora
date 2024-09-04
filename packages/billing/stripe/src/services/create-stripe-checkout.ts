@@ -85,6 +85,12 @@ export async function createStripeCheckout(
     allow_promotion_codes: params.enableDiscountField,
     ui_mode: uiMode,
     line_items: lineItems,
+    tax_id_collection: {
+      enabled: true,
+    },
+    automatic_tax: {
+      enabled: true,
+    },
     client_reference_id: clientReferenceId,
     subscription_data: subscriptionData,
     ...customerCreation,
