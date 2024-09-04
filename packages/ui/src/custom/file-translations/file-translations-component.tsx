@@ -73,7 +73,6 @@ export default function TranslatedFilesTable({
 
 function NewFilesButton(){
 
-  const [filesToTranslate, setFilesToTranslate] = useState<File[]>([]);
   const { t } = useTranslation('ui');
 
   return (
@@ -98,16 +97,10 @@ function NewFilesButton(){
           {t('translate')}
         </Button>
       }
-      reset={() => {
-        setFilesToTranslate([]);
-      }}
       contentClassName="w-full"
     >
       <div className="h-96">
-        <DragNDropGrid
-          files={filesToTranslate}
-          setFiles={setFilesToTranslate}
-        />
+        <DragNDropGrid/>
       </div>
     </DialogLayout>
   )

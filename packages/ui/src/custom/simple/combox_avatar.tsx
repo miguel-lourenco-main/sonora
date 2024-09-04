@@ -6,9 +6,9 @@ import { cn } from "../../utils"
 import { ReactNode, useState, useRef, useEffect } from "react"
 import TooltipComponent from "./tooltip-component"
 
-function ComboboxAvatar({list, tooltip}: {list: {value: string, label: string, flag: ReactNode}[], tooltip: string}) {
+function ComboboxAvatar({list, tooltip, onChange, initialValue}: {list: {value: string, label: string, flag: ReactNode}[], tooltip: string, onChange?: (value: string) => void, initialValue?: string}) {
   const [open, setOpen] = useState(false)
-  const [value, setValue] = useState("")
+  const [value, setValue] = useState(initialValue)
   const scrollAttempts = useRef(0)
   const lastScrollTime = useRef(0)
 
@@ -103,7 +103,7 @@ function ComboboxAvatar({list, tooltip}: {list: {value: string, label: string, f
           </PopoverTrigger>
           <PopoverContent className="w-full p-0">
             <Command>
-              <CommandInput placeholder="Search language..." />
+              <CommandInput placeholder="Search language..." onValueChange={(e) => onChange ? onChange(e) : null} />
               <CommandList>
                 <CommandEmpty>No language found.</CommandEmpty>
                 <CommandGroup>
