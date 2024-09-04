@@ -6,7 +6,7 @@ import { cn } from "../../utils"
 import { ReactNode, useState, useRef, useEffect } from "react"
 import TooltipComponent from "./tooltip-component"
 
-function ComboboxAvatar({list, tooltip, onChange, initialValue}: {list: {value: string, label: string, flag: ReactNode}[], tooltip: string, onChange?: (value: string) => void, initialValue?: string}) {
+function ComboboxAvatar({list, tooltip, onChange, initialValue}: {list: {value: string, label: string}[], tooltip: string, onChange?: (value: string) => void, initialValue?: string}) {
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState(initialValue)
   const scrollAttempts = useRef(0)
@@ -88,14 +88,9 @@ function ComboboxAvatar({list, tooltip, onChange, initialValue}: {list: {value: 
               className="w-full max-w-[250px] justify-between"
             >
               {value
-                ? <div className="flex items-center gap-x-2">
-                    <p>
-                      {list.find((item) => item.value === value)?.flag}
-                    </p>
-                    <p>
-                      {list.find((item) => item.value === value)?.label}
-                    </p>
-                  </div>
+                ? <p>
+                    {list.find((item) => item.value === value)?.label}
+                  </p>
                 : "Select language..."
               }
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -117,14 +112,9 @@ function ComboboxAvatar({list, tooltip, onChange, initialValue}: {list: {value: 
                       }}
                       className="flex justify-between"
                     >
-                      <div className="flex items-center gap-x-2">
-                        <p>
-                          {item.flag}
-                        </p>
-                        <p>
-                          {item.label}
-                        </p>
-                      </div>
+                      <p>
+                        {item.label}
+                      </p>
                       <Check
                         className={cn(
                           "mr-2 h-4 w-4",
