@@ -40,7 +40,7 @@ export const deleteTeamAccountAction = enhanceAction(
       userId,
     });
 
-    return redirect('/home');
+    return redirect('/app');
   },
   {},
 );

@@ -17,7 +17,7 @@ export function SignInMethodsContainer(props: {
 
   paths: {
     callback: string;
-    home: string;
+    app: string;
     joinTeam: string;
   };
 
@@ -28,7 +28,7 @@ export function SignInMethodsContainer(props: {
   };
 }) {
   const router = useRouter();
-  const nextPath = useSearchParams().get('next') ?? props.paths.home;
+  const nextPath = useSearchParams().get('next') ?? props.paths.app;
 
   const redirectUrl = isBrowser()
     ? new URL(props.paths.callback, window?.location.origin).toString()
@@ -71,7 +71,7 @@ export function SignInMethodsContainer(props: {
           shouldCreateUser={false}
           paths={{
             callback: props.paths.callback,
-            returnPath: props.paths.home,
+            returnPath: props.paths.app,
           }}
         />
       </If>

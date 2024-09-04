@@ -13,6 +13,9 @@ type PageProps = React.PropsWithChildren<{
 
 export function Page(props: PageProps) {
   switch (props.style) {
+    case 'sidebar':
+      return <PageWithSidebar {...props} />;
+
     case 'header':
       return <PageWithHeader {...props} />;
 

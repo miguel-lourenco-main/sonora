@@ -19,6 +19,19 @@ For example, to install the `Button` component, you can use the following comman
 
 ```bash
 npx shadcn-ui@latest add button --path=packages/ui/src/shadcn
+pnpm dlx shadcn-ui@latest add dialog --path=packages/ui/src/shadcn
+
+
 ```
 
 We pass the `--path` flag to specify the path where the component should be installed.
+
+# Dev Tips (Miguel Lourenço)
+
+When adding a new component, check if there is any text that needs to be translated. If so, add the new text to the `ui.json` file in the `src/utils/locales` folder.
+
+For the most part, files in `shadcn` do not `usually` have text that needs to be translated. The same goes for the ui in the `makerkit` folder, assume that it's creator already dealt with that.
+
+(For now) Before running the app, copy the `ui.json` file to the `public/locales` folder of your apps.
+
+In the future, this will be handled automatically.

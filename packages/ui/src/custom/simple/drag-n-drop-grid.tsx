@@ -1,0 +1,195 @@
+'use client'
+
+import { Dispatch, ReactNode, SetStateAction, useState } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import CustomFileUploader from "./custom-file-upload";
+import { Button } from "../../shadcn/button" 
+import { Plus, Trash2 } from "lucide-react";
+import TooltipComponent from "./tooltip-component";
+import { FileBrowserInput } from "./file-browser-input";
+import FilesGrid from "./files-grid";
+import ComboboxAvatar from "./combox_avatar";
+import { useTranslation } from "react-i18next";
+import { formSchema } from "../_lib/schemas/translate-files";
+import { FormData } from "../_lib/types";
+import { cn } from "../../utils";
+
+const languages = [
+    { value: "en", label: "English", flag: "🇬🇧" },
+    { value: "fr", label: "French", flag: "🇫🇷" },
+    { value: "es", label: "Spanish", flag: "🇪🇸" },
+    { value: "de", label: "German", flag: "🇩🇪" },
+    { value: "it", label: "Italian", flag: "🇮🇹" },
+    { value: "pt", label: "Portuguese", flag: "🇵🇹" },
+    { value: "ru", label: "Russian", flag: "🇷🇺" },
+    { value: "ja", label: "Japanese", flag: "🇯🇵" },
+    { value: "zh", label: "Chinese", flag: "🇨🇳" },
+    { value: "ko", label: "Korean", flag: "🇰🇷" },
+  ]
+
+export default function DragNDropGrid({ initialFiles = [], setFiles }: { initialFiles?: File[], setFiles?: Dispatch<SetStateAction<File[]>> }) {
+    
+    const { t } = useTranslation('ui')
+    const [localFiles, setLocalFiles] = useState<File[]>(initialFiles);
+
+    const files = setFiles ? initialFiles : localFiles;
+
+    const updateFiles = setFiles ? setFiles : setLocalFiles;
+
+    const handleDeleteAll = () => updateFiles([]);
+    const handleAddFiles = (newFiles: File[]) => updateFiles([...files, ...newFiles]);
+
+    return (
+        <div className="flex flex-col justify-start size-full gap-4">
+            <div className="flex items-center justify-between px-2">
+                <div className="flex items-center gap-x-3">
+                    <Button
+                        variant="light_foreground"
+                        size="fit"
+                        onClick={handleDeleteAll}
+                        disabled={files.length === 0}
+                        className="transition-opacity duration-400 ease-in-out"
+                        style={{ opacity: files.length === 0 ? 0.5 : 1 }}
+                    >
+                        <TooltipComponent trigger={<Trash2 className="size-8 p-1.5" />} content={t('ui:deleteAllFiles')} />
+                    </Button>
+                    <FileBrowserInput
+                        content={(handleFileUpload: () => void) => (
+                            <Button variant="light_foreground" size="fit" onClick={handleFileUpload}>
+                                <TooltipComponent 
+                                    trigger={<Plus className="size-8 p-1.5"/>} 
+                                    content={t('ui:addFiles')}
+                                />
+                            </Button>
+                        )}
+                        acceptsTypes=".pdf, .docx, .doc"
+                        addDroppedFiles={handleAddFiles}
+                    />
+                </div>
+                <ComboboxAvatar list={languages} tooltip={t('ui:selectLanguage')}/>
+                <div className="flex gap-x-1 px-2 whitespace-nowrap text-sm text-muted-foreground">
+                    {files.length} {files.length === 1 ? t('ui:file') : t('ui:files')} {t('ui:added')}
+                </div>
+            </div>
+            <CustomFileUploader
+                acceptFiles={{"application/pdf": [".pdf"], "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"], "application/msword": [".doc"]}}
+                files={files}
+                setFiles={updateFiles}
+            >
+                <FilesGrid files={files} setFiles={updateFiles} />
+            </CustomFileUploader>
+        </div>
+    )
+}
+
+export function DragNDropGridForm({ initialFiles = [], setFiles, onSubmit, submitButton, submitButtonX, submitButtonY }: { initialFiles?: File[], setFiles?: Dispatch<SetStateAction<File[]>>, onSubmit: (data: FormData) => void, submitButton?: ReactNode, submitButtonX?: "left" | "right" | "center", submitButtonY?: "top" | "bottom" }) {
+    const { t } = useTranslation('ui');
+
+    const [localFiles, setLocalFiles] = useState<File[]>([]);
+
+    const files = setFiles ? initialFiles : localFiles;
+    const updateFiles = setFiles ? setFiles : setLocalFiles;
+
+    const { control, handleSubmit, formState: { errors }, setValue } = useForm<FormData>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            files: [],
+            targetLanguage: "",
+        },
+    });
+
+    const handleDeleteAll = () => {
+        updateFiles([]);
+        setValue('files', []);
+    };
+
+    const handleAddFiles = (newFiles: File[]) => {
+        const updatedFiles = [...files, ...newFiles];
+        updateFiles(updatedFiles);
+        setValue('files', updatedFiles, { shouldValidate: true });
+    };
+
+    const submitButtonSection = (
+        <div className={cn("flex w-full px-2", submitButtonX === "left" ? "justify-start" : submitButtonX === "right" ? "justify-end" : "justify-center")} >
+            {submitButton ? submitButton : <Button type="submit">Submit</Button>}
+        </div>
+    )
+
+    return (
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col justify-start size-full gap-4">
+            {submitButtonY === "top" && submitButtonSection}
+            <div className="flex items-center justify-between px-2">
+                <div className="flex items-center gap-x-3">
+                    <Button
+                        type="button"
+                        variant="light_foreground"
+                        size="fit"
+                        onClick={handleDeleteAll}
+                        disabled={files.length === 0}
+                        className="transition-opacity duration-400 ease-in-out"
+                        style={{ opacity: files.length === 0 ? 0.5 : 1 }}
+                    >
+                        <TooltipComponent trigger={<Trash2 className="size-8 p-1.5" />} content={t('ui:deleteAllFiles')} />
+                    </Button>
+                    <Controller
+                        name="files"
+                        control={control}
+                        render={({ field }) => (
+                            <FileBrowserInput
+                                content={(handleFileUpload: () => void) => (
+                                    <Button type="button" variant="light_foreground" size="fit" onClick={handleFileUpload}>
+                                        <TooltipComponent 
+                                            trigger={<Plus className="size-8 p-1.5"/>} 
+                                            content={t('ui:addFiles')}
+                                        />
+                                    </Button>
+                                )}
+                                acceptsTypes=".pdf, .docx, .doc"
+                                addDroppedFiles={(newFiles) => {
+                                    handleAddFiles(newFiles);
+                                    field.onChange([...field.value, ...newFiles]);
+                                }}
+                            />
+                        )}
+                    />
+                </div>
+                <div className="flex flex-col items-center gap-y-1.5">
+                    <Controller
+                        name="targetLanguage"
+                        control={control}
+                        render={({ field }) => (
+                            <ComboboxAvatar
+                                list={languages}
+                                tooltip={t('ui:selectLanguage')}
+                                onChange={(value) => field.onChange(value)}
+                                initialValue={field.value}
+                            />
+                            
+                        )}
+                    />
+                    {errors.targetLanguage && <p className="text-red-500">{errors.targetLanguage.message}</p>}
+                </div>
+                <div className="flex gap-x-1 px-2 whitespace-nowrap text-sm text-muted-foreground">
+                    {files.length} {files.length === 1 ? t('ui:file') : t('ui:files')} {t('ui:added')}
+                </div>
+            </div>
+            <CustomFileUploader
+                acceptFiles={{"application/pdf": [".pdf"], "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"], "application/msword": [".doc"]}}
+                files={files}
+                setFiles={(newFiles) => {
+                    updateFiles(newFiles);
+                    setValue('files', Array.isArray(newFiles) ? newFiles : newFiles(files), { shouldValidate: true });
+                }}
+            >
+                <FilesGrid files={files} setFiles={(newFiles) => {
+                    updateFiles(newFiles);
+                    setValue('files', Array.isArray(newFiles) ? newFiles : newFiles(files), { shouldValidate: true });
+                }} />
+            </CustomFileUploader>
+            {errors.files && <p className="text-red-500">{errors.files.message}</p>}
+            {submitButtonY === "bottom" && submitButtonSection}
+        </form>
+    );
+}
