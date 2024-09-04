@@ -3,7 +3,7 @@
 import { File, Trash2 } from "lucide-react";
 import { Button } from "../../shadcn/button";
 import TooltipComponent from "./tooltip-component";
-import {IconPDF } from "./icons";
+import {IconDOC, IconDOCX, IconPDF } from "./icons";
 import { Dispatch, SetStateAction, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -44,6 +44,10 @@ export default function FilesGrid({ files, setFiles }: { files: File[], setFiles
 
                 if (extension === "pdf") {
                     icon = <IconPDF className="size-12" />;
+                } else if (extension === "vnd.openxmlformats-officedocument.wordprocessingml.document") {
+                    icon = <IconDOCX className="size-12" />;
+                } else if (extension === "doc" || extension === "msword") {
+                    icon = <IconDOC className="size-12" />;
                 } else {
                     icon = <File className="size-12" />;
                 }
