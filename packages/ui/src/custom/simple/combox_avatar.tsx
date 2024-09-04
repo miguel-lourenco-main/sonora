@@ -3,10 +3,11 @@ import { Button } from "../../shadcn/button"
 import { Popover, PopoverContent, PopoverTrigger } from "../../shadcn/popover"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../../shadcn/command"
 import { cn } from "../../utils"
-import { ReactNode, useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect } from "react"
 import TooltipComponent from "./tooltip-component"
+import { useTranslation } from "react-i18next"
 
-function ComboboxAvatar({list, tooltip, onChange, initialValue}: {list: {value: string, label: string}[], tooltip: string, onChange?: (value: string) => void, initialValue?: string}) {
+function ComboboxAvatar({list, tooltip, onChange, initialValue, placeholder}: {list: {value: string, label: string}[], tooltip: string, onChange?: (value: string) => void, initialValue?: string, placeholder?: string}) {
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState(initialValue)
   const scrollAttempts = useRef(0)
@@ -76,6 +77,8 @@ function ComboboxAvatar({list, tooltip, onChange, initialValue}: {list: {value: 
     };
   }, []);
 
+  const { t } = useTranslation('ui');
+
   return (
     <TooltipComponent className="w-full" trigger={
       <div className="flex w-full justify-center">
@@ -91,16 +94,16 @@ function ComboboxAvatar({list, tooltip, onChange, initialValue}: {list: {value: 
                 ? <p>
                     {list.find((item) => item.value === value)?.label}
                   </p>
-                : "Select language..."
+                : placeholder ?? t('selectLanguagePlaceholder')
               }
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-full p-0">
             <Command>
-              <CommandInput placeholder="Search language..." onValueChange={(e) => onChange ? onChange(e) : null} />
+              <CommandInput placeholder={placeholder ?? t('selectLanguagePlaceholder')} onValueChange={(e) => onChange ? onChange(e) : null} />
               <CommandList>
-                <CommandEmpty>No language found.</CommandEmpty>
+                <CommandEmpty>{t('noItemsFound')}</CommandEmpty>
                 <CommandGroup>
                   {list.map((item) => (
                     <CommandItem

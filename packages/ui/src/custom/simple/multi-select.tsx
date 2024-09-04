@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslation } from "react-i18next";
 import { Badge } from "../../shadcn/badge";
 import {
   Command,
@@ -325,6 +326,9 @@ const MultiSelectorList = forwardRef<
   React.ElementRef<typeof CommandPrimitive.List>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.List>
 >(({ className, children }, ref) => {
+
+  const { t } = useTranslation('ui');
+
   return (
     <CommandList
       ref={ref}
@@ -335,7 +339,7 @@ const MultiSelectorList = forwardRef<
     >
       {children}
       <CommandEmpty>
-        <span className="text-muted-foreground">No results found</span>
+        <span className="text-muted-foreground">{t('noResultsFound')}</span>
       </CommandEmpty>
     </CommandList>
   );

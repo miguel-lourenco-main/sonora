@@ -61,5 +61,7 @@
     "completed": "Completed",
     "failed": "Failed",
     "waitingForTranslationToEnd": "Waiting for translation to end...",
-    "selectLanguage": "Select language"
+    "selectLanguage": "Select your target language",
+    "selectItemPlaceholder": "Select item...",
+    "noItemsFound": "No items found."
 }
