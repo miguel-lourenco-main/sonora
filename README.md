@@ -46,14 +46,14 @@ git pull
 
 # Delete update_makerkit branch locally (on remote, it was probably deleted in the MR process)
 git branch -D update_makerkit
-
-# Update subtree
-git subtree split --prefix=apps/web --branch=subtree/apps-web
-git push origin subtree/apps-web
 ```
 
 ## Proliferate app subtree's new updates into app submodules
 ```bash
+# Update subtree
+git subtree split --prefix=apps/web --branch=subtree/apps-web
+git push origin subtree/apps-web
+
 cd apps/polydoc
 
 # Fetch and update our mirror branch
