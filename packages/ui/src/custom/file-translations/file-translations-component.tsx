@@ -10,7 +10,7 @@ import { Button } from '../../shadcn/button';
 import TooltipComponent from '../simple/tooltip-component';
 import { CustomDataTable } from '../data-tables';
 import DialogLayout from '../dialogs/dialog-layout';
-import DragNDropGrid from '../simple/drag-n-drop-grid';
+import { DragNDropGridForm } from '../simple/drag-n-drop-grid';
 import { useTranslation } from 'react-i18next';
 
 export default function TranslatedFilesTable({
@@ -92,15 +92,22 @@ function NewFilesButton(){
       }
       title={t('translateFiles')}
       description={t('translateFilesDescription')}
-      footer={ () =>
-        <Button variant="default" size="default">
-          {t('translate')}
-        </Button>
-      }
       contentClassName="w-full"
     >
-      <div className="h-96">
-        <DragNDropGrid/>
+      <div className="h-[60vh]">
+        <DragNDropGridForm 
+          onSubmit={() => {}} 
+          submitButton={
+            <Button 
+              variant="default" 
+              size="default"
+            >
+              {t('translate')}
+            </Button>
+          } 
+          submitButtonX="right" 
+          submitButtonY="bottom"
+        />
       </div>
     </DialogLayout>
   )

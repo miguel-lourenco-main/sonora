@@ -3,30 +3,29 @@
 import { Dispatch, ReactNode, SetStateAction, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import CustomFileUploader from "./custom-file-upload";
 import { Button } from "../../shadcn/button" 
 import { Plus, Trash2 } from "lucide-react";
 import TooltipComponent from "./tooltip-component";
 import { FileBrowserInput } from "./file-browser-input";
 import FilesGrid from "./files-grid";
-import ComboboxAvatar from "./combox_avatar";
 import { useTranslation } from "react-i18next";
 import { formSchema } from "../_lib/schemas/translate-files";
 import { FormData } from "../_lib/types";
 import { cn } from "../../utils";
+import LanguageMultiSelect from "./language-multi-select";
 
 const languages = [
-    { value: "en", label: "English", flag: "🇬🇧" },
-    { value: "fr", label: "French", flag: "🇫🇷" },
-    { value: "es", label: "Spanish", flag: "🇪🇸" },
-    { value: "de", label: "German", flag: "🇩🇪" },
-    { value: "it", label: "Italian", flag: "🇮🇹" },
-    { value: "pt", label: "Portuguese", flag: "🇵🇹" },
-    { value: "ru", label: "Russian", flag: "🇷🇺" },
-    { value: "ja", label: "Japanese", flag: "🇯🇵" },
-    { value: "zh", label: "Chinese", flag: "🇨🇳" },
-    { value: "ko", label: "Korean", flag: "🇰🇷" },
+    { value: "english", label: "🇬🇧 English" },
+    { value: "french", label: "🇫🇷 French" },
+    { value: "spanish", label: "🇪🇸 Spanish" },
+    { value: "german", label: "🇩🇪 German" },
+    { value: "italian", label: "🇮🇹 Italian" },
+    { value: "portuguese", label: "🇵🇹 Portuguese" },
+    { value: "russian", label: "🇷🇺 Russian" },
+    { value: "japanese", label: "🇯🇵 Japanese" },
+    { value: "chinese", label: "🇨🇳 Chinese" },
+    { value: "korean", label: "🇰🇷 Korean" },
   ]
 
 export default function DragNDropGrid({ initialFiles = [], setFiles }: { initialFiles?: File[], setFiles?: Dispatch<SetStateAction<File[]>> }) {
@@ -43,7 +42,7 @@ export default function DragNDropGrid({ initialFiles = [], setFiles }: { initial
 
     return (
         <div className="flex flex-col justify-start size-full gap-4">
-            <div className="flex items-center justify-between px-2">
+            <div className="flex items-end justify-between px-2">
                 <div className="flex items-center gap-x-3">
                     <Button
                         variant="light_foreground"
@@ -68,7 +67,8 @@ export default function DragNDropGrid({ initialFiles = [], setFiles }: { initial
                         addDroppedFiles={handleAddFiles}
                     />
                 </div>
-                <ComboboxAvatar list={languages} tooltip={t('ui:selectLanguage')}/>
+                {/** <ComboboxAvatar list={languages} tooltip={t('ui:selectLanguage')}/> */}
+                <LanguageMultiSelect className="w-1/3" languages={languages}/>
                 <div className="flex gap-x-1 px-2 whitespace-nowrap text-sm text-muted-foreground">
                     {files.length} {files.length === 1 ? t('ui:file') : t('ui:files')} {t('ui:added')}
                 </div>
@@ -96,7 +96,7 @@ export function DragNDropGridForm({ initialFiles = [], setFiles, onSubmit, submi
         resolver: zodResolver(formSchema),
         defaultValues: {
             files: [],
-            targetLanguage: "",
+            targetLanguage: [],
         },
     });
 
@@ -120,7 +120,7 @@ export function DragNDropGridForm({ initialFiles = [], setFiles, onSubmit, submi
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col justify-start size-full gap-4">
             {submitButtonY === "top" && submitButtonSection}
-            <div className="flex items-center justify-between px-2">
+            <div className="flex items-end justify-between px-2">
                 <div className="flex items-center gap-x-3">
                     <Button
                         type="button"
@@ -155,18 +155,17 @@ export function DragNDropGridForm({ initialFiles = [], setFiles, onSubmit, submi
                         )}
                     />
                 </div>
-                <div className="flex flex-col items-center gap-y-1.5">
+                <div className="flex w-full flex-col items-center gap-y-1.5">
                     <Controller
                         name="targetLanguage"
                         control={control}
                         render={({ field }) => (
-                            <ComboboxAvatar
-                                list={languages}
-                                tooltip={t('ui:selectLanguage')}
-                                onChange={(value) => field.onChange(value)}
-                                initialValue={field.value}
+                            <LanguageMultiSelect 
+                                className="w-1/3" 
+                                languages={languages} 
+                                externalValue={field.value} 
+                                externalSetValue={(value) => field.onChange(value)}
                             />
-                            
                         )}
                     />
                     {errors.targetLanguage && <p className="text-red-500">{errors.targetLanguage.message}</p>}

@@ -136,6 +136,7 @@
     "./typing-animation": "./src/magic-ui/typing-animation.tsx",
     "./file-upload": "./src/shadcn-extension/file-upload.tsx",
     "./file-upload-example": "./src/shadcn-extension/file-upload-example.tsx",
+    "./multi-select": "./src/shadcn-extension/multi-select.tsx",
     "./utils": "./src/utils/index.ts",
     "./if": "./src/makerkit/if.tsx",
     "./trans": "./src/makerkit/trans.tsx",
@@ -180,7 +181,8 @@
     "./pdf-viewer": "./src/custom/simple/pdf-viewer.tsx",
     "./drag-n-drop-grid": "./src/custom/simple/drag-n-drop-grid.tsx",
     "./tooltip-component": "./src/custom/simple/tooltip-component.tsx",
-    "./combox-avatar": "./src/custom/simple/combox_avatar.tsx"
+    "./combox-avatar": "./src/custom/simple/combox_avatar.tsx",
+    "./custom-multi-select": "./src/custom/simple/multi-select.tsx"
   },
   "typesVersions": {
     "*": {
