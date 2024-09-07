@@ -1,0 +1,11 @@
+workflowVersion: 1.0.0
+sources:
+    Polydoc-OAS:
+        inputs:
+            - location: ../../../../../workflows/workflows-server/docs/openapi.yml
+        registry:
+            location: registry.speakeasyapi.dev/edgenai/edgenai/polydoc-oas
+targets:
+    polydoc:
+        target: typescript
+        source: Polydoc-OAS
