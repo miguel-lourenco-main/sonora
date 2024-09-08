@@ -6,13 +6,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '../../../shadcn/alert-dialog';
+} from '../shadcn/alert-dialog';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '../../../shadcn/tooltip';
+} from '../shadcn/tooltip';
 
 
 export function AlertDialogContentLayout({

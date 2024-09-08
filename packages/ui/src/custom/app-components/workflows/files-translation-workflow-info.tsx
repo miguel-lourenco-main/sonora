@@ -1,4 +1,5 @@
-'use client';
+/**
+ * 'use client';
 
 import { useState } from 'react';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator, BreadcrumbPage } from '../../shadcn/breadcrumbs';
@@ -80,3 +81,5 @@ function WorkflowBreadCrumbs({ workflowId }: { workflowId: string }) {
     </Breadcrumb>
   );
 }
+
+ */

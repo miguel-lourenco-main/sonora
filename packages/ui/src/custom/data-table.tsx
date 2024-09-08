@@ -23,10 +23,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../../../shadcn/table"
-import { DataTablePagination } from "./components/data-table-pagination"
-import { DataTableToolbar } from "./components/data-table-toolbar"
-import { Filter } from "../../_lib/interface"
+} from "../shadcn/table"
+import { DataTablePagination } from "./data-table-components/data-table-pagination"
+import { DataTableToolbar } from "./data-table-components/data-table-toolbar"
+import { Filter } from "./_lib/interface"
 import { useTranslation } from "react-i18next"
 import { I18nComponent } from "@kit/i18n"
 

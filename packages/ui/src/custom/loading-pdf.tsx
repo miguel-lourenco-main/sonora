@@ -1,6 +1,6 @@
 import { I18nComponent } from "@kit/i18n";
 import { Loader2 } from "lucide-react";
-import { cn } from "../../../utils";
+import { cn } from "../utils";
 
 export default function LoadingPDF(
   {

@@ -63,5 +63,7 @@
     "waitingForTranslationToEnd": "Waiting for translation to end...",
     "selectLanguage": "Select your target language",
     "selectItemPlaceholder": "Select item...",
-    "noItemsFound": "No items found."
+    "noItemsFound": "No items found.",
+    "selectLanguagePlaceholder": "Select your target language",
+    "selectItem": "Select item..."
 }

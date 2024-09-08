@@ -1,7 +1,7 @@
 "use client";
 
-import { Input } from "../../../shadcn/input";
-import { cn } from "../../../utils";
+import { Input } from "../shadcn/input";
+import { cn } from "../utils";
 import {
   Dispatch,
   SetStateAction,
@@ -18,21 +18,12 @@ import {
 import { toast } from "sonner";
 import { Paperclip, Send, Trash2Icon, X } from "lucide-react";
 import { Tooltip } from "@radix-ui/react-tooltip";
-import { TooltipContent, TooltipProvider, TooltipTrigger } from "../../../shadcn/tooltip";
+import { TooltipContent, TooltipProvider, TooltipTrigger } from "../shadcn/tooltip";
 import { useTranslation } from "react-i18next";
+import { CustomFileUploaderProps, DirectionOptions } from "./_lib/types";
+import { IconCloudDownload } from "./icons";
 
-type DirectionOptions = "rtl" | "ltr" | undefined;
-
-type CustomFileUploaderProps = {
-  files: File[];
-  setFiles: Dispatch<SetStateAction<File[]>>;
-  className?: string;
-  orientation?: "horizontal" | "vertical";
-  acceptFiles?: { [key: string]: string[] };
-  children?: React.ReactNode;
-};
-
-export const CustomFileUploader = forwardRef<
+export const FilesDragNDrop = forwardRef<
   HTMLDivElement,
   CustomFileUploaderProps & React.HTMLAttributes<HTMLDivElement>
 >(
@@ -50,9 +41,9 @@ export const CustomFileUploader = forwardRef<
 
     const [isFileTooBig, setIsFileTooBig] = useState(false);
     const [activeIndex, setActiveIndex] = useState(-1);
-    const { t } = useTranslation('ui')
-
     const [showCover, setShowCover] = useState(true);
+
+    const { t } = useTranslation('ui')
 
     const maxSize = 1024 * 1024 * 4;
     const multiple = true;
@@ -171,7 +162,6 @@ export const CustomFileUploader = forwardRef<
     })
 
     const clickInput = useCallback((e: React.MouseEvent<HTMLInputElement>) => {
-      console.log("clickInput", showCover);
       if(!showCover) {
         e.preventDefault();
         e.stopPropagation();
@@ -229,9 +219,9 @@ export const CustomFileUploader = forwardRef<
   }
 );
 
-CustomFileUploader.displayName = "CustomFileUploader";
+FilesDragNDrop.displayName = "FilesDragNDrop";
 
-export default CustomFileUploader
+export default FilesDragNDrop
 
 const FileSvgDraw = () => {
 
@@ -239,21 +229,7 @@ const FileSvgDraw = () => {
 
   return (
     <div className="flex flex-col items-center">
-      <svg
-        className="w-8 h-8 mb-3 text-gray-500 dark:text-gray-400"
-        aria-hidden="true"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 20 16"
-      >
-        <path
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-        />
-      </svg>
+      <IconCloudDownload />
       <p className="p-2 mb-1 text-sm text-center text-gray-500 dark:text-gray-400">
         <span className="font-semibold">{t("clickToAdd")}</span>
         &nbsp; {t("orDragAndDrop")}

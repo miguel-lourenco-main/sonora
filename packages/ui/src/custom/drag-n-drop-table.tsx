@@ -23,11 +23,11 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../../../shadcn/table"
-import { DataTablePagination } from "./components/data-table-pagination"
-import { DataTableToolbar } from "./components/data-table-toolbar"
-import { Filter } from "../../_lib/interface"
-import CustomFileUploader from "../simple/file-upload"
+} from "../shadcn/table"
+import { DataTablePagination } from "./data-table-components/data-table-pagination"
+import { DataTableToolbar } from "./data-table-components/data-table-toolbar"
+import { Filter } from "./_lib/interface"
+import CustomFileUploader from "./files-drag-n-drop"
 import { I18nComponent } from "@kit/i18n"
 
 interface DataTableProps<TData, TValue> {

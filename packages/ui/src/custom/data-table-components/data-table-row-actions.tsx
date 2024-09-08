@@ -3,18 +3,18 @@
 import { DotsHorizontalIcon } from "@radix-ui/react-icons"
 import { Row } from "@tanstack/react-table"
 
-import { Button } from "../../../../shadcn/button"
+import { Button } from "../../shadcn/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../../../../shadcn/dropdown-menu"
+} from "../../shadcn/dropdown-menu"
 import { v4 as uuidv4 } from "uuid"
 import { useTranslation } from "react-i18next"
 
-interface DataTableRowActionsProps<TData> {
+interface DataTableRowActionsProps<TData> {     
   row: Row<TData>
   actions: DataTableActions[]
 }

@@ -7,32 +7,24 @@ import {
     DrawerHeader,
     DrawerTitle,
     DrawerTrigger,
-} from "../../../shadcn/drawer"
+} from "../shadcn/drawer"
 
-import { ScrollArea } from "../../../shadcn/scroll-area";
+import { ScrollArea } from "../shadcn/scroll-area";
 
-import PDFViewer from '../simple/pdf-viewer'
-import { cn } from "../../../utils";
-import LoadingPDF from "./loading-pdf";
-
-if (typeof Promise.withResolvers === 'undefined') {
-    Promise.withResolvers = function <T>() {
-      let resolve!: (value: T | PromiseLike<T>) => void;
-      let reject!: (reason?: any) => void;
-      const promise = new Promise<T>((res: (value: T | PromiseLike<T>) => void, rej: (reason?: any) => void) => {
-        resolve = res;
-        reject = rej;
-      });
-      return { promise, resolve, reject };
-    };
-  }
+import PDFViewer from './pdf-viewer'
+import { cn } from "../utils";
+import LoadingPDF from "./loading-pdf"
 
 export default function PDFViewerDrawer({
     file,
     trigger,
+    title,
+    description
 }: {
     file: File | string | null;
     trigger: React.ReactNode;
+    title: string;
+    description: string;
 }) {
 
     const [loaded, setLoaded] = React.useState(false)
@@ -44,8 +36,8 @@ export default function PDFViewerDrawer({
             </DrawerTrigger>
             <DrawerContent className='h-screen top-0 right-0 left-auto mt-0 w-[800px] rounded-none bg-[#525659]' showBar={false}>
                 <DrawerHeader className="hidden">
-                    <DrawerTitle>{typeof file === 'string' ? file : file?.name}</DrawerTitle>
-                    <DrawerDescription>{typeof file === 'string' ? file : file?.size}</DrawerDescription>
+                    <DrawerTitle>{title}</DrawerTitle>
+                    <DrawerDescription>{description}</DrawerDescription>
                 </DrawerHeader>
                 <ScrollArea className='h-screen px-10'>
                     {!loaded && <LoadingPDF />}

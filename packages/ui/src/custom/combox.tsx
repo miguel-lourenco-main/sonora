@@ -1,13 +1,14 @@
 import { Check, ChevronsUpDown } from "lucide-react"
-import { Button } from "../../../shadcn/button"
-import { Popover, PopoverContent, PopoverTrigger } from "../../../shadcn/popover"
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../../../shadcn/command"
-import { cn } from "../../../utils"
+import { Button } from "../shadcn/button"
+import { Popover, PopoverContent, PopoverTrigger } from "../shadcn/popover"
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../shadcn/command"
+import { cn } from "../utils"
 import { useState, useRef, useEffect } from "react"
 import TooltipComponent from "./tooltip-component"
 import { useTranslation } from "react-i18next"
 
 function CustomCombobox({list, tooltip, onChange, initialValue, placeholder}: {list: {value: string, label: string}[], tooltip: string, onChange?: (value: string) => void, initialValue?: string, placeholder?: string}) {
+  
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState(initialValue)
   const scrollAttempts = useRef(0)
@@ -94,7 +95,7 @@ function CustomCombobox({list, tooltip, onChange, initialValue, placeholder}: {l
                 ? <p>
                     {list.find((item) => item.value === value)?.label}
                   </p>
-                : placeholder ?? t('selectLanguagePlaceholder')
+                : placeholder ?? t('selectItem')
               }
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>

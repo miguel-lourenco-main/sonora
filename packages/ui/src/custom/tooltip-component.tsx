@@ -1,4 +1,4 @@
-import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "../../../shadcn/tooltip";
+import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "../shadcn/tooltip";
 
 export default function TooltipComponent({ trigger, content, className }: { trigger: React.ReactNode, content: React.ReactNode, className?: string }){
     return (

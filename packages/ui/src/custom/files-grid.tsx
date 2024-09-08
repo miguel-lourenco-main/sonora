@@ -1,13 +1,14 @@
 'use client';
 
 import { File, Trash2 } from "lucide-react";
-import { Button } from "../../../shadcn/button";
+import { Button } from "../shadcn/button";
 import TooltipComponent from "./tooltip-component";
 import {IconDOC, IconDOCX, IconPDF } from "./icons";
 import { Dispatch, SetStateAction, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 
 export default function FilesGrid({ files, setFiles }: { files: File[], setFiles: Dispatch<SetStateAction<File[]>> }) {
+    
     const gridRef = useRef<HTMLDivElement>(null);
     const { t } = useTranslation('ui');
 

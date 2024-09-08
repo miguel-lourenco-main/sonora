@@ -9,7 +9,7 @@ import { coldarkDark } from 'react-syntax-highlighter/dist/cjs/styles/prism'
 
 import { useCopyToClipboard } from '@kit/shared/hooks'
 import { IconCheck, IconCopy, IconDownload } from './icons'
-import { Button } from '../../../shadcn/button'
+import { Button } from '../shadcn/button'
 import { useTranslation } from 'react-i18next'
 
 interface Props {

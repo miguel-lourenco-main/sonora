@@ -6,15 +6,15 @@ import {
 } from "@radix-ui/react-icons"
 import { Column } from "@tanstack/react-table"
 
-import { cn } from "../../../../utils"
-import { Button } from "../../../../shadcn/button"
+import { cn } from "../../utils"
+import { Button } from "../../shadcn/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../../../../shadcn/dropdown-menu"
+} from "../../shadcn/dropdown-menu"
 import { I18nComponent } from "@kit/i18n"
 
 interface DataTableColumnHeaderProps<TData, TValue>

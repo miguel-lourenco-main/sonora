@@ -1,4 +1,5 @@
-import { cn } from "../../../utils";
+/**
+ * import { cn } from "../../../utils";
 import { I18nComponent } from "@kit/i18n"
 import { WorkflowCard } from "./workflow-card"
 
@@ -56,3 +57,4 @@ export default function WorkflowsPage() {
         </div>
     )
   }
+ */
