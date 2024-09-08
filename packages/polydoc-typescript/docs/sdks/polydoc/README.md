@@ -1,3 +1,0 @@
-# Polydoc SDK
-
-## Overview

@@ -1,5 +1,4 @@
 import { COLLAPSE_PATHS, COLLAPSE_PATHS_FROM } from "./constants";
-import { PlainFileObject } from "./interface";
 
 /**
  * Check if the code is running in a browser environment.
@@ -71,51 +70,5 @@ export function processChatMessages(messages: any[]) {
 export function checkCollapseSidebar(currentPath: string) {
   return COLLAPSE_PATHS_FROM.some(path => currentPath.startsWith(path)) || COLLAPSE_PATHS.some(path => path === currentPath);
 }
-
-export function fileToObject(file: File): Promise<PlainFileObject> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      const plainObject: PlainFileObject = {
-        name: file.name,
-        type: file.type,
-        size: file.size,
-        lastModified: file.lastModified,
-        content: reader.result
-      };
-      resolve(plainObject);
-    };
-
-    reader.onerror = () => {
-      reject(reader.error);
-    };
-
-    reader.readAsDataURL(file); // Read file content as Data URL (base64)
-  });
-}
-
-
-export function objectToFile(plainObject: PlainFileObject): File {
-  const { name, type, content, lastModified } = plainObject;
-
-  if (typeof content !== 'string') {
-    throw new Error('Invalid content format');
-  }
-
-  const byteString = atob(content.split(',')[1] ?? ""); // Decode base64
-  const arrayBuffer = new ArrayBuffer(byteString.length);
-  const uint8Array = new Uint8Array(arrayBuffer);
-
-  for (let i = 0; i < byteString.length; i++) {
-    uint8Array[i] = byteString.charCodeAt(i);
-  }
-
-  const blob = new Blob([uint8Array], { type });
-  const file = new File([blob], name, { type, lastModified });
-
-  return file;
-}
-
 
 // Edgen-related function hidden
