@@ -183,7 +183,8 @@
     "./serve-file": "./src/custom/serve-file.tsx",
     "./tooltip-component": "./src/custom/tooltip-component.tsx",
     "./general-loading": "./src/custom/general-loading.tsx",
-    "./file-upload-simple": "./src/custom/file-upload-simple.tsx"
+    "./file-upload-simple": "./src/custom/file-upload-simple.tsx",
+    "./data-table-row-actions": "./src/custom/data-table-components/data-table-row-actions.tsx"
   },
   "typesVersions": {
     "*": {

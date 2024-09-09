@@ -1,44 +1,54 @@
-import * as React from "react"
+import { useCallback, useState, useEffect, useRef, ReactNode, UIEvent } from 'react';
 import { cn } from "../utils";
 import LoadingPDF from "./loading-pdf";
 import DialogLayout from "./dialog-layout";
-import { File, FileType2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../shadcn/tabs";
 import PDFViewer from "./pdf-viewer";
 import { Button } from "../shadcn/button";
 
 export default function PDFViewerDialog({
-    file,
+    fileId,
     trigger,
     title,
     description,
     tabs
 }: {
-    file: File | string | null;
-    trigger: React.ReactNode;
+    fileId: string;
+    trigger: ReactNode;
     title: string;
     description: string;
     tabs: {
-        icon: React.ReactNode;
+        icon: ReactNode;
         label: string;
     }[];
 }) {
-    const [loaded, setLoaded] = React.useState(false)
-    const [isWideScreen, setIsWideScreen] = React.useState(window.innerWidth >= 1200)
-    const { t } = useTranslation('ui')
+    const [loaded, setLoaded] = useState(false)
+    const [isWideScreen, setIsWideScreen] = useState(window.innerWidth >= 1200)
+    const [file, setFile] = useState<File | null>(null)
 
-    const scrollRefs = [React.useRef<HTMLDivElement>(null), React.useRef<HTMLDivElement>(null)]
+    //const { t } = useTranslation('ui')
 
-    const [currentTab, setCurrentTab] = React.useState('original')
+    const scrollRefs = [useRef<HTMLDivElement>(null), useRef<HTMLDivElement>(null)]
 
-    React.useEffect(() => {
+    const [currentTab, setCurrentTab] = useState('original')
+
+    useEffect(() => {
+        const fetchFile = async () => {
+            // TODO: insert getFile function from sdk
+            const file = new File([], "") //await getFile(fileId)
+            setFile(file)
+        }
+        fetchFile()
+    }, [fileId])
+
+    useEffect(() => {
         const handleResize = () => setIsWideScreen(window.innerWidth >= 1200)
         window.addEventListener('resize', handleResize)
         return () => window.removeEventListener('resize', handleResize)
     }, [])
 
-    const handleScroll = (index: number) => (e: React.UIEvent<HTMLDivElement>) => {
+    const handleScroll = (index: number) => (e: UIEvent<HTMLDivElement>) => {
         const otherIndex = 1 - index;
         if (scrollRefs[otherIndex]?.current) {
             scrollRefs[otherIndex]!.current!.scrollTop = e.currentTarget.scrollTop;
@@ -58,7 +68,7 @@ export default function PDFViewerDialog({
         );
       }
 
-    const renderPDFView = React.useCallback((index: number) => {
+    const renderPDFView = useCallback((index: number) => {
 
         const ref = scrollRefs[index]
 
