@@ -130,7 +130,7 @@
     "./breadcrumbs": "./src/shadcn/breadcrumbs.tsx",
     "./drawer": "./src/shadcn/drawer.tsx",
     "./progress": "./src/shadcn/progress.tsx",
-    "./combox": "./src/shadcn/combox.tsx",
+    "./combobox": "./src/shadcn/combobox.tsx",
     "./chart": "./src/shadcn/chart.tsx",
     "./tree-view-api": "./src/magic-ui/tree-view-api.tsx",
     "./tree-view": "./src/magic-ui/tree-view.tsx",

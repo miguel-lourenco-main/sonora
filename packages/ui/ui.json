@@ -1,8 +1,4 @@
 {
-    "deleteAllFiles": "Delete all files",
-    "addFiles": "Add Files",
-    "added": "added",
-    "file": "file",
     "clickToAdd": "Click to add",
     "orDragAndDrop": "or drag and drop a",
     "submitAll": "Submit All",
@@ -27,7 +23,6 @@
     "usage": "Usage",
     "viewFiles": "View files",
     "downloadOutputFile": "Download output file",
-    "files": "files",
     "asc": "Asc",
     "desc": "Desc",
     "hide": "Hide",
@@ -64,7 +59,6 @@
     "selectLanguage": "Select your target language",
     "selectItemPlaceholder": "Select item...",
     "noItemsFound": "No items found.",
-    "selectLanguagePlaceholder": "Select your target language",
     "selectItem": "Select item...",
     "filename": "Filename"
 }
