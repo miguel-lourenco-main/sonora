@@ -7,7 +7,7 @@ import { useState, useRef, useEffect } from "react"
 import TooltipComponent from "./tooltip-component"
 import { useTranslation } from "react-i18next"
 
-function CustomCombobox({list, tooltip, onChange, initialValue, placeholder}: {list: {value: string, label: string}[], tooltip: string, onChange?: (value: string) => void, initialValue?: string, placeholder?: string}) {
+function CustomCombobox({list, tooltip, onChange, initialValue, placeholder}: {list: {value: string, label: string}[], tooltip: string, onChange?: (value: string | undefined) => void, initialValue?: string, placeholder?: string}) {
   
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState(initialValue)
@@ -102,7 +102,7 @@ function CustomCombobox({list, tooltip, onChange, initialValue, placeholder}: {l
           </PopoverTrigger>
           <PopoverContent className="w-full p-0">
             <Command>
-              <CommandInput placeholder={placeholder ?? t('selectLanguagePlaceholder')} onValueChange={(e) => onChange ? onChange(e) : null} />
+              <CommandInput placeholder={placeholder ?? t('selectLanguagePlaceholder')} />
               <CommandList>
                 <CommandEmpty>{t('noItemsFound')}</CommandEmpty>
                 <CommandGroup>
@@ -111,8 +111,13 @@ function CustomCombobox({list, tooltip, onChange, initialValue, placeholder}: {l
                       key={item.value}
                       value={item.value}
                       onSelect={(currentValue) => {
-                        setValue(currentValue === value ? "" : currentValue)
+
+                        const isReselected = currentValue === value
+
+                        setValue(isReselected ? "" : currentValue)
                         setOpen(false)
+
+                        onChange ? onChange(isReselected ? undefined : currentValue) : null
                       }}
                       className="flex justify-between"
                     >

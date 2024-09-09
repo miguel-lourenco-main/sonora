@@ -182,7 +182,8 @@
     "./pdf-viewer": "./src/custom/pdf-viewer.tsx",
     "./serve-file": "./src/custom/serve-file.tsx",
     "./tooltip-component": "./src/custom/tooltip-component.tsx",
-    "./general-loading": "./src/custom/general-loading.tsx"
+    "./general-loading": "./src/custom/general-loading.tsx",
+    "./file-upload-simple": "./src/custom/file-upload-simple.tsx"
   },
   "typesVersions": {
     "*": {

@@ -60,5 +60,10 @@
     "selectItemPlaceholder": "Select item...",
     "noItemsFound": "No items found.",
     "selectItem": "Select item...",
-    "filename": "Filename"
+    "filename": "Filename",
+    "deleteAllFiles": "Delete all files",
+    "addFiles": "Add Files",
+    "added": "added",
+    "file": "file",
+    "files": "files"
 }
