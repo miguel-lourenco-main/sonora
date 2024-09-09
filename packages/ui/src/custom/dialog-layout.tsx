@@ -20,7 +20,8 @@ export default function DialogLayout({
     description,
     footer,
     reset,
-    open,
+    externalOpen,
+    externalSetOpen,
     onOpen,
     tooltip,
     contentClassName
@@ -31,15 +32,29 @@ export default function DialogLayout({
     description?: string
     footer?: () => React.ReactNode
     reset?: () => void
-    open?: boolean
+    externalOpen?: boolean
+    externalSetOpen?: React.Dispatch<React.SetStateAction<boolean>>
     onOpen?: () => void
     tooltip?: string
     contentClassName?: string
 }) {
+  const [internalOpen, internalSetOpen] = React.useState(false);
 
-  // Look into making trigger empty if DialogTrigger can be that
+  const isOpen = externalOpen && externalSetOpen ? externalOpen : internalOpen;
+  const setIsOpen = externalOpen && externalSetOpen ? externalSetOpen : internalSetOpen;
+
   return (
-      <Dialog open={open} onOpenChange={(open) => open ? (onOpen ? onOpen() : {}) : (reset ? reset() : {})} >
+      <Dialog 
+        open={isOpen} 
+        onOpenChange={(open) => {
+          setIsOpen(open);
+          if (open) {
+            onOpen?.();
+          } else {
+            reset?.();
+          }
+        }}
+      >
           <DialogTrigger asChild>
               <div>
                   {tooltip ? (
@@ -60,6 +75,7 @@ export default function DialogLayout({
           </DialogTrigger>
           <DialogContent 
             onInteractOutside={(event) => event.preventDefault()}
+            optionalClose={() => setIsOpen(false)}
             className={cn("max-w-[90vw] max-h-[90vh] size-fit", contentClassName)} 
           >
               <DialogHeader >

@@ -27,8 +27,8 @@ import {
 import { DataTablePagination } from "./data-table-components/data-table-pagination"
 import { DataTableToolbar } from "./data-table-components/data-table-toolbar"
 import { Filter } from "./_lib/interface"
-import { useTranslation } from "react-i18next"
 import { I18nComponent } from "@kit/i18n"
+import { useResizeObserver } from "@react-hookz/web";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -60,6 +60,19 @@ export function CustomDataTable<TData, TValue>({
   )
   const [sorting, setSorting] = React.useState<SortingState>([])
 
+  const [tableHeight, setTableHeight] = React.useState(0);
+  const tableRef = React.useRef<HTMLDivElement>(null);
+
+  useResizeObserver(tableRef, (entry: ResizeObserverEntry) => {
+    setTableHeight(entry.contentRect.height);
+  });
+
+  const rowHeight = 40; // Adjust this value based on your actual row height
+  const headerHeight = 40; // Adjust this value based on your actual header height
+  const paginationHeight = 40; // Adjust this value based on your actual pagination height
+
+  const calculatedPageSize = Math.floor((tableHeight - headerHeight - paginationHeight) / rowHeight);
+
   const table = useReactTable({
     data,
     columns,
@@ -68,6 +81,10 @@ export function CustomDataTable<TData, TValue>({
       columnVisibility,
       rowSelection,
       columnFilters,
+      pagination: {
+        pageIndex: 0,
+        pageSize: calculatedPageSize,
+      },
     },
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
@@ -80,6 +97,7 @@ export function CustomDataTable<TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
+    pageCount: Math.ceil(data.length / calculatedPageSize),
   })
 
   const toolBarButtonsProcessed = React.useCallback(() => {
@@ -91,7 +109,7 @@ export function CustomDataTable<TData, TValue>({
   return (
     <div className="space-y-4 h-full">
       <DataTableToolbar identifier={identifier} table={table} tableLabel={tableLabel} filters={filters} toolBarButtonsProcessed={toolBarButtonsProcessed}/>
-      <div className="rounded-md border h-[90%]">
+      <div ref={tableRef} className="rounded-md border h-[90%]">
         <UITable>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

@@ -58,12 +58,13 @@
     "translated": "Translated",
     "outputLanguage": "Output Language",
     "inProgress": "In Progress",
-    "completed": "Completed",
+    "succeeded": "Succeeded",
     "failed": "Failed",
     "waitingForTranslationToEnd": "Waiting for translation to end...",
     "selectLanguage": "Select your target language",
     "selectItemPlaceholder": "Select item...",
     "noItemsFound": "No items found.",
     "selectLanguagePlaceholder": "Select your target language",
-    "selectItem": "Select item..."
+    "selectItem": "Select item...",
+    "filename": "Filename"
 }
