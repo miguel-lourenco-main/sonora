@@ -57,7 +57,7 @@ export default function FilesGrid({ files, setFiles }: { files: File[], setFiles
                     <div key={index} className="relative overflow-hidden rounded-lg group size-fit m-2 p-2 bg-muted/50">
                         <div className="flex flex-col items-center justify-center size-24 space-y-2 object-cover group-hover:opacity-20 transition-opacity">
                             {icon}
-                            <p className="w-full px-2 text-sm truncate">{file.name}</p>
+                            <p className="w-full px-2 text-sm text-center truncate">{file.name}</p>
                         </div>
                         <div className="absolute inset-0 flex size-full items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                             <Button variant="light_foreground" size="fit" onClick={() => setFiles(prevFiles => prevFiles.filter((_, i) => i !== index))}>

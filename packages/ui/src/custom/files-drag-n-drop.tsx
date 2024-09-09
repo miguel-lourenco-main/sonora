@@ -210,7 +210,7 @@ export const FilesDragNDrop = forwardRef<
           />
         </div>
         { files.length > 0 && (
-          <div className={cn("absolute top-0 left-0 z-20 w-full h-full overflow-hidden", showCover ? "disabled" : "")}>
+          <div className={cn("absolute top-0 left-0 w-full h-full overflow-hidden", showCover ? "disabled" : "")}>
             {children ?? <DefaultFilesListComponent files={files} setFiles={setFiles} />}
           </div>
         )}
@@ -228,13 +228,13 @@ const FileSvgDraw = () => {
   const {t} = useTranslation("ui");
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center text-gray-500 dark:text-gray-400">
       <IconCloudDownload />
-      <p className="p-2 mb-1 text-sm text-center text-gray-500 dark:text-gray-400">
+      <p className="p-2 mb-1 text-sm text-center">
         <span className="font-semibold">{t("clickToAdd")}</span>
         &nbsp; {t("orDragAndDrop")}
       </p>
-      <p className="text-xs text-gray-500 dark:text-gray-400">
+      <p className="text-xs">
         DOC, DOCX or PDF
       </p>
     </div>

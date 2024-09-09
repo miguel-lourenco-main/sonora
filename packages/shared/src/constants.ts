@@ -42,3 +42,16 @@ export const POLYDOC_CUSTOM_PATHS_SCHEMA = {
 
 export const POLYDOC_CUSTOM_PATHS = {
 }
+
+export const LANGUAGES = [
+    { value: "english", label: "🇬🇧 English" },
+    { value: "french", label: "🇫🇷 French" },
+    { value: "spanish", label: "🇪🇸 Spanish" },
+    { value: "german", label: "🇩🇪 German" },
+    { value: "italian", label: "🇮🇹 Italian" },
+    { value: "portuguese", label: "🇵🇹 Portuguese" },
+    { value: "russian", label: "🇷🇺 Russian" },
+    { value: "japanese", label: "🇯🇵 Japanese" },
+    { value: "chinese", label: "🇨🇳 Chinese" },
+    { value: "korean", label: "🇰🇷 Korean" },
+  ]

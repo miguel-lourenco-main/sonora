@@ -38,22 +38,29 @@ export default function DialogLayout({
     tooltip?: string
     contentClassName?: string
 }) {
-  const [internalOpen, internalSetOpen] = React.useState(false);
+  const [internalOpen, setInternalOpen] = React.useState(false);
 
-  const isOpen = externalOpen && externalSetOpen ? externalOpen : internalOpen;
-  const setIsOpen = externalOpen && externalSetOpen ? externalSetOpen : internalSetOpen;
+  const isControlled = externalOpen !== undefined && externalSetOpen !== undefined;
+  const isOpen = isControlled ? externalOpen : internalOpen;
+
+  const handleOpenChange = React.useCallback((open: boolean) => {
+    if (isControlled) {
+      externalSetOpen(open);
+    } else {
+      setInternalOpen(open);
+    }
+    if (open) {
+      onOpen?.();
+    } else {
+      console.log("reset", reset)
+      reset?.();
+    }
+  }, [isControlled, externalSetOpen, onOpen, reset]);
 
   return (
       <Dialog 
         open={isOpen} 
-        onOpenChange={(open) => {
-          setIsOpen(open);
-          if (open) {
-            onOpen?.();
-          } else {
-            reset?.();
-          }
-        }}
+        onOpenChange={handleOpenChange}
       >
           <DialogTrigger asChild>
               <div>
@@ -75,7 +82,7 @@ export default function DialogLayout({
           </DialogTrigger>
           <DialogContent 
             onInteractOutside={(event) => event.preventDefault()}
-            optionalClose={() => setIsOpen(false)}
+            optionalClose={() => handleOpenChange(false)}
             className={cn("max-w-[90vw] max-h-[90vh] size-fit", contentClassName)} 
           >
               <DialogHeader >
