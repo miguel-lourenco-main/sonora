@@ -1,6 +1,5 @@
 "use client"
 
-import * as React from "react"
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -28,6 +27,7 @@ import { DataTablePagination } from "./data-table-components/data-table-paginati
 import { DataTableToolbar } from "./data-table-components/data-table-toolbar"
 import { Filter } from "./_lib/interface"
 import { I18nComponent } from "@kit/i18n"
+import { useCallback, useEffect, useState, useRef } from "react"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -51,13 +51,50 @@ export function CustomDataTable<TData, TValue>({
   identifier = "name",
 }: DataTableProps<TData, TValue>) {
 
-  const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({})
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    useState<VisibilityState>({})
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
     []
   )
-  const [sorting, setSorting] = React.useState<SortingState>([])
+  const [sorting, setSorting] = useState<SortingState>([])
+
+  const [pageIndex, setPageIndex] = useState(0)
+  const [pageSize, setPageSize] = useState(20)
+  const lastValidPageIndexRef = useRef(0)
+  const isDataChangingRef = useRef(false)
+
+  const firstTryRef = useRef(true)
+
+  /**
+   * TODO: current solution to deal with pagination not resetting when data changes is to reset the page index to 0
+   *        can be problematic. If possible come up witha better solution
+   */
+
+  const handlePaginationChange = useCallback((updater: any) => {
+    console.log('Pagination change triggered')
+
+    firstTryRef.current = false
+
+    if (isDataChangingRef.current) {
+      console.log('Ignoring pagination change during data update')
+      isDataChangingRef.current = false
+      return
+    }
+
+    if (typeof updater === 'function') {
+      const newState = updater({ pageIndex, pageSize })
+      console.log('New state:', newState)
+      setPageSize(newState.pageSize)
+      setPageIndex(newState.pageIndex)
+      lastValidPageIndexRef.current = newState.pageIndex
+    } else {
+      console.log('New state:', updater)
+      setPageSize(updater.pageSize)
+      setPageIndex(updater.pageIndex)
+      lastValidPageIndexRef.current = updater.pageIndex
+    }
+  }, [pageIndex, pageSize])
 
   const table = useReactTable({
     data,
@@ -67,7 +104,9 @@ export function CustomDataTable<TData, TValue>({
       columnVisibility,
       rowSelection,
       columnFilters,
+      pagination: { pageIndex, pageSize },
     },
+    onPaginationChange: handlePaginationChange,
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
@@ -81,7 +120,20 @@ export function CustomDataTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   })
 
-  const toolBarButtonsProcessed = React.useCallback(() => {
+  useEffect(() => {
+    console.log('Data changed')
+
+    console.log('firstTryRef', firstTryRef.current)
+
+    if(!firstTryRef.current) {
+      isDataChangingRef.current = true
+    }
+
+    setPageIndex(lastValidPageIndexRef.current)
+
+  }, [data])
+
+  const toolBarButtonsProcessed = useCallback(() => {
 
     return createToolbarButtons(rowSelection, setRowSelection, table.getIsSomeRowsSelected() || table.getIsAllRowsSelected())
 

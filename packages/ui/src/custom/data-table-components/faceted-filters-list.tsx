@@ -1,7 +1,7 @@
 import { Table } from "@tanstack/react-table"
 
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
-import { Filter } from "../../../_lib/interface";
+import { Filter } from "../_lib/interface";
 
 export default function FacetedFilters({
     table,
