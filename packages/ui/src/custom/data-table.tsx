@@ -96,7 +96,7 @@ export function CustomDataTable<TData, TValue>({
         filters={filters} 
         toolBarButtonsProcessed={toolBarButtonsProcessed}
       />
-      <div className="flex-grow overflow-auto border rounded-md">
+      <div className="relative flex-grow overflow-auto border rounded-md">
         <UITable>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
