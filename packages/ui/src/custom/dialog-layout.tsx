@@ -52,7 +52,6 @@ export default function DialogLayout({
     if (open) {
       onOpen?.();
     } else {
-      console.log("reset", reset)
       reset?.();
     }
   }, [isControlled, externalSetOpen, onOpen, reset]);
