@@ -121,7 +121,7 @@ export default function PDFViewer(
                 onLoadSuccess={index === 0 ? updatePageHeight : undefined}
               />
             )}
-            {!hasEnoughCredits && index > 0 && (
+            {!hasEnoughCredits && filter && index > 0 && (
               <>
                 <div className="absolute bottom-0 left-0 z-20 size-full backdrop-blur-sm pointer-events-none"/>
                 <div className="absolute bottom-0 left-0 z-30 size-full flex items-center justify-center">
@@ -129,7 +129,7 @@ export default function PDFViewer(
                 </div>
               </>                
             )}
-            {!hasEnoughCredits && index === 0 && (
+            {!hasEnoughCredits && filter && index === 0 && (
               <>
                 <LinearBlur
                   side="bottom"

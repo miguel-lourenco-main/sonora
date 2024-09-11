@@ -38,20 +38,24 @@ export const EDGEN_CUSTOM_PATHS = {
 
 
 export const POLYDOC_CUSTOM_PATHS_SCHEMA = {
+
 }
 
 export const POLYDOC_CUSTOM_PATHS = {
+    
 }
 
 export const LANGUAGES = [
+    { value: "chinese", label: "🇨🇳 Chinese" },
     { value: "english", label: "🇬🇧 English" },
     { value: "french", label: "🇫🇷 French" },
-    { value: "spanish", label: "🇪🇸 Spanish" },
     { value: "german", label: "🇩🇪 German" },
     { value: "italian", label: "🇮🇹 Italian" },
-    { value: "portuguese", label: "🇵🇹 Portuguese" },
-    { value: "russian", label: "🇷🇺 Russian" },
     { value: "japanese", label: "🇯🇵 Japanese" },
-    { value: "chinese", label: "🇨🇳 Chinese" },
     { value: "korean", label: "🇰🇷 Korean" },
-  ]
+    { value: "polish", label: "🇵🇱 Polish" },
+    { value: "portuguese", label: "🇵🇹 Portuguese" },
+    { value: "romanian", label: "🇷🇴 Romanian" },
+    { value: "russian", label: "🇷🇺 Russian" },
+    { value: "spanish", label: "🇪🇸 Spanish" },
+]
