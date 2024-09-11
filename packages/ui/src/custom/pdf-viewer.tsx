@@ -9,6 +9,8 @@ import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import "react-pdf/dist/esm/Page/TextLayer.css";
 import 'core-js/full/promise/with-resolvers.js';
 
+import { LinearBlur } from "progressive-blur";
+
 // Polyfill for environments where window is not available (e.g., server-side rendering)
 import { withResolvers } from '../utils/resolvers-polyfill'; // Create this file if needed
 
@@ -29,13 +31,13 @@ export default function PDFViewer(
   const [file, setFile] = useState<PDFFile>(pdf);
   const [numPages, setNumPages] = useState<number>(0);
   const [pageWidth, setPageWidth] = useState<number>(maxWidth);
-  const [pageHeight, setPageHeight] = useState<number>(maxWidth * 1.4142);
+  const [pageHeight, setPageHeight] = useState<number>(0);
   const [visiblePages, setVisiblePages] = useState<number[]>([]);
-  //const [hasEnoughCredits, setHasEnoughCredits] = useState<boolean>(true);
-
+  const [hasEnoughCredits, setHasEnoughCredits] = useState<boolean>(false);
 
   const observerRef = useRef<IntersectionObserver | null>(null)
   const genericRef = useRef<HTMLDivElement | null>(null);
+  const firstPageRef = useRef<HTMLCanvasElement | null>(null);
 
   const containerRef = scrollRef || genericRef;
 
@@ -44,11 +46,16 @@ export default function PDFViewer(
     if (entry) {
       const width = Math.min(entry.contentRect.width, maxWidth);
       setPageWidth(width);
-      setPageHeight(width * 1.4142);
     }
   }, []);
 
   useResizeObserver(containerRef.current, resizeObserverOptions, onResize);
+
+  const updatePageHeight = useCallback(() => {
+    if (firstPageRef.current) {
+      setPageHeight(firstPageRef.current.height);
+    }
+  }, []);
 
   function onDocumentLoadSuccess(pdf: pdfjs.PDFDocumentProxy): void {
     setNumPages(pdf.numPages);
@@ -90,12 +97,12 @@ export default function PDFViewer(
         file={file}
         onLoadSuccess={onDocumentLoadSuccess}
         options={options}
-        className="flex flex-col"
+        className="flex flex-col space-y-4"
       >
         {Array.from(new Array(numPages), (el, index) => (
           <div
             key={`page_${index + 1}`}
-            className="relative mb-4"
+            className="relative shadow-lg"
             style={{ height: pageHeight, width: pageWidth }}
             data-page-number={index + 1}
             ref={(el) => {
@@ -106,14 +113,45 @@ export default function PDFViewer(
           >
             {visiblePages.includes(index + 1) && (
               <Page
-                className="shadow-lg"
+                canvasRef={firstPageRef}
                 pageNumber={index + 1}
                 width={pageWidth}
                 renderAnnotationLayer={false}
                 renderTextLayer={false}
+                onLoadSuccess={index === 0 ? updatePageHeight : undefined}
               />
             )}
-            {filter && filter}
+            {!hasEnoughCredits && index > 0 && (
+              <>
+                <div className="absolute bottom-0 left-0 z-20 size-full backdrop-blur-sm pointer-events-none"/>
+                <div className="absolute bottom-0 left-0 z-30 size-full flex items-center justify-center">
+                  {filter}
+                </div>
+              </>                
+            )}
+            {!hasEnoughCredits && index === 0 && (
+              <>
+                <LinearBlur
+                  side="bottom"
+                  steps={10}
+                  strength={20}
+                  falloffPercentage={60}
+                  tint="rgba(0, 0, 0, 0.1)"
+                  style={{
+                    position: "absolute",
+                    right: "0px",
+                    bottom: "0px",
+                    left: "0px",
+                    zIndex: 20,
+                    pointerEvents: "none",
+                    height: "75%"
+                  }}
+                />
+                <div className="absolute bottom-0 left-0 z-30 flex w-full h-[75%] items-center justify-center bg-transparent">
+                  {filter}
+                </div>
+              </>
+            )}
           </div>
         ))}
       </Document>

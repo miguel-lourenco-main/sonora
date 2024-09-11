@@ -177,7 +177,6 @@
     "./icons": "./src/custom/icons.tsx",
     "./loading-pdf": "./src/custom/loading-pdf.tsx",
     "./markdown": "./src/custom/markdown.tsx",
-    "./pdf-viewer-dialog": "./src/custom/pdf-viewer-dialog.tsx",
     "./pdf-viewer-drawer": "./src/custom/pdf-viewer-drawer.tsx",
     "./pdf-viewer": "./src/custom/pdf-viewer.tsx",
     "./serve-file": "./src/custom/serve-file.tsx",
