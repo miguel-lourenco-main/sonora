@@ -1,6 +1,6 @@
 'use server'
 
-import { getSupabaseServerComponentClient } from "../clients/server-component.client";
+import { getSupabaseServerComponentClient } from "../clients/server-component-client";
 
 export async function getAuthToken() {
     const client = getSupabaseServerComponentClient();

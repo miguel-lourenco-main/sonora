@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslation } from "react-i18next";
 import { Badge } from "../shadcn/badge";
 import {
   Command,
@@ -7,6 +8,7 @@ import {
   CommandEmpty,
   CommandList,
 } from "../shadcn/command";
+import { Separator } from "../shadcn/separator";
 import { cn } from "../utils";
 import { Command as CommandPrimitive } from "cmdk";
 import { X as RemoveIcon, Check } from "lucide-react";
@@ -238,29 +240,32 @@ const MultiSelectorTrigger = forwardRef<
       )}
       {...props}
     >
-      {value.map((item, index) => (
-        <Badge
-          key={item}
-          className={cn(
-            "px-1 rounded-xl flex items-center gap-1",
-            activeIndex === index && "ring-2 ring-muted-foreground ",
-          )}
-          variant={"secondary"}
-        >
-          <span className="text-xs">{item}</span>
-          <button
-            aria-label={`Remove ${item} option`}
-            aria-roledescription="button to remove option"
-            type="button"
-            onMouseDown={mousePreventDefault}
-            onClick={() => onValueChange(item)}
-          >
-            <span className="sr-only">Remove {item} option</span>
-            <RemoveIcon className="h-4 w-4 hover:stroke-destructive" />
-          </button>
-        </Badge>
-      ))}
-      {children}
+        <div className={value.length > 0 ? "flex flex-wrap gap-2 max-h-[4.6rem] overflow-y-auto" : "hidden"}>
+            {value.map((item, index) => (
+              <Badge
+                  key={item}
+                  className={cn(
+                      "px-2 rounded-xl flex items-center gap-1",
+                      activeIndex === index && "ring-2 ring-muted-foreground ",
+                  )}
+                  variant={"secondary"}
+              >
+                  <span className="text-xs">{item}</span>
+                  <button
+                      aria-label={`Remove ${item} option`}
+                      aria-roledescription="button to remove option"
+                      type="button"
+                      onMouseDown={mousePreventDefault}
+                      onClick={() => onValueChange(item)}
+                  >
+                    <span className="sr-only">Remove {item} option</span>
+                    <RemoveIcon className="h-4 w-4 hover:stroke-destructive" />
+                  </button>
+              </Badge>
+            ))}
+        </div>
+        {value.length > 0 && <div className="w-full flex justify-center"><Separator className="w-[88%] mt-1 opacity-50"/></div>}
+        {children}
     </div>
   );
 });
@@ -321,6 +326,9 @@ const MultiSelectorList = forwardRef<
   React.ElementRef<typeof CommandPrimitive.List>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.List>
 >(({ className, children }, ref) => {
+
+  const { t } = useTranslation('ui');
+
   return (
     <CommandList
       ref={ref}
@@ -331,7 +339,7 @@ const MultiSelectorList = forwardRef<
     >
       {children}
       <CommandEmpty>
-        <span className="text-muted-foreground">No results found</span>
+        <span className="text-muted-foreground">{t('noResultsFound')}</span>
       </CommandEmpty>
     </CommandList>
   );
