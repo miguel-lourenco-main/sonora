@@ -51,7 +51,14 @@ export const FilesDragNDrop = forwardRef<
     const accept = acceptFiles ?? {
       "application/pdf": [".pdf"],
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"],
-      // Add more specific MIME types as needed
+      "application/msword": [".doc"],
+      "text/plain": [".txt"],
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [".xlsx"],
+      "application/vnd.ms-excel": [".xls"],
+      "application/vnd.openxmlformats-officedocument.presentationml.presentation": [".pptx"],
+      "application/vnd.ms-powerpoint": [".ppt"],
+      "image/jpeg": [".jpg", ".jpeg"],
+      "image/png": [".png"],
     };
 
     const direction: DirectionOptions = "ltr";
@@ -200,7 +207,7 @@ export const FilesDragNDrop = forwardRef<
               }`,
             )}
           >
-            <FileSvgDraw />
+            <FileSvgDraw acceptedFileTypes={accept} />
           </div>
           <Input
             ref={dropzone.inputRef}
@@ -223,9 +230,16 @@ FilesDragNDrop.displayName = "FilesDragNDrop";
 
 export default FilesDragNDrop
 
-const FileSvgDraw = () => {
+const FileSvgDraw = ({ acceptedFileTypes }: { acceptedFileTypes: Record<string, string[]> }) => {
+  const { t } = useTranslation("ui");
 
-  const {t} = useTranslation("ui");
+  const getSupportedFileTypes = () => {
+    const fileTypes = new Set<string>();
+    Object.values(acceptedFileTypes).forEach(extensions => {
+      extensions.forEach(ext => fileTypes.add(ext.toUpperCase()));
+    });
+    return Array.from(fileTypes).join(', ');
+  };
 
   return (
     <div className="flex flex-col items-center text-gray-500 dark:text-gray-400">
@@ -235,7 +249,7 @@ const FileSvgDraw = () => {
         &nbsp; {t("orDragAndDrop")}
       </p>
       <p className="text-xs">
-        DOC, DOCX or PDF
+        {getSupportedFileTypes()}
       </p>
     </div>
   );
