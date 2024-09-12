@@ -1,0 +1,32 @@
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+  GIT_SUBMODULE_FORCE_HTTPS: 'true'
+  SUPABASE_SERVICE_ROLE_KEY: 'test-only-secret'
+  SUPABASE_DB_WEBHOOK_SECRET: 'test-only-secret'
+  STRIPE_SECRET_KEY: 'test-only-secret'
+  STRIPE_WEBHOOK_SECRET: 'test-only-secret'
+
+# This top-level before_script runs before the Git clone process.
+before_script:
+  - npm install -g pnpm
+  - pnpm i --frozen-lockfile
+
+stages:
+  - test
+  - build
+
+test:
+  stage: test
+  tags: # required to run on our own runner
+    - office-linux
+  image: 'node:18'
+  script:
+    - echo "dummy test"
+
+build:
+  stage: build
+  tags: # required to run on our own runner
+    - office-linux
+  image: 'node:18'
+  script:
+    - pnpm build
