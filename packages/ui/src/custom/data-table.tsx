@@ -136,7 +136,7 @@ export function CustomDataTable<TData, TValue>({
 
     return createToolbarButtons(rowSelection, setRowSelection, table.getIsSomeRowsSelected() || table.getIsAllRowsSelected())
 
-  }, [setRowSelection, rowSelection])
+  }, [createToolbarButtons, setRowSelection, rowSelection])
 
   return (
     <div className="flex flex-col h-full space-y-4">

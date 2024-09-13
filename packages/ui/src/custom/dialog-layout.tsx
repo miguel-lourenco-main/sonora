@@ -38,12 +38,14 @@ export default function DialogLayout({
     tooltip?: string
     contentClassName?: string
 }) {
+
   const [internalOpen, setInternalOpen] = React.useState(false);
 
   const isControlled = externalOpen !== undefined && externalSetOpen !== undefined;
   const isOpen = isControlled ? externalOpen : internalOpen;
 
   const handleOpenChange = React.useCallback((open: boolean) => {
+
     if (isControlled) {
       externalSetOpen(open);
     } else {
@@ -54,7 +56,7 @@ export default function DialogLayout({
     } else {
       reset?.();
     }
-  }, [isControlled, externalSetOpen, onOpen, reset]);
+  }, [isControlled, isOpen, externalSetOpen, onOpen, reset]);
 
   return (
       <Dialog 
