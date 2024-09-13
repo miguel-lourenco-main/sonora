@@ -37,6 +37,7 @@ interface DataTableProps<TData, TValue> {
   onRowClick: (id: string) => void
   createToolbarButtons: (rowSelection?: RowSelectionState, setRowSelection?: React.Dispatch<React.SetStateAction<RowSelectionState>>, hasSelected?: boolean) => React.JSX.Element
   identifier?: string
+  initialSorting?: SortingState
 }
 
 // TODO: standardize table column sizes, right now, they vary depending on it's child size
@@ -49,6 +50,7 @@ export function CustomDataTable<TData, TValue>({
   onRowClick,
   createToolbarButtons,
   identifier = "name",
+  initialSorting = []
 }: DataTableProps<TData, TValue>) {
 
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
@@ -57,7 +59,7 @@ export function CustomDataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
     []
   )
-  const [sorting, setSorting] = useState<SortingState>([])
+  const [sorting, setSorting] = useState<SortingState>(initialSorting)
 
   const [pageIndex, setPageIndex] = useState(0)
   const [pageSize, setPageSize] = useState(20)
@@ -72,26 +74,27 @@ export function CustomDataTable<TData, TValue>({
    */
 
   const handlePaginationChange = useCallback((updater: any) => {
-    console.log('Pagination change triggered')
-
     firstTryRef.current = false
 
     if (isDataChangingRef.current) {
-      console.log('Ignoring pagination change during data update')
       isDataChangingRef.current = false
       return
     }
 
     if (typeof updater === 'function') {
+
       const newState = updater({ pageIndex, pageSize })
-      console.log('New state:', newState)
+
       setPageSize(newState.pageSize)
       setPageIndex(newState.pageIndex)
+
       lastValidPageIndexRef.current = newState.pageIndex
+
     } else {
-      console.log('New state:', updater)
+      
       setPageSize(updater.pageSize)
       setPageIndex(updater.pageIndex)
+
       lastValidPageIndexRef.current = updater.pageIndex
     }
   }, [pageIndex, pageSize])
@@ -121,10 +124,6 @@ export function CustomDataTable<TData, TValue>({
   })
 
   useEffect(() => {
-    console.log('Data changed')
-
-    console.log('firstTryRef', firstTryRef.current)
-
     if(!firstTryRef.current) {
       isDataChangingRef.current = true
     }
