@@ -53,11 +53,20 @@ export default function PDFViewer(
 
   const updatePageHeight = useCallback(() => {
     if (firstPageRef.current) {
-      setPageHeight(firstPageRef.current.height);
+
+      const a4Width = 210; // mm
+      const a4Height = 297; // mm
+
+      const scale = a4Height / a4Width;
+
+      const expectedHeight = pageWidth * scale;
+
+      setPageHeight(expectedHeight);
     }
-  }, []);
+  }, [pageWidth]);
 
   function onDocumentLoadSuccess(pdf: pdfjs.PDFDocumentProxy): void {
+    updatePageHeight();
     setNumPages(pdf.numPages);
     if (setLoaded) setLoaded(true);
   }

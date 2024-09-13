@@ -2,6 +2,8 @@ import type { PropsWithChildren } from 'react';
 
 import { cn } from '../utils';
 import { Spinner } from './spinner';
+import { Loader } from 'lucide-react';
+import GeneralLoading from '../custom/general-loading';
 
 export function LoadingOverlay({
   children,
@@ -25,7 +27,7 @@ export function LoadingOverlay({
         },
       )}
     >
-      <Spinner className={spinnerClassName} />
+      <GeneralLoading />
 
       <div className={'text-sm text-muted-foreground'}>{children}</div>
     </div>
