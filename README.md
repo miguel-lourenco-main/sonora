@@ -54,7 +54,7 @@ git branch -D update_makerkit
 git subtree split --prefix=apps/web --branch=subtree/apps-web
 git push origin subtree/apps-web
 
-cd apps/polydoc
+cd apps/<app>
 
 # Fetch and update our mirror branch
 git fetch remote/frontend subtree/apps-web
