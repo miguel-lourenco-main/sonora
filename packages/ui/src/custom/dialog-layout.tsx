@@ -33,7 +33,7 @@ export default function DialogLayout({
     footer?: () => React.ReactNode
     reset?: () => void
     externalOpen?: boolean
-    externalSetOpen?: React.Dispatch<React.SetStateAction<boolean>>
+    externalSetOpen?: (open: boolean) => void
     onOpen?: () => void
     tooltip?: string
     contentClassName?: string
