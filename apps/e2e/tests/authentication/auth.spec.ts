@@ -7,7 +7,7 @@ test.describe('Auth flow', () => {
 
   let email: string;
 
-  test('will sign-up and redirect to the home page', async ({ page }) => {
+  test('will sign-up and redirect to the app page', async ({ page }) => {
     const auth = new AuthPageObject(page);
     await auth.goToSignUp();
 
@@ -29,7 +29,7 @@ test.describe('Auth flow', () => {
 
     await auth.visitConfirmEmailLink(email);
 
-    await page.waitForURL('**/home');
+    await page.waitForURL('**/app');
   });
 
   test('will sign-in with the correct credentials', async ({ page }) => {
@@ -43,9 +43,9 @@ test.describe('Auth flow', () => {
       password: 'password',
     });
 
-    await page.waitForURL('**/home');
+    await page.waitForURL('**/app');
 
-    expect(page.url()).toContain('/home');
+    expect(page.url()).toContain('/app');
 
     await auth.signOut();
 
@@ -57,9 +57,9 @@ test.describe('Protected routes', () => {
   test('will redirect to the sign-in page if not authenticated', async ({
     page,
   }) => {
-    await page.goto('/home/settings');
+    await page.goto('/app/settings');
 
-    expect(page.url()).toContain('/auth/sign-in?next=/home/settings');
+    expect(page.url()).toContain('/auth/sign-in?next=/app/settings');
   });
 
   test('will return a 404 for the admin page', async ({ page }) => {

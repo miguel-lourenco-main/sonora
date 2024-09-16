@@ -26,7 +26,7 @@ export const generateMetadata = async () => {
 
 const paths = {
   callback: pathsConfig.auth.callback,
-  home: pathsConfig.app.home,
+  app: pathsConfig.app.app,
   joinTeam: pathsConfig.app.joinTeam,
 };
 

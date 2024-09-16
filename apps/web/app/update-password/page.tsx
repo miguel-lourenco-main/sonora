@@ -20,7 +20,7 @@ async function UpdatePasswordPage() {
 
   return (
     <AuthLayoutShell Logo={AppLogo}>
-      <UpdatePasswordForm redirectTo={pathsConfig.app.home} />
+      <UpdatePasswordForm redirectTo={pathsConfig.app.app} />
     </AuthLayoutShell>
   );
 }

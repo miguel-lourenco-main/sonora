@@ -39,7 +39,7 @@ async function VerifyPage(props: Props) {
     redirect(pathsConfig.auth.signIn);
   }
 
-  const redirectPath = props.searchParams.next ?? pathsConfig.app.home;
+  const redirectPath = props.searchParams.next ?? pathsConfig.app.app;
 
   return (
     <MultiFactorChallengeContainer

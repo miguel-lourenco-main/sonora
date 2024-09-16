@@ -170,7 +170,7 @@ export function PersonalAccountDropdown({
             <Home className={'h-5'} />
 
             <span>
-              <Trans i18nKey={'common:routes.home'} />
+              <Trans i18nKey={'common:routes.app'} />
             </span>
           </Link>
         </DropdownMenuItem>

@@ -154,13 +154,13 @@ function getPatterns() {
         // redirect to home page.
         if (!isVerifyMfa) {
           return NextResponse.redirect(
-            new URL(pathsConfig.app.home, req.nextUrl.origin).href,
+            new URL(pathsConfig.app.app, req.nextUrl.origin).href,
           );
         }
       },
     },
     {
-      pattern: new URLPattern({ pathname: '/home/*?' }),
+      pattern: new URLPattern({ pathname: '/app/*?' }),
       handler: async (req: NextRequest, res: NextResponse) => {
         const {
           data: { user },

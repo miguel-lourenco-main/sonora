@@ -14,7 +14,7 @@ export function useTeamAccountWorkspace() {
 
   if (!ctx) {
     throw new Error(
-      'useTeamAccountWorkspace must be used within a TeamAccountWorkspaceContext.Provider. This is only provided within the account workspace /home/[account]',
+      'useTeamAccountWorkspace must be used within a TeamAccountWorkspaceContext.Provider. This is only provided within the account workspace /app/[account]',
     );
   }
 

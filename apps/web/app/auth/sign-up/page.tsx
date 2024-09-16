@@ -26,7 +26,7 @@ interface Props {
 
 const paths = {
   callback: pathsConfig.auth.callback,
-  appHome: pathsConfig.app.home,
+  appHome: pathsConfig.app.app,
 };
 
 function SignUpPage({ searchParams }: Props) {
