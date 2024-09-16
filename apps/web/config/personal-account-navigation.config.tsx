@@ -9,8 +9,8 @@ const iconClasses = 'w-4';
 
 const routes = [
   {
-    label: 'common:routes.home',
-    path: pathsConfig.app.home,
+    label: 'common:routes.app',
+    path: pathsConfig.app.app,
     Icon: <Home className={iconClasses} />,
     end: true,
   },

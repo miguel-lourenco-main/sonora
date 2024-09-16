@@ -12,6 +12,6 @@ export class UserBillingPageObject {
   }
 
   async setup() {
-    await this.auth.signUpFlow('/home/billing');
+    await this.auth.signUpFlow('/app/billing');
   }
 }

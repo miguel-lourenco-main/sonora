@@ -97,7 +97,7 @@ async function JoinTeamAccountPage({ searchParams }: Context) {
     );
 
     // if the user is already in the account redirect to the home page
-    redirect(pathsConfig.app.home);
+    redirect(pathsConfig.app.app);
   }
 
   // if the user decides to sign in with a different account
@@ -141,7 +141,7 @@ function InviteNotFoundOrExpired() {
       </p>
 
       <Button asChild className={'w-full'} variant={'outline'}>
-        <Link href={pathsConfig.app.home}>
+        <Link href={pathsConfig.app.app}>
           <ArrowLeft className={'mr-2 w-4'} />
           <Trans i18nKey={'teams:backToHome'} />
         </Link>

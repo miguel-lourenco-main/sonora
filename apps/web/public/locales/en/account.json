@@ -1,7 +1,7 @@
 {
   "accountTabLabel": "Account Settings",
   "accountTabDescription": "Manage your account settings",
-  "homePage": "Home",
+  "homePage": "App",
   "billingTab": "Billing",
   "settingsTab": "Settings",
   "multiFactorAuth": "Multi-Factor Authentication",

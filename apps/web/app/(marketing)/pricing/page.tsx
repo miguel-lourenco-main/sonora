@@ -16,7 +16,7 @@ export const generateMetadata = async () => {
 
 const paths = {
   signUp: pathsConfig.auth.signUp,
-  return: pathsConfig.app.home,
+  return: pathsConfig.app.app,
 };
 
 async function PricingPage() {

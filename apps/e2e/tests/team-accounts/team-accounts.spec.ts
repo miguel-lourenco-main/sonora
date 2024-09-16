@@ -21,7 +21,7 @@ test.describe('Team Accounts', () => {
     const request = teamAccounts.updateName(teamName, slug);
 
     // the slug should be updated to match the new team name
-    const newUrl = page.waitForURL(`**/home/${slug}/settings`);
+    const newUrl = page.waitForURL(`**/app/${slug}/settings`);
 
     await Promise.all([request, newUrl]);
 

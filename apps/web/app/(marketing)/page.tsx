@@ -165,7 +165,7 @@ function Home() {
               config={billingConfig}
               paths={{
                 signUp: pathsConfig.auth.signUp,
-                return: pathsConfig.app.home,
+                return: pathsConfig.app.app,
               }}
             />
           </div>

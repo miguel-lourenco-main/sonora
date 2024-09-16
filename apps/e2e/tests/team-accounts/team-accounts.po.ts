@@ -12,7 +12,7 @@ export class TeamAccountsPageObject {
   }
 
   async setup(params = this.createTeamName()) {
-    await this.auth.signUpFlow('/home');
+    await this.auth.signUpFlow('/app');
 
     await this.createTeam(params);
   }
@@ -35,7 +35,7 @@ export class TeamAccountsPageObject {
         })
         .click();
 
-      await this.page.waitForURL('**/home/*/settings');
+      await this.page.waitForURL('**/app/*/settings');
     }).toPass();
   }
 
@@ -47,7 +47,7 @@ export class TeamAccountsPageObject {
         })
         .click();
 
-      return await this.page.waitForURL('**/home/*/billing');
+      return await this.page.waitForURL('**/app/*/billing');
     }).toPass();
   }
 
@@ -71,7 +71,7 @@ export class TeamAccountsPageObject {
       '[data-test="create-team-form"] button:last-child',
     );
 
-    const response = this.page.waitForURL(`/home/${slug}`);
+    const response = this.page.waitForURL(`/app/${slug}`);
 
     await Promise.all([click, response]);
   }
@@ -88,7 +88,7 @@ export class TeamAccountsPageObject {
       );
 
       // the slug should be updated to match the new team name
-      const response = this.page.waitForURL(`**/home/${slug}/settings`);
+      const response = this.page.waitForURL(`**/app/${slug}/settings`);
 
       return Promise.all([click, response]);
     }).toPass();
@@ -111,7 +111,7 @@ export class TeamAccountsPageObject {
         '[data-test="delete-team-form-confirm-button"]',
       );
 
-      const response = this.page.waitForURL('**/home');
+      const response = this.page.waitForURL('**/app');
 
       return Promise.all([click, response]);
     }).toPass();
