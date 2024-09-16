@@ -64,6 +64,6 @@ git push origin mirror/apps-web
 
 # Merge mirror into main
 git checkout main
-git merge mirror/apps-web
+git merge mirror/apps-web -m "Merge updates from mirror/apps-web"
 git push origin
 ```
