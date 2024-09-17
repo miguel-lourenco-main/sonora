@@ -1,0 +1,14 @@
+{
+  "name": "@kit/vercel-sdk-core-react",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": "./dist/index.mjs",
+  "private": true,
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "devDependencies": {
+    "react": "18.3.1"
+  }
+}

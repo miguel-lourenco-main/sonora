@@ -1,0 +1,18 @@
+{
+  "name": "@kit/vercel-sdk-core-rsc",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "types": "./dist/index.d.ts",
+    "react-server": "./dist/rsc-server.mjs",
+    "import": "./dist/rsc-client.mjs"
+  },
+  "private": true,
+  "peerDependencies": {
+    "react": ">=18",
+    "zod": ">=3"
+  },
+  "devDependencies": {
+    "react": "18.3.1",
+    "zod": "^3.23.8"
+  }
+}
