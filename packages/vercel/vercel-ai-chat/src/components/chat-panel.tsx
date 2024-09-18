@@ -7,6 +7,7 @@ import { IconShare } from '@kit/ui/icons'
 import { useUIState } from 'vercel-sdk-core/rsc'
 import type { AI } from '../lib/chat/actions'
 import { I18nComponent } from '@kit/i18n';
+import { useTranslation } from 'react-i18next'
 
 export interface ChatPanelProps {
   id?: string
@@ -15,8 +16,6 @@ export interface ChatPanelProps {
   setInput: (value: string) => void
   isAtBottom: boolean
   scrollToBottom: () => void
-  onHoldFiles: File[],
-  setOnHoldFiles: (files: File[]) => void
 }
 
 export function ChatPanel({
@@ -26,22 +25,12 @@ export function ChatPanel({
   setInput,
   isAtBottom,
   scrollToBottom,
-  onHoldFiles,
-  setOnHoldFiles
 }: ChatPanelProps) {
   
   const [messages, setMessages] = useUIState<typeof AI>()
   const [shareDialogOpen, setShareDialogOpen] = React.useState(false)
 
-  /**
-  const { submitUserMessage } = useActions()
-
-  const { selectedWorkflowId } = useWorkflow()
-
   const { t } = useTranslation()
-
-  const router = useRouter()
-  const pathname = usePathname()
 
   const exampleMessages = [
     {
@@ -65,8 +54,8 @@ export function ChatPanel({
       message: `What are some recent events about $DOGE?`
     }
   ]
-   */
 
+  //   TODO: FIX example onClick
   return (
     <div className="relative flex flex-1">
       {/**peer-[[data-state=open]]:group-[]:lg:pl-[250px] peer-[[data-state=open]]:group-[]:xl:pl-[300px] */}
@@ -77,7 +66,6 @@ export function ChatPanel({
       
 
       <div className="mx-auto sm:max-w-3xl w-full sm:px-4">
-        {/**
         <div className="mb-4 grid grid-cols-2 gap-2 px-4 sm:px-0">
           {messages.length === 0 &&
             exampleMessages.map((example, index) => (
@@ -86,8 +74,8 @@ export function ChatPanel({
                 className={`cursor-pointer rounded-lg border bg-white p-4 hover:bg-zinc-50 dark:bg-zinc-950 dark:hover:bg-zinc-900 ${
                   index > 1 && 'hidden md:block'
                 }`}
-                onClick={async () => {
-                  processSubmitMessage(setMessages, example.message, submitUserMessage, selectedWorkflowId, router, pathname, t, scrollToBottom)
+                onClick={ () => {
+                  setInput(example.message)
                 }}
               >
                 <div className="text-sm font-semibold">{example.heading}</div>
@@ -97,7 +85,6 @@ export function ChatPanel({
               </div>
             ))}
         </div>
-         */}
 
         {messages?.length >= 2 ? (
           <div className="flex h-12 items-center justify-center">
@@ -122,8 +109,6 @@ export function ChatPanel({
             input={input}
             setInput={setInput}
             scrollToBottom={scrollToBottom}
-            onHoldFiles={onHoldFiles}
-            setOnHoldFiles={setOnHoldFiles}
           />
         </div>
       </div>

@@ -14,6 +14,7 @@ export const DEFAULT_FILE_TREE = {name: "root_generated", children: [], id: "roo
 
 /////////// PATHS ///////////////
 export const CHAT_PAGE_PATH = "/app/chat"
+export const CHAT_PAGE_WITH_ID_PATH = "/app/chat/[chatId]"
 
 export const FILE_TRANSLATIONS_PAGE_PATH = "/app/file-translations"
 
@@ -25,10 +26,12 @@ export const COLLAPSE_PATHS = [CHAT_PAGE_PATH]
 
 export const EDGEN_CUSTOM_PATHS_SCHEMA = {
     chat: z.string().min(1),
+    chatWithID: z.string().min(1),
 }
 
 export const EDGEN_CUSTOM_PATHS = {
     chat: CHAT_PAGE_PATH,
+    chatWithID: CHAT_PAGE_WITH_ID_PATH,
 }
 
 //TODO: fill paths

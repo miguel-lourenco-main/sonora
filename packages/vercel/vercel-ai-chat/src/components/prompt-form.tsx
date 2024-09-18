@@ -11,35 +11,27 @@ import { IconArrowElbow, IconPlus } from '@kit/ui/icons'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@kit/ui/tooltip'
 import { useEnterSubmit } from '../lib/hooks/use-enter-submit'
 import { usePathname, useRouter } from 'next/navigation'
-import { useWorkflow } from '../lib/hooks/use-workflow'
 import { useTranslation } from 'react-i18next'
 import { processSubmitMessage } from '../lib/client-utils'
 
 import { I18nComponent } from '@kit/i18n'
-import { useCheckNewFiles } from '../lib/hooks/use-check-new-files'
 import { CHAT_PAGE_PATH } from '@kit/shared/constants'
 
 export function PromptForm({
   input,
   setInput,
   scrollToBottom,
-  onHoldFiles,
-  setOnHoldFiles
 }: {
   input: string
   setInput: (value: string) => void
   scrollToBottom: () => void
-  onHoldFiles: File[]
-  setOnHoldFiles: (files: File[]) => void
 }) {
+
   const router = useRouter()
   const { formRef, onKeyDown } = useEnterSubmit()
   const inputRef = React.useRef<HTMLTextAreaElement>(null)
   const { submitUserMessage } = useActions()
   const [_, setMessages] = useUIState<typeof AI>()
-
-  const { selectedWorkflowId } = useWorkflow()
-  const { setCheckNewFiles } = useCheckNewFiles()
 
   const { t } = useTranslation()
   
@@ -53,8 +45,8 @@ export function PromptForm({
 
   // TODO: check if having this many dependencies affects performance
   const submitMessage = React.useCallback((value: string) => {
-    processSubmitMessage(setMessages, value, submitUserMessage, selectedWorkflowId, router, pathname, t, scrollToBottom, onHoldFiles, setOnHoldFiles, setCheckNewFiles)
-  }, [setMessages, submitUserMessage, selectedWorkflowId, router, pathname, t, scrollToBottom, onHoldFiles, setOnHoldFiles, setCheckNewFiles])
+    processSubmitMessage(setMessages, value, submitUserMessage, router, pathname, t, scrollToBottom)
+  }, [setMessages, submitUserMessage, router, pathname, t, scrollToBottom])
 
   return (
     <form
