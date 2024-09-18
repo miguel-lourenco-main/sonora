@@ -1,17 +1,15 @@
-import 'server-only'
+'use server'
 
 import {
   createAI,
   getMutableAIState,
   getAIState,
-} from '@kit/vercel-sdk-core/rsc'
+} from 'vercel-sdk-core/rsc'
 
 import { BotMessage } from '../../components/stocks'
 import {
   nanoid,
 } from '../utils'
-
-import { getEdgenSDKClient } from '@kit/shared/utils'
 import { getChat, saveChat, uploadFiles } from '../actions'
 import {
   SkeletonMessage,
@@ -20,15 +18,14 @@ import {
 import { Chat, Message, PlainFileObject } from '../types'
 import { getAuthToken } from '@kit/supabase/get-auth-token'
 import { Session } from 'edgen/models/components'
-import { generateTextWorkflow } from '@kit/vercel-sdk-core'
-import { createEdgen } from '@kit/vercel-sdk-edgen'
+import { generateTextWorkflow } from 'vercel-sdk-core'
+import { createEdgen } from 'vercel-sdk-edgen'
 
 import { revalidatePath } from 'next/cache'
 
 import { CHAT_PAGE_PATH } from '@kit/shared/constants'
 
 import { processChatMessages } from '@kit/shared/utils'
-import { toast } from 'sonner'
 
 /**
 async function submitUserMessage(content: string) {
@@ -141,7 +138,9 @@ async function submitUserMessage(content: string, workflowId?: number, converted
       throw new Error('No auth token')
     }
 
-    const client = getEdgenSDKClient({ oAuth2PasswordBearer: auth_token })
+    //TODO: FIX
+    /**
+     * const client = undefined as any//getEdgenSDKClient({ oAuth2PasswordBearer: auth_token })
 
     const sessions = await client.listSessionsSessionsGet()
 
@@ -150,10 +149,14 @@ async function submitUserMessage(content: string, workflowId?: number, converted
       session.id ? session.id.toString() === aiState.get().chatId : false
     )
 
+     */
+
     let sessionWorkflowId = -1
 
+    let currentSession = false
+
     // FOR NOW, IF THERE IS NO SESSION, CREATE A NEW ONE
-    if (!currentSession || !currentSession.workflowId) {
+    if (!currentSession) { //|| !currentSession.workflowId
       const name = content.substring(0, 100)
 
       // TODO: In case there is a need to translate this default session, then the string value
@@ -182,7 +185,7 @@ async function submitUserMessage(content: string, workflowId?: number, converted
         fileSubmissions = res
       }
     } else {
-      sessionWorkflowId = currentSession.workflowId
+      sessionWorkflowId = 1//currentSession.workflowId
     }
 
     const provider = createEdgen({

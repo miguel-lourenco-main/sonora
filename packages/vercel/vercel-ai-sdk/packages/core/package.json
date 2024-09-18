@@ -2,7 +2,7 @@
   "name": "vercel-sdk-core",
   "version": "3.2.6",
   "license": "Apache-2.0",
-  "main": "./dist/index.ts",
+  "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "files": [
@@ -20,9 +20,27 @@
     "prettier-check": "prettier --check \"./**/*.ts*\""
   },
   "exports": {
-    "./rsc": "./rsc/index.ts",
-    "./prompts": "./prompts/index.ts",
-    "./react": "./react/index.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./rsc": {
+      "types": "./rsc/dist/index.d.ts",
+      "react-server": "./rsc/dist/rsc-server.mjs",
+      "import": "./rsc/dist/rsc-client.mjs"
+    },
+    "./prompts": {
+      "types": "./prompts/dist/index.d.ts",
+      "import": "./prompts/dist/index.mjs",
+      "require": "./prompts/dist/index.js"
+    },
+    "./react": {
+      "types": "./react/dist/index.d.ts",
+      "react-server": "./react/dist/index.server.mjs",
+      "import": "./react/dist/index.mjs",
+      "require": "./react/dist/index.js"
+    }
   },
   "dependencies": {
     "eventsource-parser": "1.1.2",

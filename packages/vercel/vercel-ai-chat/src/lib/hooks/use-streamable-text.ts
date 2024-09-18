@@ -1,4 +1,4 @@
-import { StreamableValue, readStreamableValue } from '@kit/vercel-sdk-core/rsc'
+import { StreamableValue, readStreamableValue } from 'vercel-sdk-core/rsc'
 import { useEffect, useState } from 'react'
 
 export const useStreamableText = (

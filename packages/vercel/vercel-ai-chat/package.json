@@ -2,6 +2,7 @@
   "name": "@kit/vercel-ai-chat",
   "private": true,
   "scripts": {
+    "clean": "rm -rf node_modules",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "preview": "next build && next start",

@@ -3,7 +3,7 @@
 import * as React from 'react'
 import Textarea from 'react-textarea-autosize'
 
-import { useActions, useUIState } from '@kit/vercel-sdk-core/rsc'
+import { useActions, useUIState } from 'vercel-sdk-core/rsc'
 
 import { type AI } from '../lib/chat/actions'
 import { Button } from '@kit/ui/button'

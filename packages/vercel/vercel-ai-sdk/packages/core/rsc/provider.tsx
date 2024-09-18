@@ -2,11 +2,6 @@
 
 import * as React from 'react';
 import { InternalAIProvider } from './rsc-shared.mjs';
-import {
-  withAIState,
-  getAIStateDeltaPromise,
-  sealMutableAIState,
-} from './ai-state';
 import type {
   ServerWrappedActions,
   AIAction,
@@ -17,27 +12,7 @@ import type {
   OnGetUIState,
 } from './types';
 
-async function innerAction<T>(
-  {
-    action,
-    options,
-  }: { action: AIAction; options: InternalAIStateStorageOptions },
-  state: T,
-  ...args: unknown[]
-) {
-  'use server';
-  return await withAIState(
-    {
-      state,
-      options,
-    },
-    async () => {
-      const result = await action(...args);
-      sealMutableAIState();
-      return [getAIStateDeltaPromise() as Promise<T>, result];
-    },
-  );
-}
+import { innerAction } from './server-provider';
 
 function wrapAction<T = unknown>(
   action: AIAction,

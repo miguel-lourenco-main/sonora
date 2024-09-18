@@ -14,8 +14,6 @@ export const DEFAULT_FILE_TREE = {name: "root_generated", children: [], id: "roo
 
 /////////// PATHS ///////////////
 export const CHAT_PAGE_PATH = "/app/chat"
-export const WORKFLOWS_PAGE_PATH = "/workflows"
-export const WORKFLOW_INFO_PAGE_PATH = "/workflows/[workflowId]"
 
 export const FILE_TRANSLATIONS_PAGE_PATH = "/app/file-translations"
 
@@ -27,19 +25,13 @@ export const COLLAPSE_PATHS = [CHAT_PAGE_PATH]
 
 export const EDGEN_CUSTOM_PATHS_SCHEMA = {
     chat: z.string().min(1),
-    workflows: z.string().min(1),
-    workflowInfo: z.string().min(1),
-    fileTranslations: z.string().min(1)
 }
 
 export const EDGEN_CUSTOM_PATHS = {
     chat: CHAT_PAGE_PATH,
-    workflows: WORKFLOWS_PAGE_PATH,
-    workflowInfo: WORKFLOW_INFO_PAGE_PATH,
-    fileTranslations: FILE_TRANSLATIONS_PAGE_PATH
 }
 
-
+//TODO: fill paths
 export const POLYDOC_CUSTOM_PATHS_SCHEMA = {
 
 }

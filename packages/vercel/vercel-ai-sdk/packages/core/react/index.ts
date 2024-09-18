@@ -11,7 +11,7 @@ export const useAssistant = useAssistantReact;
 export const experimental_useObject = experimental_useObjectReact;
 export type {
   CreateMessage,
-  Messages,
+  Message,
   UseChatOptions,
   UseChatHelpers,
 } from 'vercel-sdk-react';
