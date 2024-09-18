@@ -6,7 +6,7 @@ import { InputFile } from "../lib/types"
 import { TreeView } from "@kit/ui/tree-view"
 import { TreeViewElement } from "@kit/ui/tree-view-api"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@kit/ui/tooltip";
-import { FileBrowserInput } from "@kit/ui/file-browser-input"
+import { FileInputButton } from "@kit/ui/files-input-button"
 import { getAuthToken } from "@kit/supabase/get-auth-token";
 import { cn } from "@kit/ui/utils";
 import { toast } from "sonner";
@@ -20,12 +20,12 @@ import { useUserAwareFiles } from '../lib/hooks/use-current-session-files'
 
 
 export function ChatRightSidebar({
-    sessionFiles,
+    threadsFiles,
     onHoldFiles,
     setOnHoldFiles,
     id
 }: {
-    sessionFiles: [InputFile[], TreeViewElement]
+    threadsFiles: [InputFile[], TreeViewElement]
     onHoldFiles: File[]
     setOnHoldFiles: Dispatch<SetStateAction<File[]>>
     id: string
@@ -53,7 +53,7 @@ export function ChatRightSidebar({
                 if(hasNewFiles && value.includes('input_files')){
                     setHasNewFiles(false)
                     setValue(prev => prev.filter(tab => tab !== 'input_files'))
-                    setUserAwareFiles(sessionFiles)
+                    setUserAwareFiles(threadsFiles)
                     }
                 }}
             >
@@ -69,7 +69,7 @@ export function ChatRightSidebar({
                     if(hasNewFiles && value.includes('generated_files')){
                         setHasNewFiles(false)
                         setValue(prev => prev.filter(tab => tab !== 'generated_files'))
-                        setUserAwareFiles(sessionFiles)
+                        setUserAwareFiles(threadsFiles)
                     }
                 }}
             >
@@ -80,10 +80,10 @@ export function ChatRightSidebar({
             </TabsTrigger>
           </TabsList>
           <TabsContent value="input_files" className="size-full">
-            <InputFileTab inputFiles={[...sessionFiles[0], ...onHoldFiles.map((file) => ({...file, name: `(On Hold) ${file.name}`}))]} sessionId={sessionId} setOnHoldFiles={setOnHoldFiles} />
+            <InputFileTab inputFiles={[...threadsFiles[0], ...onHoldFiles.map((file) => ({...file, name: `(On Hold) ${file.name}`}))]} sessionId={sessionId} setOnHoldFiles={setOnHoldFiles} />
           </TabsContent>
           <TabsContent value="generated_files" className="size-full">
-             <OutputFileTab generatedFiles={sessionFiles[1]} sessionId={sessionId}/>
+             <OutputFileTab generatedFiles={threadsFiles[1]} sessionId={sessionId}/>
           </TabsContent>
         </Tabs>
       </div>
@@ -218,7 +218,7 @@ export function InputFileTab({inputFiles, sessionId, setOnHoldFiles}: {inputFile
                 <TooltipProvider>
                     <Tooltip>
                         <TooltipTrigger>
-                            <FileBrowserInput
+                            <FileInputButton
                                 content={(handleFileUpload: () => void) => (
                                     <Button
                                         onClick={() => handleFileUpload()}

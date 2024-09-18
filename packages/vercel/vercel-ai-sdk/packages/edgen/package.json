@@ -1,11 +1,8 @@
 {
-  "name": "@kit/vercel-sdk-edgen",
+  "name": "vercel-sdk-edgen",
   "version": "0.0.19",
   "license": "Apache-2.0",
   "sideEffects": false,
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
   "files": [
     "dist/**/*"
   ],
@@ -18,18 +15,15 @@
   },
   "exports": {
     "./package.json": "./package.json",
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
-    }
+    ".": "./src/index.ts"
   },
   "dependencies": {
     "@kit/shared": "workspace:*",
     "@kit/supabase": "workspace:*",
-    "@kit/vercel-sdk-provider": "workspace:*",
-    "@kit/vercel-sdk-provider-utils": "workspace:*",
-    "uuid": "^9.0.1"
+    "edgen": "workspace:*",
+    "uuid": "^9.0.1",
+    "vercel-sdk-provider": "workspace:*",
+    "vercel-sdk-provider-utils": "workspace:*"
   },
   "devDependencies": {
     "@kit/prettier-config": "workspace:*",

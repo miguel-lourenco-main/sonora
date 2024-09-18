@@ -1,4 +1,4 @@
-import { EmbeddingModelV1, EmbeddingModelV1Embedding } from '@kit/vercel-sdk-provider';
+import { EmbeddingModelV1, EmbeddingModelV1Embedding } from 'vercel-sdk-provider';
 
 /**
 Embedding model that is used by the AI SDK Core functions.

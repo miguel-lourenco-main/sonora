@@ -1,4 +1,4 @@
-import { EmbeddingModelV1 } from '@kit/vercel-sdk-provider';
+import { EmbeddingModelV1 } from 'vercel-sdk-provider';
 import { Embedding } from '../types';
 
 export class MockEmbeddingModelV1<VALUE> implements EmbeddingModelV1<VALUE> {

@@ -3,7 +3,7 @@ import {
   RequestOptions,
   UseCompletionOptions,
   callCompletionApi,
-} from '@kit/vercel-sdk-ui-utils';
+} from 'vercel-sdk-ui-utils';
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import useSWR from 'swr';
 

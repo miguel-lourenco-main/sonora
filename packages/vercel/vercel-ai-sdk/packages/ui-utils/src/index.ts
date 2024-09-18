@@ -1,6 +1,6 @@
 export * from './types';
 
-export { generateId } from '@kit/vercel-sdk-provider-utils';
+export { generateId } from 'vercel-sdk-provider-utils';
 
 // Export stream data utilities for custom stream implementations,
 // both on the client and server side.

@@ -5,7 +5,7 @@ import {
   ToolCall,
   createChunkDecoder,
   formatStreamPart,
-} from '@kit/vercel-sdk-ui-utils';
+} from 'vercel-sdk-ui-utils';
 import {
   AIStream,
   FunctionCallPayload,

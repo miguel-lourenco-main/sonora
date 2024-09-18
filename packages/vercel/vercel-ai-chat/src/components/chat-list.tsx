@@ -2,9 +2,6 @@
 
 import { Separator } from '@kit/ui/separator'
 import { UIState } from '../lib/chat/actions'
-import { cn } from '@kit/ui/utils'
-import { useIsRightSidebarOpen } from '../lib/hooks/use-open-files'
-import { useCallback, useEffect, useState } from 'react'
 import { FillerComponent } from './filler-component'
 
 export interface ChatList {

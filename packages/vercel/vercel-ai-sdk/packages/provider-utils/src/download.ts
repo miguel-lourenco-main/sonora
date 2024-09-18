@@ -1,4 +1,4 @@
-import { DownloadError } from '@kit/vercel-sdk-provider';
+import { DownloadError } from 'vercel-sdk-provider';
 
 export async function download({
   url,

@@ -1,4 +1,4 @@
-import { InvalidArgumentError } from '@kit/vercel-sdk-provider';
+import { InvalidArgumentError } from 'vercel-sdk-provider';
 import { CallSettings } from './call-settings';
 
 /**

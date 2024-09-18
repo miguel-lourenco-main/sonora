@@ -2,8 +2,8 @@ import {
   InvalidToolArgumentsError,
   LanguageModelV1FunctionToolCall,
   NoSuchToolError,
-} from '@kit/vercel-sdk-provider';
-import { safeParseJSON } from '@kit/vercel-sdk-provider-utils';
+} from 'vercel-sdk-provider';
+import { safeParseJSON } from 'vercel-sdk-provider-utils';
 import { z } from 'zod';
 import { CoreTool } from '../tool';
 import { ValueOf } from '../util/value-of';

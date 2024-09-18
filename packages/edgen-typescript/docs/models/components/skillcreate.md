@@ -1,0 +1,13 @@
+# SkillCreate
+
+
+## Fields
+
+| Field                                                                              | Type                                                                               | Required                                                                           | Description                                                                        |
+| ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `id`                                                                               | *number*                                                                           | :heavy_minus_sign:                                                                 | N/A                                                                                |
+| `name`                                                                             | *string*                                                                           | :heavy_check_mark:                                                                 | N/A                                                                                |
+| `content`                                                                          | *string*                                                                           | :heavy_check_mark:                                                                 | N/A                                                                                |
+| `description`                                                                      | *string*                                                                           | :heavy_minus_sign:                                                                 | N/A                                                                                |
+| `secrets`                                                                          | [components.SkillCreateSecrets](../../models/components/skillcreatesecrets.md)     | :heavy_minus_sign:                                                                 | N/A                                                                                |
+| `libraries`                                                                        | [components.SkillCreateLibraries](../../models/components/skillcreatelibraries.md) | :heavy_minus_sign:                                                                 | N/A                                                                                |

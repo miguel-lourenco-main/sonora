@@ -1,4 +1,4 @@
-import { createJsonErrorResponseHandler } from '@kit/vercel-sdk-provider-utils';
+import { createJsonErrorResponseHandler } from 'vercel-sdk-provider-utils';
 import { z } from 'zod';
 
 const edgenErrorDataSchema = z.object({

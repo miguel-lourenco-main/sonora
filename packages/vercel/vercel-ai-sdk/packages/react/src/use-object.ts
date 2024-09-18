@@ -2,7 +2,7 @@ import {
   DeepPartial,
   isDeepEqualData,
   parsePartialJson,
-} from '@kit/vercel-sdk-ui-utils';
+} from 'vercel-sdk-ui-utils';
 import { useId, useState } from 'react';
 import useSWR from 'swr';
 import z from 'zod';

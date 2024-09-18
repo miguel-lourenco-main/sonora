@@ -1,0 +1,12 @@
+workflowVersion: 1.0.0
+speakeasyVersion: latest
+sources:
+    openapi_spec:
+        inputs:
+            - location: ../../docs/openapi.yaml
+        registry:
+            location: registry.speakeasyapi.dev/edgenai/edgenai/openapi-spec
+targets:
+    my-first-target:
+        target: typescript
+        source: openapi_spec

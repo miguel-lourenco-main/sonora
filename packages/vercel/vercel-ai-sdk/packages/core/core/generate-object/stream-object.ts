@@ -1,13 +1,13 @@
 import {
   LanguageModelV1CallOptions,
   LanguageModelV1StreamPart,
-} from '@kit/vercel-sdk-provider';
-import { safeValidateTypes } from '@kit/vercel-sdk-provider-utils';
+} from 'vercel-sdk-provider';
+import { safeValidateTypes } from 'vercel-sdk-provider-utils';
 import {
   DeepPartial,
   isDeepEqualData,
   parsePartialJson,
-} from '@kit/vercel-sdk-ui-utils';
+} from 'vercel-sdk-ui-utils';
 import { z } from 'zod';
 import { TokenUsage, calculateTokenUsage } from '../generate-text/token-usage';
 import { CallSettings } from '../prompt/call-settings';

@@ -1,4 +1,4 @@
-import { APICallError } from '@kit/vercel-sdk-provider';
+import { APICallError } from 'vercel-sdk-provider';
 import { extractResponseHeaders } from './extract-response-headers';
 import { isAbortError } from './is-abort-error';
 import { ResponseHandler } from './response-handler';

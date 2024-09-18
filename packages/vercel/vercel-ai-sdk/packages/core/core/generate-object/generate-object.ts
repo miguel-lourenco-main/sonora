@@ -1,5 +1,5 @@
-import { NoObjectGeneratedError } from '@kit/vercel-sdk-provider';
-import { safeParseJSON } from '@kit/vercel-sdk-provider-utils';
+import { NoObjectGeneratedError } from 'vercel-sdk-provider';
+import { safeParseJSON } from 'vercel-sdk-provider-utils';
 import { z } from 'zod';
 import { TokenUsage, calculateTokenUsage } from '../generate-text/token-usage';
 import { CallSettings } from '../prompt/call-settings';

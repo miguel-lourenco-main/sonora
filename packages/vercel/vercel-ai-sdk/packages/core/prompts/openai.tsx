@@ -1,4 +1,4 @@
-import { Message } from '@kit/vercel-sdk-ui-utils';
+import { Message } from 'vercel-sdk-ui-utils';
 
 export function experimental_buildOpenAIMessages(
   messages: Message[],

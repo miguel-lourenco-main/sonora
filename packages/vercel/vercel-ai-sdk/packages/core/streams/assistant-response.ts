@@ -2,7 +2,7 @@ import {
   AssistantMessage,
   DataMessage,
   formatStreamPart,
-} from '@kit/vercel-sdk-ui-utils';
+} from 'vercel-sdk-ui-utils';
 import { type AssistantStream } from 'openai/lib/AssistantStream';
 import { Run } from 'openai/resources/beta/threads/runs/runs';
 

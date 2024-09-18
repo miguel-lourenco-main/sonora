@@ -1,4 +1,4 @@
-import { JSONParseError, TypeValidationError } from '@kit/vercel-sdk-provider';
+import { JSONParseError, TypeValidationError } from 'vercel-sdk-provider';
 import SecureJSON from 'secure-json-parse';
 import { ZodSchema } from 'zod';
 import { safeValidateTypes, validateTypes } from './validate-types';

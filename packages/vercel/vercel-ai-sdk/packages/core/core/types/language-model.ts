@@ -4,7 +4,7 @@ import {
   LanguageModelV1FinishReason,
   LanguageModelV1LogProbs,
   WorkflowModelV1
-} from '@kit/vercel-sdk-provider';
+} from 'vercel-sdk-provider';
 
 /**
 Language model that is used by the AI SDK Core functions.

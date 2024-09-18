@@ -4,7 +4,7 @@ import { Button } from '@kit/ui/button'
 import { PromptForm } from './prompt-form'
 import { ButtonScrollToBottom } from './button-scroll-to-bottom'
 import { IconShare } from '@kit/ui/icons'
-import { useUIState } from '@kit/vercel-sdk-core/rsc'
+import { useUIState } from 'vercel-sdk-core/rsc'
 import type { AI } from '../lib/chat/actions'
 import { I18nComponent } from '@kit/i18n';
 

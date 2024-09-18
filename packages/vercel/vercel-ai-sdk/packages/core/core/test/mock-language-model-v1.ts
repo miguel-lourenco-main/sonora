@@ -1,4 +1,4 @@
-import { LanguageModelV1 } from '@kit/vercel-sdk-provider';
+import { LanguageModelV1 } from 'vercel-sdk-provider';
 
 export class MockLanguageModelV1 implements LanguageModelV1 {
   readonly specificationVersion = 'v1';

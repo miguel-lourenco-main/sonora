@@ -1,6 +1,6 @@
 'use client'
 
-import { type Message } from '@kit/vercel-sdk-core'
+import { type Message } from 'vercel-sdk-core/react'
 
 import { Button } from '@kit/ui/button'
 import { IconCheck, IconCopy } from '@kit/ui/icons'

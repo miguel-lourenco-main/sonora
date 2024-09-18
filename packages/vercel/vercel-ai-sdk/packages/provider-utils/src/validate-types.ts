@@ -1,4 +1,4 @@
-import { TypeValidationError } from '@kit/vercel-sdk-provider';
+import { TypeValidationError } from 'vercel-sdk-provider';
 import { ZodSchema } from 'zod';
 
 /**

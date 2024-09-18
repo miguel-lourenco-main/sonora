@@ -1,5 +1,5 @@
 {
-  "name": "@kit/vercel-sdk-core-react",
+  "name": "vercel-sdk-core-react",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",

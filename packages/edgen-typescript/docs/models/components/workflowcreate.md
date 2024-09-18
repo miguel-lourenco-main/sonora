@@ -1,0 +1,12 @@
+# WorkflowCreate
+
+
+## Fields
+
+| Field                                                                                | Type                                                                                 | Required                                                                             | Description                                                                          |
+| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| `id`                                                                                 | *number*                                                                             | :heavy_minus_sign:                                                                   | N/A                                                                                  |
+| `name`                                                                               | *string*                                                                             | :heavy_check_mark:                                                                   | N/A                                                                                  |
+| `description`                                                                        | *string*                                                                             | :heavy_check_mark:                                                                   | N/A                                                                                  |
+| `type`                                                                               | [components.WorkFlowType](../../models/components/workflowtype.md)                   | :heavy_check_mark:                                                                   | N/A                                                                                  |
+| `summaryMethod`                                                                      | [components.WorkFlowSummaryMethod](../../models/components/workflowsummarymethod.md) | :heavy_minus_sign:                                                                   | N/A                                                                                  |

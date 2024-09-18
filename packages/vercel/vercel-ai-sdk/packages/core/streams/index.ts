@@ -4,7 +4,7 @@ export {
   parseStreamPart,
   readDataStream,
   parseComplexResponse,
-} from '@kit/vercel-sdk-ui-utils';
+} from 'vercel-sdk-ui-utils';
 export type {
   AssistantStatus,
   UseAssistantOptions,
@@ -26,9 +26,9 @@ export type {
   StreamPart,
   IdGenerator,
   RequestOptions,
-} from '@kit/vercel-sdk-ui-utils';
+} from 'vercel-sdk-ui-utils';
 
-import { generateId as generateIdImpl } from '@kit/vercel-sdk-provider-utils';
+import { generateId as generateIdImpl } from 'vercel-sdk-provider-utils';
 export const generateId = generateIdImpl;
 
 /**

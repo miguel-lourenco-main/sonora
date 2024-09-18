@@ -2,7 +2,7 @@ import {
   generateId,
   loadApiKey,
   withoutTrailingSlash,
-} from '@kit/vercel-sdk-provider-utils';
+} from 'vercel-sdk-provider-utils';
 import { EdgenChatWorkflow } from './edgen-chat-workflow';
 import {
   EdgenChatSettings,

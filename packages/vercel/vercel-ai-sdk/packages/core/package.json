@@ -1,17 +1,17 @@
 {
-  "name": "@kit/vercel-sdk-core",
+  "name": "vercel-sdk-core",
   "version": "3.2.6",
   "license": "Apache-2.0",
-  "sideEffects": false,
-  "main": "./dist/index.js",
+  "main": "./dist/index.ts",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "files": [
     "dist/**/*",
-    "react/dist/**/*",
+    "rsc/dist/**/*",
     "prompts/dist/**/*",
-    "rsc/dist/**/*"
+    "react/dist/**/*"
   ],
+  "sideEffects": false,
   "scripts": {
     "build": "tsup && cat react/dist/index.server.d.ts >> react/dist/index.d.ts",
     "clean": "rm -rf dist && rm -rf react/dist && rm -rf rsc/dist && rm -rf .turbo && rm -rf node_modules && rm -rf rsc/node_modules && rm -rf react/node_modules",
@@ -20,40 +20,21 @@
     "prettier-check": "prettier --check \"./**/*.ts*\""
   },
   "exports": {
-    "./package.json": "./package.json",
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
-    },
-    "./rsc": {
-      "types": "./rsc/dist/index.d.ts",
-      "react-server": "./rsc/dist/rsc-server.mjs",
-      "import": "./rsc/dist/rsc-client.mjs"
-    },
-    "./prompts": {
-      "types": "./prompts/dist/index.d.ts",
-      "import": "./prompts/dist/index.mjs",
-      "require": "./prompts/dist/index.js"
-    },
-    "./react": {
-      "types": "./react/dist/index.d.ts",
-      "react-server": "./react/dist/index.server.mjs",
-      "import": "./react/dist/index.mjs",
-      "require": "./react/dist/index.js"
-    }
+    "./rsc": "./rsc/index.ts",
+    "./prompts": "./prompts/index.ts",
+    "./react": "./react/index.ts"
   },
   "dependencies": {
-    "@kit/vercel-sdk-provider": "workspace:^",
-    "@kit/vercel-sdk-provider-utils": "workspace:^",
-    "@kit/vercel-sdk-react": "workspace:^",
-    "@kit/vercel-sdk-ui-utils": "workspace:^",
     "eventsource-parser": "1.1.2",
     "json-schema": "0.4.0",
     "jsondiffpatch": "0.6.0",
     "nanoid": "^5.0.7",
     "secure-json-parse": "2.7.0",
     "sswr": "2.1.0",
+    "vercel-sdk-provider": "workspace:^",
+    "vercel-sdk-provider-utils": "workspace:^",
+    "vercel-sdk-react": "workspace:^",
+    "vercel-sdk-ui-utils": "workspace:^",
     "zod-to-json-schema": "3.22.5"
   },
   "devDependencies": {

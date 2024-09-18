@@ -1,4 +1,4 @@
-import { LoadAPIKeyError } from '@kit/vercel-sdk-provider';
+import { LoadAPIKeyError } from 'vercel-sdk-provider';
 
 export function loadApiKey({
   apiKey,

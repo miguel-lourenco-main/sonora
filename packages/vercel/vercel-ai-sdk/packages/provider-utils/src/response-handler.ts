@@ -1,4 +1,4 @@
-import { APICallError, EmptyResponseBodyError } from '@kit/vercel-sdk-provider';
+import { APICallError, EmptyResponseBodyError } from 'vercel-sdk-provider';
 import {
   EventSourceParserStream,
   ParsedEvent,

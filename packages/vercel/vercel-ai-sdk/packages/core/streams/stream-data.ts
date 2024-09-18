@@ -1,4 +1,4 @@
-import { JSONValue, formatStreamPart } from '@kit/vercel-sdk-ui-utils';
+import { JSONValue, formatStreamPart } from 'vercel-sdk-ui-utils';
 
 /**
  * A stream wrapper to send custom JSON-encoded data back to the client.

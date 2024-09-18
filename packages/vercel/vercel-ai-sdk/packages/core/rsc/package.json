@@ -1,5 +1,5 @@
 {
-  "name": "@kit/vercel-sdk-core-rsc",
+  "name": "vercel-sdk-core-rsc",
   "types": "./dist/index.d.ts",
   "exports": {
     "types": "./dist/index.d.ts",

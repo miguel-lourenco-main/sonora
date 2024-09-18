@@ -2,11 +2,11 @@ import {
   InvalidToolArgumentsError,
   LanguageModelV1,
   NoSuchToolError,
-} from '@kit/vercel-sdk-provider';
+} from 'vercel-sdk-provider';
 import { ReactNode } from 'react';
 import { z } from 'zod';
 
-import { safeParseJSON } from '@kit/vercel-sdk-provider-utils';
+import { safeParseJSON } from 'vercel-sdk-provider-utils';
 import { CallSettings } from '../../core/prompt/call-settings';
 import { convertToLanguageModelPrompt } from '../../core/prompt/convert-to-language-model-prompt';
 import { getValidatedPrompt } from '../../core/prompt/get-validated-prompt';

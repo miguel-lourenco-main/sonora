@@ -1,5 +1,5 @@
-import { APICallError, RetryError } from '@kit/vercel-sdk-provider';
-import { getErrorMessage, isAbortError } from '@kit/vercel-sdk-provider-utils';
+import { APICallError, RetryError } from 'vercel-sdk-provider';
+import { getErrorMessage, isAbortError } from 'vercel-sdk-provider-utils';
 import { delay } from './delay';
 
 export type RetryFunction = <OUTPUT>(

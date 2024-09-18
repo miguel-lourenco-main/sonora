@@ -1,5 +1,5 @@
 {
-  "name": "@kit/vercel-sdk-provider",
+  "name": "vercel-sdk-provider",
   "version": "0.0.10",
   "license": "Apache-2.0",
   "sideEffects": false,
@@ -17,7 +17,6 @@
     "prettier-check": "prettier --check \"./**/*.ts*\""
   },
   "exports": {
-    "./package.json": "./package.json",
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",

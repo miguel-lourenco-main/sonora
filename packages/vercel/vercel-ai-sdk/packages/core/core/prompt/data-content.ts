@@ -1,8 +1,8 @@
-import { InvalidDataContentError } from '@kit/vercel-sdk-provider';
+import { InvalidDataContentError } from 'vercel-sdk-provider';
 import {
   convertBase64ToUint8Array,
   convertUint8ArrayToBase64,
-} from '@kit/vercel-sdk-provider-utils';
+} from 'vercel-sdk-provider-utils';
 
 /**
 Data content. Can either be a base64-encoded string, a Uint8Array, an ArrayBuffer, or a Buffer.

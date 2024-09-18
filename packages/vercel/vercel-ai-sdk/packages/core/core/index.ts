@@ -5,5 +5,5 @@ export * from './prompt';
 export * from './registry';
 export * from './tool';
 export * from './types';
-export type { DeepPartial } from '@kit/vercel-sdk-ui-utils';
+export type { DeepPartial } from 'vercel-sdk-ui-utils';
 export { cosineSimilarity } from './util/cosine-similarity';

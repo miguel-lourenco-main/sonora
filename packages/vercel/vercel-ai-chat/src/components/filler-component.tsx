@@ -1,4 +1,3 @@
-import { cn } from "@kit/ui/utils"
 import { useCallback, useEffect, useState } from "react"
 import { useIsRightSidebarOpen } from "../lib/hooks/use-open-files"
 

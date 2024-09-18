@@ -5,13 +5,13 @@ import {
   LanguageModelV1FinishReason,
   LanguageModelV1StreamPart,
   UnsupportedFunctionalityError,
-} from '@kit/vercel-sdk-provider';
+} from 'vercel-sdk-provider';
 import {
   ParseResult,
   createEventSourceResponseHandler,
   postJsonToApi,
   createJsonResponseHandler,
-} from '@kit/vercel-sdk-provider-utils';
+} from 'vercel-sdk-provider-utils';
 import { z } from 'zod';
 import { mapEdgenFinishReason } from './map-edgen-finish-reason';
 import {
@@ -22,7 +22,6 @@ import { edgenFailedResponseHandler } from './edgen-error';
 import { AgentType, Message } from 'edgen/models/components';
 import { getEdgenSDKClient, parseMessage } from './utils';
 
-import { proccessWorkflowMessages } from '@kit/shared/utils'
 
 type EdgenChatConfig = {
   provider: string;
@@ -184,7 +183,8 @@ export class EdgenChatWorkflow implements WorkflowModelV1 {
       })
 
       // Get final message from meta
-      const processedMessges = proccessWorkflowMessages(response.messages)
+      // TODO: fix this
+      const processedMessges = {} as any//proccessWorkflowMessages(response.messages)
 
       finalMessage = processedMessges[1].content
 

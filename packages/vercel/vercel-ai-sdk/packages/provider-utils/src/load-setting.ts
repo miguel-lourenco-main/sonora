@@ -1,4 +1,4 @@
-import { LoadSettingError } from '@kit/vercel-sdk-provider';
+import { LoadSettingError } from 'vercel-sdk-provider';
 
 export function loadSetting({
   settingValue,

@@ -15,4 +15,4 @@ export {
   TypeValidationError,
   UnsupportedFunctionalityError,
   UnsupportedJSONSchemaError,
-} from '@kit/vercel-sdk-provider';
+} from 'vercel-sdk-provider';

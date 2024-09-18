@@ -3,13 +3,13 @@ import {
   LanguageModelV1Message,
   LanguageModelV1Prompt,
   LanguageModelV1TextPart,
-} from '@kit/vercel-sdk-provider';
+} from 'vercel-sdk-provider';
 import { CoreMessage } from './message';
 import { detectImageMimeType } from '../util/detect-image-mimetype';
 import { convertDataContentToUint8Array } from './data-content';
 import { ValidatedPrompt } from './get-validated-prompt';
 import { InvalidMessageRoleError } from './invalid-message-role-error';
-import { getErrorMessage } from '@kit/vercel-sdk-provider-utils';
+import { getErrorMessage } from 'vercel-sdk-provider-utils';
 
 export function convertToLanguageModelPrompt(
   prompt: ValidatedPrompt,

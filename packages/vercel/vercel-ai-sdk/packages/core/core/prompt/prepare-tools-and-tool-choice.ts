@@ -1,7 +1,7 @@
 import {
   LanguageModelV1FunctionTool,
   LanguageModelV1ToolChoice,
-} from '@kit/vercel-sdk-provider';
+} from 'vercel-sdk-provider';
 import { CoreTool } from '../tool/tool';
 import { CoreToolChoice } from '../types/language-model';
 import { convertZodToJSONSchema } from '../util/convert-zod-to-json-schema';

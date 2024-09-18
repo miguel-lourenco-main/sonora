@@ -5,14 +5,11 @@ import { ChatList } from './chat-list'
 import { ChatPanel } from './chat-panel'
 import { useLocalStorage } from '../lib/hooks/use-local-storage'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useUIState, useAIState } from '@kit/vercel-sdk-core/rsc'
-import { InputFile, Message, Session } from '../lib/types'
-import { usePathname, useRouter } from 'next/navigation'
+import { useUIState, useAIState } from 'vercel-sdk-core/rsc'
+import { InputFile, Message } from '../lib/types'
+import { useRouter } from 'next/navigation'
 import { useScrollAnchor } from '../lib/hooks/use-scroll-anchor'
-import { Select, SelectContent, SelectTrigger } from '@kit/ui/select'
-import { Workflow } from 'edgen/models/components'
 import { ScrollArea } from '@kit/ui/scroll-area'
-import { useWorkflow } from '../lib/hooks/use-workflow'
 import { I18nComponent } from '@kit/i18n'
 import { loadSession } from '../lib/actions'
 import { Button } from '@kit/ui/button'
@@ -24,50 +21,48 @@ import { useIsRightSidebarOpen } from '../lib/hooks/use-open-files'
 import { FillerComponent } from './filler-component'
 import { useUserAwareFiles } from '../lib/hooks/use-current-session-files'
 import { useCheckNewFiles } from '../lib/hooks/use-check-new-files'
-import { CHAT_PAGE_PATH } from '@kit/shared/constants'
 import { TooltipProvider } from '@radix-ui/react-tooltip'
 
 export interface ChatProps extends React.ComponentProps<'div'> {
-  initialMessages?: Message[]
   id: string
-  workflows: Workflow[]
-  sessionFiles: [InputFile[], TreeViewElement]
-  session?: Session
-  missingKeys: string[]
+  subscribedMessages: Message[]
+  threadsFiles: [InputFile[], TreeViewElement]
 }
 
-export function Chat({ id, className, workflows, sessionFiles }: ChatProps) {
-  const router = useRouter()
-  const path = usePathname()
-
-  const [input, setInput] = useState('')
-  const [workflowMenuOpen, setWorkflowMenuOpen] = useState(false)
+export function Chat({ id, className, subscribedMessages, threadsFiles }: ChatProps) {
 
   const [messages] = useUIState()
   const [aiState] = useAIState()
 
+  useEffect(() => {
+    // TODO: Complete when setup is properly done
+    aiState.done()
+  }, [subscribedMessages])
+  
+  const router = useRouter()
+
+  const [input, setInput] = useState('')
+  const [workflowMenuOpen, setWorkflowMenuOpen] = useState(false)
+
   const [_, setNewChatId] = useLocalStorage('newChatId', id)
 
-  const { selectedWorkflowId, setSelectedWorkflowId } = useWorkflow()
-
   const { userAwareFiles, setUserAwareFiles, sessionId, setSessionId, value, setValue, hasNewFiles, setHasNewFiles } = useUserAwareFiles()
-
   const { checkNewFiles, setCheckNewFiles } = useCheckNewFiles()
 
   const hasNewInputFiles = (userAwareInputFiles: InputFile[], sessionInputFiles: InputFile[]) =>{
     return !arraysEqual(userAwareInputFiles, sessionInputFiles)
   }
 
-  const hasNewGeneratedFiles = (userAwareFiles: TreeViewElement, sessionFiles: TreeViewElement) =>{
-    return userAwareFiles.children && sessionFiles.children && !treeViewElementArraysEqual(userAwareFiles.children, sessionFiles.children)
+  const hasNewGeneratedFiles = (userAwareFiles: TreeViewElement, threadsFiles: TreeViewElement) =>{
+    return userAwareFiles.children && threadsFiles.children && !treeViewElementArraysEqual(userAwareFiles.children, threadsFiles.children)
   }
 
-  const checkForNewFiles = (values: string[], userAwareFiles: [InputFile[], TreeViewElement], sessionFiles: [InputFile[], TreeViewElement]) => {
-    if(hasNewInputFiles(userAwareFiles[0], sessionFiles[0])){
+  const checkForNewFiles = (values: string[], userAwareFiles: [InputFile[], TreeViewElement], threadsFiles: [InputFile[], TreeViewElement]) => {
+    if(hasNewInputFiles(userAwareFiles[0], threadsFiles[0])){
       values.push('input_files')
     }
     
-    if(hasNewGeneratedFiles(userAwareFiles[1], sessionFiles[1])){
+    if(hasNewGeneratedFiles(userAwareFiles[1], threadsFiles[1])){
       values.push('generated_files')
     }
 
@@ -84,12 +79,12 @@ export function Chat({ id, className, workflows, sessionFiles }: ChatProps) {
       setSessionId(id)
 
       if(checkNewFiles){
-        values = checkForNewFiles(values, userAwareFiles, sessionFiles)
+        values = checkForNewFiles(values, userAwareFiles, threadsFiles)
         setCheckNewFiles(false)
       }
-      setUserAwareFiles(sessionFiles)
+      setUserAwareFiles(threadsFiles)
     }else{
-      values = checkForNewFiles(values, userAwareFiles, sessionFiles)
+      values = checkForNewFiles(values, userAwareFiles, threadsFiles)
     }
 
     if(values.length > 0 && !values.includes(currentTab)){
@@ -111,11 +106,11 @@ export function Chat({ id, className, workflows, sessionFiles }: ChatProps) {
 
     if(values.length > 0){
       setIsRightSidebarOpen(true)
-      setUserAwareFiles(sessionFiles)
+      setUserAwareFiles(threadsFiles)
       setValue(remaining)
     }
 
-  }, [id, sessionFiles]);
+  }, [id, threadsFiles]);
 
   // Helper function to compare arrays
   function arraysEqual<T>(arr1: any[], arr2: any[]): boolean {
@@ -138,30 +133,13 @@ export function Chat({ id, className, workflows, sessionFiles }: ChatProps) {
   }
 
   useEffect(() => {
-    
-    // If there is no selected workflow, set the first one
-    if (
-      selectedWorkflowId &&
-      selectedWorkflowId === -1 &&
-      setSelectedWorkflowId &&
-      workflows.length > 0
-    ){
-      setSelectedWorkflowId(workflows[0]?.id ?? -1)
-    }
-  }, [selectedWorkflowId, setSelectedWorkflowId, workflows])
 
-  useEffect(() => {
     setNewChatId(id)
-  })
+    loadSession(id)
 
-  useEffect(() => {
-    loadSession(id).then(session => {
-      if(session) setSelectedWorkflowId(session?.workflowId ?? -1)
-    })
   }, [id])
 
-  const { messagesRef, scrollRef, visibilityRef, scrollToBottom, isVisible } =
-    useScrollAnchor()
+  const { messagesRef, scrollRef, visibilityRef, scrollToBottom, isVisible } = useScrollAnchor()
 
   // É preciso dar handle do dropdown proque quando se toma controlo do open e close do select, todas as funcionalidades relacionadas ficam invalidadas
   const dropdownRef = useRef<HTMLDivElement>(null)
@@ -227,7 +205,7 @@ export function Chat({ id, className, workflows, sessionFiles }: ChatProps) {
 
                     if(filtered.length === 0) setHasNewFiles(false)
                   }
-                  setUserAwareFiles(sessionFiles)
+                  setUserAwareFiles(threadsFiles)
                   setIsRightSidebarOpen(!isRightSidebarOpen)
                 }}>
                   <File size={18}/>
@@ -247,53 +225,11 @@ export function Chat({ id, className, workflows, sessionFiles }: ChatProps) {
               height: chatHeight ? `calc(${chatHeight}px - 12rem)` : '',
               transition: 'height 0.3s ease-in-out'
             }}          >
-            <ChatRightSidebar sessionFiles={sessionFiles} onHoldFiles={onHoldFiles} setOnHoldFiles={setOnHoldFiles} id={id}/>
+            <ChatRightSidebar threadsFiles={threadsFiles} onHoldFiles={onHoldFiles} setOnHoldFiles={setOnHoldFiles} id={id}/>
           </div>
         </div>
       </div>
       <div className="w-full h-full relative flex flex-col justify-between">
-        {/**Make it so that this menu is resizable, just in case there is an agent with a long name*/}
-        <div className="absolute top-5 left-4 z-10 w-52">
-          <Select open={workflowMenuOpen}>
-            <SelectTrigger
-              onClick={event => setWorkflowMenuOpen(true)}
-              className="w-full bg-background mr-2"
-            >
-              <div className="text-sm truncate">
-                { workflows.length > 0 
-                  ? selectedWorkflowId !== -1
-                    ? workflows.find(workflow => workflow.id === selectedWorkflowId)?.name
-                    : <I18nComponent i18nKey={'vercel:selectAgent'}/>
-                  : <I18nComponent i18nKey={'vercel:noWorkflows'}/>
-                }
-              </div>
-            </SelectTrigger>
-            <SelectContent
-              onSelect={() => setWorkflowMenuOpen(false)}
-              className="flex flex-col"
-              ref={dropdownRef}
-            >
-              {workflows.map(workflow => {
-                return (
-                  <div
-                    key={workflow.id}
-                    className="p-2 hover:bg-muted/50 text-sm"
-                    onClick={() => {
-                      if (setSelectedWorkflowId){
-                        setSelectedWorkflowId(workflow.id ?? -1)
-                      }
-
-                      setWorkflowMenuOpen(false)
-                      router.push(CHAT_PAGE_PATH)
-                    }}
-                  >
-                    {workflow.name}
-                  </div>
-                )
-              })}
-            </SelectContent>
-          </Select>
-        </div>
         <ScrollArea className="" ref={scrollRef}>
           <div className={cn('pb-[200px] pt-24', className)} ref={messagesRef}>
             {messages.length ? (

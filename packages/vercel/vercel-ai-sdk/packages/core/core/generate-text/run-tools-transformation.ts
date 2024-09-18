@@ -1,5 +1,5 @@
-import { LanguageModelV1StreamPart, NoSuchToolError } from '@kit/vercel-sdk-provider';
-import { generateId } from '@kit/vercel-sdk-ui-utils';
+import { LanguageModelV1StreamPart, NoSuchToolError } from 'vercel-sdk-provider';
+import { generateId } from 'vercel-sdk-ui-utils';
 import { CoreTool } from '../tool';
 import { TextStreamPart } from './stream-text';
 import { calculateTokenUsage } from './token-usage';

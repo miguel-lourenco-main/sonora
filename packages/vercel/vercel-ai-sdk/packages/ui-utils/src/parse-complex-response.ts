@@ -1,4 +1,4 @@
-import { generateId as generateIdFunction } from '@kit/vercel-sdk-provider-utils';
+import { generateId as generateIdFunction } from 'vercel-sdk-provider-utils';
 import { readDataStream } from './read-data-stream';
 import type {
   FunctionCall,

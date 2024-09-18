@@ -1,7 +1,7 @@
 import {
   convertArrayToReadableStream,
   convertReadableStreamToArray,
-} from '@kit/vercel-sdk-provider-utils/test';
+} from 'vercel-sdk-provider-utils/test';
 import { expect, it } from 'vitest';
 import { mergeStreams } from './merge-streams';
 

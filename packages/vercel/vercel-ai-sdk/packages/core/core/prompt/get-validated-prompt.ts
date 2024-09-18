@@ -1,4 +1,4 @@
-import { InvalidPromptError } from '@kit/vercel-sdk-provider';
+import { InvalidPromptError } from 'vercel-sdk-provider';
 import { CoreMessage } from './message';
 import { Prompt } from './prompt';
 

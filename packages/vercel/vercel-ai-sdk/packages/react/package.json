@@ -1,5 +1,5 @@
 {
-  "name": "@kit/vercel-sdk-react",
+  "name": "vercel-sdk-react",
   "version": "0.0.6",
   "license": "Apache-2.0",
   "sideEffects": false,
@@ -22,9 +22,9 @@
     }
   },
   "dependencies": {
-    "@kit/vercel-sdk-provider-utils": "workspace:^",
-    "@kit/vercel-sdk-ui-utils": "workspace:^",
-    "swr": "2.2.0"
+    "swr": "2.2.0",
+    "vercel-sdk-provider-utils": "workspace:^",
+    "vercel-sdk-ui-utils": "workspace:^"
   },
   "devDependencies": {
     "@kit/prettier-config": "workspace:*",

@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
-import { isAbortError } from '@kit/vercel-sdk-provider-utils';
+import { isAbortError } from 'vercel-sdk-provider-utils';
 import {
   AssistantStatus,
   CreateMessage,
@@ -8,7 +8,7 @@ import {
   UseAssistantOptions,
   generateId,
   readDataStream,
-} from '@kit/vercel-sdk-ui-utils';
+} from 'vercel-sdk-ui-utils';
 import { useCallback, useRef, useState } from 'react';
 
 export type UseAssistantHelpers = {
