@@ -108,9 +108,6 @@ importers:
       '@kit/ui':
         specifier: workspace:^
         version: link:../../packages/ui
-      '@kit/vercel-ai-chat':
-        specifier: workspace:^
-        version: link:../../packages/vercel/vercel-ai-chat
       '@makerkit/data-loader-supabase-core':
         specifier: ^0.0.8
         version: 0.0.8(@supabase/postgrest-js@1.16.1)(@supabase/supabase-js@2.45.4)
@@ -1592,6 +1589,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      edgen:
+        specifier: workspace:*
+        version: link:../edgen-typescript
       react:
         specifier: 18.3.1
         version: 18.3.1

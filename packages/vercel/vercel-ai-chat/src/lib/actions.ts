@@ -2,78 +2,25 @@
 
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
-
-import { GeneratedFolder, InputFile, PlainFileObject, type Chat } from './types'
+import { InputFile, PlainFileObject, type Chat } from './types'
 import { Session } from 'edgen/models/components'
 import { getEdgenSDKClient } from '@kit/shared/utils'
 import { getAuthToken } from '@kit/supabase/get-auth-token'
 import { cache } from 'react'
 import { convertToDate, fetchSS, objectToFile } from './utils'
 import { TreeViewElement } from '@kit/ui/tree-view-api'
-import { revalidateChatCache, revalidatePathServer } from './clear-next-cache'
+import { revalidatePathServer } from './clear-next-cache'
 import { CHAT_PAGE_PATH } from '@kit/shared/constants'
 
-//TODO: add a flag to each function that determines if when an error occurs, if catched in the function or if it is thrown again when catched in the function
 
-export const loadSession = cache(async (id: string) => {
-  return await getSession(id)
-})
-
-export const loadWorkflows = cache(async () => {
-  return await getWorkflows()
-})
-
-export const loadSessions = cache(async () => {
-  return await getSessions()
-})
-
-export const loadChats = cache(async () => {
-  return await getChats()
-})
-
-export async function getChats() {
-  
-  try {
-
-    const auth_token = await getAuthToken()
-
-    if(!auth_token) throw Error("no auth token")
-
-    const client = getEdgenSDKClient({ oAuth2PasswordBearer: auth_token });
-
-    const response = await client.listSessionsSessionsGet();
-
-    const chats = response.map((session) => {
-
-      if(!session.id) return null
-
-      const chat: Chat = {
-        ...session,
-        title: session?.name?.slice(0, 20) ?? "Undefined", // Consider using description, if there is one
-        path: `${CHAT_PAGE_PATH}/${session.id}`,
-        messages: []
-      }
-
-      return chat
-    }).filter((session): session is Chat => session !== null)
-
-    chats.sort((a, b) => parseInt(b.id?.toString() ?? "-1") - parseInt(a.id?.toString() ?? "-1"))
-
-    return chats
-
-  } catch (error) {
-    console.log(error)
-    return []
-  }
-}
-
-export async function getChat(id: string) {
+export async function getThread(id: string) {
 
   let chat: Chat | null = null
 
   try {
 
-    const auth_token = await getAuthToken()
+    /**
+     * const auth_token = await getAuthToken()
 
     if(!auth_token || !id) throw Error("There is no token or id")
 
@@ -89,6 +36,7 @@ export async function getChat(id: string) {
     const messages = await client.listMessagesSessionsSessionIdMessagesGet({sessionId: parseInt(id)})
 
     chat = {...foundChat, messages}
+     */
 
   } catch (error) {
 

@@ -7,7 +7,8 @@
   "scripts": {
     "lint": "eslint --max-warnings=0 src",
     "build": "tsc",
-    "prepare": "pnpm build"
+    "prepare": "pnpm build",
+    "clean": "rm -rf dist node_modules turbo hooks lib models sdk types .turbo .tsbuildinfo"
   },
   "peerDependencies": {
     "zod": ">= 3"
