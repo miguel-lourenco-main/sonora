@@ -97,3 +97,23 @@ export function getEdgenSDKClient({
       retryConfig
   });
 }
+
+export const handleInsertOrUpdate = <T extends { id: string }>(
+  setter: React.Dispatch<React.SetStateAction<T[]>>,
+  newItem: T
+) => {
+  setter((prev) => {
+    const index = prev.findIndex(item => item.id === newItem.id);
+    if (index !== -1) {
+      return [...prev.slice(0, index), newItem, ...prev.slice(index + 1)];
+    }
+    return [...prev, newItem];
+  });
+};
+
+export const handleDelete = <T extends { id: string }>(
+  setter: React.Dispatch<React.SetStateAction<T[]>>,
+  deletedItemId: string
+) => {
+  setter((prev) => prev.filter(item => item.id !== deletedItemId));
+};

@@ -25,12 +25,12 @@ export const COLLAPSE_PATHS_FROM = [CHAT_PAGE_PATH]
 export const COLLAPSE_PATHS = [CHAT_PAGE_PATH]
 
 export const EDGEN_CUSTOM_PATHS_SCHEMA = {
-    chat: z.string().min(1),
+    app: z.string().min(1),
     chatWithID: z.string().min(1),
 }
 
 export const EDGEN_CUSTOM_PATHS = {
-    chat: CHAT_PAGE_PATH,
+    app: CHAT_PAGE_PATH,
     chatWithID: CHAT_PAGE_WITH_ID_PATH,
 }
 
