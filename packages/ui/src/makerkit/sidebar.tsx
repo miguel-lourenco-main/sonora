@@ -217,10 +217,10 @@ export function SidebarItem({
 }
 
 function getClassNameBuilder(className: string) {
-  return cva([cn('flex box-content h-screen flex-col relative', className)], {
+  return cva([cn('flex box-content ease-in-out duration-300 h-screen flex-col relative', className)], {
     variants: {
       collapsed: {
-        true: `w-[6rem]`,
+        true: `w-[5.5rem]`,
         false: `w-2/12 lg:w-[17rem]`,
       },
     },
