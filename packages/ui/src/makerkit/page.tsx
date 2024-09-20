@@ -111,7 +111,7 @@ export function PageBody(
     className?: string;
   }>,
 ) {
-  const className = cn('w-full flex flex-col flex-1 lg:px-4', props.className);
+  const className = cn('w-full flex flex-col flex-1 lg:px-8', props.className);
 
   return <div className={className}>{props.children}</div>;
 }

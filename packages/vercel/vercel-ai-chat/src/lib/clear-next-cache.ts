@@ -53,7 +53,7 @@ export async function revalidateKnowledgeBasesCache(
     type: "path" | "tag" = "path"
 ){
     if(type === "path"){
-        revalidatePathServer(pathsConfig.app.knowledgeBases)
+        revalidatePathServer(pathsConfig.app.knowledge_bases)
     }else{
         revalidateTagServer("get-knowledge-base")
         revalidateTagServer("get-knowledge-bases-list")
