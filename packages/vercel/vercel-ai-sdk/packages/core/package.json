@@ -2,16 +2,16 @@
   "name": "vercel-sdk-core",
   "version": "3.2.6",
   "license": "Apache-2.0",
+  "sideEffects": false,
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "files": [
     "dist/**/*",
-    "rsc/dist/**/*",
+    "react/dist/**/*",
     "prompts/dist/**/*",
-    "react/dist/**/*"
+    "rsc/dist/**/*"
   ],
-  "sideEffects": false,
   "scripts": {
     "build": "tsup && cat react/dist/index.server.d.ts >> react/dist/index.d.ts",
     "clean": "rm -rf dist && rm -rf react/dist && rm -rf rsc/dist && rm -rf .turbo && rm -rf node_modules && rm -rf rsc/node_modules && rm -rf react/node_modules",
@@ -20,6 +20,7 @@
     "prettier-check": "prettier --check \"./**/*.ts*\""
   },
   "exports": {
+    "./package.json": "./package.json",
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
@@ -73,6 +74,7 @@
     "@vercel/ai-tsconfig": "workspace:*",
     "@vitejs/plugin-react": "4.2.0",
     "cohere-ai": "^7.6.2",
+    "edgen": "workspace:^",
     "eslint": "^8.57.0",
     "eslint-config-vercel-ai": "workspace:*",
     "jsdom": "^24.0.0",

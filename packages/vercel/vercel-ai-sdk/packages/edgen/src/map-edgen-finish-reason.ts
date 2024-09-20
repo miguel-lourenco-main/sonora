@@ -1,4 +1,4 @@
-import { LanguageModelV1FinishReason } from '@kit/vercel-sdk-provider'
+import { LanguageModelV1FinishReason } from 'vercel-sdk-provider'
 
 export function mapEdgenFinishReason(
   finishReason: string | null | undefined,

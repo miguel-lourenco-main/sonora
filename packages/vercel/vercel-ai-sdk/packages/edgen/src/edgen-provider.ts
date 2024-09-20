@@ -3,36 +3,33 @@ import {
   loadApiKey,
   withoutTrailingSlash,
 } from 'vercel-sdk-provider-utils';
-import { EdgenChatWorkflow } from './edgen-chat-workflow';
+import { EdgenThread } from './edgen-thread-workflow';
 import {
-  EdgenChatSettings,
-} from './edgen-chat-settings';
+  EdgenThreadSettings,
+} from './edgen-thread-settings';
 import { EDGEN_BACKEND_URL } from './constants';
 
 export interface EdgenProvider {
   (
-    sessionId: number,
-    workflowId: number,
-    settings?: EdgenChatSettings,
-  ): EdgenChatWorkflow;
+    threadId: string,
+    settings?: EdgenThreadSettings,
+  ): EdgenThread;
 
   /**
 Creates a model for text generation.
 */
   languageModel(
-    sessionId: number,
-    workflowId: number,
-    settings?: EdgenChatSettings,
-  ): EdgenChatWorkflow;
+    threadId: string,
+    settings?: EdgenThreadSettings,
+  ): EdgenThread;
 
   /**
 Creates a model for text generation.
 */
   chat(
-    sessionId: number,
-    workflowId: number,
-    settings?: EdgenChatSettings,
-  ): EdgenChatWorkflow;
+    threadId: string,
+    settings?: EdgenThreadSettings,
+  ): EdgenThread;
 }
 
 export interface EdgenProviderSettings {
@@ -89,11 +86,10 @@ export function createEdgen(
   });
 
   const createChatWorkflow = (
-    sessionId: number,
-    workflowId: number,
-    settings: EdgenChatSettings = {},
+    threadId: string,
+    settings: EdgenThreadSettings = {},
   ) =>
-    new EdgenChatWorkflow(sessionId, workflowId, settings, {
+    new EdgenThread(threadId, settings, {
       provider: 'edgen.chat',
       baseURL,
       headers: getHeaders,
@@ -102,9 +98,8 @@ export function createEdgen(
     },  options.apiKey ?? ""); // TODO: there always needs to be an apiKey/authToken
 
   const provider = function (
-    sessionId: number,
-    workflowId: number,
-    settings?: EdgenChatSettings,
+    threadId: string,
+    settings?: EdgenThreadSettings,
   ) {
     if (new.target) {
       throw new Error(
@@ -112,7 +107,7 @@ export function createEdgen(
       );
     }
 
-    return createChatWorkflow(sessionId, workflowId, settings);
+    return createChatWorkflow(threadId, settings);
   };
 
   provider.languageModel = createChatWorkflow;

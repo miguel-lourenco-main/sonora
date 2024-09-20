@@ -60,6 +60,7 @@ export function PersonalAccountDropdown({
   className?: string;
   showProfileName?: boolean;
 }) {
+
   const { data: personalAccountData } = usePersonalAccountData(
     user.id,
     account,

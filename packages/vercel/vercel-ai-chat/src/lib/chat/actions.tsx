@@ -1,51 +1,39 @@
-'use server'
+import 'server-only'
 
 import {
   createAI,
   getMutableAIState,
   getAIState,
 } from 'vercel-sdk-core/rsc'
-import { BotMessage } from '../../components/stocks'
 import {
   nanoid,
 } from '../utils'
-import { getChat, saveChat, uploadFiles } from '../actions'
-import {
-  SkeletonMessage,
-  UserMessage
-} from '../../components/stocks/message'
-import { Chat, Message, PlainFileObject } from '../types'
+import { getThread, createThread } from '../actions'
+import { Chat, Message } from '../types'
 import { getAuthToken } from '@kit/supabase/get-auth-token'
-import { Session } from 'edgen/models/components'
 import { generateTextWorkflow } from 'vercel-sdk-core'
 import { createEdgen } from 'vercel-sdk-edgen'
 import { revalidatePath } from 'next/cache'
 import { CHAT_PAGE_PATH } from '@kit/shared/constants'
-import { processChatMessages } from '@kit/shared/utils'
+import { Thread } from '../interfaces'
 
 
-async function submitUserMessage(content: string, workflowId?: number, convertedFiles?: PlainFileObject[]): Promise<{
-  chatId: string | undefined
+async function submitUserMessage(threadId: string | undefined, content: string): Promise<{
   id: string;
   display: string;
-  fileSubmissions: string[][]
 }> {
   'use server'
 
   if (!content) {
     return {
-      chatId: undefined,
       id: nanoid(),
       display: "vercel:askMessage",
-      fileSubmissions: []
     }
   }
 
   const aiState = getMutableAIState<typeof AI>()
 
   let textValue = ''
-
-  let fileSubmissions: string[][] = []
 
   try {
     const auth_token = await getAuthToken()
@@ -54,64 +42,36 @@ async function submitUserMessage(content: string, workflowId?: number, converted
       throw new Error('No auth token')
     }
 
-    //TODO: FIX
-    /**
-     * const client = undefined as any//getEdgenSDKClient({ oAuth2PasswordBearer: auth_token })
-
-    const sessions = await client.listSessionsSessionsGet()
-
-    // TODO: get workflowId
-    let currentSession = sessions.find(session =>
-      session.id ? session.id.toString() === aiState.get().chatId : false
-    )
-
-     */
-
-    let sessionWorkflowId = -1
-
-    let currentSession = false
-
-    // FOR NOW, IF THERE IS NO SESSION, CREATE A NEW ONE
-    if (!currentSession) { //|| !currentSession.workflowId
+    if (!threadId) {
       const name = content.substring(0, 100)
 
-      // TODO: In case there is a need to translate this default session, then the string value
-      // needs to be passed to the function
-      const chat: Session = {
+      const thread: Thread = {
+        id: nanoid(),
         name,
-        workflowId,
-        description: 'Default Session'
+        messages: [
+          content
+        ]
       }
 
-      const newChat = await saveChat(chat)
+      const newThread = await createThread(thread.id)
 
-      if (!newChat || !newChat.id || !newChat.workflowId) {
-        throw new Error('Error creating chat')
+      if (!newThread || !newThread.id) {
+        throw new Error('Error creating thread')
       }
-
-      sessionWorkflowId = newChat.workflowId
 
       aiState.done({
         ...aiState.get(),
-        chatId: newChat.id.toString()
+        threadId: newThread.id.toString()
       })
-
-      if(convertedFiles && convertedFiles.length > 0){
-        const res = await uploadFiles(newChat.id.toString(), convertedFiles)
-        fileSubmissions = res
-      }
-    } else {
-      sessionWorkflowId = 1//currentSession.workflowId
-    }
+    } 
 
     const provider = createEdgen({
       apiKey: auth_token
     })
 
     const { text } = await generateTextWorkflow({
-      sessionWorkflow: provider(
-        parseInt(aiState.get().chatId),
-        sessionWorkflowId
+      threadModel: provider(
+        aiState.get().threadId,
       ),
       prompt: content
     })
@@ -147,15 +107,13 @@ async function submitUserMessage(content: string, workflowId?: number, converted
   revalidatePath(CHAT_PAGE_PATH)
 
   return {
-    chatId: aiState.get().chatId,
-    fileSubmissions,
     id: nanoid(),
     display: textValue
   }
 }
 
 export type AIState = {
-  chatId: string
+  threadId: string
   messages: Message[]
 }
 
@@ -169,7 +127,7 @@ export const AI = createAI<AIState, UIState>({
     submitUserMessage,
   },
   initialUIState: [],
-  initialAIState: { chatId: "-1", messages: [] },
+  initialAIState: { threadId: "-1", messages: [] },
   onGetUIState: async () => {
     'use server'
 
@@ -178,10 +136,10 @@ export const AI = createAI<AIState, UIState>({
     if (auth_token) {
       const aiState = getAIState<typeof AI>()
 
-      const chat = await getChat(aiState.chatId)
+      const thread = await getThread(aiState.threadId)
 
-      if (chat) {
-        const uiState = getUIStateFromAIState(chat)
+      if (thread) {
+        const uiState = getUIStateFromAIState(thread)
         return uiState
       }
       return
@@ -203,7 +161,8 @@ export const AI = createAI<AIState, UIState>({
 export const getUIStateFromAIState = async (aiState: Chat) => {
   // Get messages since the ones in aiState are empty
 
-  function processMessages(messages: Message[], result: UIState): UIState {
+  /**
+   * function processMessages(messages: Message[], result: UIState): UIState {
     const currentMessage = messages.pop()
 
     if (!currentMessage){
@@ -239,6 +198,10 @@ export const getUIStateFromAIState = async (aiState: Chat) => {
 
     return processMessages(messages, result)
   }
+   */
 
-  return processMessages(processChatMessages(aiState.messages), [])
+  return [{
+    id: "-1",
+    display: <></>
+  }]//processMessages(processChatMessages(aiState.messages), [])
 }

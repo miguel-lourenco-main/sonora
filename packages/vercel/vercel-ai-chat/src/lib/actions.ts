@@ -2,20 +2,55 @@
 
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
-import { InputFile, PlainFileObject, type Chat } from './types'
-import { Session } from 'edgen/models/components'
-import { getEdgenSDKClient } from '@kit/shared/utils'
 import { getAuthToken } from '@kit/supabase/get-auth-token'
-import { cache } from 'react'
-import { convertToDate, fetchSS, objectToFile } from './utils'
-import { TreeViewElement } from '@kit/ui/tree-view-api'
-import { revalidatePathServer } from './clear-next-cache'
 import { CHAT_PAGE_PATH } from '@kit/shared/constants'
+import { cache } from 'react'
+import { Thread } from './interfaces'
 
+
+export async function createThread(id: string) {
+  try{
+
+    const auth_token = await getAuthToken()
+
+    if(!auth_token || !id) throw Error("No auth token or id")
+
+    // TODO: insert deleteLogic
+
+  }catch(error){
+    console.log(error)
+
+  }finally{
+    revalidatePath(CHAT_PAGE_PATH)
+    //return revalidatePath(path)
+    return {
+      id: "-1",
+      messages: []
+    }
+  }
+}
+
+export const loadThreads = cache(async () => {
+  return await getThreads()
+}) 
+
+export async function getThreads() {
+
+  try {
+
+  } catch (error) {
+
+    console.log(error)
+    return null
+
+  }finally{
+    return []
+  }
+}
 
 export async function getThread(id: string) {
 
-  let chat: Chat | null = null
+  let thread: Thread | null = null
 
   try {
 
@@ -44,11 +79,12 @@ export async function getThread(id: string) {
     return null
 
   }finally{
-    return chat
+    return thread
   }
 }
 
-export async function removeChat({ id, path }: { id: string; path: string }) {
+
+export async function deleteThread(id: string, path: string ) {
   
   try{
 
@@ -56,9 +92,7 @@ export async function removeChat({ id, path }: { id: string; path: string }) {
 
     if(!auth_token || !id) throw Error("No auth token or id")
 
-    const client = getEdgenSDKClient({ oAuth2PasswordBearer: auth_token });
-
-    await client.deleteSessionSessionsDeleteDelete({sessionId: parseInt(id)})
+    // TODO: insert delete logic
 
   }catch(error){
     console.log(error)
@@ -69,7 +103,7 @@ export async function removeChat({ id, path }: { id: string; path: string }) {
   }
 }
 
-export async function clearChats() {
+export async function deleteAllThreads() {
 
   try{
 
@@ -77,15 +111,7 @@ export async function clearChats() {
 
     if(!auth_token) throw Error("No auth token")
 
-    const chats = await getChats()
-
-    if(!chats) throw Error("No chats")
-
-    const client = getEdgenSDKClient({ oAuth2PasswordBearer: auth_token });
-
-    for(const chat of chats){
-      if(chat.id) await client.deleteSessionSessionsDeleteDelete({sessionId: chat.id})
-    }
+    // TODO: insert delete logic
 
   }catch(error){
     console.log(error)
@@ -95,231 +121,22 @@ export async function clearChats() {
   }
 }
 
-export async function getSharedChat(id: string) {
-  return null
-}
-
-export async function shareChat(id: string) {
-  return {
-    error: 'Unauthorized'
-  }
-}
-
-export async function saveChat(chat: Session) {
-
+export async function getMessages(threadId: string) {
   try{
 
     const auth_token = await getAuthToken()
 
     if(!auth_token) throw Error("No auth token")
 
-    const client = getEdgenSDKClient({ oAuth2PasswordBearer: auth_token });
-
-    const response = await client.createSessionSessionsPost(chat)
-
-    return response
+    // TODO: insert delete logic
 
   }catch(error){
-    //console.log(error)
-    return null
-  }
-}
-
-export async function getSessions() {
-  try{
-    const auth_token = await getAuthToken()
-
-    if(!auth_token) throw Error("No auth token")
-
-    const client = getEdgenSDKClient({ oAuth2PasswordBearer: auth_token })
-
-    return await client.listSessionsSessionsGet()
-    
-  }catch(error){
-    console.error(error)
-    return []
-  }
-}
-
-export async function getSession(id: string) {
-
-  try{
-    const sessions = await loadSessions()
-
-    const session = sessions.find(
-      session => session.id === parseInt(id ?? '')
-    )
-
-    return session
-  }catch(error){
-    console.error(error)
-    return null
-  }
-}
-
-export async function getWorkflows() {
-  try{
-    const auth_token = await getAuthToken()
-
-    if(!auth_token) throw Error("No auth token")
-
-    const client = getEdgenSDKClient({ oAuth2PasswordBearer: auth_token })
-
-    return await client.listWorkflowsWorkflowsGet()
-  }catch(error){
-    console.error(error)
+    console.log(error)
+  }finally{
     return []
   }
 }
 
 export async function refreshHistory(path: string) {
   redirect(path)
-}
-
-export async function getMissingKeys() {
-  const keysRequired = ['OPENAI_API_KEY']
-  return keysRequired
-    .map(key => (process.env[key] ? '' : key))
-    .filter(key => key !== '')
-}
-
-
-export const loadSessionFiles = cache(async (id: string) => {
-  return await getSessionFiles(id)
-})
-
-export async function getSessionFiles(sessionId: string): Promise<[InputFile[], TreeViewElement]> {
-
-  const inputFiles: InputFile[] = []
-  const outputFiles: TreeViewElement = {name: "root_generated", children: [], id: "root_generated", isSelectable: true}
-
-  try {
-    const auth_token = await getAuthToken()
-
-    if(!auth_token) throw Error("No auth token")
-
-    const client = getEdgenSDKClient({ oAuth2PasswordBearer: auth_token })
-    const filePaths: string[] = await client.filesListFilesSessionIdGet({ sessionId: parseInt(sessionId) })
-
-    filePaths.forEach(filePath => {
-
-      const parts = filePath.split("/")
-
-      const lastPart = parts[parts.length - 1]
-
-      if (parts[0] === "input") {
-        inputFiles.push({ path: filePath, name: lastPart ?? ""})
-      } else if(lastPart && (lastPart.startsWith("tmp_code_") || lastPart.includes(" "))){
-        return
-      }else {
-        let current = outputFiles;
-  
-        parts.forEach((part, index) => {
-          if (!current.children) {
-              current.children = [];
-          }
-  
-          let child = current.children.find(child => child.name === part);
-  
-          if (!child) {
-              child = {
-                  name: part,
-                  children: [],
-                  id: part,
-                  isSelectable: true
-              };
-              current.children.push(child);
-          }
-  
-          if (index === parts.length - 1) {
-              // Last part, it's a file
-              child.path = filePath; // Set the full path for files
-              delete child.children; // Files do not have children
-          }
-  
-          current = child;
-        });
-      }
-    })
-  } catch (error) {
-    console.log(error)
-  }
-
-  // Organize output files by date
-  outputFiles.children?.sort((a, b) => {
-    return convertToDate(a.name).getTime() - convertToDate(b.name).getTime()
-  }).reverse()
-
-  return [inputFiles, outputFiles]
-}
-
-/**
-  TODO: if the file is too big, it should be uploaded from the client, currently the solution is to increase the body size limit for server actions but this is not ideal
-  especially since we don't know how big the files to submit can get. This should be done after the files layout goes from the same layout as chat history to the one
-  inside [chatId]
-*/
-export async function uploadFile(sessionId: string, file: File) {
-  try{
-    const auth_token = await getAuthToken()
-
-    if(!auth_token) throw Error("No auth token")
-
-    const client = getEdgenSDKClient({oAuth2PasswordBearer: auth_token})
-
-    await client.filesUploadFilesSessionIdPost({bodyFilesUploadFilesSessionIdPost: {file: file}, sessionId: parseInt(sessionId)})
-
-  }catch(error){
-    console.log(error)
-  }
-}
-
-export async function uploadFiles(sessionId: string, files: PlainFileObject[]) {
-
-  const failedSubmissions: string[] = []
-  const successfulSubmissions: string[] = []
-
-  try{
-    const revertedFiles: File[] = files.map(file => objectToFile(file))
-
-    for(const file of revertedFiles){
-      uploadFile(sessionId, file)
-        .then(() => {
-          successfulSubmissions.push(file.name)
-        })
-        .catch((_) => {
-          failedSubmissions.push(file.name)
-      })
-    }
-
-    revalidatePathServer(CHAT_PAGE_PATH)
-  }catch(error){
-    console.log(error)
-  }
-
-  return [successfulSubmissions, failedSubmissions]
-}
-
-export async function downloadFile(sessionId: string, path: string) {
-
-  try {
-    const auth_token = await getAuthToken()
-
-    if (!auth_token) throw Error("No auth token")
-
-    const response = await fetchSS(`/files/${sessionId}/${path}`, {
-      headers: {
-        "Authorization": `Bearer ${auth_token}`
-      }
-    })
-
-    if (!response.ok) throw new Error('Failed to download file')
-
-    const file = await response.blob()
-
-    return  file// Return the file as a Blob
-
-  } catch (error) {
-    console.error('Download file error:', error)
-    throw error // Rethrow the error to handle it in the calling function
-  }
 }

@@ -3,7 +3,7 @@ import {
   LanguageModelV1CallWarning,
   LanguageModelV1FinishReason,
   LanguageModelV1LogProbs,
-  WorkflowModelV1
+  ThreadModelV1
 } from 'vercel-sdk-provider';
 
 /**
@@ -11,7 +11,7 @@ Language model that is used by the AI SDK Core functions.
 */
 export type LanguageModel = LanguageModelV1;
 
-export type WorkflowModel = WorkflowModelV1;
+export type ThreadModel = ThreadModelV1;
 
 
 /**

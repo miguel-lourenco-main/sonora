@@ -4,30 +4,27 @@ import { cn } from '@kit/ui/utils'
 import { ChatList } from './chat-list'
 import { ChatPanel } from './chat-panel'
 import { useLocalStorage } from '../lib/hooks/use-local-storage'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useUIState, useAIState } from 'vercel-sdk-core/rsc'
-import { InputFile, Message } from '../lib/types'
+import { Message } from '../lib/types'
 import { useRouter } from 'next/navigation'
 import { useScrollAnchor } from '../lib/hooks/use-scroll-anchor'
 import { ScrollArea } from '@kit/ui/scroll-area'
-import { loadSession } from '../lib/actions'
-import { TreeViewElement } from '@kit/ui/tree-view-api'
-import { FillerComponent } from './filler-component'
+import { AI } from 'src/lib/chat/actions'
 
 export interface ChatProps extends React.ComponentProps<'div'> {
   id: string
   subscribedMessages: Message[]
-  threadsFiles: [InputFile[], TreeViewElement]
 }
 
-export function Chat({ id, className, subscribedMessages, threadsFiles }: ChatProps) {
+export function Chat({ id, className, subscribedMessages }: ChatProps) {
 
-  const [messages] = useUIState()
-  const [aiState] = useAIState()
+  const [messages] = useUIState<typeof AI>()
+  const [aiState] = useAIState<typeof AI>()
 
   useEffect(() => {
     // TODO: Complete when setup is properly done
-    aiState.done()
+    //aiState.done()
   }, [subscribedMessages])
   
   const router = useRouter()
@@ -38,35 +35,13 @@ export function Chat({ id, className, subscribedMessages, threadsFiles }: ChatPr
   useEffect(() => {
 
     setNewChatId(id)
-    loadSession(id)
 
   }, [id])
 
   const { messagesRef, scrollRef, visibilityRef, scrollToBottom, isVisible } = useScrollAnchor()
-
-  const chatRef = useRef<HTMLDivElement>(null)
-  const [chatHeight, setChatHeight] = useState<number | null>(null)
-
-  useEffect(() => {
-    if (chatRef.current) {
-      const resizeObserver = new ResizeObserver(entries => {
-        for (let entry of entries) {
-          if (entry.target === chatRef.current) {
-            setChatHeight(entry.contentRect.height)
-          }
-        }
-      })
-
-      resizeObserver.observe(chatRef.current)
-
-      return () => {
-        resizeObserver.disconnect()
-      }
-    }
-  }, [])
   
   return (
-    <div ref={chatRef} className='flex flex-row relative size-full group'>
+    <div className='flex flex-row relative size-full group'>
       <div className="w-full h-full relative flex flex-col justify-between">
         <ScrollArea className="" ref={scrollRef}>
           <div className={cn('pb-[200px] pt-24', className)} ref={messagesRef}>
@@ -86,7 +61,6 @@ export function Chat({ id, className, subscribedMessages, threadsFiles }: ChatPr
             isAtBottom={isVisible}
             scrollToBottom={scrollToBottom}
           />
-          <FillerComponent />
         </div>
       </div>
     </div>

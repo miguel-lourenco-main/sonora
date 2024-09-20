@@ -108,6 +108,9 @@ importers:
       '@kit/ui':
         specifier: workspace:^
         version: link:../../packages/ui
+      '@kit/vercel-ai-chat':
+        specifier: workspace:^
+        version: link:../../packages/vercel/vercel-ai-chat
       '@makerkit/data-loader-supabase-core':
         specifier: ^0.0.8
         version: 0.0.8(@supabase/postgrest-js@1.16.1)(@supabase/supabase-js@2.45.4)
@@ -2162,6 +2165,9 @@ importers:
       cohere-ai:
         specifier: ^7.6.2
         version: 7.13.1(@aws-sdk/client-sso-oidc@3.651.1)
+      edgen:
+        specifier: workspace:^
+        version: link:../../../../edgen-typescript
       eslint:
         specifier: ^8.57.0
         version: 8.57.1

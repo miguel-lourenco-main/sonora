@@ -1,12 +1,9 @@
 import * as React from 'react'
 
-import { Button } from '@kit/ui/button'
 import { PromptForm } from './prompt-form'
 import { ButtonScrollToBottom } from './button-scroll-to-bottom'
-import { IconShare } from '@kit/ui/icons'
 import { useUIState } from 'vercel-sdk-core/rsc'
 import type { AI } from '../lib/chat/actions'
-import { I18nComponent } from '@kit/i18n';
 import { useTranslation } from 'react-i18next'
 
 export interface ChatPanelProps {
@@ -28,8 +25,8 @@ export function ChatPanel({
 }: ChatPanelProps) {
   
   const [messages, setMessages] = useUIState<typeof AI>()
-  const [shareDialogOpen, setShareDialogOpen] = React.useState(false)
 
+  // TODO: add strings used in exampleMessages
   const { t } = useTranslation()
 
   const exampleMessages = [
@@ -55,7 +52,7 @@ export function ChatPanel({
     }
   ]
 
-  //   TODO: FIX example onClick
+  //   TODO: Fix example onClick, right now it input the message but it should submit when pressed
   return (
     <div className="relative flex flex-1">
       {/**peer-[[data-state=open]]:group-[]:lg:pl-[250px] peer-[[data-state=open]]:group-[]:xl:pl-[300px] */}
@@ -85,25 +82,6 @@ export function ChatPanel({
               </div>
             ))}
         </div>
-
-        {messages?.length >= 2 ? (
-          <div className="flex h-12 items-center justify-center">
-            <div className="flex space-x-2">
-              {id && title ? (
-                <>
-                  <Button
-                    variant="outline"
-                    onClick={() => setShareDialogOpen(true)}
-                  >
-                    <IconShare className="mr-2" />
-                    <I18nComponent i18nKey={'vercel:share'}/>
-                  </Button>
-                </>
-              ) : null}
-            </div>
-          </div>
-        ) : null}
-
         <div className="space-y-4 border-t px-4 py-2 shadow-lg sm:rounded-t-xl sm:border md:py-4">
           <PromptForm
             input={input}

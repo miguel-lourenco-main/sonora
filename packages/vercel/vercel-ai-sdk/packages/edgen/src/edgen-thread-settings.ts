@@ -1,4 +1,4 @@
-export interface EdgenChatSettings {
+export interface EdgenThreadSettings {
   /**
 Whether to inject a safety prompt before all conversations.
 

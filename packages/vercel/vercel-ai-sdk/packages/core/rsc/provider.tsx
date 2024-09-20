@@ -11,9 +11,29 @@ import type {
   OnSetAIState,
   OnGetUIState,
 } from './types';
+import { getAIStateDeltaPromise, sealMutableAIState, withAIState } from './ai-state';
 
-import { innerAction } from './server-provider';
-
+async function innerAction<T>(
+  {
+    action,
+    options,
+  }: { action: AIAction; options: InternalAIStateStorageOptions },
+  state: T,
+  ...args: unknown[]
+) {
+  'use server';
+  return await withAIState(
+    {
+      state,
+      options,
+    },
+    async () => {
+      const result = await action(...args);
+      sealMutableAIState();
+      return [getAIStateDeltaPromise() as Promise<T>, result];
+    },
+  );
+}
 function wrapAction<T = unknown>(
   action: AIAction,
   options: InternalAIStateStorageOptions,
@@ -26,7 +46,7 @@ export function createAI<
   UIState = any,
   Actions extends AIActions = {},
 >({
-  actions,
+  actions ,
   initialAIState,
   initialUIState,
 
@@ -75,6 +95,7 @@ export function createAI<
 }) {
   // Wrap all actions with our HoC.
   const wrappedActions: ServerWrappedActions = {};
+  
   for (const name in actions) {
     wrappedActions[name] = wrapAction(actions[name], {
       onSetAIState,

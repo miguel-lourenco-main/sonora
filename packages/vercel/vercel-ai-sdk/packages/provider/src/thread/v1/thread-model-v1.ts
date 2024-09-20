@@ -8,7 +8,7 @@ import { LanguageModelV1LogProbs } from '../../language-model/v1/language-model-
 /**
 Specification for a language model that implements the language model interface version 1.
  */
-export type WorkflowModelV1 = {
+export type ThreadModelV1 = {
   /**
 The language model must specify which language model interface
 version it implements. This will allow us to evolve the language
@@ -24,14 +24,9 @@ Name of the provider for logging purposes.
   readonly provider: string;
 
   /**
-Session ID for logging purposes.
+Thread ID for logging purposes.
    */
-  readonly sessionId: number;
-
-    /**
-Workflow ID for logging purposes.
-   */
-  readonly workflowId: number;
+  readonly threadId: string;
 
   /**
 Default object generation mode that should be used with this model when

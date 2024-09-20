@@ -3,7 +3,7 @@
 import { Chat } from '../lib/types'
 import { AnimatePresence, motion } from 'framer-motion'
 
-import { removeChat } from '../lib/actions'
+import { deleteThread } from '../lib/actions'
 
 import { SidebarActions } from './sidebar-actions'
 import { SidebarItem } from './sidebar-item'
@@ -28,7 +28,7 @@ export function SidebarItems({ chats }: SidebarItemsProps) {
               }}
             >
               <SidebarItem index={index} chat={chat}>
-                <SidebarActions chat={chat} removeChat={removeChat} />
+                <SidebarActions chat={chat} removeChat={({id, path}) => deleteThread(id, path)} />
               </SidebarItem>
             </motion.div>
           )

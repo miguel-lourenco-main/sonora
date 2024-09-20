@@ -1,6 +1,5 @@
 import {
-  LanguageModelV1,
-  WorkflowModelV1,
+  ThreadModelV1,
   LanguageModelV1CallWarning,
   LanguageModelV1FinishReason,
   LanguageModelV1StreamPart,
@@ -15,15 +14,14 @@ import {
 import { z } from 'zod';
 import { mapEdgenFinishReason } from './map-edgen-finish-reason';
 import {
-  EdgenChatSettings,
-} from './edgen-chat-settings';
+  EdgenThreadSettings,
+} from './edgen-thread-settings';
 import { edgenFailedResponseHandler } from './edgen-error';
 
-import { AgentType, Message } from 'edgen/models/components';
-import { getEdgenSDKClient, parseMessage } from './utils';
+import { AgentType } from 'edgen/models/components';
 
 
-type EdgenChatConfig = {
+type EdgenThreadConfig = {
   provider: string;
   baseURL: string;
   headers: () => Record<string, string | undefined>;
@@ -31,27 +29,24 @@ type EdgenChatConfig = {
   fetch?: typeof fetch;
 };
 
-export class EdgenChatWorkflow implements WorkflowModelV1 {
+export class EdgenThread implements ThreadModelV1 {
   readonly specificationVersion = 'v1';
   readonly defaultObjectGenerationMode = 'json';
 
-  readonly sessionId: number;
-  readonly workflowId: number;
+  readonly threadId: string;
   readonly apiKey: string;
 
-  readonly settings: EdgenChatSettings;
+  readonly settings: EdgenThreadSettings;
 
-  private readonly config: EdgenChatConfig;
+  private readonly config: EdgenThreadConfig;
 
   constructor(
-    sessionId: number,
-    workflowId: number,
-    settings: EdgenChatSettings,
-    config: EdgenChatConfig,
+    threadId: string,
+    settings: EdgenThreadSettings,
+    config: EdgenThreadConfig,
     apiKey: string,
   ) {
-    this.workflowId = workflowId;
-    this.sessionId = sessionId;
+    this.threadId = threadId;
     this.settings = settings;
     this.config = config;
     this.apiKey = apiKey;
@@ -70,7 +65,7 @@ export class EdgenChatWorkflow implements WorkflowModelV1 {
     frequencyPenalty,
     presencePenalty,
     seed,
-  }: Parameters<WorkflowModelV1['doGenerate']>[0]) {
+  }: Parameters<ThreadModelV1['doGenerate']>[0]) {
     const type = mode.type;
 
     const warnings: LanguageModelV1CallWarning[] = [];
@@ -150,8 +145,8 @@ export class EdgenChatWorkflow implements WorkflowModelV1 {
   }
 
   async doGenerate(
-    options: Parameters<WorkflowModelV1['doGenerate']>[0],
-  ): Promise<Awaited<ReturnType<WorkflowModelV1['doGenerate']>>> {
+    options: Parameters<ThreadModelV1['doGenerate']>[0],
+  ): Promise<Awaited<ReturnType<ThreadModelV1['doGenerate']>>> {
 
     const { args, warnings } = this.getArgs(options);
 
@@ -174,19 +169,7 @@ export class EdgenChatWorkflow implements WorkflowModelV1 {
 
     try{
 
-      const edgen = getEdgenSDKClient({oAuth2PasswordBearer: this.apiKey})
-
-      const response = await edgen.runSessionWorkflowSessionsSessionIdWorkflowWorkflowIdRunPost({
-        sessionId: this.sessionId, 
-        workflowId: this.workflowId, 
-        runWorkflowRequest: args
-      })
-
-      // Get final message from meta
-      // TODO: fix this
-      const processedMessges = {} as any//proccessWorkflowMessages(response.messages)
-
-      finalMessage = processedMessges[1].content
+      // TODO:
 
     }catch(e){
       console.log(e)
@@ -211,12 +194,12 @@ export class EdgenChatWorkflow implements WorkflowModelV1 {
   }
 
   async doStream(
-    options: Parameters<WorkflowModelV1['doStream']>[0],
-  ): Promise<Awaited<ReturnType<WorkflowModelV1['doStream']>>> {
+    options: Parameters<ThreadModelV1['doStream']>[0],
+  ): Promise<Awaited<ReturnType<ThreadModelV1['doStream']>>> {
     const { args, warnings } = this.getArgs(options);
 
     const { responseHeaders, value: response } = await postJsonToApi({
-      url: `${this.config.baseURL}/sessions/${this.sessionId}/workflow/${this.workflowId}/run`,
+      url: `${this.config.baseURL}/thread/${this.threadId}`,
       //headers: this.config.headers(),
       body: {
         ...args,

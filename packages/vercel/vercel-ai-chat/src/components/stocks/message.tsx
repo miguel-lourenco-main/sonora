@@ -7,7 +7,7 @@ import { CodeBlock } from '@kit/ui/codeblock'
 import { MemoizedReactMarkdown } from '../markdown'
 import remarkGfm from 'remark-gfm'
 import remarkMath from 'remark-math'
-import { StreamableValue, useStreamableValue } from '@kit/vercel-sdk-core/rsc'
+import { StreamableValue } from 'vercel-sdk-core/rsc'
 import { useStreamableText } from '../../lib/hooks/use-streamable-text'
 
 import { Skeleton } from '@kit/ui/skeleton'

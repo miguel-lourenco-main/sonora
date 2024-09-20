@@ -1,21 +1,22 @@
 'use client'
 
-import * as React from 'react'
 import Textarea from 'react-textarea-autosize'
 
 import { useActions, useUIState } from 'vercel-sdk-core/rsc'
 
-import { type AI } from '../lib/chat/actions'
+import { UIState, type AI } from '../lib/chat/actions'
 import { Button } from '@kit/ui/button'
 import { IconArrowElbow, IconPlus } from '@kit/ui/icons'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@kit/ui/tooltip'
 import { useEnterSubmit } from '../lib/hooks/use-enter-submit'
 import { usePathname, useRouter } from 'next/navigation'
 import { useTranslation } from 'react-i18next'
-import { processSubmitMessage } from '../lib/client-utils'
 
 import { I18nComponent } from '@kit/i18n'
 import { CHAT_PAGE_PATH } from '@kit/shared/constants'
+import { useCallback, useEffect, useRef } from 'react'
+import { nanoid } from 'nanoid'
+import { BotMessage, SkeletonMessage, UserMessage } from './stocks/message'
 
 export function PromptForm({
   input,
@@ -27,26 +28,62 @@ export function PromptForm({
   scrollToBottom: () => void
 }) {
 
-  const router = useRouter()
-  const { formRef, onKeyDown } = useEnterSubmit()
-  const inputRef = React.useRef<HTMLTextAreaElement>(null)
-  const { submitUserMessage } = useActions()
+  const inputRef = useRef<HTMLTextAreaElement>(null)
   const [_, setMessages] = useUIState<typeof AI>()
 
+  const { formRef, onKeyDown } = useEnterSubmit()
+  //const { submitUserMessage } = useActions()
   const { t } = useTranslation()
   
   const pathname = usePathname()
+  const router = useRouter()
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus()
     }
   }, [])
 
-  // TODO: check if having this many dependencies affects performance
-  const submitMessage = React.useCallback((value: string) => {
-    processSubmitMessage(setMessages, value, submitUserMessage, router, pathname, t, scrollToBottom)
-  }, [setMessages, submitUserMessage, router, pathname, t, scrollToBottom])
+  const submitMessage = useCallback(async (value: string) => {
+      
+    setMessages(currentMessages => [
+        ...currentMessages,
+        {
+            id: nanoid(),
+            display: <UserMessage>{value}</UserMessage>
+        },
+        {
+            id: nanoid(),
+            display: <SkeletonMessage event={t('vercel:thinking')} />
+        }
+    ])
+  
+    if(scrollToBottom)scrollToBottom()
+  
+    // Submit and get response message
+    /**
+     *  const responseMessage = await submitUserMessage(value)
+  
+        const message = {
+          id: responseMessage.id,
+          display: (responseMessage.display as string).startsWith("vercel:") 
+                  ? <BotMessage content={t(responseMessage.display)} />
+                  : <BotMessage content={responseMessage.display} />
+        }
+     */
+
+    const message = {id: nanoid(), display: <BotMessage content={t('vercel:thinking')} />}
+  
+    setMessages(currentMessages => [...currentMessages.slice(0, -1), message])
+  
+    if(scrollToBottom) scrollToBottom() // TODO: try it for now but I might need to remove this
+  
+    /**
+     * if (pathname !== `${CHAT_PAGE_PATH}/${responseMessage.chatId}`) {
+      router.push(`${CHAT_PAGE_PATH}/${responseMessage.chatId}`)
+    }
+     */
+  }, [setMessages, pathname, t, scrollToBottom])
 
   return (
     <form

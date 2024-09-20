@@ -12,7 +12,7 @@ import {
   CallWarning,
   FinishReason,
   LogProbs,
-  WorkflowModel
+  ThreadModel
 } from '../types';
 import { retryWithExponentialBackoff } from '../util/retry-with-exponential-backoff';
 import { TokenUsage, calculateTokenUsage } from './token-usage';
@@ -37,7 +37,7 @@ This function does not stream the output. If you want to stream the output, use 
 A result object that contains the generated text, the results of the tool calls, and additional information.
  */
 export async function generateTextWorkflow<TOOLS extends Record<string, CoreTool>>({
-  sessionWorkflow,
+  threadModel,
   system,
   prompt,
   messages,
@@ -50,7 +50,7 @@ export async function generateTextWorkflow<TOOLS extends Record<string, CoreTool
     /**
 The session /& workflow to use
      */
-    sessionWorkflow: WorkflowModel;
+    threadModel: ThreadModel;
 
     /**
 Maximal number of automatic roundtrips for tool calls.
@@ -76,7 +76,7 @@ By default, it's set to 0, which will disable the feature.
   const callSettings = prepareCallSettings(settings);
   const promptMessages = convertToLanguageModelPrompt(validatedPrompt);
 
-  let currentModelResponse: Awaited<ReturnType<WorkflowModel['doGenerate']>>;
+  let currentModelResponse: Awaited<ReturnType<ThreadModel['doGenerate']>>;
   let currentToolCalls: ToToolCallArray<TOOLS> = [];
   let currentToolResults: ToToolResultArray<TOOLS> = [];
   let roundtrips = 0;
@@ -84,7 +84,7 @@ By default, it's set to 0, which will disable the feature.
 
   do {
     currentModelResponse = await retry(() => {
-      return sessionWorkflow.doGenerate({
+      return threadModel.doGenerate({
         mode,
         ...callSettings,
         // once we have a roundtrip, we need to switch to messages format:

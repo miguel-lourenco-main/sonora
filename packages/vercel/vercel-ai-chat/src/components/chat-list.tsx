@@ -2,7 +2,6 @@
 
 import { Separator } from '@kit/ui/separator'
 import { UIState } from '../lib/chat/actions'
-import { FillerComponent } from './filler-component'
 
 export interface ChatList {
   messages: UIState
@@ -24,7 +23,6 @@ export function ChatList({ messages, isShared }: ChatList) {
           </div>
         ))}
       </div>
-      <FillerComponent />
     </div>
   )
 }

@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, useId } from 'react'
 import { scaleLinear } from 'd3-scale'
 import { subMonths, format } from 'date-fns'
 import { useResizeObserver } from 'usehooks-ts'
-import { useAIState } from '@kit/vercel-sdk-core/rsc'
+import { useAIState } from 'vercel-sdk-core/rsc'
 
 interface Stock {
   symbol: string

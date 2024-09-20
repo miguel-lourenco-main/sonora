@@ -1,5 +1,5 @@
 import { I18nComponent } from '@kit/i18n'
-import { clearChats } from '../lib/actions'
+import { deleteAllThreads } from '../lib/actions'
 import { ClearHistory } from './clear-history'
 import { SidebarItems } from './sidebar-items'
 import { Chat } from '../lib/types'
@@ -31,7 +31,7 @@ export async function SidebarList({ auth_token, chats }: SidebarListProps) {
         {/** <ThemeToggle /> */}
         <ClearHistory
           auth_token={auth_token}
-          clearChats={clearChats}
+          clearChats={deleteAllThreads}
           isEnabled={chats?.length > 0}
         />
       </div>
