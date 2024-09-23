@@ -36,5 +36,9 @@
     "no_files": "No files",
     "session_files": "Session Files",
     "noWorkflows": "No workflows",
-    "files": "Files"
+    "files": "Files",
+    "create_thread": "Create Thread",
+    "create_thread_description": "Create a new thread to chat with your agent.",
+    "create": "Create",
+    "select_knowledge_bases": "Select knowledge bases"
 }

@@ -1,6 +1,6 @@
-import { Edgen } from "edgen";
-import { HTTPClient } from "edgen/lib/http";
-import { RetryConfig } from "edgen/lib/retries";
+import { Edgen } from "edgen-typescript";
+import { HTTPClient } from "edgen-typescript/dist/lib/http";
+import { RetryConfig } from "edgen-typescript/dist/lib/retries";
 import { EDGEN_BACKEND_URL } from "./constants" // TODO: there are multiple instances of this, we should consolidate it, or use internal url as .envvariable
 
 export const parseMessage = (message: any) => {
@@ -19,20 +19,20 @@ export const parseMessage = (message: any) => {
 
 // TODO: there are multiple instances of this function in the codebase, we should consolidate it
 export function getEdgenSDKClient({
-    oAuth2PasswordBearer,
+    bearerAuth,
     httpClient,
     serverIdx,
     serverURL,
     retryConfig
 }: {
-    oAuth2PasswordBearer?: string | (() => Promise<string>);
+    bearerAuth?: string | (() => Promise<string>);
     httpClient?: HTTPClient;
     serverIdx?: number;
     serverURL?: string;
     retryConfig?: RetryConfig;
 }){
     return new Edgen({
-        oAuth2PasswordBearer,
+        bearerAuth,
         httpClient,
         serverIdx,
         serverURL: serverURL ?? EDGEN_BACKEND_URL,

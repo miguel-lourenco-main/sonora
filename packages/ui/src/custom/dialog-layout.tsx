@@ -59,44 +59,46 @@ export default function DialogLayout({
   }, [isControlled, isOpen, externalSetOpen, onOpen, reset]);
 
   return (
-      <Dialog 
-        open={isOpen} 
-        onOpenChange={handleOpenChange}
+    <Dialog 
+      open={isOpen} 
+      onOpenChange={handleOpenChange}
+    >
+      <DialogTrigger asChild>
+        <div>
+            {tooltip ? (
+              <TooltipProvider>
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        {trigger()}
+                    </TooltipTrigger>
+                    <TooltipContent className='bg-muted'>
+                        <p>{tooltip}</p>
+                    </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            ):(
+                trigger()
+            )}
+        </div>
+      </DialogTrigger>
+      <DialogContent 
+        onInteractOutside={(event) => event.preventDefault()}
+        optionalClose={() => handleOpenChange(false)}
+        className={cn("max-w-[90vw] max-h-[90vh] size-fit", contentClassName)} 
       >
-          <DialogTrigger asChild>
-              <div>
-                  {tooltip ? (
-                    <TooltipProvider>
-                      <Tooltip>
-                          <TooltipTrigger asChild>
-                              {trigger()}
-                          </TooltipTrigger>
-                          <TooltipContent className='bg-muted'>
-                              <p>{tooltip}</p>
-                          </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  ):(
-                      trigger()
-                  )}
-              </div>
-          </DialogTrigger>
-          <DialogContent 
-            onInteractOutside={(event) => event.preventDefault()}
-            optionalClose={() => handleOpenChange(false)}
-            className={cn("max-w-[90vw] max-h-[90vh] size-fit", contentClassName)} 
-          >
-              <DialogHeader >
-                  <DialogTitle>{title}</DialogTitle>
-                  <DialogDescription>
-                      {description}
-                  </DialogDescription>
-              </DialogHeader>
-              {children}
-              <DialogFooter>
-                {footer && footer()}
-              </DialogFooter>
-          </DialogContent>
-      </Dialog>
+        <DialogHeader >
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>
+              {description}
+          </DialogDescription>
+        </DialogHeader>
+        {children}
+        {footer && (
+          <DialogFooter>
+            {footer()}
+          </DialogFooter>
+        )}
+      </DialogContent>
+    </Dialog>
   );
 }

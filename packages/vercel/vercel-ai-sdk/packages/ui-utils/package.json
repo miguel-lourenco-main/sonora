@@ -15,7 +15,8 @@
     "clean": "rm -rf dist && rm -rf .turbo && rm -rf node_modules",
     "lint": "eslint \"./**/*.ts*\"",
     "type-check": "tsc --noEmit",
-    "prettier-check": "prettier --check \"./**/*.ts*\""
+    "prettier-check": "prettier --check \"./**/*.ts*\"",
+    "prepare": "[ -d \"dist\" ] || pnpm build"
   },
   "exports": {
     "./package.json": "./package.json",

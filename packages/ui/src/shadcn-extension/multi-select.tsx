@@ -171,6 +171,7 @@ const MultiSelector = ({
           break;
 
         case "Enter":
+          console.log('enter')
           setOpen(true);
           break;
 
@@ -232,7 +233,7 @@ const MultiSelectorTrigger = forwardRef<
     <div
       ref={ref}
       className={cn(
-        "flex flex-wrap gap-1 p-1 py-2 ring-1 ring-muted rounded-lg bg-background",
+        "flex flex-wrap gap-1 p-1 py-2 ring-1 ring-muted-foreground/30 rounded-lg bg-background",
         {
           "ring-1 focus-within:ring-ring": activeIndex === -1,
         },
@@ -264,7 +265,7 @@ const MultiSelectorTrigger = forwardRef<
               </Badge>
             ))}
         </div>
-        {value.length > 0 && <div className="w-full flex justify-center"><Separator className="w-[88%] mt-1 opacity-50"/></div>}
+        {value.length > 0 && <div className="w-full flex justify-center"><Separator className="w-[88%] mt-1"/></div>}
         {children}
     </div>
   );
@@ -295,7 +296,9 @@ const MultiSelectorInput = forwardRef<
       onValueChange={activeIndex === -1 ? setInputValue : undefined}
       onSelect={handleSelect}
       onBlur={() => setOpen(false)}
-      onFocus={() => setOpen(true)}
+      onFocus={() => {
+        setOpen(true)
+      }}
       onClick={() => setActiveIndex(-1)}
       className={cn(
         "ml-2 bg-transparent outline-none placeholder:text-muted-foreground flex-1",

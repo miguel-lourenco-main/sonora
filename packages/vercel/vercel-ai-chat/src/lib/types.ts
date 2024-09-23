@@ -1,6 +1,11 @@
-import { Message as SDKMessage, Session as SDKSession } from 'edgen/models/components'
+import { Message as SDKMessage, Thread as SDKSession } from 'edgen-typescript/dist/models/components'
+import { z } from "zod";
+import { uploadFilesFormSchema } from "./schemas/upload-files";
+import { createThreadFormSchema } from "./schemas/create-thread";
 
-// TODO: replace and export types put into shared
+export type UploadFilesFormData = z.infer<typeof uploadFilesFormSchema>;
+export type CreateThreadFormData = z.infer<typeof createThreadFormSchema>;
+
 export type Message = SDKMessage
 
 export interface Chat extends SDKSession{

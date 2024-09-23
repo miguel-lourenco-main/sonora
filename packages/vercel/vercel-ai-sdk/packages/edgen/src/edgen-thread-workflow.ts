@@ -18,8 +18,6 @@ import {
 } from './edgen-thread-settings';
 import { edgenFailedResponseHandler } from './edgen-error';
 
-import { AgentType } from 'edgen/models/components';
-
 
 type EdgenThreadConfig = {
   provider: string;
@@ -335,7 +333,7 @@ const edgenChatResponseSchema = z.object({
 });
 
 const edgenChatChunkSchema = z.object({
-  role: z.enum(Object.values(AgentType) as [string, ...string[]]).optional(), // TODO: might need to fix this
+  role: z.enum(["assistant", "user", "system"]).optional(), // TODO: might need to fix this
   content: z.string().nullable().optional(),
 });
 

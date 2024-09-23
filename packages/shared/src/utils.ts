@@ -1,8 +1,8 @@
 import { COLLAPSE_PATHS, COLLAPSE_PATHS_FROM } from "./constants";
 
-import { Edgen } from "edgen";
-import { HTTPClient } from "edgen/lib/http";
-import { RetryConfig } from "edgen/lib/retries";
+import { Edgen } from "edgen-typescript";
+import { HTTPClient } from "edgen-typescript/lib/http";
+import { RetryConfig } from "edgen-typescript/lib/retries";
 import { EDGEN_BACKEND_URL } from "./constants"
 
 /**

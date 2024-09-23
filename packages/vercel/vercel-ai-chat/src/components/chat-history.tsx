@@ -4,7 +4,7 @@ import * as React from 'react'
 import { SidebarList } from './sidebar-list'
 import { I18nComponent } from '@kit/i18n'
 import { Chat } from '../lib/types'
-import { NewChat } from './new-chat'
+import NewThreadDialog from './new-chat'
 
 export async function ChatHistory({ chats }: { chats: Chat[] }) {
 
@@ -16,7 +16,7 @@ export async function ChatHistory({ chats }: { chats: Chat[] }) {
         </h4>
       </div>
       <div className="mb-2 px-2">
-        <NewChat />
+        <NewThreadDialog />
       </div>
       <React.Suspense
         fallback={

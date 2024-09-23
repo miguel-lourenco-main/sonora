@@ -17,7 +17,8 @@
     "clean": "rm -rf dist && rm -rf react/dist && rm -rf rsc/dist && rm -rf .turbo && rm -rf node_modules && rm -rf rsc/node_modules && rm -rf react/node_modules",
     "lint": "eslint \"./**/*.ts*\"",
     "type-check": "tsc --noEmit",
-    "prettier-check": "prettier --check \"./**/*.ts*\""
+    "prettier-check": "prettier --check \"./**/*.ts*\"",
+    "prepare": "pnpm build"
   },
   "exports": {
     "./package.json": "./package.json",
@@ -74,7 +75,7 @@
     "@vercel/ai-tsconfig": "workspace:*",
     "@vitejs/plugin-react": "4.2.0",
     "cohere-ai": "^7.6.2",
-    "edgen": "workspace:^",
+    "edgen-typescript": "workspace:^",
     "eslint": "^8.57.0",
     "eslint-config-vercel-ai": "workspace:*",
     "jsdom": "^24.0.0",

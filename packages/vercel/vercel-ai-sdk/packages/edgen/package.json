@@ -14,7 +14,8 @@
     "clean": "rm -rf dist && rm -rf .turbo && rm -rf node_modules",
     "lint": "eslint \"./**/*.ts*\"",
     "type-check": "tsc --noEmit",
-    "prettier-check": "prettier --check \"./**/*.ts*\""
+    "prettier-check": "prettier --check \"./**/*.ts*\"",
+    "prepare": "pnpm build"
   },
   "exports": {
     ".": {
@@ -26,7 +27,7 @@
   "dependencies": {
     "@kit/shared": "workspace:*",
     "@kit/supabase": "workspace:*",
-    "edgen": "workspace:*",
+    "edgen-typescript": "workspace:*",
     "uuid": "^9.0.1",
     "vercel-sdk-provider": "workspace:*",
     "vercel-sdk-provider-utils": "workspace:*"
