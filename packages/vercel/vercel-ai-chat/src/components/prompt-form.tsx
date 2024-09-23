@@ -2,7 +2,7 @@
 
 import Textarea from 'react-textarea-autosize'
 
-import { useActions, useUIState } from 'vercel-sdk-core/rsc'
+import { getAIState, useActions, useAIState, useUIState } from 'vercel-sdk-core/rsc'
 
 import { UIState, type AI } from '../lib/chat/actions'
 import { Button } from '@kit/ui/button'
@@ -13,10 +13,12 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useTranslation } from 'react-i18next'
 
 import { I18nComponent } from '@kit/i18n'
-import { CHAT_PAGE_PATH } from '@kit/shared/constants'
+import { EDGEN_CHAT_PAGE_PATH } from '@kit/shared/constants'
 import { useCallback, useEffect, useRef } from 'react'
 import { nanoid } from 'nanoid'
 import { BotMessage, SkeletonMessage, UserMessage } from './stocks/message'
+import useLocalStorage from '../lib/hooks/use-local-storage'
+
 
 export function PromptForm({
   input,
@@ -31,8 +33,10 @@ export function PromptForm({
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const [_, setMessages] = useUIState<typeof AI>()
 
+  const [newThreadId, setNewThreadId] = useLocalStorage('newThreadId', '')
+
   const { formRef, onKeyDown } = useEnterSubmit()
-  //const { submitUserMessage } = useActions()
+  const { submitUserMessage } = useActions()
   const { t } = useTranslation()
   
   const pathname = usePathname()
@@ -47,33 +51,26 @@ export function PromptForm({
   const submitMessage = useCallback(async (value: string) => {
       
     setMessages(currentMessages => [
-        ...currentMessages,
-        {
-            id: nanoid(),
-            display: <UserMessage>{value}</UserMessage>
-        },
-        {
-            id: nanoid(),
-            display: <SkeletonMessage event={t('vercel:thinking')} />
-        }
+      ...currentMessages,
+      {
+        id: nanoid(),
+        display: <UserMessage>{value}</UserMessage>
+      },
+      {
+        id: nanoid(),
+        display: <SkeletonMessage event={t('vercel:thinking')} />
+      }
     ])
   
-    if(scrollToBottom)scrollToBottom()
+    const responseMessage = await submitUserMessage(newThreadId, value)
   
-    // Submit and get response message
-    /**
-     *  const responseMessage = await submitUserMessage(value)
-  
-        const message = {
-          id: responseMessage.id,
-          display: (responseMessage.display as string).startsWith("vercel:") 
-                  ? <BotMessage content={t(responseMessage.display)} />
-                  : <BotMessage content={responseMessage.display} />
-        }
-     */
+    const message = {
+      id: responseMessage.id,
+      display: (responseMessage.display as string).startsWith("vercel:") 
+              ? <BotMessage content={t(responseMessage.display)} />
+              : <BotMessage content={responseMessage.display} />
+    }
 
-    const message = {id: nanoid(), display: <BotMessage content={t('vercel:thinking')} />}
-  
     setMessages(currentMessages => [...currentMessages.slice(0, -1), message])
   
     if(scrollToBottom) scrollToBottom() // TODO: try it for now but I might need to remove this
@@ -113,8 +110,8 @@ export function PromptForm({
               size="icon"
               className="absolute left-0 top-[14px] flex lg:hidden size-8 rounded-full bg-background p-0 sm:left-4"
               onClick={() => {
-                if (pathname !== CHAT_PAGE_PATH) {
-                  router.push(CHAT_PAGE_PATH)
+                if (pathname !== EDGEN_CHAT_PAGE_PATH) {
+                  router.push(EDGEN_CHAT_PAGE_PATH)
                 } else {
                   setMessages([])
                 }

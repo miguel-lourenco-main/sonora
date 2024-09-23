@@ -1,4 +1,4 @@
-import { Message as SDKMessage, Thread as SDKSession } from 'edgen-typescript/dist/models/components'
+import { Message as SDKMessage, Thread as SDKThread } from 'edgen-typescript/dist/models/components'
 import { z } from "zod";
 import { uploadFilesFormSchema } from "./schemas/upload-files";
 import { createThreadFormSchema } from "./schemas/create-thread";
@@ -8,9 +8,9 @@ export type CreateThreadFormData = z.infer<typeof createThreadFormSchema>;
 
 export type Message = SDKMessage
 
-export interface Chat extends SDKSession{
+export interface UIThread extends SDKThread{
   path: string
-  title:string
+  title: string
   messages: Message[]
   sharePath?: string
 }

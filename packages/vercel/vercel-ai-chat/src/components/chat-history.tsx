@@ -3,10 +3,10 @@ import * as React from 'react'
 
 import { SidebarList } from './sidebar-list'
 import { I18nComponent } from '@kit/i18n'
-import { Chat } from '../lib/types'
+import { UIThread } from '../lib/types'
 import NewThreadDialog from './new-chat'
 
-export async function ChatHistory({ chats }: { chats: Chat[] }) {
+export async function ChatHistory({ threads }: { threads: UIThread[] }) {
 
   return (
     <div className="flex flex-col h-full">
@@ -31,7 +31,7 @@ export async function ChatHistory({ chats }: { chats: Chat[] }) {
         }
       >
         {/* @ts-ignore */}
-        <SidebarList chats={chats} />
+        <SidebarList threads={threads} />
       </React.Suspense>
     </div>
   )

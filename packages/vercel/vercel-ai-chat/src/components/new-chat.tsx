@@ -12,9 +12,11 @@ import { useForm, Controller } from "react-hook-form";
 import { createThreadFormSchema } from '../lib/schemas/create-thread'
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CreateThreadFormData } from '../lib/types'
+import { Input } from '@kit/ui/input'
+import { createThread } from '../lib/actions'
 
-
-export default function NewThreadDialog() {
+/**
+ * export default function NewThreadDialog() {
 
   const [open, setOpen] = useState(false)
 
@@ -87,6 +89,98 @@ export default function NewThreadDialog() {
           )}
         />
       </div>
+    </DialogLayout>
+  )
+}
+*/
+
+export default function NewThreadDialog() {
+
+  const [ open, setOpen ] = useState(false)
+  const { t } = useTranslation('custom')
+
+  const defaultName = "Default_Session"
+
+  const { control, handleSubmit, formState: { errors }, setValue } = useForm<CreateThreadFormData>({
+    resolver: zodResolver(createThreadFormSchema),
+    defaultValues: {
+      name: defaultName,
+    },
+  })
+
+  const resetForm = () => {
+    setValue('name', defaultName)
+  }
+
+
+  // TODO: create dialog layouts that support 1 or multiple forms
+  
+  return (
+    <DialogLayout
+      externalOpen={open}
+      externalSetOpen={setOpen}
+      trigger={ () => 
+        <TooltipComponent 
+          trigger={
+            <Button
+              onClick={() => {
+                setOpen(true)
+              }}
+              variant={'outline'}
+              className={'h-10 w-full justify-start bg-zinc-50 px-4 shadow-none transition-colors hover:bg-zinc-200/40 dark:bg-zinc-900 dark:hover:bg-zinc-300/10' }
+            >
+              <IconPlus className="-translate-x-2 stroke-2" />
+              <I18nComponent i18nKey={'vercel:newChat'}/>
+            </Button>
+          } 
+          content={<div>{t('create_thread')}</div>} 
+        />
+      }
+      reset={() => {
+      }}
+      footer={() => (
+        <></>
+      )}
+      title={t('create_thread')}
+      description={t('create_thread_description')}
+      contentClassName="w-[40%] max-h-[26%] flex flex-col"
+    >
+      <form 
+        onSubmit={handleSubmit(async (data) => {
+
+          const value = data.name.trim()
+          if (!value) return
+
+          // Optimistically add user message UI
+          await createThread(value)
+          resetForm()
+        })} 
+        className="flex flex-col items-center justify-center =w-full h-fit"
+      >
+        <Controller
+          control={control}
+          name="name"
+          render={({ field }) => (
+            <Input
+              className="w-[26rem] justify-end"
+              value={field.value}
+              onChange={(value) => {
+                field.onChange(value)
+              }} 
+            />
+          )}
+        />
+        <div className="flex w-full justify-end">
+          <Button
+            type="submit"
+            onClick={() => {
+              setOpen(false)
+            }}
+          >
+            {t('create')}
+          </Button>
+        </div>
+      </form>
     </DialogLayout>
   )
 }

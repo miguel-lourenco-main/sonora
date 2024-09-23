@@ -3,14 +3,14 @@
 import { cn } from '@kit/ui/utils'
 import { ChatList } from './chat-list'
 import { ChatPanel } from './chat-panel'
-import { useLocalStorage } from '../lib/hooks/use-local-storage'
+import useLocalStorage from '../lib/hooks/use-local-storage'
 import { useEffect, useState } from 'react'
 import { useUIState, useAIState } from 'vercel-sdk-core/rsc'
 import { Message } from '../lib/types'
 import { useRouter } from 'next/navigation'
 import { useScrollAnchor } from '../lib/hooks/use-scroll-anchor'
 import { ScrollArea } from '@kit/ui/scroll-area'
-import { AI } from 'src/lib/chat/actions'
+import { AI } from '../lib/chat/actions'
 
 export interface ChatProps extends React.ComponentProps<'div'> {
   id: string
@@ -30,11 +30,11 @@ export function Chat({ id, className, subscribedMessages }: ChatProps) {
   const router = useRouter()
 
   const [input, setInput] = useState('')
-  const [_, setNewChatId] = useLocalStorage('newChatId', id)
+  const [_, setNewThreadId] = useLocalStorage('newThreadId', id)
 
   useEffect(() => {
 
-    setNewChatId(id)
+    setNewThreadId(id)
 
   }, [id])
 

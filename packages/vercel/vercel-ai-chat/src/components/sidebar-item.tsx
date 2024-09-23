@@ -10,25 +10,25 @@ import { motion } from 'framer-motion'
 import { buttonVariants } from '@kit/ui/button'
 import { IconMessage, IconUsers } from '@kit/ui/icons'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@kit/ui/tooltip'
-import { useLocalStorage } from '../lib/hooks/use-local-storage'
-import { type Chat } from '../lib/types'
+import useLocalStorage from '../lib/hooks/use-local-storage'
+import { type UIThread } from '../lib/types'
 import { cn } from '@kit/ui/utils'
 import { I18nComponent } from '@kit/i18n'
 
 interface SidebarItemProps {
   index: number
-  chat: Chat
+  thread: UIThread
   children: React.ReactNode
 }
 
-export function SidebarItem({ index, chat, children }: SidebarItemProps) {
+export function SidebarItem({ index, thread, children }: SidebarItemProps) {
   const pathname = usePathname()
 
-  const isActive = pathname === chat.path
-  const [newChatId, setNewChatId] = useLocalStorage('newChatId', null)
-  const shouldAnimate = index === 0 && isActive && newChatId
+  const isActive = pathname === thread.path
+  const [newThreadId, setNewThreadId] = useLocalStorage('newThreadId', null)
+  const shouldAnimate = index === 0 && isActive && newThreadId
 
-  if (!chat?.id) return null
+  if (!thread?.id) return null
 
   return (
     <motion.div
@@ -51,7 +51,7 @@ export function SidebarItem({ index, chat, children }: SidebarItemProps) {
       }}
     >
       <div className="absolute left-2 top-1 flex size-6 items-center justify-center">
-        {chat.sharePath ? (
+        {thread.sharePath ? (
           <TooltipProvider>
             <Tooltip delayDuration={1000}>
               <TooltipTrigger
@@ -70,7 +70,7 @@ export function SidebarItem({ index, chat, children }: SidebarItemProps) {
         )}
       </div>
       <Link
-        href={chat.path}
+        href={thread.path}
         className={cn(
           buttonVariants({ variant: 'ghost' }),
           'group w-full px-8 transition-colors hover:bg-zinc-200/40 dark:hover:bg-zinc-300/10',
@@ -79,11 +79,11 @@ export function SidebarItem({ index, chat, children }: SidebarItemProps) {
       >
         <div
           className="relative max-h-5 flex-1 select-none overflow-hidden text-ellipsis break-all"
-          title={chat.title}
+          title={thread.title}
         >
           <span className="whitespace-nowrap">
             {shouldAnimate ? (
-              chat.title.split('').map((character, index) => (
+              thread.title.split('').map((character, index) => (
                 <motion.span
                   key={index}
                   variants={{
@@ -105,8 +105,8 @@ export function SidebarItem({ index, chat, children }: SidebarItemProps) {
                     staggerChildren: 0.05
                   }}
                   onAnimationComplete={() => {
-                    if (index === chat.title.length - 1) {
-                      setNewChatId(null)
+                    if (index === thread.title.length - 1) {
+                      setNewThreadId(null)
                     }
                   }}
                 >
@@ -114,7 +114,7 @@ export function SidebarItem({ index, chat, children }: SidebarItemProps) {
                 </motion.span>
               ))
             ) : (
-              <span>{chat.title}</span>
+              <span>{thread.title}</span>
             )}
           </span>
         </div>

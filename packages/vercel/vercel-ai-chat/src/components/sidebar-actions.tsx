@@ -4,7 +4,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import * as React from 'react'
 import { toast } from 'sonner'
 
-import { ServerActionResult, type Chat } from '../lib/types'
+import { ServerActionResult, type UIThread } from '../lib/types'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -21,14 +21,14 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@kit/u
 import { getAuthToken } from '@kit/supabase/get-auth-token'
 import { revalidatePath } from 'next/cache'
 import { I18nComponent } from '@kit/i18n'
-import { CHAT_PAGE_PATH } from '@kit/shared/constants'
+import { EDGEN_CHAT_PAGE_PATH } from '@kit/shared/constants'
 
 interface SidebarActionsProps {
-  chat: Chat
-  removeChat: (args: { id: string; path: string }) => ServerActionResult<void>
+  thread: UIThread
+  removeThread: (args: { id: string; path: string }) => ServerActionResult<void>
 }
 
-export function SidebarActions({ chat, removeChat }: SidebarActionsProps) {
+export function SidebarActions({ thread, removeThread }: SidebarActionsProps) {
   const router = useRouter()
   const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false)
   const [shareDialogOpen, setShareDialogOpen] = React.useState(false)
@@ -98,11 +98,11 @@ export function SidebarActions({ chat, removeChat }: SidebarActionsProps) {
 
                   const auth_token = await getAuthToken()
 
-                  if(auth_token && chat.id){
+                  if(auth_token && thread.id){
 
-                    const result = await removeChat({
-                      id: chat.id.toString(),
-                      path: chat.path,
+                    const result = await removeThread({
+                      id: thread.id.toString(),
+                      path: thread.path,
                     })
   
                     if (result && 'error' in result) {
@@ -112,8 +112,8 @@ export function SidebarActions({ chat, removeChat }: SidebarActionsProps) {
 
                     setDeleteDialogOpen(false)
 
-                    if(pathname === chat.path) router.push(CHAT_PAGE_PATH)
-                    revalidatePath(CHAT_PAGE_PATH)
+                    if(pathname === thread.path) router.push(EDGEN_CHAT_PAGE_PATH)
+                    revalidatePath(EDGEN_CHAT_PAGE_PATH)
                     toast.success('Chat deleted')
                   }
                 })

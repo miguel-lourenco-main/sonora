@@ -8,22 +8,24 @@ import {
 import {
   nanoid,
 } from '../utils'
-import { getThread, createThread } from '../actions'
-import { Chat, Message } from '../types'
+import { createThread, runThread, getMessages } from '../actions'
+import { Message } from '../types'
 import { getAuthToken } from '@kit/supabase/get-auth-token'
-import { generateTextWorkflow } from 'vercel-sdk-core'
-import { createEdgen } from 'vercel-sdk-edgen'
+//import { generateTextWorkflow } from 'vercel-sdk-core'
+//import { createEdgen } from 'vercel-sdk-edgen'
 import { revalidatePath } from 'next/cache'
-import { CHAT_PAGE_PATH } from '@kit/shared/constants'
-import { Thread } from '../interfaces'
+import { EDGEN_CHAT_PAGE_PATH } from '@kit/shared/constants'
+import { Thread } from 'edgen-typescript/dist/models/components'
+import { BotMessage, SkeletonMessage, UserMessage } from '../../components/stocks/message'
 
-
-async function submitUserMessage(threadId: string | undefined, content: string): Promise<{
+async function submitUserMessage(threadId: string, content: string): Promise<{
   id: string;
   display: string;
 }> {
   'use server'
 
+  console.log(threadId)
+  
   if (!content) {
     return {
       id: nanoid(),
@@ -42,39 +44,7 @@ async function submitUserMessage(threadId: string | undefined, content: string):
       throw new Error('No auth token')
     }
 
-    if (!threadId) {
-      const name = content.substring(0, 100)
-
-      const thread: Thread = {
-        id: nanoid(),
-        name,
-        messages: [
-          content
-        ]
-      }
-
-      const newThread = await createThread(thread.id)
-
-      if (!newThread || !newThread.id) {
-        throw new Error('Error creating thread')
-      }
-
-      aiState.done({
-        ...aiState.get(),
-        threadId: newThread.id.toString()
-      })
-    } 
-
-    const provider = createEdgen({
-      apiKey: auth_token
-    })
-
-    const { text } = await generateTextWorkflow({
-      threadModel: provider(
-        aiState.get().threadId,
-      ),
-      prompt: content
-    })
+    const text = await runThread(threadId, content)
 
     textValue = text
 
@@ -83,15 +53,19 @@ async function submitUserMessage(threadId: string | undefined, content: string):
       messages: [
         ...aiState.get().messages.slice(0, aiState.get().messages.length - 1),
         {
-          id: -1,
-          sender: 'user',
-          receiver: 'assistant',
+          accountId: "1",
+          createdAt: new Date(),
+          threadId: threadId,
+          id: "-1",
+          role: "Human",
           content
         },
         {
-          id: -1,
-          sender: 'assistant',
-          receiver: 'user',
+          accountId: "1",
+          createdAt: new Date(),
+          threadId: threadId,
+          id: "-1",
+          role: "Assistant",
           content: text
         }
       ]
@@ -101,10 +75,9 @@ async function submitUserMessage(threadId: string | undefined, content: string):
     textValue = 'vercel:errorChatMessage'
   }
 
-  if (textValue === '')
-    textValue = 'vercel:errorChatMessage'
+  if (textValue === '') textValue = 'vercel:errorChatMessage'
 
-  revalidatePath(CHAT_PAGE_PATH)
+  revalidatePath(EDGEN_CHAT_PAGE_PATH)
 
   return {
     id: nanoid(),
@@ -136,13 +109,15 @@ export const AI = createAI<AIState, UIState>({
     if (auth_token) {
       const aiState = getAIState<typeof AI>()
 
-      const thread = await getThread(aiState.threadId)
+      const messages = await getMessages(aiState.threadId)
 
-      if (thread) {
-        const uiState = getUIStateFromAIState(thread)
+      if (messages) {
+        const uiState = getUIStateFromAIState(messages)
         return uiState
       }
+
       return
+
     } else {
       console.log('No auth token: onGetUIState')
       return
@@ -158,11 +133,10 @@ export const AI = createAI<AIState, UIState>({
   }
 })
 
-export const getUIStateFromAIState = async (aiState: Chat) => {
+export const getUIStateFromAIState = async (messages: Message[]) => {
   // Get messages since the ones in aiState are empty
 
-  /**
-   * function processMessages(messages: Message[], result: UIState): UIState {
+  function processMessages(messages: Message[], result: UIState): UIState {
     const currentMessage = messages.pop()
 
     if (!currentMessage){
@@ -170,26 +144,26 @@ export const getUIStateFromAIState = async (aiState: Chat) => {
     }
 
     // TODO: might need to increase number of roles to check
-    if (currentMessage.sender === 'user') {
+    if (currentMessage.role === 'Human') {
       result = [
         {
-          id: `${aiState.id ?? '-1'}-${result.length}`,
+          id: nanoid(),
           display: <UserMessage>{currentMessage.content as string}</UserMessage>
         },
         ...result
       ]
-    } else if (currentMessage.sender === 'assistant') {
+    } else if (currentMessage.role === 'Assistant') {
       result = [
         {
-          id: `${aiState.id ?? '-1'}-${result.length}`,
+          id: nanoid(),
           display: <BotMessage content={currentMessage.content as string} />
         },
         ...result
       ]
-    } else if (currentMessage.sender === 'skeleton') {
+    } else{
       result = [
         {
-          id: `${aiState.id ?? '-1'}-${result.length}`,
+          id: nanoid(),
           display: <SkeletonMessage event={currentMessage.content as string} />
         },
         ...result
@@ -198,10 +172,13 @@ export const getUIStateFromAIState = async (aiState: Chat) => {
 
     return processMessages(messages, result)
   }
-   */
 
-  return [{
-    id: "-1",
-    display: <></>
-  }]//processMessages(processChatMessages(aiState.messages), [])
+  const uiState = processMessages(messages, []).map((message, i) => {
+    return {
+      id: i.toString(),
+      display: message.display
+    }
+  })
+
+  return uiState
 }

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const EDGEN_BACKEND_URL = process.env.EDGEN_BACKEND_URL || "http://127.0.0.1:30000/v1";
+export const EDGEN_BACKEND_URL = process.env.EDGEN_BACKEND_URL || "http://127.0.0.1:30000";
 
 export const FILE_SUPPORTED_TYPES = ".docx"
 export const FILE_SUPPORTED_TYPES_ARRAY = FILE_SUPPORTED_TYPES.split(",").map((type) => type.trim())
