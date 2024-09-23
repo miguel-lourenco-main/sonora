@@ -1,0 +1,25 @@
+{
+  "name": "edgen-typescript",
+  "version": "0.0.2",
+  "author": "Speakeasy",
+  "main": "./dist/index.js",
+  "sideEffects": false,
+  "scripts": {
+    "lint": "eslint --max-warnings=0 src",
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "peerDependencies": {
+    "zod": ">= 3"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.3.0",
+    "@typescript-eslint/parser": "^8.3.0",
+    "eslint": "^8.57.0",
+    "eslint-import-resolver-typescript": "^3.6.1",
+    "eslint-plugin-import": "^2.29.1",
+    "typescript": "^5.5.4",
+    "zod": "^3.23.8"
+  },
+  "dependencies": {}
+}

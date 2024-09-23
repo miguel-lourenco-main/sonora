@@ -1,9 +1,0 @@
-# FilesUploadFilesSessionIdPostRequest
-
-
-## Fields
-
-| Field                                                                                                        | Type                                                                                                         | Required                                                                                                     | Description                                                                                                  |
-| ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ |
-| `sessionId`                                                                                                  | *number*                                                                                                     | :heavy_check_mark:                                                                                           | N/A                                                                                                          |
-| `bodyFilesUploadFilesSessionIdPost`                                                                          | [components.BodyFilesUploadFilesSessionIdPost](../../models/components/bodyfilesuploadfilessessionidpost.md) | :heavy_check_mark:                                                                                           | N/A                                                                                                          |

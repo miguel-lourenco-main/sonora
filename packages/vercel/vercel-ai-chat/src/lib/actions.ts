@@ -3,10 +3,35 @@
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { getAuthToken } from '@kit/supabase/get-auth-token'
-import { CHAT_PAGE_PATH } from '@kit/shared/constants'
+import { EDGEN_CHAT_PAGE_PATH } from '@kit/shared/constants'
 import { cache } from 'react'
 import { Thread } from './interfaces'
+import { Edgen } from "edgen-typescript/dist";
+import { HTTPClient } from "edgen-typescript/dist/lib/http";
+import { RetryConfig } from "edgen-typescript/dist/lib/retries";
+import { EDGEN_BACKEND_URL } from "@kit/shared/constants"
 
+export async function getEdgenSDKClient({
+  bearerAuth,
+  httpClient,
+  serverIdx,
+  serverURL,
+  retryConfig
+}: {
+  bearerAuth?: string | (() => Promise<string>);
+  httpClient?: HTTPClient;
+  serverIdx?: number;
+  serverURL?: string;
+  retryConfig?: RetryConfig;
+}){
+  return new Edgen({
+      bearerAuth,
+      httpClient,
+      serverIdx,
+      serverURL: serverURL ?? EDGEN_BACKEND_URL,
+      retryConfig
+  });
+}
 
 export async function createThread(id: string) {
   try{
@@ -21,7 +46,7 @@ export async function createThread(id: string) {
     console.log(error)
 
   }finally{
-    revalidatePath(CHAT_PAGE_PATH)
+    revalidatePath(EDGEN_CHAT_PAGE_PATH)
     //return revalidatePath(path)
     return {
       id: "-1",
@@ -98,7 +123,7 @@ export async function deleteThread(id: string, path: string ) {
     console.log(error)
 
   }finally{
-    revalidatePath(CHAT_PAGE_PATH)
+    revalidatePath(EDGEN_CHAT_PAGE_PATH)
     return revalidatePath(path)
   }
 }
@@ -116,8 +141,8 @@ export async function deleteAllThreads() {
   }catch(error){
     console.log(error)
   }finally{
-    revalidatePath(CHAT_PAGE_PATH)
-    return redirect(CHAT_PAGE_PATH)
+    revalidatePath(EDGEN_CHAT_PAGE_PATH)
+    return redirect(EDGEN_CHAT_PAGE_PATH)
   }
 }
 

@@ -1,10 +1,4 @@
 import { COLLAPSE_PATHS, COLLAPSE_PATHS_FROM } from "./constants";
-
-import { Edgen } from "edgen-typescript";
-import { HTTPClient } from "edgen-typescript/lib/http";
-import { RetryConfig } from "edgen-typescript/lib/retries";
-import { EDGEN_BACKEND_URL } from "./constants"
-
 /**
  * Check if the code is running in a browser environment.
  */
@@ -74,28 +68,6 @@ export function processChatMessages(messages: any[]) {
 
 export function checkCollapseSidebar(currentPath: string) {
   return COLLAPSE_PATHS_FROM.some(path => currentPath.startsWith(path)) || COLLAPSE_PATHS.some(path => path === currentPath);
-}
-
-export function getEdgenSDKClient({
-  oAuth2PasswordBearer,
-  httpClient,
-  serverIdx,
-  serverURL,
-  retryConfig
-}: {
-  oAuth2PasswordBearer?: string | (() => Promise<string>);
-  httpClient?: HTTPClient;
-  serverIdx?: number;
-  serverURL?: string;
-  retryConfig?: RetryConfig;
-}){
-  return new Edgen({
-      oAuth2PasswordBearer,
-      httpClient,
-      serverIdx,
-      serverURL: serverURL ?? EDGEN_BACKEND_URL,
-      retryConfig
-  });
 }
 
 export const handleInsertOrUpdate = <T extends { id: string }>(

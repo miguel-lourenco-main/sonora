@@ -1,0 +1,12 @@
+workflowVersion: 1.0.0
+speakeasyVersion: latest
+sources:
+    Edgen-OAS:
+        inputs:
+            - location: ../../../../../workflows/workflows-server/docs/openapi.yml
+        registry:
+            location: registry.speakeasyapi.dev/edgenai/edgenai/edgen-oas
+targets:
+    edgen:
+        target: typescript
+        source: Edgen-OAS
