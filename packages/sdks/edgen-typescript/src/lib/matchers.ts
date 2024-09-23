@@ -173,11 +173,22 @@ export function match<T, E>(
   > {
     let raw: unknown;
     let matcher: Matcher<T, E> | undefined;
+
+    console.log(response, "response")
+    console.log(options, "options")
+
     for (const match of matchers) {
+      console.log(match, "match")
       const { codes } = match;
       const ctpattern = "ctype" in match
         ? match.ctype
         : DEFAULT_CONTENT_TYPES[match.enc];
+
+      console.log(codes, "codes")
+      console.log(DEFAULT_CONTENT_TYPES[match.enc])
+      console.log(ctpattern, "ctpattern")
+      console.log(matchResponse(response, codes, ctpattern), "matchResponse")
+
       if (ctpattern && matchResponse(response, codes, ctpattern)) {
         matcher = match;
         break;
@@ -186,6 +197,8 @@ export function match<T, E>(
         break;
       }
     }
+
+    console.log(matcher, "matcher")
 
     if (!matcher) {
       const responseBody = await response.text();
@@ -226,6 +239,8 @@ export function match<T, E>(
         encoding satisfies never;
         throw new Error(`Unsupported response type: ${encoding}`);
     }
+
+    console.log(raw, "raw")
 
     if (matcher.enc === "fail") {
       return [{

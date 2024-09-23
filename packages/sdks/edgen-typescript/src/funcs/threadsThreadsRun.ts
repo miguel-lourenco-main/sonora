@@ -98,7 +98,7 @@ export async function threadsThreadsRun(
     return doResult;
   }
   const response = doResult.value;
-
+  
   const [result] = await M.match<
     string,
     | SDKError
@@ -109,7 +109,7 @@ export async function threadsThreadsRun(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.text(200, z.string()),
+    M.json(200, z.string()),
     M.fail([404, "4XX", "5XX"]),
   )(response);
   if (!result.ok) {

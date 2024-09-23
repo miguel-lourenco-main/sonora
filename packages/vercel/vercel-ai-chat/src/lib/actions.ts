@@ -5,7 +5,6 @@ import { redirect } from 'next/navigation'
 import { getAuthToken } from '@kit/supabase/get-auth-token'
 import { EDGEN_CHAT_PAGE_PATH } from '@kit/shared/constants'
 import { cache } from 'react'
-import { Thread } from './interfaces'
 import { Edgen } from "edgen-typescript/dist";
 import { HTTPClient } from "edgen-typescript/dist/lib/http";
 import { RetryConfig } from "edgen-typescript/dist/lib/retries";

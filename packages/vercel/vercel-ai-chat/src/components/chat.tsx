@@ -30,13 +30,17 @@ export function Chat({ id, className, subscribedMessages }: ChatProps) {
   const router = useRouter()
 
   const [input, setInput] = useState('')
+
+ /**
   const [_, setNewThreadId] = useLocalStorage('newThreadId', id)
 
   useEffect(() => {
 
     setNewThreadId(id)
+    console.log(id)
 
   }, [id])
+  */
 
   const { messagesRef, scrollRef, visibilityRef, scrollToBottom, isVisible } = useScrollAnchor()
   

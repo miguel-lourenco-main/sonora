@@ -33,8 +33,6 @@ export function PromptForm({
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const [_, setMessages] = useUIState<typeof AI>()
 
-  const [newThreadId, setNewThreadId] = useLocalStorage('newThreadId', '')
-
   const { formRef, onKeyDown } = useEnterSubmit()
   const { submitUserMessage } = useActions()
   const { t } = useTranslation()
@@ -61,8 +59,12 @@ export function PromptForm({
         display: <SkeletonMessage event={t('vercel:thinking')} />
       }
     ])
+
+    const threadId = pathname.split('/').pop()
+    console.log(threadId)
+
   
-    const responseMessage = await submitUserMessage(newThreadId, value)
+    const responseMessage = await submitUserMessage(threadId, value)
   
     const message = {
       id: responseMessage.id,

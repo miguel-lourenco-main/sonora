@@ -7,7 +7,8 @@
   "scripts": {
     "lint": "eslint --max-warnings=0 src",
     "build": "tsc",
-    "prepublishOnly": "npm run build"
+    "prepare": "pnpm run build",
+    "clean": "rm -rf dist && rm -rf .tsbuildinfo && rm -rf node_modules && rm -rf package-lock.json && rm -rf pnpm-lock.yaml && rm -rf .turbo"
   },
   "peerDependencies": {
     "zod": ">= 3"
