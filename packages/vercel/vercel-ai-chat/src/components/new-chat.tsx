@@ -14,6 +14,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { CreateThreadFormData } from '../lib/types'
 import { Input } from '@kit/ui/input'
 import { createThread } from '../lib/actions'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@kit/ui/tooltip'
 
 /**
  * export default function NewThreadDialog() {
@@ -94,9 +95,72 @@ import { createThread } from '../lib/actions'
 }
 */
 
-export default function NewThreadDialog() {
+export function NewThreadChatPrompt() {
 
   const [ open, setOpen ] = useState(false)
+  
+  return (
+    <NewThreadDialog
+      trigger={
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+              variant="outline"
+              size="icon"
+              className="absolute left-0 top-[14px] flex lg:hidden size-8 rounded-full bg-background p-0 sm:left-4"
+            >
+              <IconPlus />
+              <span className="sr-only">
+                <I18nComponent i18nKey={'vercel:newChat'}/>
+              </span>
+            </Button>
+          </TooltipTrigger>
+            <TooltipContent>
+              <I18nComponent i18nKey={'vercel:newChat'}/>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      }
+      open={open}
+      setOpen={setOpen}
+    />
+  )
+}
+
+export function NewThreadTopLeft() {
+
+  const [ open, setOpen ] = useState(false)
+  
+  return (
+    <NewThreadDialog
+      trigger={
+        <Button
+          onClick={() => {
+            setOpen(true)
+          }}
+          variant={'outline'}
+          className={'h-10 w-full justify-start bg-zinc-50 px-4 shadow-none transition-colors hover:bg-zinc-200/40 dark:bg-zinc-900 dark:hover:bg-zinc-300/10' }
+        >
+          <IconPlus className="-translate-x-2 stroke-2" />
+          <I18nComponent i18nKey={'vercel:newChat'}/>
+        </Button>
+      }
+      open={open}
+      setOpen={setOpen}
+    />
+  )
+}
+
+function NewThreadDialog({
+  trigger,
+  open,
+  setOpen,
+}: {
+  trigger: React.ReactNode
+  open: boolean
+  setOpen: (open: boolean) => void
+}) {
   const { t } = useTranslation('custom')
 
   const defaultName = "Default_Session"
@@ -122,16 +186,7 @@ export default function NewThreadDialog() {
       trigger={ () => 
         <TooltipComponent 
           trigger={
-            <Button
-              onClick={() => {
-                setOpen(true)
-              }}
-              variant={'outline'}
-              className={'h-10 w-full justify-start bg-zinc-50 px-4 shadow-none transition-colors hover:bg-zinc-200/40 dark:bg-zinc-900 dark:hover:bg-zinc-300/10' }
-            >
-              <IconPlus className="-translate-x-2 stroke-2" />
-              <I18nComponent i18nKey={'vercel:newChat'}/>
-            </Button>
+            trigger
           } 
           content={<div>{t('create_thread')}</div>} 
         />

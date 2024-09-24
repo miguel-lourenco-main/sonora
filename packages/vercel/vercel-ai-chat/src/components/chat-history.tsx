@@ -4,7 +4,7 @@ import * as React from 'react'
 import { SidebarList } from './sidebar-list'
 import { I18nComponent } from '@kit/i18n'
 import { UIThread } from '../lib/types'
-import NewThreadDialog from './new-chat'
+import { NewThreadTopLeft } from './new-chat'
 
 export async function ChatHistory({ threads }: { threads: UIThread[] }) {
 
@@ -16,7 +16,7 @@ export async function ChatHistory({ threads }: { threads: UIThread[] }) {
         </h4>
       </div>
       <div className="mb-2 px-2">
-        <NewThreadDialog />
+        <NewThreadTopLeft />
       </div>
       <React.Suspense
         fallback={

@@ -19,6 +19,7 @@ import { nanoid } from 'nanoid'
 import { BotMessage, SkeletonMessage, UserMessage } from './stocks/message'
 import useLocalStorage from '../lib/hooks/use-local-storage'
 import { toast } from 'sonner'
+import { NewThreadChatPrompt } from './new-chat'
 
 
 export function PromptForm({
@@ -105,32 +106,7 @@ export function PromptForm({
       }}
     >
       <div className="relative flex max-h-60 w-full grow flex-col overflow-hidden bg-background pl-2 pr-8 sm:rounded-md sm:border sm:pl-4 sm:pr-12">
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-              variant="outline"
-              size="icon"
-              className="absolute left-0 top-[14px] flex lg:hidden size-8 rounded-full bg-background p-0 sm:left-4"
-              onClick={() => {
-                if (pathname !== EDGEN_CHAT_PAGE_PATH) {
-                  router.push(EDGEN_CHAT_PAGE_PATH)
-                } else {
-                  setMessages([])
-                }
-              }}
-            >
-              <IconPlus />
-              <span className="sr-only">
-                <I18nComponent i18nKey={'vercel:newChat'}/>
-              </span>
-            </Button>
-          </TooltipTrigger>
-            <TooltipContent>
-              <I18nComponent i18nKey={'vercel:newChat'}/>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        <NewThreadChatPrompt />
         <Textarea
           ref={inputRef}
           tabIndex={0}
