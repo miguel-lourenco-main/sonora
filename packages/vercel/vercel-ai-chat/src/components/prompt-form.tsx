@@ -18,6 +18,7 @@ import { useCallback, useEffect, useRef } from 'react'
 import { nanoid } from 'nanoid'
 import { BotMessage, SkeletonMessage, UserMessage } from './stocks/message'
 import useLocalStorage from '../lib/hooks/use-local-storage'
+import { toast } from 'sonner'
 
 
 export function PromptForm({
@@ -149,12 +150,16 @@ export function PromptForm({
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button type="submit" size="icon" disabled={input === ''}>
-                <IconArrowElbow />
-                <span className="sr-only">
-                  <I18nComponent i18nKey={'vercel:sendMessage'}/>
-                </span>
-              </Button>
+                <Button type={pathname === EDGEN_CHAT_PAGE_PATH ? "button" : "submit"} onClick={() => {
+                  if(pathname === EDGEN_CHAT_PAGE_PATH) {
+                    toast.warning("Before submitting a prompt, please create a new chat using the button on the top left.")
+                  }
+                }} size="icon" disabled={input === ''}>
+                  <IconArrowElbow />
+                  <span className="sr-only">
+                    <I18nComponent i18nKey={'vercel:sendMessage'}/>
+                  </span>
+                </Button>
               </TooltipTrigger>
               <TooltipContent>
                 <I18nComponent i18nKey={'vercel:sendMessage'}/>

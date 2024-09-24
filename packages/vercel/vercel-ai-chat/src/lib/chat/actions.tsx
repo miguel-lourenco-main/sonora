@@ -15,7 +15,6 @@ import { getAuthToken } from '@kit/supabase/get-auth-token'
 //import { createEdgen } from 'vercel-sdk-edgen'
 import { revalidatePath } from 'next/cache'
 import { EDGEN_CHAT_PAGE_PATH } from '@kit/shared/constants'
-import { Thread } from 'edgen-typescript/dist/models/components'
 import { BotMessage, SkeletonMessage, UserMessage } from '../../components/stocks/message'
 
 async function submitUserMessage(threadId: string, content: string): Promise<{
@@ -112,7 +111,7 @@ export const AI = createAI<AIState, UIState>({
       const messages = await getMessages(aiState.threadId)
 
       if (messages) {
-        const uiState = getUIStateFromAIState(messages)
+        const uiState = await getUIStateFromAIState(messages)
         return uiState
       }
 

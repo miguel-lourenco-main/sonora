@@ -27,6 +27,22 @@ export function Page(props: PageProps) {
   }
 }
 
+export function ModifiedPage(props: PageProps) {
+  switch (props.style) {
+    case 'sidebar':
+      return <PageWithSidebar {...props} />;
+
+    case 'header':
+      return <ModifiedPageWithHeader {...props} />;
+
+    case 'custom':
+      return props.children;
+
+    default:
+      return <PageWithSidebar {...props} />;
+  }
+}
+
 function PageWithSidebar(props: PageProps) {
   const { Navigation, Children, MobileNavigation } = getSlotsFromPage(props);
 
@@ -101,6 +117,39 @@ function PageWithHeader(props: PageProps) {
         </div>
 
         <div className={'container flex flex-1 flex-col'}>{Children}</div>
+      </div>
+    </div>
+  );
+}
+
+function ModifiedPageWithHeader(props: PageProps) {
+  const { Navigation, Children, MobileNavigation } = getSlotsFromPage(props);
+
+  return (
+    <div className={cn('flex h-screen flex-col', props.className)}>
+      <div
+        className={
+          props.contentContainerClassName ?? 'flex size-full flex-col'
+        }
+      >
+        <div
+          className={cn(
+            'flex h-14 items-center justify-between bg-muted/40 px-4 py-2 dark:border-border dark:shadow-primary/10 lg:justify-start lg:shadow-sm',
+            {
+              'sticky top-0 z-10 backdrop-blur-md': props.sticky ?? true,
+            },
+          )}
+        >
+          <div
+            className={'hidden w-full flex-1 items-center space-x-8 lg:flex'}
+          >
+            {Navigation}
+          </div>
+
+          {MobileNavigation}
+        </div>
+
+        <div className={'flex flex-1 min-h-0 w-full flex-col'}>{Children}</div>
       </div>
     </div>
   );

@@ -175,7 +175,6 @@ export function match<T, E>(
     let matcher: Matcher<T, E> | undefined;
 
     for (const match of matchers) {
-      console.log(match, "match")
       const { codes } = match;
       const ctpattern = "ctype" in match
         ? match.ctype

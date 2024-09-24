@@ -2,6 +2,7 @@
 
 import { Separator } from '@kit/ui/separator'
 import { UIState } from '../lib/chat/actions'
+import { useEffect, useRef } from 'react'
 
 export interface ChatList {
   messages: UIState
@@ -9,13 +10,14 @@ export interface ChatList {
 }
 
 export function ChatList({ messages, isShared }: ChatList) {
+
   if (!messages.length) {
     return null
   }
 
   return (
     <div className='flex'>
-      <div className="relative mx-auto lg:w-[34rem] xl:w-[40rem] px-4">
+      <div className="mx-auto lg:w-[34rem] xl:w-[40rem] px-4">
         {messages.map((message, index) => (
           <div key={message.id}>
             {message.display}

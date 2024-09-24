@@ -114,7 +114,6 @@ export async function getThreads() {
         path: `/app/chat/${thread.id}`,
         title: thread.title ?? "Untitled",
         messages,
-        sharePath: `/app/share/${thread.id}`
       }
     }))
 
@@ -222,7 +221,6 @@ export async function getMessages(threadId: string) {
 
   }catch(error){
     console.log(error)
-  }finally{
     return []
   }
 }
