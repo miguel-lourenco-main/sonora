@@ -17,7 +17,7 @@ export function ChatList({ messages, isShared }: ChatList) {
 
   return (
     <div className='flex'>
-      <div className="mx-auto lg:w-[34rem] xl:w-[40rem] px-4">
+      <div className="mx-auto w-[80%] lg:w-[34rem] xl:w-[40rem] px-4">
         {messages.map((message, index) => (
           <div key={message.id}>
             {message.display}

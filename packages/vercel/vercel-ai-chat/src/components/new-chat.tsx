@@ -198,7 +198,7 @@ function NewThreadDialog({
       )}
       title={t('create_thread')}
       description={t('create_thread_description')}
-      contentClassName="w-[40%] max-h-[26%] flex flex-col"
+      contentClassName="w-[80%] lg:w-[40%] max-h-[26%] flex flex-col"
     >
       <form 
         onSubmit={handleSubmit(async (data) => {
