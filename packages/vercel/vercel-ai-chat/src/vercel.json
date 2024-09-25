@@ -42,5 +42,23 @@
     "create": "Create",
     "select_knowledge_bases": "Select knowledge bases",
     "knowledge_bases_description": "Select the knowledge bases you want to use for this thread.",
-    "name": "Name"
+    "name": "Name",
+    "examples":{
+        "example_heading_1": "How to",
+        "example_subheading_1": "process a refund?",
+        "example_message_1": "What are the steps to process a refund for a customer using our payment system?",
+
+        "example_heading_2": "What's the status of",
+        "example_subheading_2": "the new contactless terminals?",
+        "example_message_2": "Can you provide an update on the rollout of our new contactless payment terminals?",
+
+        "example_heading_3": "How to handle",
+        "example_subheading_3": "a declined transaction?",
+        "example_message_3": "What's the procedure for handling a declined transaction and assisting the customer?",
+
+        "example_heading_4": "Latest security",
+        "example_subheading_4": "measures for online payments?",
+        "example_message_4": "What are the latest security measures implemented for our online payment gateway?"
+
+    }
 }

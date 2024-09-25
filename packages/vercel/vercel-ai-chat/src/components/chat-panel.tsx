@@ -27,28 +27,28 @@ export function ChatPanel({
   const [messages, setMessages] = useUIState<typeof AI>()
 
   // TODO: add strings used in exampleMessages
-  const { t } = useTranslation()
+  const { t } = useTranslation("vercel")
 
   const exampleMessages = [
     {
-      heading: 'What are the',
-      subheading: 'trending memecoins today?',
-      message: `What are the trending memecoins today?`
+      heading: t('examples.example_heading_1'),
+      subheading: t('examples.example_subheading_1'),
+      message: t('examples.example_message_1')
     },
     {
-      heading: 'What is the price of',
-      subheading: '$DOGE right now?',
-      message: 'What is the price of $DOGE right now?'
+      heading: t('examples.example_heading_2'),
+      subheading: t('examples.example_subheading_2'),
+      message: t('examples.example_message_2')
     },
     {
-      heading: 'I would like to buy',
-      subheading: '42 $DOGE',
-      message: `I would like to buy 42 $DOGE`
+      heading: t('examples.example_heading_3'),
+      subheading: t('examples.example_subheading_3'),
+      message: t('examples.example_message_3')
     },
     {
-      heading: 'What are some',
-      subheading: `recent events about $DOGE?`,
-      message: `What are some recent events about $DOGE?`
+      heading: t('examples.example_heading_4'),
+      subheading: t('examples.example_subheading_4'),
+      message: t('examples.example_message_4')
     }
   ]
 
