@@ -2,7 +2,7 @@
 
 import {
   MultiSelector,
-  MultiSelectorTrigger,
+  MultiSelectorOpenTrigger,
   MultiSelectorInput,
   MultiSelectorContent,
   MultiSelectorList,
@@ -35,9 +35,9 @@ const MultiSelectKBs = ({
 
   return (
     <MultiSelector values={knowledgeBases} onValuesChange={onChange} loop={false} className={className}>
-      <MultiSelectorTrigger>
+      <MultiSelectorOpenTrigger>
         <MultiSelectorInput placeholder={t('select_knowledge_bases')} />
-      </MultiSelectorTrigger>
+      </MultiSelectorOpenTrigger>
       <MultiSelectorContent>
         <MultiSelectorList>
           {options.map((option, i) => (

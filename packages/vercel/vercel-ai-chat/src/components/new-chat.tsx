@@ -16,6 +16,7 @@ import { Input } from '@kit/ui/input'
 import { createThread } from '../lib/actions'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@kit/ui/tooltip'
 import { Label } from '@kit/ui/label'
+import { DEFAULT_THREAD_NAME } from '../lib/constants'
 
 /**
  * export default function NewThreadDialog() {
@@ -162,23 +163,21 @@ function NewThreadDialog({
   open: boolean
   setOpen: (open: boolean) => void
 }) {
-  const { t } = useTranslation('custom')
+  const { t } = useTranslation('vercel')
 
-  const defaultName = "Default_Session"
-
+  // TODO: get default name from by getting a list of all threads and adding 1 to the highest number
   const { control, handleSubmit, formState: { errors }, setValue } = useForm<CreateThreadFormData>({
     resolver: zodResolver(createThreadFormSchema),
     defaultValues: {
-      name: defaultName,
+      name: DEFAULT_THREAD_NAME,
       knowledge_bases: [],
     },
   })
 
   const resetForm = () => {
-    setValue('name', defaultName)
+    setValue('name',  DEFAULT_THREAD_NAME)
     setValue('knowledge_bases', [])
   }
-
 
   // TODO: create dialog layouts that support 1 or multiple forms
   
@@ -195,13 +194,10 @@ function NewThreadDialog({
         />
       }
       reset={() => {
+        resetForm()
       }}
-      footer={() => (
-        <></>
-      )}
       title={t('create_thread')}
-      description={t('create_thread_description')}
-      contentClassName="w-[80%] lg:w-[40%] max-h-[26%] flex flex-col"
+      contentClassName="w-[80%] lg:w-[40%] max-h-[90%] flex flex-col"
     >
       <form 
         onSubmit={handleSubmit(async (data) => {
@@ -212,17 +208,20 @@ function NewThreadDialog({
           // Optimistically add user message UI
           await createThread(value)
           resetForm()
+          setOpen(false)
         })} 
-        className="flex flex-col items-center justify-center w-full h-fit gap-4"
+        className="flex flex-col items-start justify-center w-full h-fit gap-y-4"
       >
-        <div className="flex items-center justify-center">
-          <Label>{t('name')}</Label>
+        <div className="relative mb-3">          
+          <Label className="absolute -top-2 left-2 inline-block bg-white px-1 text-xs font-medium text-gray-900">
+            {t('name')}
+          </Label>
           <Controller
             control={control}
             name="name"
             render={({ field }) => (
               <Input
-                className="w-[26rem] justify-end"
+                className="block h-10 w-full rounded-md border-0 pt-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 value={field.value}
                 onChange={(value) => {
                   field.onChange(value)
@@ -231,14 +230,15 @@ function NewThreadDialog({
             )}
           />
         </div>
-        <div className="flex items-center justify-center">
+        <div className="flex flex-col w-full items-start justify-center gap-y-2">
           <Label>{t('knowledge_bases')}</Label>
+          <p className="text-sm text-gray-500 ml-1">{t('knowledge_bases_description')}</p>
           <Controller
             control={control}
             name="knowledge_bases"
             render={({ field }) => (
               <MultiSelectKbs
-                className="w-[26rem] justify-end"
+                className="w-full justify-end"
                 knowledgeBases={field.value}
                 onChange={(value) => {
                   field.onChange(value)
@@ -250,9 +250,6 @@ function NewThreadDialog({
         <div className="flex w-full justify-end">
           <Button
             type="submit"
-            onClick={() => {
-              setOpen(false)
-            }}
           >
             {t('create')}
           </Button>

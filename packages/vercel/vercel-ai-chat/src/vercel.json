@@ -40,5 +40,7 @@
     "create_thread": "Create Thread",
     "create_thread_description": "Create a new thread to chat with your agent.",
     "create": "Create",
-    "select_knowledge_bases": "Select knowledge bases"
+    "select_knowledge_bases": "Select knowledge bases",
+    "knowledge_bases_description": "Select the knowledge bases you want to use for this thread.",
+    "name": "Name"
 }
