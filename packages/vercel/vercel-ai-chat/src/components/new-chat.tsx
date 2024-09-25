@@ -15,6 +15,7 @@ import { CreateThreadFormData } from '../lib/types'
 import { Input } from '@kit/ui/input'
 import { createThread } from '../lib/actions'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@kit/ui/tooltip'
+import { Label } from '@kit/ui/label'
 
 /**
  * export default function NewThreadDialog() {
@@ -169,11 +170,13 @@ function NewThreadDialog({
     resolver: zodResolver(createThreadFormSchema),
     defaultValues: {
       name: defaultName,
+      knowledge_bases: [],
     },
   })
 
   const resetForm = () => {
     setValue('name', defaultName)
+    setValue('knowledge_bases', [])
   }
 
 
@@ -210,21 +213,40 @@ function NewThreadDialog({
           await createThread(value)
           resetForm()
         })} 
-        className="flex flex-col items-center justify-center w-full h-fit"
+        className="flex flex-col items-center justify-center w-full h-fit gap-4"
       >
-        <Controller
-          control={control}
-          name="name"
-          render={({ field }) => (
-            <Input
-              className="w-[26rem] justify-end"
-              value={field.value}
-              onChange={(value) => {
-                field.onChange(value)
-              }} 
-            />
-          )}
-        />
+        <div className="flex items-center justify-center">
+          <Label>{t('name')}</Label>
+          <Controller
+            control={control}
+            name="name"
+            render={({ field }) => (
+              <Input
+                className="w-[26rem] justify-end"
+                value={field.value}
+                onChange={(value) => {
+                  field.onChange(value)
+                }} 
+              />
+            )}
+          />
+        </div>
+        <div className="flex items-center justify-center">
+          <Label>{t('knowledge_bases')}</Label>
+          <Controller
+            control={control}
+            name="knowledge_bases"
+            render={({ field }) => (
+              <MultiSelectKbs
+                className="w-[26rem] justify-end"
+                knowledgeBases={field.value}
+                onChange={(value) => {
+                  field.onChange(value)
+                }} 
+              />
+            )}
+          />
+        </div>
         <div className="flex w-full justify-end">
           <Button
             type="submit"
