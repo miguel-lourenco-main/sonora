@@ -210,7 +210,7 @@ function NewThreadDialog({
           await createThread(value)
           resetForm()
         })} 
-        className="flex flex-col items-center justify-center =w-full h-fit"
+        className="flex flex-col items-center justify-center w-full h-fit"
       >
         <Controller
           control={control}

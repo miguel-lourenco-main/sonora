@@ -1,7 +1,7 @@
 "use server"
 
 import { revalidatePath, revalidateTag } from "next/cache"
-import { CHAT_PAGE_PATH } from "@kit/shared/constants";
+import { EDGEN_CHAT_PAGE_PATH } from "@kit/shared/constants";
 
 export const revalidatePathServer = async (path: string) => {
     try {
@@ -30,7 +30,7 @@ export async function revalidateChatCache(
     session_id?: number
 ){
     if(type === "path"){
-        revalidatePathServer(CHAT_PAGE_PATH)
+        revalidatePathServer(EDGEN_CHAT_PAGE_PATH)
     }else{
         revalidateTagServer("get-chat-sessions-list")
         if(session_id) revalidateTagServer(`get-chat-session-${session_id}`)
