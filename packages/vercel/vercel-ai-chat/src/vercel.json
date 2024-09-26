@@ -40,8 +40,8 @@
     "create_thread": "Create Thread",
     "create_thread_description": "Create a new thread to chat with your agent.",
     "create": "Create",
-    "select_knowledge_bases": "Select knowledge bases",
-    "knowledge_bases_description": "Select the knowledge bases you want to use for this thread.",
+    "select_collections": "Select knowledge bases",
+    "collections_description": "Select the knowledge bases you want to use for this thread.",
     "name": "Name",
     "examples":{
         "example_heading_1": "How to",
@@ -59,6 +59,5 @@
         "example_heading_4": "Latest security",
         "example_subheading_4": "measures for online payments?",
         "example_message_4": "What are the latest security measures implemented for our online payment gateway?"
-
     }
 }

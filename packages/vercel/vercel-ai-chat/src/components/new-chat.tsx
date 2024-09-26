@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next'
 import { useState } from 'react'
 import DialogLayout from '@kit/ui/dialog-layout';
 import TooltipComponent from '@kit/ui/tooltip-component';
-import MultiSelectKbs from './multi-select-kbs'
+import MultiSelectCollections from './multi-select-collections'
 import { useForm, Controller } from "react-hook-form";
 import { createThreadFormSchema } from '../lib/schemas/create-thread'
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -170,13 +170,13 @@ function NewThreadDialog({
     resolver: zodResolver(createThreadFormSchema),
     defaultValues: {
       name: DEFAULT_THREAD_NAME,
-      knowledge_bases: [],
+      collections: [],
     },
   })
 
   const resetForm = () => {
     setValue('name',  DEFAULT_THREAD_NAME)
-    setValue('knowledge_bases', [])
+    setValue('collections', [])
   }
 
   // TODO: create dialog layouts that support 1 or multiple forms
@@ -205,10 +205,11 @@ function NewThreadDialog({
           const value = data.name.trim()
           if (!value) return
 
-          // Optimistically add user message UI
+          // Submit files and then create thread
           await createThread(value)
           resetForm()
           setOpen(false)
+
         })} 
         className="flex flex-col items-start justify-center w-full h-fit gap-y-4"
       >
@@ -231,15 +232,15 @@ function NewThreadDialog({
           />
         </div>
         <div className="flex flex-col w-full items-start justify-center gap-y-2">
-          <Label>{t('knowledge_bases')}</Label>
+          <Label>{t('collections')}</Label>
           <p className="text-sm text-gray-500 ml-1">{t('knowledge_bases_description')}</p>
           <Controller
             control={control}
-            name="knowledge_bases"
+            name="collections"
             render={({ field }) => (
-              <MultiSelectKbs
+              <MultiSelectCollections
                 className="w-full justify-end"
-                knowledgeBases={field.value}
+                collections={field.value}
                 onChange={(value) => {
                   field.onChange(value)
                 }} 

@@ -21,22 +21,22 @@ const options = [
   { label: "ReactNative", value: "reactnative" },
 ];
 
-const MultiSelectKBs = ({ 
+const MultiSelectCollections = ({ 
     className,
     onChange, 
-    knowledgeBases
+    collections
 }: { 
     className?: string,
     onChange: (value: string[]) => void, 
-    knowledgeBases: string[]
+    collections: string[]
 }) => {
 
   const { t } = useTranslation('vercel')
 
   return (
-    <MultiSelector values={knowledgeBases} onValuesChange={onChange} loop={false} className={className}>
+    <MultiSelector values={collections} onValuesChange={onChange} loop={false} className={className}>
       <MultiSelectorOpenTrigger>
-        <MultiSelectorInput placeholder={t('select_knowledge_bases')} />
+        <MultiSelectorInput placeholder={t('select_collections')} />
       </MultiSelectorOpenTrigger>
       <MultiSelectorContent>
         <MultiSelectorList>
@@ -51,4 +51,4 @@ const MultiSelectKBs = ({
   );
 };
 
-export default MultiSelectKBs;
+export default MultiSelectCollections;

@@ -15,8 +15,7 @@ export const DEFAULT_FILE_TREE = {name: "root_generated", children: [], id: "roo
 /////////// PATHS ///////////////
 export const EDGEN_CHAT_PAGE_PATH = "/app/chat"
 export const EDGEN_CHAT_PAGE_WITH_ID_PATH = "/app/chat/[chatId]"
-export const EDGEN_KNOWLEDGE_BASES_PAGE_PATH = "/app/knowledge-bases"
-
+export const EDGEN_COLLECTIONS_PAGE_PATH = "/app/collections"
 export const POLYDOC_FILE_TRANSLATIONS_PAGE_PATH = "/app/file-translations"
 
 export const CONNECTOR_DRAG_N_DROP_HEIGHT = "25rem"
@@ -28,13 +27,13 @@ export const COLLAPSE_PATHS = [EDGEN_CHAT_PAGE_PATH]
 export const EDGEN_CUSTOM_PATHS_SCHEMA = {
     app: z.string().min(1),
     chatWithID: z.string().min(1),
-    knowledge_bases: z.string().min(1),
+    collections: z.string().min(1),
 }
 
 export const EDGEN_CUSTOM_PATHS = {
     app: EDGEN_CHAT_PAGE_PATH,
     chatWithID: EDGEN_CHAT_PAGE_WITH_ID_PATH,
-    knowledge_bases: EDGEN_KNOWLEDGE_BASES_PAGE_PATH,
+    collections: EDGEN_COLLECTIONS_PAGE_PATH,
 }
 
 //TODO: fill paths

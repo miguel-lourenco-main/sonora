@@ -16,11 +16,11 @@ import {
   DropEvent,
 } from "react-dropzone";
 import { toast } from "sonner";
-import { Paperclip, Send, Trash2Icon, X } from "lucide-react";
+import { FileUp, Paperclip, Send, Trash2Icon, X } from "lucide-react";
 import { Tooltip } from "@radix-ui/react-tooltip";
 import { TooltipContent, TooltipProvider, TooltipTrigger } from "../shadcn/tooltip";
 import { useTranslation } from "react-i18next";
-import { CustomFileUploaderProps, DirectionOptions } from "./_lib/types";
+import { CustomFileUploaderProps, CustomFileUploaderPropsV2, DirectionOptions } from "./_lib/types";
 import { IconCloudDownload } from "./icons";
 
 export const FilesDragNDrop = forwardRef<
@@ -243,7 +243,7 @@ const FileSvgDraw = ({ acceptedFileTypes }: { acceptedFileTypes: Record<string, 
 
   return (
     <div className="flex flex-col items-center text-gray-500 dark:text-gray-400">
-      <IconCloudDownload />
+      <FileUp className="size-4"/>
       <p className="p-2 mb-1 text-sm text-center">
         <span className="font-semibold">{t("clickToAdd")}</span>
         &nbsp; {t("orDragAndDrop")}
@@ -283,7 +283,7 @@ function FileUploaderHeader({ setFiles }: { setFiles: Dispatch<SetStateAction<Fi
           <Tooltip>
             <TooltipTrigger>
               <Send
-                className="h-[18px] w-[18px] stroke-foreground"
+                className="size-8 p-1.5 stroke-foreground"
                 onClick={() => {
                   console.log("submitAll");
                 }}
@@ -300,7 +300,7 @@ function FileUploaderHeader({ setFiles }: { setFiles: Dispatch<SetStateAction<Fi
                   setFiles([]);
                   e.stopPropagation();
                 }}
-                className="h-[18px] w-[18px] stroke-foreground" 
+                className="size-8 p-1.5 stroke-foreground" 
               />
             </TooltipTrigger>
             <TooltipContent>
@@ -330,3 +330,211 @@ function FileUploaderItem({ currentFile, i, files, setFiles }: { currentFile: Fi
     </div>
   );
 }
+
+
+/////////////////////////////////////////////////////////
+
+
+export const FilesDragNDropV2 = forwardRef<
+  HTMLDivElement,
+  CustomFileUploaderPropsV2 & React.HTMLAttributes<HTMLDivElement>
+>(
+  (
+    {
+      files,
+      addFiles,
+      removeFiles,
+      className,
+      acceptFiles,
+      orientation = "vertical",
+      children 
+    },
+    ref
+  ) => {
+
+    const [isFileTooBig, setIsFileTooBig] = useState(false);
+    const [activeIndex, setActiveIndex] = useState(-1);
+    const [showCover, setShowCover] = useState(true);
+
+    const { t } = useTranslation('ui')
+
+    const maxSize = 1024 * 1024 * 4;
+    const multiple = true;
+
+    const accept = acceptFiles ?? {
+      "application/pdf": [".pdf"],
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"],
+      "application/msword": [".doc"],
+      "text/plain": [".txt"],
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [".xlsx"],
+      "application/vnd.ms-excel": [".xls"],
+      "application/vnd.openxmlformats-officedocument.presentationml.presentation": [".pptx"],
+      "application/vnd.ms-powerpoint": [".ppt"],
+      "image/jpeg": [".jpg", ".jpeg"],
+      "image/png": [".png"],
+    };
+
+    const direction: DirectionOptions = "ltr";
+
+    const removeFileFromSet = useCallback(
+      (i: number) => {
+        if (!files) return;
+        const newFiles = files.filter((_, index) => index !== i);
+        removeFiles(newFiles);
+      },
+      [files, removeFiles]
+    );
+
+    const handleKeyDown = useCallback(
+      (e: React.KeyboardEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (!files) return;
+
+        const moveNext = () => {
+          const nextIndex = activeIndex + 1;
+          setActiveIndex(nextIndex > files.length - 1 ? 0 : nextIndex);
+        };
+
+        const movePrev = () => {
+          const nextIndex = activeIndex - 1;
+          setActiveIndex(nextIndex < 0 ? files.length - 1 : nextIndex);
+        };
+
+        const prevKey =
+          orientation === "horizontal"
+            ? direction === "ltr"
+              ? "ArrowLeft"
+              : "ArrowRight"
+            : "ArrowUp";
+
+        const nextKey =
+          orientation === "horizontal"
+            ? direction === "ltr"
+              ? "ArrowRight"
+              : "ArrowLeft"
+            : "ArrowDown";
+
+        if (e.key === nextKey) {
+          moveNext();
+        } else if (e.key === prevKey) {
+          movePrev();
+        } else if (e.key === "Enter" || e.key === "Space") {
+          if (activeIndex === -1) {
+            dropzone.inputRef.current?.click();
+          }
+        } else if (e.key === "Delete" || e.key === "Backspace") {
+          if (activeIndex !== -1) {
+            removeFileFromSet(activeIndex);
+            if (files.length - 1 === 0) {
+              setActiveIndex(-1);
+              return;
+            }
+            movePrev();
+          }
+        } else if (e.key === "Escape") {
+          setActiveIndex(-1);
+        }
+      },
+      [files, activeIndex, removeFileFromSet]
+    );
+
+    const onDrop = useCallback((acceptedFiles: File[], rejectedFiles: FileRejection[], event: DropEvent) => {
+
+      if (!acceptedFiles) {
+        toast.error("file error , probably too big");
+        return;
+      }
+
+      addFiles(acceptedFiles);
+
+      if (rejectedFiles.length > 0) {
+        for (let i = 0; i < rejectedFiles.length; i++) {
+          if (maxSize && rejectedFiles[i]?.errors[0]?.code === "file-too-large") {
+            toast.error(
+              `${t("fileTooLarge")} ${maxSize / 1024 / 1024}MB`
+            );
+            break;
+          }
+          if (rejectedFiles[i]?.errors[0]?.message) {
+            toast.error(rejectedFiles[i]?.errors[0]?.message);
+            break;
+          }
+        }
+      }
+    }, [addFiles]);
+
+    /*
+    TODO: hardcoded max files number that allows the user to upload as many files as possible 
+          without affecting the UX too much. If this is the way to go, investigate how to calculate
+          what it should be
+    */ 
+    const opts = { accept, maxFiles: 1000, maxSize, multiple };
+
+    const dropzone = useDropzone({
+      ...opts,
+      onDragEnter: () => setShowCover(true),
+      onDragLeave: () => setShowCover(false),
+      onDrop,
+      onDropRejected: () => setIsFileTooBig(true),
+      onDropAccepted: () => setIsFileTooBig(false),
+    })
+
+    const clickInput = useCallback((e: React.MouseEvent<HTMLInputElement>) => {
+      if(!showCover) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    }, [showCover]);
+
+    useEffect(() => {
+      if(files.length > 0) {
+        setShowCover(false);
+      }else{
+        setShowCover(true);
+      }
+    }, [files]);
+
+    return (
+      <div
+        ref={ref}
+        tabIndex={0}
+        onKeyDownCapture={handleKeyDown}
+        className={cn("relative flex w-full h-full gap-4 p-2 focus:outline-none overflow-hidden", className)}
+        dir={direction}
+        {...dropzone.getRootProps()}
+
+      >
+        <div className={cn("absolute top-0 left-0 items-center justify-center w-full h-full p-2 bg-background/80", showCover || files.length === 0 ? "flex" : "hidden")}>
+          <div
+            className={cn(
+            `flex flex-col items-center justify-center size-full rounded-lg duration-300 ease-in-out
+              outline-dashed outline-1 outline-foreground cursor-pointer
+              ${
+                dropzone.isDragAccept
+                ? "border-green-500"
+                : dropzone.isDragReject || isFileTooBig
+                ? "border-red-500"
+                : "border-gray-300"
+              }`,
+            )}
+          >
+            <FileSvgDraw acceptedFileTypes={accept} />
+          </div>
+          <Input
+            ref={dropzone.inputRef}
+            disabled={/*isLOF*/ false}
+            {...dropzone.getInputProps()}
+            onClick={clickInput}
+          />
+        </div>
+        { files.length > 0 && (
+          <div className={cn("absolute top-0 left-0 w-full h-full overflow-hidden", showCover ? "disabled" : "")}>
+            {children ?? <DefaultFilesListComponent files={files} setFiles={()=>{}} />}
+          </div>
+        )}
+      </div>
+    );
+  }
+);

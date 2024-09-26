@@ -10,7 +10,9 @@ import { HTTPClient } from "edgen-typescript/dist/lib/http";
 import { RetryConfig } from "edgen-typescript/dist/lib/retries";
 import { EDGEN_BACKEND_URL } from "@kit/shared/constants"
 import { toast } from 'sonner'
-import { UIThread, Message } from './types' // Import UIThread and Message
+import { UIThread, Message, PlainFileObject } from './types' // Import UIThread and Message
+import { objectToFile } from './utils'
+import { FileT } from 'edgen-typescript/dist/models/components'
 
 export async function getEdgenSDKClient({
   bearerAuth,
@@ -223,6 +225,97 @@ export async function getMessages(threadId: string) {
     console.log(error)
     return []
   }
+}
+
+export async function createCollection(fileIds: string[], name: string) {
+
+  try {
+
+    const auth_token = await getAuthToken()
+
+    if(!auth_token) {
+      throw new Error('No auth token found')
+    }
+
+    const client = await getEdgenSDKClient({bearerAuth: auth_token});
+
+    /**
+     * const collection = await client.collections.collectionsCreate({
+        title: name,
+        fileIds
+      });
+     */
+
+  } catch (error) {
+    /**
+     * if (error instanceof SDKValidationError) {
+      console.error('Validation error:', error.pretty());
+    } else if (error instanceof SDKError) {
+      console.error('SDK error:', error.message);
+    } else {
+      console.error('Unexpected error:', error);
+    }
+     */
+
+    console.error('Unexpected error:', error);
+
+  }
+}
+
+export const getFiles = cache(async () => {
+
+  try {
+
+    const auth_token = await getAuthToken()
+
+    if(!auth_token) {
+      throw new Error('No auth token found')
+    }
+
+    const client = await getEdgenSDKClient({bearerAuth: auth_token});
+
+    //const result = await client.files.filesList();
+
+    return [];
+
+  } catch (error) {
+    console.log(error)
+    return []
+  }
+})
+
+export async function uploadFiles(files: PlainFileObject[]): Promise<Array<{ name: string; id: string; status: 'succeded' | 'failed' }>> {
+  const uploadResults: Array<{ name: string; id: string; status: 'succeded' | 'failed' }> = [];
+
+  try {
+    const auth_token = await getAuthToken();
+
+    if (!auth_token) {
+      throw new Error('No auth token found');
+    }
+
+    const client = await getEdgenSDKClient({ bearerAuth: auth_token });
+    
+    await Promise.all(files.map(async (file) => {
+      try {
+        const createdFile = await client.files.filesCreate({
+          data: objectToFile(file)
+        });
+        console.log('File created:', createdFile);
+        uploadResults.push({ name: file.name, id: createdFile.id, status: 'succeded' });
+      } catch (error) {
+        console.error('Error creating file:', error);
+        uploadResults.push({ name: file.name, id: '', status: 'failed' });
+      }
+    }));
+
+  } catch (error) {
+    console.error('Error in uploadFiles:', error);
+    // If there's an error with the overall process, mark all files as failed
+    uploadResults.push(...files.map(file => ({ name: file.name, id: '', status: 'failed' as const })));
+  }
+
+  return uploadResults;
 }
 
 export async function refreshHistory(path: string) {
