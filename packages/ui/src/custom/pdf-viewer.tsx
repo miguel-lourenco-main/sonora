@@ -7,14 +7,14 @@ import { PDFFile } from "./_lib/types";
 import { pdfjs, Document, Page } from "react-pdf";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import "react-pdf/dist/esm/Page/TextLayer.css";
-import 'core-js/full/promise/with-resolvers.js';
 
 import { LinearBlur } from "progressive-blur";
 
-// Polyfill for environments where window is not available (e.g., server-side rendering)
-import { withResolvers } from '../utils/resolvers-polyfill'; // Create this file if needed
+// Import the polyfill
+import { withResolvers } from '../utils/resolvers-polyfill';
 
-const { promise, resolve, reject } = withResolvers();
+// Use the polyfill only if Promise.withResolvers is not available
+const promiseWithResolvers = Promise.withResolvers || withResolvers;
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 

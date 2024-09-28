@@ -193,7 +193,7 @@ export const FilesDragNDrop = forwardRef<
         {...dropzone.getRootProps()}
 
       >
-        <div className={cn("absolute top-0 left-0 items-center justify-center w-full h-full p-2 bg-background/80", showCover || files.length === 0 ? "flex" : "hidden")}>
+        <div className={cn("absolute top-0 left-0 items-center rounded-lg justify-center w-full h-full p-2 bg-background/80", showCover || files.length === 0 ? "flex" : "hidden")}>
           <div
             className={cn(
             `flex flex-col items-center justify-center size-full rounded-lg duration-300 ease-in-out
