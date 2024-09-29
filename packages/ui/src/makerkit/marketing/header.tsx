@@ -1,6 +1,8 @@
-import { forwardRef } from 'react';
+'use client';
 
+import { forwardRef } from 'react';
 import { cn } from '../../utils';
+import { useScrollHeader } from '../../utils/use-scroll-header';
 
 interface HeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   logo?: React.ReactNode;
@@ -13,11 +15,15 @@ export const Header = forwardRef<HTMLDivElement, HeaderProps>(
     { className, logo, navigation, actions, ...props },
     ref,
   ) {
+
+    const isVisible = useScrollHeader();
+
     return (
       <div
         ref={ref}
         className={cn(
-          'site-header sticky top-0 z-50 w-full bg-background/80 py-2 backdrop-blur-md dark:bg-background/50',
+          'site-header fixed top-0 z-50 w-full bg-background/80 py-2 backdrop-blur-md dark:bg-background/50 transition-transform duration-300',
+          isVisible ? 'translate-y-0' : '-translate-y-full',
           className,
         )}
         {...props}
