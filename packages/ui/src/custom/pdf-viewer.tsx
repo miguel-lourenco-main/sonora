@@ -23,9 +23,9 @@ const resizeObserverOptions = {};
 const maxWidth = 800;
 
 export default function PDFViewer(
-  { pdf, setLoaded, onScroll, scrollRef, filter }
+  { pdf, setLoaded, setPdfLoading, onScroll, scrollRef, filter }
   : 
-  { pdf: PDFFile; setLoaded?: (b: boolean) => void; scrollRef?: React.RefObject<HTMLDivElement>; onScroll?: UIEventHandler<HTMLDivElement> | undefined; filter?: React.ReactNode}
+  { pdf: PDFFile; setLoaded?: (b: boolean) => void; setPdfLoading?: (b: boolean) => void; scrollRef?: React.RefObject<HTMLDivElement>; onScroll?: UIEventHandler<HTMLDivElement> | undefined; filter?: React.ReactNode}
 ) {
 
   const [file, setFile] = useState<PDFFile>(pdf);
@@ -69,6 +69,7 @@ export default function PDFViewer(
     updatePageHeight();
     setNumPages(pdf.numPages);
     if (setLoaded) setLoaded(true);
+    if (setPdfLoading) setPdfLoading(false);
   }
 
   useEffect(() => {
