@@ -4,6 +4,7 @@ interface SmoothScrollContextType {
   anchorRef: React.RefObject<HTMLDivElement>;
   isNearAnchor: boolean;
   isLocked: boolean;
+  setIsLocked: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const SmoothScrollContext = createContext<SmoothScrollContextType | undefined>(undefined);
@@ -54,7 +55,7 @@ export function SmoothScrollProvider({ children, threshold = 100 }: { children: 
   }, [handleScroll]);
 
   return (
-    <SmoothScrollContext.Provider value={{ anchorRef, isNearAnchor, isLocked }}>
+    <SmoothScrollContext.Provider value={{ anchorRef, isNearAnchor, isLocked, setIsLocked }}>
       {children}
     </SmoothScrollContext.Provider>
   );
