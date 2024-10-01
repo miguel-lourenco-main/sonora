@@ -1,13 +1,11 @@
 'use client';
 
-import { useMemo } from 'react';
-
+import { forwardRef, useEffect, useMemo, useState, useRef } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowRight, CheckCircle } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
-
 import {
   BillingConfig,
   type LineItemSchema,
@@ -36,8 +34,106 @@ import {
 import { Separator } from '@kit/ui/separator';
 import { Trans } from '@kit/ui/trans';
 import { cn } from '@kit/ui/utils';
-
+import { Slider } from '@kit/ui/slider';
 import { LineItemDetails } from './line-item-details';
+
+
+const maxPages = 10000; // Maximum number of pages
+
+const UnderscoreInput = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement> & { pageCount: number, setPageCount: (value: number) => void }>((props, ref) => {
+  const [isFocused, setIsFocused] = useState(false);
+  const divRef = useRef<HTMLDivElement | null>(null);
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout | null = null;
+
+    if (isFocused) {
+      interval = setInterval(() => {
+        setIsVisible(prev => !prev);
+      }, 480);
+    } else {
+      setIsVisible(false);
+    }
+
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [isFocused]);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key >= '0' && e.key <= '9') {
+      const newValue = props.pageCount === 0 ? parseInt(e.key, 10) : parseInt(props.pageCount.toString() + e.key, 10);
+      props.setPageCount(newValue);
+    } else if (e.key === 'Backspace') {
+      const newValue = props.pageCount > 9 ? Math.floor(props.pageCount / 10) : 0;
+      props.setPageCount(newValue);
+    }
+  };
+
+  useEffect(() => {
+    if (isFocused) {
+      divRef.current?.focus();
+    }
+  }, [isFocused]);
+
+  const maxDigits = maxPages.toString().length;
+  const currentDigits = props.pageCount.toString().length;
+  const showUnderscore = currentDigits < maxDigits;
+
+  return (
+    <div className={cn('hover:bg-muted ease-in-out duration-300 p-2 rounded-lg', isFocused && showUnderscore && props.pageCount !== 0 && 'pr-4')}>
+      <div className="relative inline-block">
+        <div 
+          ref={(node) => {
+            divRef.current = node;
+            if (typeof ref === 'function') {
+              ref(node);
+            } else if (ref) {
+              ref.current = node;
+            }
+          }}
+          tabIndex={0}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          onKeyDown={handleKeyDown}
+          className={cn(
+            "inline-block w-fit text-center text-2xl rounded-lg bg-transparent outline-none",
+            "ease-in-out duration-300",
+            "border-0 ring-0 focus:ring-0 hover:ring-0",
+            "shadow-none focus:shadow-none hover:shadow-none",
+            props.className
+          )}
+          style={{
+            ...props.style,
+            minWidth: '1ch',
+          }}
+        >
+          <span className='text-current'>{props.pageCount}</span>
+        </div>
+        {isFocused && isVisible && showUnderscore && (
+          <span 
+            className={cn("absolute bottom-0 w-[1rem] h-[1.5px] bg-current animate-blink", {
+              'right-[-1rem]': isFocused,
+              'right-0': props.pageCount === 0,
+            })}
+            style={{ animation: 'blink 1s step-end infinite' }}
+          />
+        )}
+      </div>
+    </div>
+  );
+});
+
+UnderscoreInput.displayName = 'UnderscoreInput';
+
+// Add this to your global CSS or a nearby <style> tag
+const blinkingUnderscoreStyle = `
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+`;
 
 export function PlanPicker(
   props: React.PropsWithChildren<{
@@ -48,6 +144,13 @@ export function PlanPicker(
   }>,
 ) {
   const { t } = useTranslation(`billing`);
+  const [pageCount, setPageCount] = useState(0);
+  // Function to update page count
+  const updatePageCount = (value: number) => {
+    const clampedValue = Math.min(Math.max(0, value), maxPages);
+    console.log('clampedValue', clampedValue);
+    setPageCount(clampedValue);
+  };
 
   const intervals = useMemo(
     () => getPlanIntervals(props.config),
@@ -107,8 +210,52 @@ export function PlanPicker(
 
   const locale = useTranslation().i18n.language;
 
+  // Function to determine the plan based on page count
+  const determinePlan = (pages: number) => {
+    if (pages === 0) return 'Free';
+    if (pages <= 200) return 'Pro';
+    if (pages <= 500) return 'Business';
+    return 'Enterprise';
+  };
+
+  const currentPlan = determinePlan(pageCount);
+
+  // Update form values when currentPlan changes
+  useEffect(() => {
+    const product = props.config.products.find(p => p.name === currentPlan);
+    if (product) {
+      const plan = product.plans.find(p => p.interval === selectedInterval);
+      if (plan) {
+        form.setValue('planId', plan.id, { shouldValidate: true });
+        form.setValue('productId', product.id, { shouldValidate: true });
+      }
+    }
+  }, [currentPlan, selectedInterval]);
+
   return (
     <Form {...form}>
+      {/* ALU Slider and Input */}
+      <div className="text-center mb-12 py-2">
+        <div className='flex flex-col items-center justify-center mb-4'>
+          <h2 className="text-3xl font-bold">Pages</h2>
+          <UnderscoreInput
+            pageCount={pageCount}
+            setPageCount={(value) => {
+              updatePageCount(value);
+            }}
+          />
+        </div>
+        <div className="flex items-center justify-center space-x-4 mb-4">
+          <Slider
+            min={0}
+            max={maxPages}
+            step={50}
+            value={[pageCount]}
+            onValueChange={(value) => updatePageCount(value[0] ?? 0)}
+            className="w-[60%]"
+          />
+        </div>
+      </div>
       <div
         className={
           'flex flex-col space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0'
@@ -204,13 +351,17 @@ export function PlanPicker(
           <FormField
             name={'planId'}
             render={({ field }) => (
-              <FormItem>
+              <FormItem className={'rounded-md border p-4'}>
                 <FormLabel>
-                  <Trans i18nKey={'common:planPickerLabel'} />
+                  <Trans i18nKey={'common:choosePlan'} />
                 </FormLabel>
 
                 <FormControl>
-                  <RadioGroup value={field.value} name={field.name}>
+                  <RadioGroup
+                    name={field.name}
+                    value={field.value}
+                    className={'space-y-2'}
+                  >
                     {props.config.products.map((product) => {
                       const plan = product.plans.find((item) => {
                         if (item.paymentType === 'one-time') {
@@ -236,9 +387,12 @@ export function PlanPicker(
                         throw new Error(`Base line item was not found`);
                       }
 
+                      // Highlight the plan that matches currentPlan
+                      const isCurrentPlan = product.name === currentPlan;
+
                       return (
                         <RadioGroupItemLabel
-                          selected={selected}
+                          selected={selected || isCurrentPlan}
                           key={primaryLineItem.id}
                         >
                           <RadioGroupItem
