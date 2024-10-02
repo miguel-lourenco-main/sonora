@@ -12,7 +12,7 @@ interface PageCounterProps {
 }
 
 export function PageCounter({ initialValue, onPageCountChange, className }: PageCounterProps) {
-  const [pageCount, setPageCount] = useState(initialValue ?? 0);
+  const [pageCount, setPageCount] = useState(initialValue ?? 0); 
 
   const updatePageCount = (value: number) => {
     const clampedValue = Math.min(Math.max(0, value), MAX_PAGES_SUBSCRIPTION);
@@ -31,9 +31,9 @@ export function PageCounter({ initialValue, onPageCountChange, className }: Page
       </div>
       <div className="flex items-center justify-center space-x-4 mb-4">
         <Slider
-          min={0}
+          min={1}
           max={MAX_PAGES_SUBSCRIPTION}
-          step={50}
+          step={1}
           value={[pageCount]}
           onValueChange={(value) => updatePageCount(value[0] ?? 0)}
           className="w-[60%]"

@@ -5,3 +5,4 @@ export * from './billing-session-status';
 export * from './billing-portal-card';
 export * from './page-counter';
 export * from './polydoc/polydoc-plan-picker';
+export * from './polydoc/polydoc-pricing-table';

@@ -22,8 +22,8 @@ import { Separator } from '@kit/ui/separator';
 import { Trans } from '@kit/ui/trans';
 import { cn } from '@kit/ui/utils';
 
-import { LineItemDetails } from './line-item-details';
-import { PageCounter } from './page-counter';
+import { LineItemDetails } from '../line-item-details';
+import { PageCounter } from '../page-counter';
 
 interface Paths {
   signUp: string;
@@ -32,7 +32,7 @@ interface Paths {
 
 type Interval = 'month' | 'year';
 
-export function PricingTable({
+export function PolydocPricingTable({
   config,
   paths,
   CheckoutButtonRenderer,
@@ -54,14 +54,17 @@ export function PricingTable({
 }) {
   const intervals = getPlanIntervals(config).filter(Boolean) as Interval[];
   const [interval, setInterval] = useState(intervals[0]!);
-  const [pageCount, setPageCount] = useState(0);
+  const [pageCount, setPageCount] = useState(5);
 
   const updatePageCount = (value: number) => {
     setPageCount(value);
   };
 
+  console.log(config.products);
+
   return (
     <div className={'flex flex-col space-y-8 xl:space-y-12'}>
+      <PageCounter onPageCountChange={updatePageCount} initialValue={pageCount} />
       <div className={'flex justify-center'}>
         {intervals.length > 1 ? (
           <PlanIntervalSwitcher
@@ -98,9 +101,10 @@ export function PricingTable({
 
           // Create a copy of the product to avoid mutating the original config
           const modifiedProduct = { ...product };
+          const modifiedLineItem = {...primaryLineItem} as z.infer<typeof LineItemSchema>;
 
           // If the product is 'pro', add the page count feature
-          if (product.id === 'pro' && primaryLineItem) {
+          if (product.id === 'pro' && modifiedLineItem) {
             const intervalText = interval === 'year' ? 'year' : 'month';
             const pageFeature = `${pageCount} pages per ${intervalText}`;
             
@@ -109,17 +113,18 @@ export function PricingTable({
               pageFeature,
               ...modifiedProduct.features
             ];
+
+            modifiedLineItem.cost = modifiedLineItem.cost * pageCount
           }
 
-          console.log(modifiedProduct.features);
-
+          
           return (
             <PricingItem
               selectable
               key={plan.id}
               plan={plan}
               redirectToCheckout={redirectToCheckout}
-              primaryLineItem={primaryLineItem}
+              primaryLineItem={modifiedLineItem}
               product={modifiedProduct}
               paths={paths}
               displayPlanDetails={displayPlanDetails}
@@ -149,6 +154,7 @@ function PricingItem(
 
     plan: {
       id: string;
+      custom?: boolean;
       lineItems: z.infer<typeof LineItemSchema>[];
       interval?: Interval;
       name?: string;
@@ -521,6 +527,7 @@ function LineItemPrice({
   lineItem: z.infer<typeof LineItemSchema> | undefined;
   plan: {
     label?: string;
+    custom?: boolean;
   };
   interval: Interval | undefined;
   product: {
@@ -540,12 +547,13 @@ function LineItemPrice({
     : 0;
 
   const costString =
-    lineItem &&
-    formatCurrency({
-      currencyCode: product.currency,
-      locale: i18n.language,
-      value: cost,
-    });
+    plan.custom
+      ? 'Custom'
+      : lineItem && formatCurrency({
+            currencyCode: product.currency,
+            locale: i18n.language,
+          value: cost,
+        });
 
   const labelString = plan.label && (
     <Trans i18nKey={plan.label} defaults={plan.label} />
