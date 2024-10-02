@@ -17,6 +17,7 @@ export function LineItemDetails(
     lineItems: z.infer<typeof LineItemSchema>[];
     currency: string;
     selectedInterval?: string | undefined;
+    pageCount?: number;
   }>,
 ) {
   const locale = useTranslation().i18n.language;
@@ -98,7 +99,7 @@ export function LineItemDetails(
               <span className={'text-xs font-semibold'}>
                 {formatCurrency({
                   currencyCode,
-                  value: item.cost,
+                  value: item.cost * (props.pageCount ?? 1),
                   locale,
                 })}
               </span>

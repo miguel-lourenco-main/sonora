@@ -125,14 +125,21 @@ export function PolydocPlanPicker(
   // Function to determine the plan based on page count
   const determinePlan = (pages: number) => {
     if (pages <= 5) return 'Free';
-    if (pages <= 200) return 'Pro';
-    if (pages === MAX_PAGES_SUBSCRIPTION) return 'Business';
+    if (pages !== MAX_PAGES_SUBSCRIPTION) return 'Pro';
+    return 'Business';
   };
 
-  const currentPlan = determinePlan(form.getValues('pageCount'));
+  const [currentPlan, setCurrentPlan] = useState(determinePlan(form.getValues('pageCount')));
+
+  useEffect(() => {
+    console.log('form.getValues("pageCount")', form.getValues('pageCount'));
+    console.log('currentPlan', currentPlan);
+    setCurrentPlan(determinePlan(form.getValues('pageCount')));
+  }, [form.getValues('pageCount')]);
 
   // Update form values when currentPlan changes
   useEffect(() => {
+
     const product = props.config.products.find(p => p.name === currentPlan);
     if (product) {
       const plan = product.plans.find(p => p.interval === selectedInterval);
@@ -443,6 +450,7 @@ export function PolydocPlanPicker(
               selectedInterval={selectedInterval}
               selectedPlan={selectedPlan}
               selectedProduct={modifiedProduct}
+              pageCount={form.getValues('pageCount')}
             />
           );
         })() : null}
@@ -455,6 +463,7 @@ function PlanDetails({
   selectedProduct,
   selectedInterval,
   selectedPlan,
+  pageCount
 }: {
   selectedProduct: {
     id: string;
@@ -471,6 +480,7 @@ function PlanDetails({
     paymentType: string;
     custom?: boolean;
   };
+  pageCount: number;
 }) {
   const isRecurring = selectedPlan.paymentType === 'recurring';
 
@@ -519,6 +529,7 @@ function PlanDetails({
             lineItems={selectedPlan.lineItems ?? []}
             selectedInterval={isRecurring ? selectedInterval : undefined}
             currency={selectedProduct.currency}
+            pageCount={pageCount}
           />
         </div>
       </If>
