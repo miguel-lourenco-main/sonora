@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 import { ArrowRight, CheckCircle } from 'lucide-react';
@@ -272,7 +272,7 @@ function PricingItem(
                 </If>
               </span>
 
-              <If condition={lineItem && lineItem?.type !== 'flat'}>
+              <If condition={lineItem && lineItem?.type !== 'flat' && props.product.id !== 'business'}>
                 <span>/</span>
 
                 <span
@@ -478,6 +478,8 @@ function DefaultCheckoutButton(
   }>,
 ) {
   const { t } = useTranslation('billing');
+  
+  const router = useRouter();
 
   const signUpPath = props.paths.signUp;
 
@@ -487,8 +489,11 @@ function DefaultCheckoutButton(
     redirectToCheckout: props.redirectToCheckout ? 'true' : 'false',
   });
 
-  const linkHref =
-    props.plan.href ?? `${signUpPath}?${searchParams.toString()}` ?? '';
+  //const linkHref =props.plan.href ?? `app/billing` ?? '';
+
+  const linkHref = `app/billing`
+  console.log('linkHref', linkHref);
+  console.log('props.plan.href', props.plan.id);
 
   const label = props.plan.buttonLabel ?? 'common:getStartedWithPlan';
 

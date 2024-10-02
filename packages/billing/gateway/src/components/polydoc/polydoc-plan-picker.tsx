@@ -257,7 +257,7 @@ export function PolydocPlanPicker(
 
                 <FormControl>
                   <RadioGroup
-                    name={field.name}checkout-submit-button
+                    name={field.name}
                     value={field.value}
                     className={'space-y-2'}
                   >
@@ -295,7 +295,7 @@ export function PolydocPlanPicker(
                           key={!plan.custom ? primaryLineItem?.id : plan.id + 'custom' }
                         >
                           <RadioGroupItem
-                            data-test-plan={plan.id}checkout-submit-button
+                            data-test-plan={plan.id}
                             key={plan.id + selected}
                             id={plan.id}
                             value={plan.id}
