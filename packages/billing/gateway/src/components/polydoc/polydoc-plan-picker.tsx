@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef, useEffect, useMemo, useState, useRef } from 'react';
+import { forwardRef, useEffect, useMemo, useState, useRef, memo } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowRight, CheckCircle } from 'lucide-react';
 import { useForm } from 'react-hook-form';
@@ -38,6 +38,11 @@ import { LineItemDetails } from '../line-item-details';
 import { MAX_PAGES_SUBSCRIPTION } from '@kit/shared/constants';
 import { PageCounter } from '../page-counter';
 
+const startingInterval = 'month';
+const startingProduct = 'free';
+const startingPlan = 'free-monthly';
+
+const MemoizedPlanDetails = memo(PlanDetails);
 
 export function PolydocPlanPicker(
   props: React.PropsWithChildren<{
@@ -85,10 +90,10 @@ export function PolydocPlanPicker(
         ),
     ),
     defaultValues: {
-      interval: intervals[0],
+      interval: startingInterval,
       pageCount: 5,
-      planId: '',
-      productId: freeProductId ?? '',
+      planId: startingPlan,
+      productId: startingProduct,
     },
   });
 
@@ -98,7 +103,6 @@ export function PolydocPlanPicker(
 
   const updatePageCount = (value: number) => {
     const clampedValue = Math.min(Math.max(0, value), MAX_PAGES_SUBSCRIPTION);
-    console.log('clampedValue', clampedValue);
     setPageCount(clampedValue);
   };
 
@@ -132,8 +136,6 @@ export function PolydocPlanPicker(
   const [currentPlan, setCurrentPlan] = useState(determinePlan(form.getValues('pageCount')));
 
   useEffect(() => {
-    console.log('form.getValues("pageCount")', form.getValues('pageCount'));
-    console.log('currentPlan', currentPlan);
     setCurrentPlan(determinePlan(form.getValues('pageCount')));
   }, [form.getValues('pageCount')]);
 
@@ -431,131 +433,121 @@ export function PolydocPlanPicker(
           </div>
         </form>
 
-        {selectedPlan && selectedInterval && selectedProduct ? (() => {
-          const modifiedProduct = { ...selectedProduct };
-
-          if (selectedProduct.id === 'pro' || selectedProduct.id === 'business') {
-            const intervalText = selectedInterval === 'year' ? 'year' : 'month';
-            const pageFeature = `${form.getValues('pageCount')} pages per ${intervalText}`;
-            
-            // Insert the page count feature at index 0
-            modifiedProduct.features = [
-              pageFeature,
-              ...modifiedProduct.features
-            ];
-          }
-
-          return (
-            <PlanDetails
+        {selectedPlan && selectedPlan && (
+            <MemoizedPlanDetails
               selectedInterval={selectedInterval}
               selectedPlan={selectedPlan}
-              selectedProduct={modifiedProduct}
+              selectedProduct={selectedProduct}
               pageCount={form.getValues('pageCount')}
             />
-          );
-        })() : null}
+        )}
       </div>
     </Form>
   );
 }
 
 function PlanDetails({
-  selectedProduct,
-  selectedInterval,
-  selectedPlan,
-  pageCount
-}: {
-  selectedProduct: {
-    id: string;
-    name: string;
-    description: string;
-    currency: string;
-    features: string[];
-  };
-
-  selectedInterval: string;
-
-  selectedPlan: {
-    lineItems: z.infer<typeof LineItemSchema>[];
-    paymentType: string;
-    custom?: boolean;
-  };
-  pageCount: number;
-}) {
-  const isRecurring = selectedPlan.paymentType === 'recurring';
-
-  // trick to force animation on re-render
-  const key = Math.random();
-
-  return (
-    <div
-      key={key}
-      className={
-        'fade-in animate-in zoom-in-95 flex w-full flex-col space-y-4 py-2 lg:px-8'
+    selectedProduct,
+    selectedInterval,
+    selectedPlan,
+    pageCount
+  }: {
+    selectedProduct: {
+      id: string;
+      name: string;
+      description: string;
+      currency: string;
+      features: string[];
+    };
+    selectedInterval: string;
+    selectedPlan: {
+      lineItems: z.infer<typeof LineItemSchema>[];
+      paymentType: string;
+      custom?: boolean;
+    };
+    pageCount: number;
+  }) {
+    const isRecurring = selectedPlan.paymentType === 'recurring';
+  
+    // Memoize the modified product to prevent unnecessary re-renders
+    const modifiedProduct = useMemo(() => {
+      const product = { ...selectedProduct };
+      if (product.id === 'pro') {
+        const intervalText = selectedInterval === 'year' ? 'year' : 'month';
+        const pageFeature = `${pageCount} pages per ${intervalText}`;
+        
+        // Insert the page count feature at index 0
+        product.features = [
+            pageFeature,
+            ...product.features
+        ];
       }
-    >
-      <div className={'flex flex-col space-y-0.5'}>
-        <span className={'text-sm font-medium'}>
-          <b>
-            <Trans
-              i18nKey={`billing:plans.${selectedProduct.id}.name`}
-              defaults={selectedProduct.name}
-            />
-          </b>{' '}
-          <If condition={isRecurring}>
-            / <Trans i18nKey={`billing:billingInterval.${selectedInterval}`} />
-          </If>
-        </span>
-
-        <p>
-          <span className={'text-muted-foreground text-sm'}>
-            <Trans
-              i18nKey={`billing:plans.${selectedProduct.id}.description`}
-              defaults={selectedProduct.description}
-            />
+      return product;
+    }, [selectedProduct, pageCount]);
+  
+    // Memoize the line items details
+    const lineItemDetails = useMemo(() => (
+      <LineItemDetails
+        lineItems={selectedPlan.lineItems ?? []}
+        selectedInterval={isRecurring ? selectedInterval : undefined}
+        currency={modifiedProduct.currency}
+        pageCount={pageCount}
+      />
+    ), [selectedPlan.lineItems, isRecurring, selectedInterval, modifiedProduct.currency, pageCount]);
+  
+    return (
+      <div className={'fade-in animate-in zoom-in-95 flex w-full flex-col space-y-4 py-2 lg:px-8'}>
+        <div className={'flex flex-col space-y-0.5'}>
+          <span className={'text-sm font-medium'}>
+            <b>
+              <Trans
+                i18nKey={`billing:plans.${modifiedProduct.id}.name`}
+                defaults={modifiedProduct.name}
+              />
+            </b>{' '}
+            <If condition={isRecurring}>
+              / <Trans i18nKey={`billing:billingInterval.${selectedInterval}`} />
+            </If>
           </span>
-        </p>
-      </div>
-
-      <If condition={selectedPlan.lineItems.length > 0}>
+          <p>
+            <span className={'text-muted-foreground text-sm'}>
+              <Trans
+                i18nKey={`billing:plans.${modifiedProduct.id}.description`}
+                defaults={modifiedProduct.description}
+              />
+            </span>
+          </p>
+        </div>
+  
+        <If condition={selectedPlan.lineItems.length > 0}>
+          <Separator />
+          <div className={'flex flex-col space-y-2'}>
+            <span className={'text-sm font-semibold'}>
+              <Trans i18nKey={'billing:detailsLabel'} />
+            </span>
+            {lineItemDetails}
+          </div>
+        </If>
+  
         <Separator />
-
+  
         <div className={'flex flex-col space-y-2'}>
           <span className={'text-sm font-semibold'}>
-            <Trans i18nKey={'billing:detailsLabel'} />
+            <Trans i18nKey={'billing:featuresLabel'} />
           </span>
-
-          <LineItemDetails
-            lineItems={selectedPlan.lineItems ?? []}
-            selectedInterval={isRecurring ? selectedInterval : undefined}
-            currency={selectedProduct.currency}
-            pageCount={pageCount}
-          />
-        </div>
-      </If>
-
-      <Separator />
-
-      <div className={'flex flex-col space-y-2'}>
-        <span className={'text-sm font-semibold'}>
-          <Trans i18nKey={'billing:featuresLabel'} />
-        </span>
-
-        {selectedProduct.features.map((item) => {
-          return (
+  
+          {modifiedProduct.features.map((item) => (
             <div key={item} className={'flex items-center space-x-1 text-sm'}>
               <CheckCircle className={'h-4 text-green-500'} />
-
               <span className={'text-secondary-foreground'}>
                 <Trans i18nKey={item} defaults={item} />
               </span>
             </div>
-          );
-        })}
+          ))}
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
 
 function Price(props: React.PropsWithChildren) {
   return (

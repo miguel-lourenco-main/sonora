@@ -46,7 +46,7 @@ export const UnderscoreInput = forwardRef<HTMLDivElement, React.HTMLAttributes<H
     const showUnderscore = currentDigits < maxDigits;
   
     return (
-       <div className={cn('hover:bg-muted ease-in-out duration-300 p-2 rounded-lg', isFocused && showUnderscore && props.pageCount !== 0 && 'pr-4')}>
+       <div className={cn('hover:bg-muted ease-in-out duration-300 p-2 rounded-lg', isFocused && showUnderscore && props.pageCount !== 0 && 'pr-6')}>
             <div className="relative inline-block">
                 <div 
                     ref={(node) => {
@@ -77,7 +77,7 @@ export const UnderscoreInput = forwardRef<HTMLDivElement, React.HTMLAttributes<H
                 </div>
                 {isFocused && isVisible && showUnderscore && (
                     <span 
-                        className={cn("absolute bottom-0 w-[1rem] h-[1.5px] bg-current animate-blink", {
+                        className={cn("absolute bottom-1 w-[1rem] h-[1.5px] bg-current animate-blink", {
                             'right-[-1rem]': isFocused,
                             'right-0': props.pageCount === 0,
                         })}
