@@ -59,3 +59,5 @@ export const LANGUAGES = [
     { value: "russian", label: "🇷🇺 Russian" },
     { value: "spanish", label: "🇪🇸 Spanish" },
 ]
+
+export const MAX_PAGES_SUBSCRIPTION  = 10000;

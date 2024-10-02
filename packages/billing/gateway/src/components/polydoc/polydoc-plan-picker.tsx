@@ -34,33 +34,28 @@ import {
 import { Separator } from '@kit/ui/separator';
 import { Trans } from '@kit/ui/trans';
 import { cn } from '@kit/ui/utils';
-import { Slider } from '@kit/ui/slider';
-import { LineItemDetails } from './line-item-details';
+import { LineItemDetails } from '../line-item-details';
 import { MAX_PAGES_SUBSCRIPTION } from '@kit/shared/constants';
-import { PageCounter } from './page-counter';
+import { PageCounter } from '../page-counter';
 
 
-export function PlanPicker(
+export function PolydocPlanPicker(
   props: React.PropsWithChildren<{
     config: BillingConfig;
-    onSubmit: (data: { planId: string; productId: string }) => void;
+    onSubmit: (data: { planId: string; productId: string, pageCount: number }) => void;
     canStartTrial?: boolean;
     pending?: boolean;
   }>,
 ) {
   const { t } = useTranslation(`billing`);
-  const [pageCount, setPageCount] = useState(0);
   // Function to update page count
-  const updatePageCount = (value: number) => {
-    const clampedValue = Math.min(Math.max(0, value), MAX_PAGES_SUBSCRIPTION);
-    console.log('clampedValue', clampedValue);
-    setPageCount(clampedValue);
-  };
 
   const intervals = useMemo(
     () => getPlanIntervals(props.config),
     [props.config],
   ) as string[];
+
+  const freeProductId = props.config.products.find(p => p.id === 'free')?.id;
 
   const form = useForm({
     reValidateMode: 'onChange',
@@ -70,6 +65,7 @@ export function PlanPicker(
         .object({
           planId: z.string(),
           productId: z.string(),
+          pageCount: z.number().optional(),
           interval: z.string().optional(),
         })
         .refine(
@@ -90,10 +86,21 @@ export function PlanPicker(
     ),
     defaultValues: {
       interval: intervals[0],
+      pageCount: 5,
       planId: '',
-      productId: '',
+      productId: freeProductId ?? '',
     },
   });
+
+  const setPageCount = (value: number) => {
+    form.setValue('pageCount', value, { shouldValidate: true });
+  };
+
+  const updatePageCount = (value: number) => {
+    const clampedValue = Math.min(Math.max(0, value), MAX_PAGES_SUBSCRIPTION);
+    console.log('clampedValue', clampedValue);
+    setPageCount(clampedValue);
+  };
 
   const { interval: selectedInterval } = form.watch();
   const planId = form.getValues('planId');
@@ -117,13 +124,12 @@ export function PlanPicker(
 
   // Function to determine the plan based on page count
   const determinePlan = (pages: number) => {
-    if (pages === 0) return 'Free';
+    if (pages <= 5) return 'Free';
     if (pages <= 200) return 'Pro';
-    if (pages <= 500) return 'Business';
-    return 'Enterprise';
+    if (pages === MAX_PAGES_SUBSCRIPTION) return 'Business';
   };
 
-  const currentPlan = determinePlan(pageCount);
+  const currentPlan = determinePlan(form.getValues('pageCount'));
 
   // Update form values when currentPlan changes
   useEffect(() => {
@@ -139,8 +145,7 @@ export function PlanPicker(
 
   return (
     <Form {...form}>
-      {/* ALU Slider and Input */}
-      <PageCounter onPageCountChange={updatePageCount} />
+      <PageCounter initialValue={form.getValues('pageCount')} onPageCountChange={updatePageCount} className="mb-12" />
       <div
         className={
           'flex flex-col space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0'
@@ -243,7 +248,7 @@ export function PlanPicker(
 
                 <FormControl>
                   <RadioGroup
-                    name={field.name}
+                    name={field.name}checkout-submit-button
                     value={field.value}
                     className={'space-y-2'}
                   >
@@ -256,7 +261,7 @@ export function PlanPicker(
                         return item.interval === selectedInterval;
                       });
 
-                      if (!plan || plan.custom) {
+                      if (!plan) {
                         return null;
                       }
 
@@ -268,7 +273,7 @@ export function PlanPicker(
                         planId,
                       );
 
-                      if (!primaryLineItem) {
+                      if (!primaryLineItem && !plan.custom) {
                         throw new Error(`Base line item was not found`);
                       }
 
@@ -278,10 +283,10 @@ export function PlanPicker(
                       return (
                         <RadioGroupItemLabel
                           selected={selected || isCurrentPlan}
-                          key={primaryLineItem.id}
+                          key={!plan.custom ? primaryLineItem?.id : plan.id + 'custom' }
                         >
                           <RadioGroupItem
-                            data-test-plan={plan.id}
+                            data-test-plan={plan.id}checkout-submit-button
                             key={plan.id + selected}
                             id={plan.id}
                             value={plan.id}
@@ -355,14 +360,12 @@ export function PlanPicker(
                             >
                               <div>
                                 <Price key={plan.id}>
-                                  <span>
-                                    {formatCurrency({
+                                  {plan.custom ? 'Custom' : formatCurrency({
                                       currencyCode:
                                         product.currency.toLowerCase(),
-                                      value: primaryLineItem.cost,
+                                      value: primaryLineItem?.cost ? (primaryLineItem?.cost * form.getValues('pageCount')) : 0,
                                       locale,
                                     })}
-                                  </span>
                                 </Price>
 
                                 <div>
@@ -421,13 +424,28 @@ export function PlanPicker(
           </div>
         </form>
 
-        {selectedPlan && selectedInterval && selectedProduct ? (
-          <PlanDetails
-            selectedInterval={selectedInterval}
-            selectedPlan={selectedPlan}
-            selectedProduct={selectedProduct}
-          />
-        ) : null}
+        {selectedPlan && selectedInterval && selectedProduct ? (() => {
+          const modifiedProduct = { ...selectedProduct };
+
+          if (selectedProduct.id === 'pro' || selectedProduct.id === 'business') {
+            const intervalText = selectedInterval === 'year' ? 'year' : 'month';
+            const pageFeature = `${form.getValues('pageCount')} pages per ${intervalText}`;
+            
+            // Insert the page count feature at index 0
+            modifiedProduct.features = [
+              pageFeature,
+              ...modifiedProduct.features
+            ];
+          }
+
+          return (
+            <PlanDetails
+              selectedInterval={selectedInterval}
+              selectedPlan={selectedPlan}
+              selectedProduct={modifiedProduct}
+            />
+          );
+        })() : null}
       </div>
     </Form>
   );
@@ -451,6 +469,7 @@ function PlanDetails({
   selectedPlan: {
     lineItems: z.infer<typeof LineItemSchema>[];
     paymentType: string;
+    custom?: boolean;
   };
 }) {
   const isRecurring = selectedPlan.paymentType === 'recurring';

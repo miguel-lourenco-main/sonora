@@ -23,6 +23,7 @@ import { Trans } from '@kit/ui/trans';
 import { cn } from '@kit/ui/utils';
 
 import { LineItemDetails } from './line-item-details';
+import { PageCounter } from './page-counter';
 
 interface Paths {
   signUp: string;
@@ -53,9 +54,15 @@ export function PricingTable({
 }) {
   const intervals = getPlanIntervals(config).filter(Boolean) as Interval[];
   const [interval, setInterval] = useState(intervals[0]!);
+  const [pageCount, setPageCount] = useState(0);
+
+  const updatePageCount = (value: number) => {
+    setPageCount(value);
+  };
 
   return (
     <div className={'flex flex-col space-y-8 xl:space-y-12'}>
+      <PageCounter onPageCountChange={updatePageCount}/>
       <div className={'flex justify-center'}>
         {intervals.length > 1 ? (
           <PlanIntervalSwitcher
@@ -65,7 +72,6 @@ export function PricingTable({
           />
         ) : null}
       </div>
-
       <div
         className={
           'flex flex-col items-start space-y-6 lg:space-y-0' +
@@ -91,6 +97,23 @@ export function PricingTable({
             throw new Error(`Primary line item not found for plan ${plan.id}`);
           }
 
+          // Create a copy of the product to avoid mutating the original config
+          const modifiedProduct = { ...product };
+
+          // If the product is 'pro', add the page count feature
+          if (product.id === 'pro' && primaryLineItem) {
+            const intervalText = interval === 'year' ? 'year' : 'month';
+            const pageFeature = `${pageCount} pages per ${intervalText}`;
+            
+            // Insert the page count feature at index 1
+            modifiedProduct.features = [
+              pageFeature,
+              ...modifiedProduct.features
+            ];
+          }
+
+          console.log(modifiedProduct.features);
+
           return (
             <PricingItem
               selectable
@@ -98,7 +121,7 @@ export function PricingTable({
               plan={plan}
               redirectToCheckout={redirectToCheckout}
               primaryLineItem={primaryLineItem}
-              product={product}
+              product={modifiedProduct}
               paths={paths}
               displayPlanDetails={displayPlanDetails}
               alwaysDisplayMonthlyPrice={alwaysDisplayMonthlyPrice}

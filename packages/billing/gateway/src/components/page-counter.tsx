@@ -1,0 +1,44 @@
+'use client';
+
+import React, { useState } from 'react';
+import { Slider } from '@kit/ui/slider';
+import { UnderscoreInput } from './underscore-input'; // Assuming you move UnderscoreInput to a separate file
+import { MAX_PAGES_SUBSCRIPTION } from '@kit/shared/constants';
+
+interface PageCounterProps {
+  onPageCountChange: (pageCount: number) => void;
+  className?: string;
+  initialValue?: number;
+}
+
+export function PageCounter({ initialValue, onPageCountChange, className }: PageCounterProps) {
+  const [pageCount, setPageCount] = useState(initialValue ?? 0);
+
+  const updatePageCount = (value: number) => {
+    const clampedValue = Math.min(Math.max(0, value), MAX_PAGES_SUBSCRIPTION);
+    setPageCount(clampedValue);
+    onPageCountChange(clampedValue);
+  };
+
+  return (
+    <div className={`text-center py-2 ${className}`}>
+      <div className='flex flex-col items-center justify-center mb-4'>
+        <h2 className="text-3xl font-bold">Pages</h2>
+        <UnderscoreInput
+          pageCount={pageCount}
+          setPageCount={updatePageCount}
+        />
+      </div>
+      <div className="flex items-center justify-center space-x-4 mb-4">
+        <Slider
+          min={0}
+          max={MAX_PAGES_SUBSCRIPTION}
+          step={50}
+          value={[pageCount]}
+          onValueChange={(value) => updatePageCount(value[0] ?? 0)}
+          className="w-[60%]"
+        />
+      </div>
+    </div>
+  );
+}
