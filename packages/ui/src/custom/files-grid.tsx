@@ -1,13 +1,18 @@
 'use client';
 
-import { CloudUpload, File, FileUp, RefreshCcw, RefreshCw, RotateCw, Trash2, X } from "lucide-react";
+import { File, FileUp, RotateCw, Trash2, X } from "lucide-react";
 import { Button } from "../shadcn/button";
 import TooltipComponent from "./tooltip-component";
 import {IconDOC, IconDOCX, IconPDF } from "./icons";
-import { Dispatch, SetStateAction, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 
-export default function FilesGrid({ files, setFiles }: { files: File[], setFiles: Dispatch<SetStateAction<File[]>> }) {
+interface FilesGridProps {
+  files: File[];
+  onFileRemove?: (index: number) => void;  // Add this new prop
+}
+
+export default function FilesGrid({ files, onFileRemove }: FilesGridProps) {
     
     const gridRef = useRef<HTMLDivElement>(null);
     const { t } = useTranslation('ui');
@@ -29,6 +34,10 @@ export default function FilesGrid({ files, setFiles }: { files: File[], setFiles
         window.addEventListener('resize', updateGridColumns);
         return () => window.removeEventListener('resize', updateGridColumns);
     }, []);
+
+    const handleRemoveFile = (index: number) => {
+        onFileRemove && onFileRemove(index)
+    };
 
     return (
         <div 
@@ -60,7 +69,7 @@ export default function FilesGrid({ files, setFiles }: { files: File[], setFiles
                             <p className="w-full px-2 text-sm text-center truncate">{file.name}</p>
                         </div>
                         <div className="absolute inset-0 flex size-full items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                            <Button variant="light_foreground" size="fit" onClick={() => setFiles(prevFiles => prevFiles.filter((_, i) => i !== index))}>
+                            <Button type="button" variant="light_foreground" size="fit" onClick={() => handleRemoveFile(index)}>
                                 <TooltipComponent trigger={<Trash2 className="size-8 p-1.5" />} content={<div>{t('delete')}</div>} />
                             </Button>
                         </div>
