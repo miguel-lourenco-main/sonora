@@ -60,8 +60,6 @@ export function PolydocPricingTable({
     setPageCount(value);
   };
 
-  console.log(config.products);
-
   return (
     <div className={'flex flex-col space-y-8 xl:space-y-12'}>
       <PageCounter onPageCountChange={updatePageCount} initialValue={pageCount} />
@@ -479,21 +477,9 @@ function DefaultCheckoutButton(
 ) {
   const { t } = useTranslation('billing');
   
-  const router = useRouter();
-
-  const signUpPath = props.paths.signUp;
-
-  const searchParams = new URLSearchParams({
-    next: props.paths.return,
-    plan: props.plan.id,
-    redirectToCheckout: props.redirectToCheckout ? 'true' : 'false',
-  });
-
   //const linkHref =props.plan.href ?? `app/billing` ?? '';
 
   const linkHref = `app/billing`
-  console.log('linkHref', linkHref);
-  console.log('props.plan.href', props.plan.id);
 
   const label = props.plan.buttonLabel ?? 'common:getStartedWithPlan';
 
