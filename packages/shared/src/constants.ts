@@ -2,11 +2,16 @@ import { z } from 'zod';
 
 export const EDGEN_BACKEND_URL = process.env.EDGEN_BACKEND_URL || "http://127.0.0.1:30000";
 
-export const FILE_SUPPORTED_TYPES = ".docx"
-export const FILE_SUPPORTED_TYPES_ARRAY = FILE_SUPPORTED_TYPES.split(",").map((type) => type.trim())
+export const FILE_SUPPORTED_TYPES ={
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"],
+    "application/pdf": [".pdf"],
+    "application/vnd.ms-powerpoint": [".ppt"],
+}
 
+export const FILE_SUPPORTED_TYPES_KEYS = Object.keys(FILE_SUPPORTED_TYPES)
+export const FILE_SUPPORTED_TYPES_VALUES = Object.values(FILE_SUPPORTED_TYPES).flat()
 
-export const FILE_SUPPORTED_TYPES_OBJECT ={"application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"]}
+export const FILE_SUPPORTED_TYPES_VALUES_STRING = Object.values(FILE_SUPPORTED_TYPES).flat().join(",")
 
 export const COLLAPSIBLE_SIZE = 4
 

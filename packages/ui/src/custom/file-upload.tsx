@@ -6,6 +6,7 @@ import { FileInputButton } from "./files-input-button";
 import { Plus, Trash2 } from "lucide-react";
 import FilesDragNDrop from "./files-drag-n-drop";
 import FilesGrid from "./files-grid";
+import { FILE_SUPPORTED_TYPES, FILE_SUPPORTED_TYPES_VALUES_STRING } from "@kit/shared/constants";
 
 export default function FileUploadSimple({ 
     files, 
@@ -24,6 +25,10 @@ export default function FileUploadSimple({
 
     const handleAddFiles = (newFiles: File[]) => {
         setFiles(prevState => [...prevState, ...newFiles]);
+    };
+
+    const handleRemoveFile = (index: number) => {
+        setFiles(prevState => prevState.filter((_, i) => i !== index));
     };
 
     return (
@@ -50,7 +55,7 @@ export default function FileUploadSimple({
                                 />
                             </Button>
                         )}
-                        acceptsTypes=".pdf, .docx, .doc"
+                        acceptsTypes={FILE_SUPPORTED_TYPES_VALUES_STRING}
                         addDroppedFiles={handleAddFiles}
                     />
                 </div>
@@ -59,11 +64,11 @@ export default function FileUploadSimple({
                 </div>
             </div>
             <FilesDragNDrop
-                acceptFiles={{"application/pdf": [".pdf"], "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"], "application/msword": [".doc"]}}
+                acceptFiles={FILE_SUPPORTED_TYPES}
                 files={files}
                 setFiles={setFiles}
             >
-                <FilesGrid files={files} setFiles={setFiles} />
+                <FilesGrid files={files} onFileRemove={handleRemoveFile} />
             </FilesDragNDrop>
         </div>
     );

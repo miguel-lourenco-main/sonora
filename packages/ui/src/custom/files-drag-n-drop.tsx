@@ -21,7 +21,6 @@ import { Tooltip } from "@radix-ui/react-tooltip";
 import { TooltipContent, TooltipProvider, TooltipTrigger } from "../shadcn/tooltip";
 import { useTranslation } from "react-i18next";
 import { CustomFileUploaderProps, CustomFileUploaderPropsV2, DirectionOptions } from "./_lib/types";
-import { IconCloudDownload } from "./icons";
 
 export const FilesDragNDrop = forwardRef<
   HTMLDivElement,
