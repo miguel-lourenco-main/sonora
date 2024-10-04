@@ -34,6 +34,8 @@ export default function FilesGrid({ files, onFileRemove }: FilesGridProps) {
         };
 
         updateGridLayout();
+
+        // TODO: improve listener, not every situation where the window resizes is being listened to
         window.addEventListener('resize', updateGridLayout);
         return () => window.removeEventListener('resize', updateGridLayout);
     }, []);
