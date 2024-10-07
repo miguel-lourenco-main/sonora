@@ -148,6 +148,7 @@ export const FilesDragNDrop = forwardRef<
             break;
           }
         }
+        toast.warning(`${rejectedFiles.length} file(s) were not accepted due to incorrect file type.`);
       }
     }, [setFiles]);
 
@@ -440,13 +441,30 @@ export const FilesDragNDropV2 = forwardRef<
     );
 
     const onDrop = useCallback((acceptedFiles: File[], rejectedFiles: FileRejection[], event: DropEvent) => {
+      const allFiles = [...acceptedFiles, ...rejectedFiles.map(rejection => rejection.file)];
+      
+      const validFiles: File[] = [];
+      const invalidFiles: File[] = [];
 
-      if (!acceptedFiles) {
-        toast.error("file error , probably too big");
-        return;
+      allFiles.forEach(file => {
+        const isAccepted = Object.entries(accept).some(([mimeType, extensions]) => {
+          return file.type === mimeType || extensions.some(ext => file.name.toLowerCase().endsWith(ext));
+        });
+
+        if (isAccepted && file.size <= maxSize) {
+          validFiles.push(file);
+        } else {
+          invalidFiles.push(file);
+        }
+      });
+
+      if (validFiles.length > 0) {
+        addFiles(validFiles);
       }
 
-      addFiles(acceptedFiles);
+      if (invalidFiles.length > 0) {
+        toast.warning(`${invalidFiles.length} file(s) were not accepted due to incorrect file type or size.`);
+      }
 
       if (rejectedFiles.length > 0) {
         for (let i = 0; i < rejectedFiles.length; i++) {
@@ -462,7 +480,7 @@ export const FilesDragNDropV2 = forwardRef<
           }
         }
       }
-    }, [addFiles]);
+    }, [addFiles, accept, maxSize, t]);
 
     /*
     TODO: hardcoded max files number that allows the user to upload as many files as possible 
@@ -472,12 +490,13 @@ export const FilesDragNDropV2 = forwardRef<
     const opts = { accept, maxFiles: 1000, maxSize, multiple };
 
     const dropzone = useDropzone({
-      ...opts,
       onDragEnter: () => setShowCover(true),
       onDragLeave: () => setShowCover(false),
       onDrop,
       onDropRejected: () => setIsFileTooBig(true),
       onDropAccepted: () => setIsFileTooBig(false),
+      // Remove the accept, maxSize, and maxFiles options to allow all files
+      multiple: true,
     })
 
     const clickInput = useCallback((e: React.MouseEvent<HTMLInputElement>) => {

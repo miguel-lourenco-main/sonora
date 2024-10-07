@@ -1,6 +1,7 @@
 'use client'
 
 import { ChangeEvent, useRef } from "react";
+import { toast } from "sonner";
 
 export function FileInputButton({
   addDroppedFiles,
@@ -11,7 +12,6 @@ export function FileInputButton({
   acceptsTypes: string
   content: (handleFileUpload: () => void) => JSX.Element
 }){
-
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileUpload = () => {
@@ -19,18 +19,26 @@ export function FileInputButton({
   };
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    // Handle the selected file(s) here
     const droppedFiles = event.target.files ?? []
-
     const fileArray = Array.from(droppedFiles);
 
-    const files: File[] = [];
+    const acceptedTypes = acceptsTypes.split(',').map(type => type.trim());
+    const acceptedFiles: File[] = [];
+    const rejectedFiles: File[] = [];
 
-    fileArray.map((file: File) => {
-        files.push(file);
+    fileArray.forEach((file: File) => {
+      if (acceptedTypes.some(type => file.type.match(type) || file.name.endsWith(type.replace('*', '')))) {
+        acceptedFiles.push(file);
+      } else {
+        rejectedFiles.push(file);
+      }
     });
 
-    addDroppedFiles(fileArray)
+    if (rejectedFiles.length > 0) {
+      toast.warning(`${rejectedFiles.length} file(s) were not accepted due to incorrect file type.`);
+    }
+
+    addDroppedFiles(acceptedFiles);
   };
 
   return(
@@ -42,7 +50,7 @@ export function FileInputButton({
         ref={fileInputRef}
         style={{ display: 'none' }}
         onChange={handleFileChange}
-        accept={acceptsTypes}
+        // Remove the accept attribute to allow all file types
       />
     </>
   )
