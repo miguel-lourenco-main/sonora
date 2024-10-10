@@ -50,7 +50,7 @@ export function FileInputButton({
         ref={fileInputRef}
         style={{ display: 'none' }}
         onChange={handleFileChange}
-        // Remove the accept attribute to allow all file types
+        accept={acceptsTypes}
       />
     </>
   )

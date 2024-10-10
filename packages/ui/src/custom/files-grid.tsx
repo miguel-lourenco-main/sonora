@@ -47,7 +47,7 @@ export default function FilesGrid({ files, onFileRemove }: FilesGridProps) {
     return (
         <div 
             ref={gridRef}
-            className="grid gap-4 size-full border-2 p-4 rounded-md overflow-auto"
+            className="grid gap-4 size-full border-2 p-4 rounded-md overflow-hidden"
             style={{
                 gridTemplateColumns: 'repeat(var(--grid-column-count, 3), 130px)',
                 gridTemplateRows: 'repeat(var(--grid-row-count, 3), 130px)',

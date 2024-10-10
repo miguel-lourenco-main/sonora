@@ -4,8 +4,10 @@ export const EDGEN_BACKEND_URL = process.env.EDGEN_BACKEND_URL || "http://127.0.
 
 export const FILE_SUPPORTED_TYPES ={
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"],
-    "application/pdf": [".pdf"],
-    "application/vnd.ms-powerpoint": [".ppt"],
+    /**
+     * "application/pdf": [".pdf"],
+     * "application/vnd.ms-powerpoint": [".ppt"],
+     */
 }
 
 export const FILE_SUPPORTED_TYPES_KEYS = Object.keys(FILE_SUPPORTED_TYPES)
@@ -51,18 +53,18 @@ export const POLYDOC_CUSTOM_PATHS = {
 }
 
 export const LANGUAGES = [
-    { value: "chinese", label: "🇨🇳 Chinese" },
-    { value: "english", label: "🇬🇧 English" },
-    { value: "french", label: "🇫🇷 French" },
-    { value: "german", label: "🇩🇪 German" },
-    { value: "italian", label: "🇮🇹 Italian" },
-    { value: "japanese", label: "🇯🇵 Japanese" },
-    { value: "korean", label: "🇰🇷 Korean" },
-    { value: "polish", label: "🇵🇱 Polish" },
-    { value: "portuguese", label: "🇵🇹 Portuguese" },
-    { value: "romanian", label: "🇷🇴 Romanian" },
-    { value: "russian", label: "🇷🇺 Russian" },
-    { value: "spanish", label: "🇪🇸 Spanish" },
+    { value: "zh", label: "🇨🇳 Chinese" },
+    { value: "en", label: "🇬🇧 English" },
+    { value: "fr", label: "🇫🇷 French" },
+    { value: "de", label: "🇩🇪 German" },
+    { value: "it", label: "🇮🇹 Italian" },
+    { value: "ja", label: "🇯🇵 Japanese" },
+    { value: "ko", label: "🇰🇷 Korean" },
+    { value: "pl", label: "🇵🇱 Polish" },
+    { value: "pt", label: "🇵🇹 Portuguese" },
+    { value: "ro", label: "🇷🇴 Romanian" },
+    { value: "ru", label: "🇷🇺 Russian" },
+    { value: "es", label: "🇪🇸 Spanish" },
 ]
 
 export const MAX_PAGES_SUBSCRIPTION  = 10000;
