@@ -54,11 +54,6 @@ export function PricingTable({
 }) {
   const intervals = getPlanIntervals(config).filter(Boolean) as Interval[];
   const [interval, setInterval] = useState(intervals[0]!);
-  const [pageCount, setPageCount] = useState(0);
-
-  const updatePageCount = (value: number) => {
-    setPageCount(value);
-  };
 
   return (
     <div className={'flex flex-col space-y-8 xl:space-y-12'}>
@@ -98,20 +93,6 @@ export function PricingTable({
 
           // Create a copy of the product to avoid mutating the original config
           const modifiedProduct = { ...product };
-
-          // If the product is 'pro', add the page count feature
-          if (product.id === 'pro' && primaryLineItem) {
-            const intervalText = interval === 'year' ? 'year' : 'month';
-            const pageFeature = `${pageCount} pages per ${intervalText}`;
-            
-            // Insert the page count feature at index 1
-            modifiedProduct.features = [
-              pageFeature,
-              ...modifiedProduct.features
-            ];
-          }
-
-          console.log(modifiedProduct.features);
 
           return (
             <PricingItem

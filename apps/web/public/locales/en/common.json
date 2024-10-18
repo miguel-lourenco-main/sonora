@@ -77,5 +77,7 @@
     "description": "This website uses cookies to ensure you get the best experience on our website.",
     "reject": "Reject",
     "accept": "Accept"
-  }
+  },
+  "choosePlan": "Choose a plan",
+  "landingPage": "Landing Page"
 }

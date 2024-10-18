@@ -64,7 +64,8 @@ export function SmoothScrollProvider({ children, threshold = 100 }: { children: 
 export function useSmoothScroll() {
   const context = useContext(SmoothScrollContext);
   if (context === undefined) {
-    throw new Error('useSmoothScroll must be used within a SmoothScrollProvider');
+    //throw new Error('useSmoothScroll must be used within a SmoothScrollProvider');
+    return null
   }
   return context;
 }

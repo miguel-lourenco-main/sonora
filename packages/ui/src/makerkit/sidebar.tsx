@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext, useEffect, useId, useRef, useState } from 'react';
+import { useContext, useId, useRef, useState } from 'react';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -21,8 +21,6 @@ import { SidebarContext } from './context/sidebar.context';
 import { If } from './if';
 import type { NavigationConfigSchema } from './navigation-config.schema';
 import { Trans } from './trans';
-
-import { checkCollapseSidebar } from "@kit/shared/utils"
 
 export type SidebarConfig = z.infer<typeof NavigationConfigSchema>;
 
@@ -61,31 +59,41 @@ export function Sidebar(props: {
 
   const ctx = { collapsed, setCollapsed };
 
-  const currentPath = usePathname()
+  const onMouseEnter =
+    props.collapsed && expandOnHover
+      ? () => {
+          setCollapsed(false);
+          isExpandedRef.current = true;
+        }
+      : undefined;
 
-  const mouseEnterSidebar = () => {
-    if(checkCollapseSidebar(currentPath)) setCollapsed(false)
-  }
-
-  const mouseLeaveSidebar = () => {
-    if(checkCollapseSidebar(currentPath)) setCollapsed(true)
-  }
-
-  useEffect(() => {
-    if(checkCollapseSidebar(currentPath)){
-      setCollapsed(true)
-    }else{
-      setCollapsed(false)
-    }
-
-  }, [currentPath])
+  const onMouseLeave =
+    props.collapsed && expandOnHover
+      ? () => {
+          if (!isRadixPopupOpen()) {
+            setCollapsed(true);
+            isExpandedRef.current = false;
+          } else {
+            onRadixPopupClose(() => {
+              setCollapsed(true);
+              isExpandedRef.current = false;
+            });
+          }
+        }
+      : undefined;
 
   return (
     <SidebarContext.Provider value={ctx}>
-      <div className={className} onMouseEnter={mouseEnterSidebar} onMouseLeave={mouseLeaveSidebar}>
-        {typeof props.children === 'function'
-          ? props.children(ctx)
-          : props.children}
+      <div
+        className={containerClassName}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+      >
+        <div aria-expanded={!collapsed} className={className}>
+          {typeof props.children === 'function'
+            ? props.children(ctx)
+            : props.children}
+        </div>
       </div>
     </SidebarContext.Provider>
   );
@@ -252,14 +260,47 @@ export function SidebarItem({
 }
 
 function getClassNameBuilder(className: string) {
-  return cva([cn('flex box-content ease-in-out duration-300 h-screen flex-col relative', className)], {
-    variants: {
-      collapsed: {
-        true: `w-[5.5rem]`,
-        false: `w-2/12 lg:w-[17rem]`,
-      },
-    },
+  return cva([
+    cn(
+      'group/sidebar transition-width fixed box-content flex h-screen w-2/12 flex-col bg-inherit backdrop-blur-sm duration-200',
+      className,
+    ),
+  ]);
+}
+
+function getSidebarSizeClassName(collapsed: boolean, isExpanded: boolean) {
+  return cn(['z-50 flex w-full flex-col'], {
+    'dark:shadow-primary/20 lg:w-[17rem]': !collapsed,
+    'lg:w-[4rem]': collapsed,
+    shadow: isExpanded,
   });
+}
+
+function getRadixPopup() {
+  return document.querySelector('[data-radix-popper-content-wrapper]');
+}
+
+function isRadixPopupOpen() {
+  return getRadixPopup() !== null;
+}
+
+function onRadixPopupClose(callback: () => void) {
+  const element = getRadixPopup();
+
+  if (element) {
+    const observer = new MutationObserver(() => {
+      if (!getRadixPopup()) {
+        callback();
+
+        observer.disconnect();
+      }
+    });
+
+    observer.observe(element.parentElement!, {
+      childList: true,
+      subtree: true,
+    });
+  }
 }
 
 export function SidebarNavigation({

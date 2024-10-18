@@ -213,7 +213,7 @@ export function PageHeader({
         className,
       )}
     >
-      <div className={'flex flex-col'}>
+      <div className={'flex flex-col space-y-2'}>
         <If condition={description}>
           <PageDescription>{description}</PageDescription>
         </If>

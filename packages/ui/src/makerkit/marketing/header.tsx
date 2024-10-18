@@ -17,7 +17,9 @@ export const Header = forwardRef<HTMLDivElement, HeaderProps>(
   ) {
 
     const isVisible = useScrollHeader();
-    const { isLocked } = useSmoothScroll();
+
+    const smoothScroll = useSmoothScroll?.();
+    const isLocked = smoothScroll?.isLocked ?? false;
 
     return (
       <div

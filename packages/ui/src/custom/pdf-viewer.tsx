@@ -10,12 +10,6 @@ import "react-pdf/dist/esm/Page/TextLayer.css";
 
 import { LinearBlur } from "progressive-blur";
 
-// Import the polyfill
-import { withResolvers } from '../utils/resolvers-polyfill';
-
-// Use the polyfill only if Promise.withResolvers is not available
-const promiseWithResolvers = Promise.withResolvers || withResolvers;
-
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 const options = {};

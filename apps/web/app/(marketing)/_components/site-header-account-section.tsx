@@ -25,7 +25,7 @@ const ModeToggle = dynamic(
 );
 
 const paths = {
-  home: pathsConfig.app.app,
+  app: pathsConfig.app.app,
 };
 
 const features = {

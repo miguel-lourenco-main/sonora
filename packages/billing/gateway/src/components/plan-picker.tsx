@@ -34,7 +34,6 @@ import {
 import { Separator } from '@kit/ui/separator';
 import { Trans } from '@kit/ui/trans';
 import { cn } from '@kit/ui/utils';
-import { Slider } from '@kit/ui/slider';
 import { LineItemDetails } from './line-item-details';
 import { MAX_PAGES_SUBSCRIPTION } from '@kit/shared/constants';
 import { PageCounter } from './page-counter';
@@ -123,24 +122,9 @@ export function PlanPicker(
     return 'Enterprise';
   };
 
-  const currentPlan = determinePlan(pageCount);
-
-  // Update form values when currentPlan changes
-  useEffect(() => {
-    const product = props.config.products.find(p => p.name === currentPlan);
-    if (product) {
-      const plan = product.plans.find(p => p.interval === selectedInterval);
-      if (plan) {
-        form.setValue('planId', plan.id, { shouldValidate: true });
-        form.setValue('productId', product.id, { shouldValidate: true });
-      }
-    }
-  }, [currentPlan, selectedInterval]);
-
   return (
     <Form {...form}>
       {/* ALU Slider and Input */}
-      <PageCounter onPageCountChange={updatePageCount} />
       <div
         className={
           'flex flex-col space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0'
@@ -273,7 +257,7 @@ export function PlanPicker(
                       }
 
                       // Highlight the plan that matches currentPlan
-                      const isCurrentPlan = product.name === currentPlan;
+                      const isCurrentPlan = planId === form.getValues('planId');
 
                       return (
                         <RadioGroupItemLabel
