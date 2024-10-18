@@ -39,7 +39,7 @@
   "devDependencies": {
     "@kit/prettier-config": "workspace:*",
     "@types/node": "^22.5.1",
-    "@types/react": "^18.3.5",
+    "@types/react": "^18.3.10",
     "@vercel/ai-tsconfig": "workspace:*",
     "tsup": "^8",
     "typescript": "^5.5.4",
