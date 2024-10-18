@@ -1,7 +1,7 @@
 'use client';
 
 import { forwardRef } from 'react';
-import { cn } from '../../utils';
+import { cn } from '../../lib/utils';
 import { useScrollHeader, useSmoothScroll } from '@kit/shared/hooks';
 
 interface HeaderProps extends React.HTMLAttributes<HTMLDivElement> {

@@ -34,7 +34,7 @@ export function PersonalAccountDropdown({
   className,
   user,
   signOutRequested,
-  showProfileName,
+  showProfileName = true,
   paths,
   features,
   account,
@@ -57,8 +57,9 @@ export function PersonalAccountDropdown({
     enableThemeToggle: boolean;
   };
 
-  className?: string;
   showProfileName?: boolean;
+
+  className?: string;
 }) {
 
   const { data: personalAccountData } = usePersonalAccountData(

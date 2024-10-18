@@ -1,6 +1,7 @@
 import * as React from 'react';
 
-import { cn } from '../utils';
+import { cn } from '../lib/utils';
+import { If } from './if';
 
 export type PageLayoutStyle = 'sidebar' | 'header' | 'custom';
 
@@ -48,14 +49,14 @@ function PageWithSidebar(props: PageProps) {
 
   return (
     <div
-      className={cn('flex bg-gray-50/50 dark:bg-background', props.className)}
+      className={cn('flex bg-gray-50/95 dark:bg-background/85', props.className)}
     >
       {Navigation}
 
       <div
         className={
           props.contentContainerClassName ??
-          'mx-auto flex h-screen w-full flex-col overflow-y-auto px-4 lg:px-0'
+          'mx-auto flex h-screen w-full flex-col overflow-y-auto px-4 lg:px-0 bg-inherit'
         }
       >
         {MobileNavigation}
@@ -160,13 +161,13 @@ export function PageBody(
     className?: string;
   }>,
 ) {
-  const className = cn('w-full flex flex-col flex-1 lg:px-8', props.className);
+  const className = cn('flex w-full flex-1 flex-col lg:px-8', props.className);
 
   return <div className={className}>{props.children}</div>;
 }
 
 export function PageNavigation(props: React.PropsWithChildren) {
-  return <div className={'hidden flex-1 lg:flex'}>{props.children}</div>;
+  return <div className={'hidden flex-1 lg:flex bg-inherit'}>{props.children}</div>;
 }
 
 export function PageDescription(props: React.PropsWithChildren) {
@@ -213,8 +214,13 @@ export function PageHeader({
       )}
     >
       <div className={'flex flex-col'}>
-        <PageDescription>{description}</PageDescription>
-        <PageTitle>{title}</PageTitle>
+        <If condition={description}>
+          <PageDescription>{description}</PageDescription>
+        </If>
+
+        <If condition={title}>
+          <PageTitle>{title}</PageTitle>
+        </If>
       </div>
 
       {children}

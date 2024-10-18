@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext, useEffect, useId, useState } from 'react';
+import { useContext, useEffect, useId, useRef, useState } from 'react';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -9,6 +9,7 @@ import { cva } from 'class-variance-authority';
 import { ChevronDown } from 'lucide-react';
 import { z } from 'zod';
 
+import { cn, isRouteActive } from '../lib/utils';
 import { Button } from '../shadcn/button';
 import {
   Tooltip,
@@ -16,7 +17,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '../shadcn/tooltip';
-import { cn, isRouteActive } from '../utils';
 import { SidebarContext } from './context/sidebar.context';
 import { If } from './if';
 import type { NavigationConfigSchema } from './navigation-config.schema';
@@ -26,8 +26,11 @@ import { checkCollapseSidebar } from "@kit/shared/utils"
 
 export type SidebarConfig = z.infer<typeof NavigationConfigSchema>;
 
+export { SidebarContext };
+
 export function Sidebar(props: {
   collapsed?: boolean;
+  expandOnHover?: boolean;
   className?: string;
   children:
     | React.ReactNode
@@ -37,9 +40,23 @@ export function Sidebar(props: {
       }) => React.ReactNode);
 }) {
   const [collapsed, setCollapsed] = useState(props.collapsed ?? false);
+  const isExpandedRef = useRef<boolean>(false);
 
-  const className = getClassNameBuilder(props.className ?? '')({
+  const expandOnHover =
+    props.expandOnHover ??
+    process.env.NEXT_PUBLIC_EXPAND_SIDEBAR_ON_HOVER === 'true';
+
+  const sidebarSizeClassName = getSidebarSizeClassName(
     collapsed,
+    isExpandedRef.current,
+  );
+
+  const className = getClassNameBuilder(
+    cn(props.className ?? '', sidebarSizeClassName, {}),
+  )();
+
+  const containerClassName = cn(sidebarSizeClassName, 'bg-inherit', {
+    'max-w-[4rem]': expandOnHover && isExpandedRef.current,
   });
 
   const ctx = { collapsed, setCollapsed };
@@ -76,17 +93,22 @@ export function Sidebar(props: {
 
 export function SidebarContent({
   children,
-  className,
+  className: customClassName,
 }: React.PropsWithChildren<{
   className?: string;
 }>) {
-  return (
-    <div
-      className={cn('flex w-full flex-col space-y-1.5 px-4 py-1', className)}
-    >
-      {children}
-    </div>
+  const { collapsed } = useContext(SidebarContext);
+
+  const className = cn(
+    'flex w-full flex-col space-y-1.5 py-1',
+    customClassName,
+    {
+      'px-4': !collapsed,
+      'px-2': collapsed,
+    },
   );
+
+  return <div className={className}>{children}</div>;
 }
 
 export function SidebarGroup({
@@ -117,7 +139,7 @@ export function SidebarGroup({
 
   const Wrapper = () => {
     const className = cn(
-      'group flex items-center justify-between px-container space-x-2.5',
+      'px-container group flex items-center justify-between space-x-2.5',
       {
         'py-2.5': !sidebarCollapsed,
       },
@@ -152,7 +174,11 @@ export function SidebarGroup({
   };
 
   return (
-    <div className={'flex flex-col space-y-1 py-1'}>
+    <div
+      className={cn('flex flex-col', {
+        'space-y-1 py-1': !collapsed,
+      })}
+    >
       <Wrapper />
 
       <If condition={collapsible ? !isGroupCollapsed : true}>
@@ -185,34 +211,43 @@ export function SidebarItem({
 
   const active = isRouteActive(path, currentPath, end ?? false);
   const variant = active ? 'secondary' : 'ghost';
-  const size = collapsed ? 'icon' : 'sm';
 
   return (
-    <Button
-      asChild
-      className={cn('flex w-full text-sm shadow-none active:bg-secondary/60', {
-        'justify-start space-x-2.5': !collapsed,
-        'hover:bg-initial': active,
-      })}
-      size={size}
-      variant={variant}
-    >
-      <Link key={path} href={path}>
-        <If condition={collapsed} fallback={Icon}>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>{Icon}</TooltipTrigger>
-
-              <TooltipContent side={'right'} sideOffset={20}>
+    <TooltipProvider delayDuration={0}>
+      <Tooltip disableHoverableContent>
+        <TooltipTrigger asChild>
+          <Button
+            asChild
+            className={cn(
+              'flex w-full text-sm shadow-none active:bg-secondary/60',
+              {
+                'justify-start space-x-2.5': !collapsed,
+                'hover:bg-initial': active,
+              },
+            )}
+            size={'sm'}
+            variant={variant}
+          >
+            <Link href={path}>
+              {Icon}
+              <span
+                className={cn('w-auto transition-opacity duration-300', {
+                  'w-0 opacity-0': collapsed,
+                })}
+              >
                 {children}
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </If>
+              </span>
+            </Link>
+          </Button>
+        </TooltipTrigger>
 
-        <span className={cn({ hidden: collapsed })}>{children}</span>
-      </Link>
-    </Button>
+        <If condition={collapsed}>
+          <TooltipContent side={'right'} sideOffset={10}>
+            {children}
+          </TooltipContent>
+        </If>
+      </Tooltip>
+    </TooltipProvider>
   );
 }
 

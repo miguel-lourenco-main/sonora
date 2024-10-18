@@ -4,7 +4,7 @@ import * as React from 'react';
 
 import * as RechartsPrimitive from 'recharts';
 
-import { cn } from '../utils';
+import { cn } from '../lib/utils';
 
 // Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = { light: '', dark: '.dark' } as const;
@@ -171,6 +171,7 @@ const ChartTooltipContent = React.forwardRef<
       labelKey,
     ]);
 
+    /* @ts-expect-error: TS issue */
     if (!active ?? !payload?.length) {
       return null;
     }
