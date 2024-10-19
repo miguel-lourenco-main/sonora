@@ -49,6 +49,11 @@ git branch -D update_makerkit
 ```
 
 ## Proliferate app subtree's new updates into app submodules
+
+## Setup
+```bash
+git remote add remote/frontend git@gitlab.com:edgenai/frontend/frontend.git
+
 ```bash
 # Update subtree
 git subtree split --prefix=apps/web --branch=subtree/apps-web
