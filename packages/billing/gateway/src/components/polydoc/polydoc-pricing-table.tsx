@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 import { ArrowRight, CheckCircle } from 'lucide-react';
@@ -23,7 +22,7 @@ import { Trans } from '@kit/ui/trans';
 import { cn } from '@kit/ui/utils';
 
 import { LineItemDetails } from '../line-item-details';
-import { PageCounter } from '../page-counter';
+import { PageAmountInput } from '../page-counter';
 
 interface Paths {
   signUp: string;
@@ -53,6 +52,7 @@ export function PolydocPricingTable({
   }>;
 }) {
   const intervals = getPlanIntervals(config).filter(Boolean) as Interval[];
+  
   const [interval, setInterval] = useState(intervals[0]!);
   const [pageCount, setPageCount] = useState(5);
 
@@ -62,7 +62,7 @@ export function PolydocPricingTable({
 
   return (
     <div className={'flex flex-col space-y-8 xl:space-y-12'}>
-      <PageCounter onPageCountChange={updatePageCount} initialValue={pageCount} />
+      <PageAmountInput onPageCountChange={updatePageCount} value={pageCount} />
       <div className={'flex justify-center'}>
         {intervals.length > 1 ? (
           <PlanIntervalSwitcher

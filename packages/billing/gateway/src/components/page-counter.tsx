@@ -1,24 +1,28 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Slider } from '@kit/ui/slider';
 import { UnderscoreInput } from './underscore-input'; // Assuming you move UnderscoreInput to a separate file
 import { MAX_PAGES_SUBSCRIPTION } from '@kit/shared/constants';
 
-interface PageCounterProps {
+interface PageAmountInputProps {
   onPageCountChange: (pageCount: number) => void;
   className?: string;
-  initialValue?: number;
+  value?: number;
 }
 
-export function PageCounter({ initialValue, onPageCountChange, className }: PageCounterProps) {
-  const [pageCount, setPageCount] = useState(initialValue ?? 0); 
+export function PageAmountInput({ value, onPageCountChange, className }: PageAmountInputProps) {
+  const [pageCount, setPageCount] = useState(value ?? 0); 
 
   const updatePageCount = (value: number) => {
     const clampedValue = Math.min(Math.max(0, value), MAX_PAGES_SUBSCRIPTION);
     setPageCount(clampedValue);
     onPageCountChange(clampedValue);
   };
+
+  useEffect(() => {
+    setPageCount(value ?? 0);
+  }, [value]);
 
   return (
     <div className={`text-center py-2 ${className}`}>
