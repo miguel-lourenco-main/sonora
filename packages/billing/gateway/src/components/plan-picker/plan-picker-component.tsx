@@ -1,23 +1,17 @@
 'use client';
 
-import { forwardRef, useEffect, useMemo, useState, useRef } from 'react';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { ArrowRight, CheckCircle } from 'lucide-react';
-import { useForm } from 'react-hook-form';
+import { useMemo } from 'react';
+import { ArrowRight, CircleCheck } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { z } from 'zod';
 import {
   BillingConfig,
-  type LineItemSchema,
-  getPlanIntervals,
   getPrimaryLineItem,
   getProductPlanPair,
+  LineItemSchema,
 } from '@kit/billing';
-import { formatCurrency } from '@kit/shared/utils';
-import { Badge } from '@kit/ui/badge';
+import { formatCurrency, getPlanTier } from '@kit/shared/utils';
 import { Button } from '@kit/ui/button';
 import {
-  Form,
   FormControl,
   FormField,
   FormItem,
@@ -31,71 +25,34 @@ import {
   RadioGroupItem,
   RadioGroupItemLabel,
 } from '@kit/ui/radio-group';
-import { Separator } from '@kit/ui/separator';
 import { Trans } from '@kit/ui/trans';
 import { cn } from '@kit/ui/utils';
-import { LineItemDetails } from './line-item-details';
-import { MAX_PAGES_SUBSCRIPTION } from '@kit/shared/constants';
-import { PageCounter } from './page-counter';
+import { z } from 'zod';
+import { toast } from 'sonner';
 
-
-export function PlanPicker(
+export function PlanPickerComponent(
   props: React.PropsWithChildren<{
+    setFormValue: (key: string, value: string, partial?: Partial<{
+      shouldValidate: boolean;
+      shouldDirty: boolean;
+      shouldTouch: boolean;
+    }> | undefined) => void;
+    getFormValue: (key: string) => string | number | undefined;
+    onSubmitForm: () => void;
+    isFormValid: boolean;
     config: BillingConfig;
-    onSubmit: (data: { planId: string; productId: string }) => void;
+    intervals: string[];
     canStartTrial?: boolean;
     pending?: boolean;
+    currentProductId?: string;
   }>,
 ) {
   const { t } = useTranslation(`billing`);
-  const [pageCount, setPageCount] = useState(0);
-  // Function to update page count
-  const updatePageCount = (value: number) => {
-    const clampedValue = Math.min(Math.max(0, value), MAX_PAGES_SUBSCRIPTION);
-    console.log('clampedValue', clampedValue);
-    setPageCount(clampedValue);
-  };
 
-  const intervals = useMemo(
-    () => getPlanIntervals(props.config),
-    [props.config],
-  ) as string[];
+  const { t: commonT } = useTranslation(`common`);
 
-  const form = useForm({
-    reValidateMode: 'onChange',
-    mode: 'onChange',
-    resolver: zodResolver(
-      z
-        .object({
-          planId: z.string(),
-          productId: z.string(),
-          interval: z.string().optional(),
-        })
-        .refine(
-          (data) => {
-            try {
-              const { product, plan } = getProductPlanPair(
-                props.config,
-                data.planId,
-              );
-
-              return product && plan;
-            } catch {
-              return false;
-            }
-          },
-          { message: t('noPlanChosen'), path: ['planId'] },
-        ),
-    ),
-    defaultValues: {
-      interval: intervals[0],
-      planId: '',
-      productId: '',
-    },
-  });
-
-  const { interval: selectedInterval } = form.watch();
-  const planId = form.getValues('planId');
+  const planId = useMemo(() => props.getFormValue('planId') as string, [props.getFormValue]);
+  const selectedInterval = useMemo(() => props.getFormValue('interval') as string, [props.getFormValue]);
 
   const { plan: selectedPlan, product: selectedProduct } = useMemo(() => {
     try {
@@ -114,27 +71,11 @@ export function PlanPicker(
 
   const locale = useTranslation().i18n.language;
 
-  // Function to determine the plan based on page count
-  const determinePlan = (pages: number) => {
-    if (pages === 0) return 'Free';
-    if (pages <= 200) return 'Pro';
-    if (pages <= 500) return 'Business';
-    return 'Enterprise';
-  };
-
   return (
-    <Form {...form}>
-      {/* ALU Slider and Input */}
-      <div
-        className={
-          'flex flex-col space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0'
-        }
-      >
-        <form
-          className={'flex w-full max-w-xl flex-col space-y-4'}
-          onSubmit={form.handleSubmit(props.onSubmit)}
-        >
-          <If condition={intervals.length}>
+    <div
+        className={'flex w-full max-w-xl flex-col space-y-4'}
+    >
+        <If condition={props.intervals.length}>
             <div
               className={cn('transition-all', {
                 ['pointer-events-none opacity-50']: !isRecurringPlan,
@@ -152,7 +93,7 @@ export function PlanPicker(
                       <FormControl id={'plan-picker-id'}>
                         <RadioGroup name={field.name} value={field.value}>
                           <div className={'flex space-x-2.5'}>
-                            {intervals.map((interval) => {
+                            {props.intervals.map((interval) => {
                               const selected = field.value === interval;
 
                               return (
@@ -171,7 +112,7 @@ export function PlanPicker(
                                     id={interval}
                                     value={interval}
                                     onClick={() => {
-                                      form.setValue('interval', interval, {
+                                      props.setFormValue('interval', interval, {
                                         shouldValidate: true,
                                       });
 
@@ -180,7 +121,7 @@ export function PlanPicker(
                                           (item) => item.interval === interval,
                                         );
 
-                                        form.setValue(
+                                        props.setFormValue(
                                           'planId',
                                           plan?.id ?? '',
                                           {
@@ -240,7 +181,7 @@ export function PlanPicker(
                         return item.interval === selectedInterval;
                       });
 
-                      if (!plan || plan.custom) {
+                      if (!plan) {
                         return null;
                       }
 
@@ -252,37 +193,61 @@ export function PlanPicker(
                         planId,
                       );
 
-                      if (!primaryLineItem) {
+                      if (!primaryLineItem && !plan.custom) {
                         throw new Error(`Base line item was not found`);
                       }
 
-                      // Highlight the plan that matches currentPlan
-                      const isCurrentPlan = planId === form.getValues('planId');
+                      const modifiedLineItem = {...primaryLineItem} as z.infer<typeof LineItemSchema>;
+
+                      // If the product is 'pro', add the page count feature
+                      if (product.id === 'pro' && modifiedLineItem) {
+                        if (primaryLineItem && primaryLineItem.tiers) {
+                          const tiers = primaryLineItem.tiers;
+                          const tiersUpTo = tiers.map((tier) => tier.upTo)
+
+                          // Convert pageCount to a number, defaulting to 0 if it's not a valid number
+                          const pageCount = Number(props.getFormValue('pageCount')) || 0;
+
+                          let index = getPlanTier(pageCount, tiersUpTo);
+                          
+                          let cost = tiers[index]?.cost ?? 0; 
+
+                          // Apply the cost of the applicable tier to all pages
+                          const costPerPage = Number(cost);
+                          modifiedLineItem.cost = costPerPage * pageCount
+                        }
+                      }
+
+                      const isCurrentPlan = product.id === planId;
 
                       return (
                         <RadioGroupItemLabel
                           selected={selected || isCurrentPlan}
-                          key={primaryLineItem.id}
+                          key={!plan.custom ? primaryLineItem?.id : plan.id + 'custom' }
                         >
-                          <RadioGroupItem
-                            data-test-plan={plan.id}
-                            key={plan.id + selected}
-                            id={plan.id}
-                            value={plan.id}
-                            onClick={() => {
-                              if (selected) {
-                                return;
-                              }
+                          {product.id === props.currentProductId ? (
+                            <CircleCheck className={'h-5 w-5 stroke-green-400'} />
+                          ):(
+                            <RadioGroupItem
+                              data-test-plan={plan.id}
+                              key={plan.id + selected}
+                              id={plan.id}
+                              value={plan.id}
+                              onClick={() => {
+                                if (selected) {
+                                  return;
+                                }
 
-                              form.setValue('planId', planId, {
-                                shouldValidate: true,
-                              });
+                                props.setFormValue('planId', planId, {
+                                  shouldValidate: true,
+                                });
 
-                              form.setValue('productId', product.id, {
-                                shouldValidate: true,
-                              });
-                            }}
-                          />
+                                props.setFormValue('productId', product.id, {
+                                  shouldValidate: true,
+                                });
+                              }}
+                            />
+                          )}
 
                           <div
                             className={
@@ -302,26 +267,6 @@ export function PlanPicker(
                                     defaults={product.name}
                                   />
                                 </span>
-
-                                <If
-                                  condition={
-                                    plan.trialDays && props.canStartTrial
-                                  }
-                                >
-                                  <div>
-                                    <Badge
-                                      className={'px-1 py-0.5 text-xs'}
-                                      variant={'success'}
-                                    >
-                                      <Trans
-                                        i18nKey={`billing:trialPeriod`}
-                                        values={{
-                                          period: plan.trialDays,
-                                        }}
-                                      />
-                                    </Badge>
-                                  </div>
-                                </If>
                               </div>
 
                               <span className={'text-muted-foreground'}>
@@ -339,14 +284,12 @@ export function PlanPicker(
                             >
                               <div>
                                 <Price key={plan.id}>
-                                  <span>
-                                    {formatCurrency({
+                                  {plan.custom ? 'Custom' : formatCurrency({
                                       currencyCode:
                                         product.currency.toLowerCase(),
-                                      value: primaryLineItem.cost,
+                                      value: modifiedLineItem.cost,
                                       locale,
                                     })}
-                                  </span>
                                 </Price>
 
                                 <div>
@@ -382,131 +325,36 @@ export function PlanPicker(
             )}
           />
 
-          <div>
+
+        {props.currentProductId === 'business' ? (
+          <Button
+            onClick={() => {
+                toast.success('This is a business account, please contact sales@polydoc.ai for pricing')
+            }}
+          >
+            {commonT(`contactUs`)}
+          </Button>
+        ):(
             <Button
-              data-test="checkout-submit-button"
-              disabled={props.pending ?? !form.formState.isValid}
+                data-test="checkout-submit-button"
+                disabled={props.pending ?? !props.isFormValid}
             >
-              {props.pending ? (
-                t('redirectingToPayment')
-              ) : (
-                <>
-                  <If
-                    condition={selectedPlan?.trialDays && props.canStartTrial}
-                    fallback={t(`proceedToPayment`)}
-                  >
-                    <span>{t(`startTrial`)}</span>
-                  </If>
+                {props.pending ? (
+                    t('redirectingToPayment')
+                ) : (
+                    <>
+                        <If
+                            condition={selectedPlan?.trialDays && props.canStartTrial}
+                            fallback={t(`proceedToPayment`)}
+                        >
+                            <span>{t(`startTrial`)}</span>
+                        </If>
 
-                  <ArrowRight className={'ml-2 h-4 w-4'} />
-                </>
-              )}
-            </Button>
-          </div>
-        </form>
-
-        {selectedPlan && selectedInterval && selectedProduct ? (
-          <PlanDetails
-            selectedInterval={selectedInterval}
-            selectedPlan={selectedPlan}
-            selectedProduct={selectedProduct}
-          />
-        ) : null}
-      </div>
-    </Form>
-  );
-}
-
-function PlanDetails({
-  selectedProduct,
-  selectedInterval,
-  selectedPlan,
-}: {
-  selectedProduct: {
-    id: string;
-    name: string;
-    description: string;
-    currency: string;
-    features: string[];
-  };
-
-  selectedInterval: string;
-
-  selectedPlan: {
-    lineItems: z.infer<typeof LineItemSchema>[];
-    paymentType: string;
-  };
-}) {
-  const isRecurring = selectedPlan.paymentType === 'recurring';
-
-  // trick to force animation on re-render
-  const key = Math.random();
-
-  return (
-    <div
-      key={key}
-      className={
-        'fade-in animate-in zoom-in-95 flex w-full flex-col space-y-4 py-2 lg:px-8'
-      }
-    >
-      <div className={'flex flex-col space-y-0.5'}>
-        <span className={'text-sm font-medium'}>
-          <b>
-            <Trans
-              i18nKey={`billing:plans.${selectedProduct.id}.name`}
-              defaults={selectedProduct.name}
-            />
-          </b>{' '}
-          <If condition={isRecurring}>
-            / <Trans i18nKey={`billing:billingInterval.${selectedInterval}`} />
-          </If>
-        </span>
-
-        <p>
-          <span className={'text-muted-foreground text-sm'}>
-            <Trans
-              i18nKey={`billing:plans.${selectedProduct.id}.description`}
-              defaults={selectedProduct.description}
-            />
-          </span>
-        </p>
-      </div>
-
-      <If condition={selectedPlan.lineItems.length > 0}>
-        <Separator />
-
-        <div className={'flex flex-col space-y-2'}>
-          <span className={'text-sm font-semibold'}>
-            <Trans i18nKey={'billing:detailsLabel'} />
-          </span>
-
-          <LineItemDetails
-            lineItems={selectedPlan.lineItems ?? []}
-            selectedInterval={isRecurring ? selectedInterval : undefined}
-            currency={selectedProduct.currency}
-          />
-        </div>
-      </If>
-
-      <Separator />
-
-      <div className={'flex flex-col space-y-2'}>
-        <span className={'text-sm font-semibold'}>
-          <Trans i18nKey={'billing:featuresLabel'} />
-        </span>
-
-        {selectedProduct.features.map((item) => {
-          return (
-            <div key={item} className={'flex items-center space-x-1 text-sm'}>
-              <CheckCircle className={'h-4 text-green-500'} />
-
-              <span className={'text-secondary-foreground'}>
-                <Trans i18nKey={item} defaults={item} />
-              </span>
-            </div>
-          );
-        })}
-      </div>
+                        <ArrowRight className={'ml-2 h-4 w-4'} />
+                    </>
+                )}
+        </Button>
+        )}
     </div>
   );
 }
