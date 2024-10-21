@@ -251,6 +251,46 @@ export type Database = {
         }
         Relationships: []
       }
+      credit: {
+        Row: {
+          account_id: string
+          credits: number
+          monthly_credits: number
+        }
+        Insert: {
+          account_id?: string
+          credits?: number
+          monthly_credits?: number
+        }
+        Update: {
+          account_id?: string
+          credits?: number
+          monthly_credits?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "credit_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: true
+            referencedRelation: "accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "credit_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: true
+            referencedRelation: "user_account_workspace"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "credit_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: true
+            referencedRelation: "user_accounts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       file: {
         Row: {
           account_id: string
@@ -375,6 +415,62 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "roles"
             referencedColumns: ["name"]
+          },
+        ]
+      }
+      message: {
+        Row: {
+          account_id: string
+          content: string
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["message_role"]
+          thread_id: string
+        }
+        Insert: {
+          account_id?: string
+          content: string
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["message_role"]
+          thread_id: string
+        }
+        Update: {
+          account_id?: string
+          content?: string
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["message_role"]
+          thread_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "message_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: false
+            referencedRelation: "accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "message_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: false
+            referencedRelation: "user_account_workspace"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "message_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: false
+            referencedRelation: "user_accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "message_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "thread"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -791,6 +887,49 @@ export type Database = {
           },
         ]
       }
+      thread: {
+        Row: {
+          account_id: string
+          created_at: string
+          id: string
+          title: string | null
+        }
+        Insert: {
+          account_id?: string
+          created_at?: string
+          id?: string
+          title?: string | null
+        }
+        Update: {
+          account_id?: string
+          created_at?: string
+          id?: string
+          title?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "thread_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: false
+            referencedRelation: "accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "thread_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: false
+            referencedRelation: "user_account_workspace"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "thread_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: false
+            referencedRelation: "user_accounts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       user_account_workspace: {
@@ -987,6 +1126,16 @@ export type Database = {
         }
         Returns: boolean
       }
+      rls_configure: {
+        Args: {
+          table_name: string
+          create_select?: boolean
+          create_insert?: boolean
+          create_update?: boolean
+          create_delete?: boolean
+        }
+        Returns: undefined
+      }
       team_account_workspace: {
         Args: {
           account_slug: string
@@ -1075,11 +1224,12 @@ export type Database = {
         | "members.manage"
         | "invites.manage"
       billing_provider: "stripe" | "lemon-squeezy" | "paddle"
+      message_role: "human" | "assistant"
       notification_channel: "in_app" | "email"
       notification_type: "info" | "warning" | "error"
       payment_status: "pending" | "succeeded" | "failed"
       run_status: "running" | "succeeded" | "failed"
-      subscription_item_type: "flat" | "per_seat" | "metered"
+      subscription_item_type: "flat" | "per_seat" | "metered" | "tiered"
       subscription_status:
         | "active"
         | "trialing"
