@@ -1,1 +1,0 @@
-export const DEFAULT_THREAD_NAME = "Default Thread"
