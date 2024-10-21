@@ -1,5 +1,6 @@
 import { COLLAPSE_PATHS, COLLAPSE_PATHS_FROM } from "./constants";
 import { PlainFileObject } from "./interfaces";
+import { UseFormReturn } from "react-hook-form";
 
 /**
  * Check if the code is running in a browser environment.
@@ -92,7 +93,7 @@ export const handleDelete = <T extends { id: string }>(
   setter((prev) => prev.filter(item => item.id !== deletedItemId));
 };
 
-
+// TODO: switch other instances of this function thrghout the repo 
 export function fileToObject(file: File): Promise<PlainFileObject> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -135,4 +136,25 @@ export function objectToFile(plainObject: PlainFileObject): File {
   const file = new File([blob], name, { type, lastModified });
 
   return file;
+}
+
+export function getPlanTier(pageCount: number, tiers: (number | 'unlimited')[] ){
+  
+  let index: number = 0
+
+  for (const tier of tiers) {
+    const tierUpTo = tier === 'unlimited' ? Infinity : Number(tier);
+    
+    if (pageCount > tierUpTo) {
+      index=index+1
+    }else{
+      break
+    }
+  }
+
+  return index
+}
+
+export function getFormKeys<T extends Record<string, any>>(form: UseFormReturn<T>) {
+  return Object.keys(form.getValues()) as (keyof T)[];
 }

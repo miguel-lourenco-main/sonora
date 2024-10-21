@@ -33,6 +33,11 @@ export default {
           foreground: 'hsl(var(--light-foreground) / <alpha-value>)',
           background: 'hsl(var(--light-background) / <alpha-value>)',
         },
+        dark: {
+          primary: 'hsl(var(--dark-primary) / <alpha-value>)',
+          foreground: 'hsl(var(--dark-foreground) / <alpha-value>)',
+          background: 'hsl(var(--dark-background) / <alpha-value>)',
+        },
         primary: {
           DEFAULT: 'hsl(var(--primary) / <alpha-value>)',
           foreground: 'hsl(var(--primary-foreground) / <alpha-value>)',

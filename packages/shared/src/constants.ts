@@ -4,10 +4,8 @@ export const EDGEN_BACKEND_URL = process.env.EDGEN_BACKEND_URL || "http://127.0.
 
 export const FILE_SUPPORTED_TYPES ={
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"],
-    /**
-     * "application/pdf": [".pdf"],
-     * "application/vnd.ms-powerpoint": [".ppt"],
-     */
+    "application/pdf": [".pdf"],
+    "application/vnd.ms-powerpoint": [".ppt"],
 }
 
 export const FILE_SUPPORTED_TYPES_KEYS = Object.keys(FILE_SUPPORTED_TYPES)
@@ -24,7 +22,7 @@ export const EDGEN_CHAT_PAGE_PATH = "/app/chat"
 export const EDGEN_CHAT_PAGE_WITH_ID_PATH = "/app/chat/[chatId]"
 export const EDGEN_COLLECTIONS_PAGE_PATH = "/app/collections"
 export const POLYDOC_FILE_TRANSLATIONS_PAGE_PATH = "/app/file-translations"
-
+export const POLYDOC_BILLING_UPGRADE_PAGE_PATH = "/app/billing/upgrade"
 export const CONNECTOR_DRAG_N_DROP_HEIGHT = "25rem"
 
 export const COLLAPSE_PATHS_FROM = [EDGEN_CHAT_PAGE_PATH]
@@ -43,28 +41,27 @@ export const EDGEN_CUSTOM_PATHS = {
     collections: EDGEN_COLLECTIONS_PAGE_PATH,
 }
 
-//TODO: fill paths
 export const POLYDOC_CUSTOM_PATHS_SCHEMA = {
-
+    upgrade: z.string().min(1)
 }
 
 export const POLYDOC_CUSTOM_PATHS = {
-    
+    upgrade: POLYDOC_BILLING_UPGRADE_PAGE_PATH
 }
 
 export const LANGUAGES = [
-    { value: "zh", label: "🇨🇳 Chinese" },
-    { value: "en", label: "🇬🇧 English" },
-    { value: "fr", label: "🇫🇷 French" },
-    { value: "de", label: "🇩🇪 German" },
-    { value: "it", label: "🇮🇹 Italian" },
-    { value: "ja", label: "🇯🇵 Japanese" },
-    { value: "ko", label: "🇰🇷 Korean" },
-    { value: "pl", label: "🇵🇱 Polish" },
-    { value: "pt", label: "🇵🇹 Portuguese" },
-    { value: "ro", label: "🇷🇴 Romanian" },
-    { value: "ru", label: "🇷🇺 Russian" },
-    { value: "es", label: "🇪🇸 Spanish" },
+    { value: "chinese", label: "🇨🇳 Chinese" },
+    { value: "english", label: "🇬🇧 English" },
+    { value: "french", label: "🇫🇷 French" },
+    { value: "german", label: "🇩🇪 German" },
+    { value: "italian", label: "🇮🇹 Italian" },
+    { value: "japanese", label: "🇯🇵 Japanese" },
+    { value: "korean", label: "🇰🇷 Korean" },
+    { value: "polish", label: "🇵🇱 Polish" },
+    { value: "portuguese", label: "🇵🇹 Portuguese" },
+    { value: "romanian", label: "🇷🇴 Romanian" },
+    { value: "russian", label: "🇷🇺 Russian" },
+    { value: "spanish", label: "🇪🇸 Spanish" },
 ]
 
 export const MAX_PAGES_SUBSCRIPTION  = 10000;

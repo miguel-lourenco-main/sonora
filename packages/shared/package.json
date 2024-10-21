@@ -29,7 +29,8 @@
     "zod": "^3.23.8"
   },
   "dependencies": {
-    "pino": "^9.4.0"
+    "pino": "^9.4.0",
+    "react-hook-form": "^7.53.0"
   },
   "eslintConfig": {
     "root": true,
