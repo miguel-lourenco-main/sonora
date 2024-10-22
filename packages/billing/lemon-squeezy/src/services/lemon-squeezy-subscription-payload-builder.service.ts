@@ -63,6 +63,7 @@ class LemonSqueezySubscriptionPayloadBuilderService {
     periodEndsAt: number;
     trialStartsAt: number | null;
     trialEndsAt: number | null;
+    schedule: string | null;
   }): UpsertSubscriptionParams {
     const canceledAtPeriodEnd =
       params.status === 'cancelled' && params.cancelAtPeriodEnd;
@@ -99,6 +100,7 @@ class LemonSqueezySubscriptionPayloadBuilderService {
       target_customer_id: params.customerId,
       billing_provider: 'lemon-squeezy',
       status: this.getSubscriptionStatus(params.status as SubscriptionStatus),
+      schedule: params.schedule ?? '',
       line_items: lineItems,
       active,
       currency: params.currency,

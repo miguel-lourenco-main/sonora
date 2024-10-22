@@ -19,11 +19,14 @@ import { CurrentPlanBadge } from '../current-plan-badge';
 
 import CurrentPages from '../polydoc/current-pages';
 import { LineItemDetails } from '../line-item-details';
+import Stripe from 'stripe';
 
 type Subscription = Tables<'subscriptions'>;
 type LineItem = Tables<'subscription_items'>;
 
 interface Props {
+  scheduledQuantity: number | null;
+  scheduledProductId: string | null;
   subscription: Subscription & {
     items: LineItem[];
   };
@@ -32,6 +35,8 @@ interface Props {
 }
 
 export function PolydocCurrentSubscriptionCard({
+  scheduledQuantity,
+  scheduledProductId,
   subscription,
   config,
 }: React.PropsWithChildren<Props>) {
@@ -61,6 +66,21 @@ export function PolydocCurrentSubscriptionCard({
   }
 
   const productLineItems = plan.lineItems;
+
+  let scheduledProductName = null;
+
+  if (scheduledProductId) {
+    const { product: scheduledProduct } = getProductPlanPairByVariantId(
+      config,
+      scheduledProductId,
+    );
+
+    scheduledProductName = scheduledProduct.name;
+
+    if(scheduledProductName === 'Free') {
+      scheduledQuantity = 5;
+    }
+  }
 
   return (
     <Card>
@@ -112,7 +132,30 @@ export function PolydocCurrentSubscriptionCard({
             </AlertTitle>
 
             <AlertDescription>
-              <Trans i18nKey="billing:downgradedSubscriptionDate" />:
+              <Trans i18nKey="billing:downgradedSubscriptionDate" values={{
+                plan: scheduledProductName,
+                quantity: scheduledQuantity,
+                unit: 'pages',
+              }} />:
+              <span className={'ml-1'}>
+                {formatDate(subscription.period_ends_at ?? '', 'P')}
+              </span>
+            </AlertDescription>
+          </Alert>
+        </If>
+
+        <If condition={ !subscription.cancel_at_period_end && scheduledQuantity && scheduledProductName }>
+          <Alert variant={'warning'} className={'w-fit'}>
+            <AlertTitle>
+              <Trans i18nKey="billing:subscriptionDowngraded" />
+            </AlertTitle>
+
+            <AlertDescription>
+              <Trans i18nKey="billing:downgradedSubscriptionDate" values={{
+                plan: scheduledProductName,
+                quantity: scheduledQuantity,
+                unit: 'pages',
+              }} />:
               <span className={'ml-1'}>
                 {formatDate(subscription.period_ends_at ?? '', 'P')}
               </span>

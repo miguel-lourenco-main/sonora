@@ -819,6 +819,7 @@ export type Database = {
           id: string
           period_ends_at: string
           period_starts_at: string
+          schedule: string | null
           status: Database["public"]["Enums"]["subscription_status"]
           trial_ends_at: string | null
           trial_starts_at: string | null
@@ -835,6 +836,7 @@ export type Database = {
           id: string
           period_ends_at: string
           period_starts_at: string
+          schedule?: string | null
           status: Database["public"]["Enums"]["subscription_status"]
           trial_ends_at?: string | null
           trial_starts_at?: string | null
@@ -851,6 +853,7 @@ export type Database = {
           id?: string
           period_ends_at?: string
           period_starts_at?: string
+          schedule?: string | null
           status?: Database["public"]["Enums"]["subscription_status"]
           trial_ends_at?: string | null
           trial_starts_at?: string | null
@@ -1197,6 +1200,7 @@ export type Database = {
           line_items: Json
           trial_starts_at?: string
           trial_ends_at?: string
+          schedule?: string
         }
         Returns: {
           account_id: string
@@ -1209,6 +1213,7 @@ export type Database = {
           id: string
           period_ends_at: string
           period_starts_at: string
+          schedule: string | null
           status: Database["public"]["Enums"]["subscription_status"]
           trial_ends_at: string | null
           trial_starts_at: string | null

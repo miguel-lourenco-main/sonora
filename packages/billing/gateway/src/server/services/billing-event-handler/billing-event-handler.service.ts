@@ -112,10 +112,6 @@ class BillingEventHandlerService {
         const client = this.clientProvider();
         const logger = await getLogger();
 
-        const { schedule, ...filteredSubscription } = subscription;
-
-        console.log('schedule', schedule)
-
         const ctx = {
           namespace: this.namespace,
           subscriptionId: subscription.target_subscription_id,
@@ -129,7 +125,7 @@ class BillingEventHandlerService {
         // Handle the subscription updated event
         // here we update the subscription in the database
 
-        const { error } = await client.rpc('upsert_subscription', filteredSubscription);
+        const { error } = await client.rpc('upsert_subscription', subscription);
 
         if (error) {
           logger.error(

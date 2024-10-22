@@ -47,3 +47,17 @@ export async function forceRenewSubscription(subscriptionId: string) {
         proration_behavior: 'create_prorations',
     });
 }
+
+export async function getScheduledLineItem(scheduleId: string) {
+
+    const stripe = await createStripeClient();
+
+    const subscriptionSchedule = await stripe.subscriptionSchedules.retrieve(
+        scheduleId
+    );
+
+    const scheduledQuantity = subscriptionSchedule?.phases[1]?.items[0]?.quantity ?? null;
+    const scheduledProductId = subscriptionSchedule?.phases[0]?.items[0]?.plan as string | null;
+
+    return { scheduledQuantity, scheduledProductId };
+}

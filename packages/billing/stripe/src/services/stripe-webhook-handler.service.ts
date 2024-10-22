@@ -11,7 +11,6 @@ import { createStripeSubscriptionPayloadBuilderService } from './stripe-subscrip
 type UpsertSubscriptionParams =
   Database['public']['Functions']['upsert_subscription']['Args'] & {
     line_items: Array<LineItem>;
-    schedule: string | null;
   };
 
 interface LineItem {
@@ -268,6 +267,8 @@ export class StripeWebhookHandlerService
     const subscriptionPayloadBuilderService =
       createStripeSubscriptionPayloadBuilderService();
 
+    const schedule = subscription.schedule as string | null;
+
     const payload = subscriptionPayloadBuilderService
       .withBillingConfig(this.config)
       .build({
@@ -275,7 +276,7 @@ export class StripeWebhookHandlerService
         id: subscriptionId,
         accountId,
         lineItems: subscription.items.data,
-        schedule: subscription.schedule as string | null,
+        schedule,
         status: subscription.status,
         currency: subscription.currency,
         periodStartsAt: subscription.current_period_start,

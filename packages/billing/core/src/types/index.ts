@@ -3,7 +3,6 @@ import { Database } from '@kit/supabase/database';
 export type UpsertSubscriptionParams =
   Database['public']['Functions']['upsert_subscription']['Args'] & {
     line_items: Array<LineItem>;
-    schedule: string | null;
   };
 
 export interface LineItem {

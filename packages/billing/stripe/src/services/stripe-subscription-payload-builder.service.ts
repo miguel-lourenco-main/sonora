@@ -50,9 +50,9 @@ class StripeSubscriptionPayloadBuilderService {
     cancelAtPeriodEnd: boolean;
     periodStartsAt: number;
     periodEndsAt: number;
+    schedule: string | null;
     trialStartsAt: number | null;
     trialEndsAt: number | null;
-    schedule: string | null;
   }): UpsertSubscriptionParams {
     const active = params.status === 'active' || params.status === 'trialing';
 
@@ -84,7 +84,7 @@ class StripeSubscriptionPayloadBuilderService {
       target_customer_id: params.customerId,
       billing_provider: 'stripe',
       status: params.status,
-      schedule: params.schedule ?? '',
+      schedule: params.schedule ?? undefined,
       line_items: lineItems,
       active,
       currency: params.currency,
