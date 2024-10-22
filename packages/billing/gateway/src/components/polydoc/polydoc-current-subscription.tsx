@@ -105,14 +105,14 @@ export function PolydocCurrentSubscriptionCard({
           (e.g. trial ending soon, subscription canceled, etc.)
         */}
 
-        <If condition={subscription.cancel_at_period_end}>
-          <Alert variant={'warning'}>
+        <If condition={subscription.cancel_at_period_end && product.id !== 'free'}>
+          <Alert variant={'warning'} className={'w-fit'}>
             <AlertTitle>
-              <Trans i18nKey="billing:subscriptionCancelled" />
+              <Trans i18nKey="billing:subscriptionDowngraded" />
             </AlertTitle>
 
             <AlertDescription>
-              <Trans i18nKey="billing:cancelSubscriptionDate" />:
+              <Trans i18nKey="billing:downgradedSubscriptionDate" />:
               <span className={'ml-1'}>
                 {formatDate(subscription.period_ends_at ?? '', 'P')}
               </span>

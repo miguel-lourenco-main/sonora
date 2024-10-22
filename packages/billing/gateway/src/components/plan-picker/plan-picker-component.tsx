@@ -38,13 +38,12 @@ export function PlanPickerComponent(
       shouldTouch: boolean;
     }> | undefined) => void;
     getFormValue: (key: string) => string | number | undefined;
-    onSubmitForm: () => void;
     isFormValid: boolean;
     config: BillingConfig;
     intervals: string[];
     canStartTrial?: boolean;
     pending?: boolean;
-    currentProductId?: string;
+    currentSubscriptionProductId?: string;
   }>,
 ) {
   const { t } = useTranslation(`billing`);
@@ -70,6 +69,7 @@ export function PlanPickerComponent(
     selectedPlan?.paymentType === 'recurring' || !selectedPlan;
 
   const locale = useTranslation().i18n.language;
+
 
   return (
     <div
@@ -225,7 +225,7 @@ export function PlanPickerComponent(
                           selected={selected || isCurrentPlan}
                           key={!plan.custom ? primaryLineItem?.id : plan.id + 'custom' }
                         >
-                          {product.id === props.currentProductId ? (
+                          {product.id === props.currentSubscriptionProductId ? (
                             <CircleCheck className={'h-5 w-5 stroke-green-400'} />
                           ):(
                             <RadioGroupItem
@@ -326,7 +326,7 @@ export function PlanPickerComponent(
           />
 
 
-        {props.currentProductId === 'business' ? (
+        {selectedProduct?.id === 'business' ? (
           <Button
             onClick={() => {
                 toast.success('This is a business account, please contact sales@polydoc.ai for pricing')

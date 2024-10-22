@@ -32,7 +32,7 @@ export function PolydocPlanPicker(
     onSubmit: (data: PolydocPlanPickerFormData) => void;
     canStartTrial?: boolean;
     pending?: boolean;
-    currentProductId?: string;
+    currentSubscriptionProductId?: string;
   }>,
 ) {
     
@@ -66,31 +66,28 @@ export function PolydocPlanPicker(
 
   // Function to determine the plan based on page count
   const determinePlan = (pages: number) => {
-    if (pages <= 5) return 'free';
-    if (pages !== MAX_PAGES_SUBSCRIPTION) return 'pro';
-    return 'business';
+    if (pages <= 5) return 'Free';
+    if (pages !== MAX_PAGES_SUBSCRIPTION) return 'Pro';
+    return 'Business';
   };
 
   useEffect(() => {
-
     const planName = props.config.products.find(p => p.id === productId)?.name;
 
-    const extracted = planName?.split("-")[0]
-
-    switch(extracted) {
-      case 'free':
+    switch(planName) {
+      case 'Free':
         if(form.getValues('pageCount') > 5){
           form.setValue('pageCount', 5)
         }
         break;
-      case 'pro':
+      case 'Pro':
         if(form.getValues('pageCount') <= 5){
           form.setValue('pageCount', 6)
         }else if(form.getValues('pageCount') === MAX_PAGES_SUBSCRIPTION){
           form.setValue('pageCount', MAX_PAGES_SUBSCRIPTION - 1)
         }
         break;
-      case 'business':
+      case 'Business':
         if(form.getValues('pageCount') !== MAX_PAGES_SUBSCRIPTION){
           form.setValue('pageCount', MAX_PAGES_SUBSCRIPTION)
         }
@@ -110,12 +107,7 @@ export function PolydocPlanPicker(
         form.setValue('productId', product.id, { shouldValidate: true });
       }
     }
-  }, [pageCount, selectedInterval, productId]);
-
-  //Form Functions
-  const onSubmitForm = () => {
-    form.handleSubmit(props.onSubmit)
-  };
+  }, [pageCount]);
 
   // Update the getFormValue function
   const getFormValue = (key: string) => {
@@ -147,15 +139,14 @@ export function PolydocPlanPicker(
       <PageAmountInput value={pageCount} onPageCountChange={updatePageCount} />
       <form
         className={'flex space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0'}
-        onSubmit={onSubmitForm}
+        onSubmit={form.handleSubmit(props.onSubmit)}
       >
         <PlanPickerComponent 
           isFormValid={form.formState.isValid} 
           setFormValue={setFormValue} 
           getFormValue={getFormValue} 
-          onSubmitForm={onSubmitForm} 
           intervals={intervals} 
-          currentProductId={props.currentProductId}
+          currentSubscriptionProductId={props.currentSubscriptionProductId}
           {...props} 
         />
         {selectedPlanId && selectedInterval && productId ? (
