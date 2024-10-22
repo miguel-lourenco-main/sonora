@@ -14,12 +14,10 @@ import {
 import { If } from '@kit/ui/if';
 import { Trans } from '@kit/ui/trans';
 
-import { CurrentPlanAlert } from '../current-plan-alert';
 import { CurrentPlanBadge } from '../current-plan-badge';
 
 import CurrentPages from '../polydoc/current-pages';
 import { LineItemDetails } from '../line-item-details';
-import Stripe from 'stripe';
 
 type Subscription = Tables<'subscriptions'>;
 type LineItem = Tables<'subscription_items'>;
