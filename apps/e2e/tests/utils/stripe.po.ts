@@ -23,6 +23,7 @@ export class StripePageObject {
     expiry?: string;
     cvc?: string;
     billingCountry?: string;
+    quantity?: number;
   } = {}) {
     const billingName = this.billingName();
     const cardNumber = this.cardNumber();
@@ -37,8 +38,31 @@ export class StripePageObject {
     await billingCountry.selectOption(params.billingCountry ?? 'IT');
   }
 
-  submitForm() {
-    return this.getStripeCheckoutIframe().locator('form button').click();
+  async fillCountryInForm(params:{
+    billingCountry: string
+  }) {
+
+    const billingCountry = this.billingCountry();
+
+    await billingCountry.selectOption(params.billingCountry ?? 'IT');
+  }
+
+  async submitForm() {
+    const submitButton = this.getStripeCheckoutIframe().locator('[data-testid="hosted-payment-submit-button"]');
+    await submitButton.waitFor({ state: 'visible' });
+    return submitButton.click();
+  }
+
+  checkVAT() {
+    return this.getStripeCheckoutIframe().locator('[data-testid="vat-rate"]');
+  }
+
+  checkVATLabel() {
+    return this.getStripeCheckoutIframe().locator('span.OrderDetails-subtotalItemLabel-Text');
+  }
+
+  viewDetail(){
+    return this.getStripeCheckoutIframe().locator('[data-testid="product-summary-view-details"]')
   }
 
   cardNumber() {

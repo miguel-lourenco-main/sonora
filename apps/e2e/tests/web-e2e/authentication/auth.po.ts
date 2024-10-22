@@ -1,6 +1,6 @@
 import { Page, expect } from '@playwright/test';
 
-import { Mailbox } from '../utils/mailbox';
+import { Mailbox } from '../../utils/mailbox';
 
 export class AuthPageObject {
   private readonly page: Page;
@@ -81,9 +81,12 @@ export class AuthPageObject {
     await this.visitConfirmEmailLink(email);
   }
 
-  async updatePassword(password: string) {
-    await this.page.fill('[name="password"]', password);
-    await this.page.fill('[name="repeatPassword"]', password);
-    await this.page.click('[type="submit"]');
+  async signInFlow(path: string, email: string, password: string) {
+    await this.page.goto(`/auth/sign-in?next=${path}`);
+
+    await this.signIn({
+      email,
+      password,
+    });
   }
 }

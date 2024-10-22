@@ -1,6 +1,6 @@
 import { Page } from '@playwright/test';
 import { AuthPageObject } from '../authentication/auth.po';
-import { BillingPageObject } from '../utils/billing.po';
+import { BillingPageObject } from '../../utils/billing.po';
 
 export class UserBillingPageObject {
   private readonly auth: AuthPageObject;

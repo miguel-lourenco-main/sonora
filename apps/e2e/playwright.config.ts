@@ -47,6 +47,7 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
 
+
   // test timeout set to 1 minutes
   timeout: 60 * 1000,
   expect: {

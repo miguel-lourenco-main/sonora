@@ -1,7 +1,7 @@
 import { Page } from '@playwright/test';
 
 import { TeamAccountsPageObject } from '../team-accounts/team-accounts.po';
-import { BillingPageObject } from '../utils/billing.po';
+import { BillingPageObject } from '../../utils/billing.po';
 
 export class TeamBillingPageObject {
   public readonly teamAccounts: TeamAccountsPageObject;
