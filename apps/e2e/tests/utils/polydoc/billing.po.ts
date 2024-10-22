@@ -69,8 +69,10 @@ export class PolydocBillingPagesObject {
     getBillingPortalButton() {
       return this.page.locator('[data-test="manage-billing-redirect-button"]');
     }
-
-    //getCancelChangeButton() {
+    
+    getDowngradeSubscriptionInfo() {
+      return this.page.locator('[data-testid="polydoc-billing-downgrade-subscription-alert"]')
+    }
   
     async selectTokenQuantity(quantity: number) {
     
@@ -82,8 +84,10 @@ export class PolydocBillingPagesObject {
        */
     }
   
-    refreshPage() {
-      return this.page.reload();
+    async refreshPage() {
+      await this.page.reload();
+      // Wait for the page to load after refresh
+      await this.page.waitForLoadState('networkidle');
     }
 
     async subscribeToProPlanCheckout(quantity: number) {

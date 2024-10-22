@@ -67,18 +67,20 @@ export class AuthPageObject {
     return `${value.toFixed(0)}@makerkit.dev`;
   }
 
-  async signUpFlow(path: string) {
-    const email = this.createRandomEmail();
+  async signUpFlow(path: string, email?: string, password?: string) {
+
+    const testEmail = email ?? this.createRandomEmail();
+    const testPassword = password ?? 'password1.A';
 
     await this.page.goto(`/auth/sign-up?next=${path}`);
 
     await this.signUp({
-      email,
-      password: 'password',
-      repeatPassword: 'password',
+      email: testEmail,
+      password: testPassword,
+      repeatPassword: testPassword,
     });
 
-    await this.visitConfirmEmailLink(email);
+    await this.visitConfirmEmailLink(testEmail);
   }
 
   async signInFlow(path: string, email: string, password: string) {

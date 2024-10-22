@@ -35,15 +35,56 @@ export class PolydocUserBillingTestObject {
     await this.stripeCustomerPortal.updatePlanButton().click();
 
     //check if there is already a changed planned
+    const isChangeAlreadyPlanned = await this.stripeCustomerPortal.cancelChangeButton().isVisible();
 
-    if (await this.stripeCustomerPortal.quantityInput().isVisible()) {
-      await this.stripeCustomerPortal.quantityInput().clear();
-      await this.stripeCustomerPortal.quantityInput().fill(quantity.toString());
+    if (isChangeAlreadyPlanned) {
+      await this.stripeCustomerPortal.cancelChangeButton().click();
     }
+
+    await this.stripeCustomerPortal.quantityInput().isVisible();
+
+    await this.stripeCustomerPortal.quantityInput().clear();
+    await this.stripeCustomerPortal.quantityInput().fill(quantity.toString());
 
     await this.stripeCustomerPortal.continueButton().click();
     await this.stripeCustomerPortal.payAndSubscribeButton().click();
 
     await this.stripeCustomerPortal.returnToAppButton().click();
+  }
+
+  async cancelSubscriptionChange() {
+
+    await this.billing.getBillingPortalButton().click();
+    await this.stripeCustomerPortal.updatePlanButton().click();
+
+    await this.stripeCustomerPortal.cancelChangeButton().click();
+  }
+
+  async upgradeFreeToPro(quantity: number) {
+
+    await this.billing.getUpgradeButton().click()
+    await this.billing.subscribeToProPlanCheckout(quantity)
+    await this.billing.refreshPage();
+  }
+  
+  async evaluateSubscription(productName: string, leftTokens?: number, monthlyTokens?: number) {
+    await expect(this.billing.getProductName()).toContainText(productName);
+    
+    if (leftTokens) {
+      await expect(this.billing.getLeftTokens()).toContainText(`${leftTokens}`);
+    }
+    if (monthlyTokens) {
+      await expect(this.billing.getMonthlyTokens()).toContainText(`${monthlyTokens}`);
+    }
+  
+    await expect(this.billing.manageBillingButton()).toBeVisible();
+  }
+  
+  async evaluateDowngradeSubscription(label: string, quantity: number) {
+    
+    const downgradeInfo = this.billing.getDowngradeSubscriptionInfo();
+    expect(downgradeInfo).toBeDefined();
+  
+    await expect(downgradeInfo).toContainText(`${label} (${quantity} pages)`)
   }
 }

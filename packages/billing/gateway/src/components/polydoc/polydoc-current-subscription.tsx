@@ -143,7 +143,7 @@ export function PolydocCurrentSubscriptionCard({
         </If>
 
         <If condition={ !subscription.cancel_at_period_end && scheduledQuantity && scheduledProductName }>
-          <Alert variant={'warning'} className={'w-fit'}>
+          <Alert variant={'warning'} className={'w-fit'} data-testid={'polydoc-billing-downgrade-subscription-alert'}>
             <AlertTitle>
               <Trans i18nKey="billing:subscriptionDowngraded" />
             </AlertTitle>

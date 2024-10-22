@@ -11,8 +11,14 @@ export class AccountPageObject {
     this.auth = new AuthPageObject(page);
   }
 
-  async setup() {
-    return this.auth.signUpFlow('/app/settings');
+  async setup(redirectPath?: string, email?: string, password?: string) {
+    const path = redirectPath ?? '/app/settings';
+
+    return this.auth.signUpFlow(path, email, password);
+  }
+
+  async signIn(email: string, password: string) {
+    return this.auth.signIn({ email, password });
   }
 
   async updateName(name: string) {

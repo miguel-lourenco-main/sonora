@@ -29,7 +29,11 @@ export class StripeCustomerPortalPageObject {
     }
   
     payAndSubscribeButton() {
-      return this.page.locator('[data-testid="confirm"]');
+      return this.page.locator('[data-testid="confirm"]:has-text("Subscribe and pay")');
+    }
+
+    cancelChangeButton() {
+      return this.page.locator('[data-testid="confirm"]:has-text("Cancel change")');
     }
   
     returnToAppButton() {
