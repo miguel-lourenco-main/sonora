@@ -23,6 +23,8 @@ class DatabaseWebhookRouterService {
    * @param body
    */
   async handleWebhook(body: RecordChange<keyof Tables>) {
+    console.log("handleWebhook", body)
+
     switch (body.table) {
       case 'invitations': {
         const payload = body as RecordChange<typeof body.table>;
