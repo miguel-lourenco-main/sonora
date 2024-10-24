@@ -119,6 +119,11 @@ export async function createStripeCheckout(
     ...customerData,
     ...urls,
     ...paymentCollectionMethod,
+    customer_update: {
+      address: 'auto',
+      shipping: 'auto',
+      name: 'auto',
+    },
   });
 }
 

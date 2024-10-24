@@ -4,8 +4,6 @@ import { createStripeClient } from "../services/stripe-sdk";
 
 export async function subscribeToFreePlan(name: string, email: string, accountId: string, priceId: string) {
 
-    console.log("subscribeToFreePlan", name, email, accountId, priceId)
-
     const stripe = await createStripeClient();
   
     const customer = await stripe.customers.create({
@@ -63,4 +61,9 @@ export async function getScheduledLineItem(scheduleId: string) {
     const scheduledProductId = subscriptionSchedule?.phases[1]?.items[0]?.plan as string | null;
 
     return { scheduledQuantity, scheduledProductId };
+}
+
+export async function getPaymentMethods(customerId: string) {
+    const stripe = await createStripeClient();
+    return stripe.customers.listPaymentMethods(customerId);
 }

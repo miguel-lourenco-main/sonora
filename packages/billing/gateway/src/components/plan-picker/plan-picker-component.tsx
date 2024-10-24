@@ -43,7 +43,7 @@ export function PlanPickerComponent(
     intervals: string[];
     canStartTrial?: boolean;
     pending?: boolean;
-    currentSubscriptionProductId?: string;
+    currentSubscriptionVariantId?: string;
   }>,
 ) {
   const { t } = useTranslation(`billing`);
@@ -225,7 +225,7 @@ export function PlanPickerComponent(
                           selected={selected || isCurrentPlan}
                           key={!plan.custom ? primaryLineItem?.id : plan.id + 'custom' }
                         >
-                          {product.id === props.currentSubscriptionProductId ? (
+                          {plan.lineItems[0]?.id === props.currentSubscriptionVariantId ? (
                             <CircleCheck className={'h-5 w-5 stroke-green-400'} />
                           ):(
                             <RadioGroupItem

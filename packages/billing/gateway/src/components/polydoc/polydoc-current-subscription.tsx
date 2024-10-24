@@ -80,6 +80,9 @@ export function PolydocCurrentSubscriptionCard({
     }
   }
 
+  console.log("subscription", subscription)
+  console.log("product", product)
+
   return (
     <Card>
       <CardHeader>
@@ -126,11 +129,11 @@ export function PolydocCurrentSubscriptionCard({
         <If condition={subscription.cancel_at_period_end && product.id !== 'free'}>
           <Alert variant={'warning'} className={'w-fit'}>
             <AlertTitle>
-              <Trans i18nKey="billing:subscriptionDowngraded" />
+              <Trans i18nKey="billing:subscriptionCancelled" />
             </AlertTitle>
 
             <AlertDescription>
-              <Trans i18nKey="billing:downgradedSubscriptionDate" values={{
+              <Trans i18nKey="billing:cancelledSubscriptionDate" values={{
                 plan: scheduledProductName,
                 quantity: scheduledQuantity,
                 unit: 'pages',
@@ -142,7 +145,7 @@ export function PolydocCurrentSubscriptionCard({
           </Alert>
         </If>
 
-        <If condition={ !subscription.cancel_at_period_end && scheduledQuantity && scheduledProductName }>
+        <If condition={!subscription.cancel_at_period_end && scheduledQuantity && scheduledProductName }>
           <Alert variant={'warning'} className={'w-fit'} data-testid={'polydoc-billing-downgrade-subscription-alert'}>
             <AlertTitle>
               <Trans i18nKey="billing:subscriptionDowngraded" />

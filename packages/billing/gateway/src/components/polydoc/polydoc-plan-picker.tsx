@@ -32,7 +32,7 @@ export function PolydocPlanPicker(
     onSubmit: (data: PolydocPlanPickerFormData) => void;
     canStartTrial?: boolean;
     pending?: boolean;
-    currentSubscriptionProductId?: string;
+    currentSubscriptionVariantId?: string;
   }>,
 ) {
     
@@ -146,7 +146,7 @@ export function PolydocPlanPicker(
           setFormValue={setFormValue} 
           getFormValue={getFormValue} 
           intervals={intervals} 
-          currentSubscriptionProductId={props.currentSubscriptionProductId}
+          currentSubscriptionVariantId={props.currentSubscriptionVariantId}
           {...props} 
         />
         {selectedPlanId && selectedInterval && productId ? (

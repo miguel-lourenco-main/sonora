@@ -58,6 +58,30 @@ test.describe('Complex flows', () => {
    */
   test('Complex flow - 1', async () => {  
     
+   //Check if the user is in the free plan
     await po.billing.evaluateSubscription('Free', 5, 5)
+
+    //If so, upgrade to 7000 pages of the pro plan
+    let quantity = 7000
+
+    await po.billing.upgradeFreeToPro(quantity)
+
+    await po.billing.billing.refreshPage();
+
+    await po.billing.evaluateSubscription('Pro', quantity, quantity)
+
+    //Now, downgrade to 5000 pages of the pro plan
+    quantity = 5000
+
+    await po.billing.updatePlan(quantity)
+
+    await po.billing.evaluateSubscription('Pro', quantity, quantity)
+
+    //Upgrade again to 9000 pages of the pro plan
+    quantity = 9000
+
+    await po.billing.updatePlan(quantity)
+
+    await po.billing.evaluateSubscription('Pro', quantity, quantity)
   });
 });
