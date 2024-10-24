@@ -75,13 +75,15 @@ export class PolydocBillingPagesObject {
     }
   
     async selectTokenQuantity(quantity: number) {
-    
-      await this.page.locator('[data-test="polydoc-billing-quantity-input-hidden"]').fill(quantity.toString()); // Enter new value
-  
-      /**
-       *     await input.click(); // Focus the input
-            await input.press('Backspace'.repeat(1)); // Clear existing value
-       */
+      const div = this.page.locator('[data-test="polydoc-billing-quantity-input"]');
+      await div.click(); // Focus the div
+      await this.page.keyboard.press('Control+A'); // Select all existing content
+      await this.page.keyboard.press('Backspace'); // Clear the content
+      await this.page.keyboard.type(quantity.toString(), { delay: 100 }); // Type new value
+      await this.page.waitForTimeout(100); // Additional delay if needed
+
+      // Click outside the input to unselect
+      await this.page.click('body', { position: { x: 0, y: 0 } });
     }
   
     async refreshPage() {
@@ -97,7 +99,11 @@ export class PolydocBillingPagesObject {
       await this.proceedToCheckout();
       await this.stripe.waitForForm();
       await this.stripe.fillForm();
+
+      // Wait for 5 seconds before submitting the form
+      await this.page.waitForTimeout(5000);
       await this.stripe.submitForm();
+      
       await expect(this.successStatus()).toBeVisible({
         timeout: 25_000,
       });

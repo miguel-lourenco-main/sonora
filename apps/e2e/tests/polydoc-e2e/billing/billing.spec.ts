@@ -40,7 +40,7 @@ test.describe('Polydoc User Billing', () => {
 
     const quantity = 7000
 
-    await po.updatePlan(quantity)
+    await po.updatePlan(quantity, 'Pages(Pro Plan)', page)
 
     await po.evaluateSubscription('Pro', quantity, quantity)
   })
@@ -48,7 +48,7 @@ test.describe('Polydoc User Billing', () => {
   test('Downgrade Pro to Pro', async () => {
     const quantity = 5000;
 
-    await po.updatePlan(quantity);
+    await po.updatePlan(quantity, 'Pages(Pro Plan)', page);
 
     // Add a check to ensure the page has reloaded
     await expect(po.billing.getProductName()).toBeVisible();
@@ -89,14 +89,14 @@ test.describe('Polydoc User Billing', () => {
     //Now, downgrade to 5000 pages of the pro plan
     quantity = 5000
 
-    await po.updatePlan(quantity)
+    await po.updatePlan(quantity, 'Pages(Pro Plan)', page)
 
     await po.evaluateSubscription('Pro', quantity, quantity)
 
     //Upgrade again to 9000 pages of the pro plan
     quantity = 9000
 
-    await po.updatePlan(quantity)
+    await po.updatePlan(quantity, 'Pages(Pro Plan)', page)
 
     await po.evaluateSubscription('Pro', quantity, quantity)
   })

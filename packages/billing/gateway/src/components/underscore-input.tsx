@@ -72,6 +72,7 @@ export const UnderscoreInput = forwardRef<HTMLDivElement, React.HTMLAttributes<H
                     ...props.style,
                     minWidth: '1ch',
                     }}
+                    data-test="polydoc-billing-quantity-input"
                 >
                     <span className='text-current'>{props.pageCount}</span>
                 </div>

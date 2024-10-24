@@ -20,6 +20,8 @@ test.describe('Complex flows', () => {
     testEmail = po.auth.createRandomEmail();
 
     await po.account.setup('/app/billing', testEmail, testPassword);
+
+    await po.billing.billing.refreshPage();
   });
 
   /**
@@ -56,7 +58,13 @@ test.describe('Complex flows', () => {
   /**
    * Execute a flow that tests most of the polydoc billing features
    */
-  test('Complex flow - 1', async () => {  
+  test('Complex flow - 1', async () => {
+
+    await page.waitForTimeout(2000);
+    
+    await po.billing.billing.refreshPage();
+
+    await expect(po.billing.billing.getProductName()).toBeVisible({ timeout: 10000 });
     
    //Check if the user is in the free plan
     await po.billing.evaluateSubscription('Free', 5, 5)
@@ -66,6 +74,8 @@ test.describe('Complex flows', () => {
 
     await po.billing.upgradeFreeToPro(quantity)
 
+    await page.waitForTimeout(5000);
+
     await po.billing.billing.refreshPage();
 
     await po.billing.evaluateSubscription('Pro', quantity, quantity)
@@ -73,15 +83,31 @@ test.describe('Complex flows', () => {
     //Now, downgrade to 5000 pages of the pro plan
     quantity = 5000
 
-    await po.billing.updatePlan(quantity)
+    await po.billing.updatePlan(quantity, 'Pages(Pro Plan)', page)
 
-    await po.billing.evaluateSubscription('Pro', quantity, quantity)
+    await page.waitForTimeout(5000);
+
+    await po.billing.billing.refreshPage();
+
+    await po.billing.evaluateDowngradeSubscription('Pro', quantity)
 
     //Upgrade again to 9000 pages of the pro plan
     quantity = 9000
 
-    await po.billing.updatePlan(quantity)
+    await po.billing.updatePlan(quantity, 'Pages(Pro Plan)', page)
+
+    await page.waitForTimeout(5000);
+
+    await po.billing.billing.refreshPage();
 
     await po.billing.evaluateSubscription('Pro', quantity, quantity)
+
+    await po.billing.updatePlan(5, 'Pages(Free Plan)', page)
+
+    await page.waitForTimeout(3000);
+
+    await po.billing.billing.refreshPage();
+
+    await po.billing.evaluateDowngradeSubscription('Free', 5)
   });
 });

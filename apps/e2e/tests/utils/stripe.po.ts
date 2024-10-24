@@ -48,8 +48,8 @@ export class StripePageObject {
   }
 
   async submitForm() {
-    const submitButton = this.getStripeCheckoutIframe().locator('[data-testid="hosted-payment-submit-button"]');
-    await submitButton.waitFor({ state: 'visible' });
+    const submitButton = this.getStripeCheckoutIframe().locator('text=Pay and subscribe');
+    await submitButton.waitFor({ state: 'attached' });
     return submitButton.click();
   }
 

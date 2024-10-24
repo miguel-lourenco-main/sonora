@@ -29,16 +29,38 @@ export class PolydocUserBillingTestObject {
    * Minimum working conditionsq:
    *  - User must be on the billing page and have a Free Plan subscription/ Pro Plan trial
    */
-  async updatePlan(quantity: number) {
+  async updatePlan(quantity: number, plan: string, page: Page) {
     await this.billing.getBillingPortalButton().click();
     
     await this.stripeCustomerPortal.updatePlanButton().click();
 
     //check if there is already a changed planned
-    const isChangeAlreadyPlanned = await this.stripeCustomerPortal.cancelChangeButton().isVisible();
 
-    if (isChangeAlreadyPlanned) {
-      await this.stripeCustomerPortal.cancelChangeButton().click();
+    await page.waitForTimeout(2000);
+    
+    const isChangeAlreadyPlanned = this.stripeCustomerPortal.cancelChangeButton();
+
+    if (await isChangeAlreadyPlanned.isVisible()) {
+      await isChangeAlreadyPlanned.click();
+    }
+
+    /**
+     * Find the card for the plan inputed which has data-testid="pricing-table-card" and the plan name
+     * If there is a card and it is already selected, then we don't need to do anything,
+     * If there is a card and it is not selected, then we need to select it
+     */
+    const planCard = this.stripeCustomerPortal.pricingTableCard(plan);
+
+    await page.waitForTimeout(2000); // Add a short wait to ensure the page is stable
+
+    if (await planCard.isVisible()) {
+      const selectButton = planCard.locator('text=Select');
+      
+      if (await selectButton.isVisible()) {
+        await selectButton.waitFor({ state: 'visible', timeout: 10000 });
+        await selectButton.click({ timeout: 5000 });
+      }
+      // If no Select button, we assume the plan is already selected and continue
     }
 
     await this.stripeCustomerPortal.quantityInput().isVisible();
@@ -47,7 +69,10 @@ export class PolydocUserBillingTestObject {
     await this.stripeCustomerPortal.quantityInput().fill(quantity.toString());
 
     await this.stripeCustomerPortal.continueButton().click();
-    await this.stripeCustomerPortal.payAndSubscribeButton().click();
+
+    const payAndSubscribeButton = this.stripeCustomerPortal.payAndSubscribeButton();
+    await payAndSubscribeButton.waitFor({ state: 'visible', timeout: 10000 });
+    await payAndSubscribeButton.click({ timeout: 5000 });
 
     await this.stripeCustomerPortal.returnToAppButton().click();
   }
@@ -66,6 +91,11 @@ export class PolydocUserBillingTestObject {
     await this.billing.subscribeToProPlanCheckout(quantity)
     await this.billing.refreshPage();
   }
+
+  async downgradeProToFree() {
+    await this.billing.getBillingPortalButton().click();
+    await this.stripeCustomerPortal.updatePlanButton().click();
+  }
   
   async evaluateSubscription(productName: string, leftTokens?: number, monthlyTokens?: number) {
     await expect(this.billing.getProductName()).toContainText(productName);
@@ -77,7 +107,11 @@ export class PolydocUserBillingTestObject {
       await expect(this.billing.getMonthlyTokens()).toContainText(`${monthlyTokens}`);
     }
   
-    await expect(this.billing.manageBillingButton()).toBeVisible();
+    if (productName === 'Pro') {
+      await expect(this.billing.manageBillingButton()).toBeVisible();
+    }else if (productName === 'Free') {
+      await expect(this.billing.getUpgradeButton()).toBeVisible();
+    }
   }
   
   async evaluateDowngradeSubscription(label: string, quantity: number) {

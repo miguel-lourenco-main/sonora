@@ -19,6 +19,10 @@ export class StripeCustomerPortalPageObject {
     updatePlanButton() {
       return this.page.locator('[data-test="update-subscription"]');
     }
+
+    pricingTableCard(plan: string) {
+      return this.page.locator(`[data-testid="pricing-table-card"]:has-text("${plan}")`);
+    }
   
     quantityInput() {
       return this.page.locator('[data-testid="portal-quantity-editor"]');

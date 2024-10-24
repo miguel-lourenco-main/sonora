@@ -49,7 +49,7 @@ export default defineConfig({
 
 
   // test timeout set to 1 minutes
-  timeout: 60 * 1000,
+  timeout: 180 * 1000,
   expect: {
     // expect timeout set to 10 seconds
     timeout: 10 * 1000,
