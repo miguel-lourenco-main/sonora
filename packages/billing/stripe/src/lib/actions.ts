@@ -67,3 +67,16 @@ export async function getPaymentMethods(customerId: string) {
     const stripe = await createStripeClient();
     return stripe.customers.listPaymentMethods(customerId);
 }
+
+export async function clearAllSubscriptionsFromStripe() {
+    const stripe = await createStripeClient();
+    const subscriptions = await stripe.subscriptions.list({
+        limit: 100,
+    })
+
+    subscriptions.data.forEach(async (subscription) => {
+        await stripe.subscriptions.cancel(subscription.id)
+    })
+
+    console.log("all subscriptions cleared")
+}

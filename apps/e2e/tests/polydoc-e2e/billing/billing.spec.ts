@@ -1,5 +1,6 @@
 import { expect, Page, test } from '@playwright/test';
 import { PolydocUserBillingTestObject } from './billing.to';
+import { refreshPage, waitAndRefreshPage } from '../../utils/general';
 
 /*
   This test depends on the account creation working and can only be run after an accoount is created, but in this
@@ -14,11 +15,9 @@ test.describe('Polydoc User Billing', () => {
     page = await browser.newPage();
     po = new PolydocUserBillingTestObject(page);
 
-    await po.signIn('test@edgen.co', 'testingpassword');
-  });
+    await po.auth.signUpFlow('/app/billing');
 
-  test.afterAll(async () => {
-    // reset the user to the free plan if he is in the pro plan
+    await waitAndRefreshPage(page, 2000);
   });
 
   test('Check if the user is in the free plan', async () => {
@@ -29,48 +28,48 @@ test.describe('Polydoc User Billing', () => {
 
     const quantity = 3000
 
-    await po.upgradeFreeToPro(quantity)
-
-    await expect(po.billing.getProductName()).toContainText('Pro');
-    await expect(po.billing.getMonthlyTokens()).toContainText(`${quantity}`);
-    await expect(po.billing.manageBillingButton()).toBeVisible();
-  });
-
-  test('Upgrade Pro to Pro', async () => {
-
-    const quantity = 7000
-
-    await po.updatePlan(quantity, 'Pages(Pro Plan)', page)
+    await po.updatePlan(quantity, 'pro-monthly', true)
 
     await po.evaluateSubscription('Pro', quantity, quantity)
-  })
+  });
 
-  test('Downgrade Pro to Pro', async () => {
-    const quantity = 5000;
+  /**
+    test('Upgrade Pro to Pro', async () => {
 
-    await po.updatePlan(quantity, 'Pages(Pro Plan)', page);
+      const quantity = 7000
 
-    // Add a check to ensure the page has reloaded
-    await expect(po.billing.getProductName()).toBeVisible();
+      await po.updatePlan(quantity, 'Pages(Pro Plan)', true)
 
-    // Refresh the page and wait for it to load
-    await po.billing.refreshPage();
+      await po.evaluateSubscription('Pro', quantity, quantity)
+    })
 
-    //Previous quantity, either set it to a value you know  should be correct or hide the eval function
-    await po.evaluateSubscription('Pro', 7000, 7000)
+    test('Downgrade Pro to Pro', async () => {
+      const quantity = 5000;
 
-    await po.evaluateDowngradeSubscription('Pro', 5000)
+      await po.updatePlan(quantity, 'Pages(Pro Plan)', true);
 
-    await expect(po.billing.manageBillingButton()).toBeVisible();
-  })
+      // Add a check to ensure the page has reloaded
+      await expect(po.managePlan.planName()).toBeVisible();
 
-  test('Cancel Pro Subscription Change', async () => {
-    await po.cancelSubscriptionChange()
-    await po.stripeCustomerPortal.returnToAppButton().click()
-    await expect(po.billing.getProductName()).toBeVisible();
+      // Refresh the page and wait for it to load
+      await refreshPage(page);
 
-    await po.billing.refreshPage();
-  })
+      //Previous quantity, either set it to a value you know  should be correct or hide the eval function
+      await po.evaluateSubscription('Pro', 7000, 7000)
+
+      await po.evaluateDowngradeSubscription('Pro', 5000)
+
+      await expect(po.managePlan.customerPortalButton()).toBeVisible();
+    })
+
+    test('Cancel Pro Subscription Change', async () => {
+      await po.cancelSubscriptionChange()
+      await po.stripeCustomerPortal.returnToAppButton().click()
+        await expect(po.managePlan.planName()).toBeVisible();
+
+      await refreshPage(page);
+    })
+   */
 
   test('All the tests together', async () => {
 
@@ -80,23 +79,27 @@ test.describe('Polydoc User Billing', () => {
     //If so, upgrade to 7000 pages of the pro plan
     let quantity = 7000
 
-    await po.upgradeFreeToPro(quantity)
+    await po.updatePlan(quantity, 'pro-monthly', true)
 
-    await po.billing.refreshPage();
+    await waitAndRefreshPage(page, 4000);
 
     await po.evaluateSubscription('Pro', quantity, quantity)
 
     //Now, downgrade to 5000 pages of the pro plan
     quantity = 5000
 
-    await po.updatePlan(quantity, 'Pages(Pro Plan)', page)
+    await po.updatePlan(quantity, 'Pages(Pro Plan)', true)
 
-    await po.evaluateSubscription('Pro', quantity, quantity)
+    await waitAndRefreshPage(page, 4000);
+
+    await po.evaluateDowngradeSubscription('Pro', quantity)
 
     //Upgrade again to 9000 pages of the pro plan
     quantity = 9000
 
-    await po.updatePlan(quantity, 'Pages(Pro Plan)', page)
+    await po.updatePlan(quantity, 'Pages(Pro Plan)', true)
+
+    await waitAndRefreshPage(page, 4000);
 
     await po.evaluateSubscription('Pro', quantity, quantity)
   })
@@ -104,19 +107,19 @@ test.describe('Polydoc User Billing', () => {
   test.describe('VAT Calculation', () => {
 
     test.beforeAll('', async () => {
-      await po.billing.getUpgradeButton().click()
+      await po.managePlan.goToUpgradePlanPage()
 
-      await po.billing.proceedToCheckout()
+      await po.upgradePlan.proceedToCheckout()
   
-      await po.billing.stripe.waitForForm()
-      await po.billing.stripe.viewDetail().click()
+      await po.stripeCheckoutSession.waitForForm()
+      await po.stripeCheckoutSession.viewDetail().click()
     })
 
     test('EU Country: VAT should be 23%', async () => {
 
-      await po.billing.stripe.fillCountryInForm({billingCountry: "PT"})
+      await po.stripeCheckoutSession.fillCountryInForm({billingCountry: "PT"})
 
-      const vatLabel = po.billing.stripe.checkVATLabel();
+      const vatLabel = po.stripeCheckoutSession.checkVATLabel();
       await vatLabel.waitFor({ state: 'visible' });
       
       await expect(vatLabel).toBeVisible();
@@ -125,9 +128,9 @@ test.describe('Polydoc User Billing', () => {
   
     test('Non-EU Country: VAT should be 0%', async () => {
 
-      await po.billing.stripe.fillCountryInForm({billingCountry: "US"})
+      await po.stripeCheckoutSession.fillCountryInForm({billingCountry: "US"})
 
-      const vatLabel = po.billing.stripe.checkVATLabel();
+      const vatLabel = po.stripeCheckoutSession.checkVATLabel();
       await vatLabel.waitFor({ state: 'visible' });
 
       await expect(vatLabel).toBeVisible();

@@ -1,122 +1,130 @@
 import { expect, Page } from '@playwright/test';
 import { AuthPageObject } from '../../web-e2e/authentication/auth.po';
-import { PlanPickerPageObject, PolydocBillingPagesObject } from '../../utils/polydoc/billing.po';
+import { PolydocUpgradePlanPageObject } from '../../utils/polydoc/upgrade-plan.po';
 import { StripeCustomerPortalPageObject } from '../../utils/polydoc/stripe.po';
+import { PolydocManagePlanPageObject } from '../../utils/polydoc/manage-plan.po';
+import { StripeCheckoutSessionPageObject } from '../../utils/stripe.po';
 
 export class PolydocUserBillingTestObject {
-  private readonly auth: AuthPageObject;
-  public readonly billing: PolydocBillingPagesObject;
-  public readonly planPicker: PlanPickerPageObject;
-  public readonly stripeCustomerPortal: StripeCustomerPortalPageObject;
+
+  auth: AuthPageObject;
+  upgradePlan: PolydocUpgradePlanPageObject;
+  managePlan: PolydocManagePlanPageObject;
+  stripeCustomerPortal: StripeCustomerPortalPageObject;
+  stripeCheckoutSession: StripeCheckoutSessionPageObject;
 
   constructor(page: Page) {
     this.auth = new AuthPageObject(page);
-    this.billing = new PolydocBillingPagesObject(page);
-    this.planPicker = new PlanPickerPageObject(page);
+    this.upgradePlan = new PolydocUpgradePlanPageObject(page);
+    this.managePlan = new PolydocManagePlanPageObject(page);
     this.stripeCustomerPortal = new StripeCustomerPortalPageObject(page);
+    this.stripeCheckoutSession = new StripeCheckoutSessionPageObject(page);
   }
 
-  async setup() {
-    await this.auth.signUpFlow('/app/billing');
-  }
 
-  async signIn(email: string, password: string) {
-    await this.auth.signInFlow('/app/billing', email, password);
-  }
+  async checkVATRate(country: string, isTaxed: boolean) {
 
-  /**
-   * 
-   * Minimum working conditionsq:
-   *  - User must be on the billing page and have a Free Plan subscription/ Pro Plan trial
-   */
-  async updatePlan(quantity: number, plan: string, page: Page) {
-    await this.billing.getBillingPortalButton().click();
+    await this.stripeCheckoutSession.fillCountryInForm({ billingCountry: country });
+
+    const vatLabel = this.stripeCheckoutSession.checkVATLabel();
     
-    await this.stripeCustomerPortal.updatePlanButton().click();
-
-    //check if there is already a changed planned
-
-    await page.waitForTimeout(2000);
+    await expect(vatLabel).toBeVisible();
     
-    const isChangeAlreadyPlanned = this.stripeCustomerPortal.cancelChangeButton();
+    if(isTaxed) {
+      await expect(vatLabel).toHaveText('VAT (23%)'); 
+    }else {
+      await expect(vatLabel).toHaveText('Tax'); 
+    }
+  }
 
-    if (await isChangeAlreadyPlanned.isVisible()) {
-      await isChangeAlreadyPlanned.click();
+  async updatePlan(quantity: number, plan: string, checkVAT?: boolean) {
+
+    if ( await this.managePlan.customerPortalButton().isVisible() ) {
+
+      await this.updatePlan_CustomerPortal(quantity, plan); 
+
+    }else if (await this.managePlan.upgradePlanButton().isVisible()) {
+
+      await this.updatePlan_CheckoutSession(quantity, plan, checkVAT);
+
+    }else {
+      throw new Error('No way to update plan');
+    }
+  }
+
+  async updatePlan_CustomerPortal(quantity: number, plan: string) {
+
+    await this.managePlan.goToCustomerPortal();
+
+    await this.stripeCustomerPortal.goToPlanSelection();
+
+    // Check if there is already a change planned, and if so, cancel it, since we can only have one change planned at a time and are now creating a new one
+    await this.stripeCustomerPortal.cancelIfChangeAlreadyPlanned();
+
+    await this.stripeCustomerPortal.selectPlan(plan);
+    await this.stripeCustomerPortal.selectPlanQuantityCustomerPortal(quantity);
+
+    await this.stripeCustomerPortal.continueToPayment();
+    await this.stripeCustomerPortal.payAndSubscribe();
+
+    await this.stripeCustomerPortal.returnToApp();
+  }
+
+  async updatePlan_CheckoutSession(quantity: number, plan: string, checkVAT?: boolean) {
+    
+    await this.managePlan.goToUpgradePlanPage()
+
+    await this.upgradePlan.selectPagesQuantity(quantity)
+
+    await this.upgradePlan.selectPlan(plan);
+
+    await this.upgradePlan.proceedToCheckout();
+  
+    await this.stripeCheckoutSession.waitForForm();
+    await this.stripeCheckoutSession.fillForm();
+
+    await this.stripeCheckoutSession.viewDetail().click()
+    
+    if(checkVAT) {
+      await this.checkVATRate('PT', true);
+      await this.checkVATRate('BO', false);
     }
 
-    /**
-     * Find the card for the plan inputed which has data-testid="pricing-table-card" and the plan name
-     * If there is a card and it is already selected, then we don't need to do anything,
-     * If there is a card and it is not selected, then we need to select it
-     */
-    const planCard = this.stripeCustomerPortal.pricingTableCard(plan);
+    await this.stripeCheckoutSession.submitForm();
+    
+    await expect(this.upgradePlan.successStatus()).toBeVisible({ timeout: 25_000 });
 
-    await page.waitForTimeout(2000); // Add a short wait to ensure the page is stable
-
-    if (await planCard.isVisible()) {
-      const selectButton = planCard.locator('text=Select');
-      
-      if (await selectButton.isVisible()) {
-        await selectButton.waitFor({ state: 'visible', timeout: 10000 });
-        await selectButton.click({ timeout: 5000 });
-      }
-      // If no Select button, we assume the plan is already selected and continue
-    }
-
-    await this.stripeCustomerPortal.quantityInput().isVisible();
-
-    await this.stripeCustomerPortal.quantityInput().clear();
-    await this.stripeCustomerPortal.quantityInput().fill(quantity.toString());
-
-    await this.stripeCustomerPortal.continueButton().click();
-
-    const payAndSubscribeButton = this.stripeCustomerPortal.payAndSubscribeButton();
-    await payAndSubscribeButton.waitFor({ state: 'visible', timeout: 10000 });
-    await payAndSubscribeButton.click({ timeout: 5000 });
-
-    await this.stripeCustomerPortal.returnToAppButton().click();
+    await this.upgradePlan.returnToManageBilling();
   }
 
   async cancelSubscriptionChange() {
 
-    await this.billing.getBillingPortalButton().click();
-    await this.stripeCustomerPortal.updatePlanButton().click();
+    await this.managePlan.goToCustomerPortal()
+    await this.stripeCustomerPortal.goToPlanSelection()
 
-    await this.stripeCustomerPortal.cancelChangeButton().click();
-  }
-
-  async upgradeFreeToPro(quantity: number) {
-
-    await this.billing.getUpgradeButton().click()
-    await this.billing.subscribeToProPlanCheckout(quantity)
-    await this.billing.refreshPage();
-  }
-
-  async downgradeProToFree() {
-    await this.billing.getBillingPortalButton().click();
-    await this.stripeCustomerPortal.updatePlanButton().click();
+    await this.stripeCustomerPortal.cancelIfChangeAlreadyPlanned()
   }
   
   async evaluateSubscription(productName: string, leftTokens?: number, monthlyTokens?: number) {
-    await expect(this.billing.getProductName()).toContainText(productName);
+    await expect(this.managePlan.planName()).toContainText(productName);
     
     if (leftTokens) {
-      await expect(this.billing.getLeftTokens()).toContainText(`${leftTokens}`);
+      await expect(this.managePlan.planLeftTokens()).toContainText(`${leftTokens}`);
     }
     if (monthlyTokens) {
-      await expect(this.billing.getMonthlyTokens()).toContainText(`${monthlyTokens}`);
+      await expect(this.managePlan.planMonthlyTokens()).toContainText(`${monthlyTokens}`);
     }
   
     if (productName === 'Pro') {
-      await expect(this.billing.manageBillingButton()).toBeVisible();
+      await expect(this.managePlan.customerPortalButton()).toBeVisible();
     }else if (productName === 'Free') {
-      await expect(this.billing.getUpgradeButton()).toBeVisible();
+      await expect(this.managePlan.upgradePlanButton()).toBeVisible();
     }
   }
   
   async evaluateDowngradeSubscription(label: string, quantity: number) {
     
-    const downgradeInfo = this.billing.getDowngradeSubscriptionInfo();
+    const downgradeInfo = this.managePlan.downgradeSubscriptionInfo();
     expect(downgradeInfo).toBeDefined();
   
     await expect(downgradeInfo).toContainText(`${label} (${quantity} pages)`)

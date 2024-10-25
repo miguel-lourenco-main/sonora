@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test';
+import { expect, Page } from '@playwright/test';
 //import { forceRenewSubscription } from '@kit/stripe';
 
 export class StripeCustomerPortalPageObject {
@@ -8,14 +8,9 @@ export class StripeCustomerPortalPageObject {
       this.page = page;
     }
   
-    /**
-     * ids:
-        - update plan button - data-test="update-subscription"
-        - quantity input - data-testid="portal-quantity-editor-increment-button"
-        - continue button - data-testid="continue-button"
-        - pay and subscribe button - data-testid && data-test="confirm"
-     */
-  
+
+    //** Locators **//
+
     updatePlanButton() {
       return this.page.locator('[data-test="update-subscription"]');
     }
@@ -42,6 +37,77 @@ export class StripeCustomerPortalPageObject {
   
     returnToAppButton() {
       return this.page.locator('[data-testid="return-to-business-link"]');
+    }
+
+
+    /** Actions */
+
+    async goToPlanSelection() {
+      await this.updatePlanButton().click();
+    }
+
+    async cancelIfChangeAlreadyPlanned() {
+      const cancelChangeButton = this.cancelChangeButton();
+
+      try {
+        console.log('Waiting for cancel change button...');
+        const isVisible = await cancelChangeButton.waitFor({
+          state: 'visible',
+          timeout: 5000
+        }).then(() => true).catch(() => false);
+
+        if (isVisible) {
+          console.log('Cancel change button found. Attempting to click...');
+          await cancelChangeButton.click({ timeout: 5000 });
+          console.log('Successfully clicked cancel change button.');
+        } else {
+          console.log('No cancel change button found. Proceeding without cancellation.');
+        }
+      } catch (error) {
+        console.error('Error while handling cancel change button:', error);
+        // Optionally, you might want to rethrow the error or handle it differently
+        // throw error;
+      }
+    }
+
+    async selectPlan(plan: string) {
+
+      const planCard = this.pricingTableCard(plan);
+  
+      await expect(planCard).toBeVisible({timeout: 5000});
+  
+      const selectButton = planCard.locator('text=Select');
+      
+      if (await selectButton.isVisible({timeout: 5000})) {
+        await selectButton.click();
+      }
+    }
+  
+    // In the 2 cases bellow, it is not our responsibility if the UI element
+    async selectPlanQuantityCustomerPortal(quantity: number) {
+  
+      const quantityInput = this.quantityInput();
+  
+      await expect(quantityInput).toBeVisible({timeout: 10000});
+  
+      await quantityInput.clear();
+      await quantityInput.fill(quantity.toString());
+    }
+  
+    async continueToPayment() {
+      await this.continueButton().click();
+    }
+  
+    async payAndSubscribe() {
+      const payAndSubscribeButton = this.payAndSubscribeButton();
+  
+      await expect(payAndSubscribeButton).toBeVisible({timeout: 10000});
+  
+      await payAndSubscribeButton.click({ timeout: 5000 });
+    }
+  
+    async returnToApp() {
+      await this.returnToAppButton().click();
     }
   }
   

@@ -70,7 +70,6 @@ export function PlanPickerComponent(
 
   const locale = useTranslation().i18n.language;
 
-
   return (
     <div
         className={'flex w-full max-w-xl flex-col space-y-4'}

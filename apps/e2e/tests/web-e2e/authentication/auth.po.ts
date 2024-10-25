@@ -67,12 +67,13 @@ export class AuthPageObject {
     return `${value.toFixed(0)}@makerkit.dev`;
   }
 
-  async signUpFlow(path: string, email?: string, password?: string) {
+  async signUpFlow(path?: string, email?: string, password?: string) {
 
     const testEmail = email ?? this.createRandomEmail();
     const testPassword = password ?? 'password1.A';
+    const redirectPath = path ?? '/app';
 
-    await this.page.goto(`/auth/sign-up?next=${path}`);
+    await this.page.goto(`/auth/sign-up?next=${redirectPath}`);
 
     await this.signUp({
       email: testEmail,
@@ -83,8 +84,11 @@ export class AuthPageObject {
     await this.visitConfirmEmailLink(testEmail);
   }
 
-  async signInFlow(path: string, email: string, password: string) {
-    await this.page.goto(`/auth/sign-in?next=${path}`);
+  async signInFlow(email: string, password: string, path?: string) {
+
+    const redirectPath = path ?? '/app';
+
+    await this.page.goto(`/auth/sign-in?next=${redirectPath}`);
 
     await this.signIn({
       email,

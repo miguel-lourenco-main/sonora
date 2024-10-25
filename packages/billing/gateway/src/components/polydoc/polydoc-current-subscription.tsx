@@ -80,9 +80,6 @@ export function PolydocCurrentSubscriptionCard({
     }
   }
 
-  console.log("subscription", subscription)
-  console.log("product", product)
-
   return (
     <Card>
       <CardHeader>

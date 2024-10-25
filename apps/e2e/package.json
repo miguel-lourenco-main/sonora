@@ -9,7 +9,9 @@
     "test:polydoc": "playwright test tests/polydoc-e2e",
     "test:polydoc-billing": "playwright test tests/polydoc-e2e/billing",
     "test:ui": "playwright test --ui",
-    "clean": "rm -rf playwright-report && rm -rf test-results"
+    "clean": "rm -rf playwright-report && rm -rf test-results",
+    "lint": "playwright lint",
+    "typecheck": "tsc --noEmit"
   },
   "keywords": [],
   "author": "",
