@@ -17,11 +17,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@kit/accounts": "workspace:^",
     "@kit/stripe": "workspace:^",
     "@kit/supabase": "workspace:^",
     "dotenv": "^16.4.5"
   },
   "devDependencies": {
+    "@kit/tsconfig": "workspace:^",
     "@playwright/test": "^1.46.1",
     "@types/node": "^22.5.1",
     "node-html-parser": "^6.1.13"
