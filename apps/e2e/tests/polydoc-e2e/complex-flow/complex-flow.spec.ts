@@ -11,7 +11,7 @@ test.describe('Complex flows', () => {
   let page: Page;
   let po: PolydocUserComplexFlowTestObject;
 
-  test.beforeAll(async ({ browser }) => {
+  test.beforeEach(async ({ browser }) => {
     page = await browser.newPage();
     po = new PolydocUserComplexFlowTestObject(page);
 
@@ -60,5 +60,8 @@ test.describe('Complex flows', () => {
     await po.billing.updatePlan(5, 'Pages(Free Plan)', true)
     await waitAndRefreshPage(page, 4000);
     await po.billing.evaluateDowngradeSubscription('Free', 5)
+
+    await waitAndRefreshPage(page, 40000);
+    await po.billing.evaluateSubscription('Free', 9000, 5)
    });
 });

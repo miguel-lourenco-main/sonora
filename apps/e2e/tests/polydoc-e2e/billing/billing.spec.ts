@@ -7,134 +7,98 @@ import { refreshPage, waitAndRefreshPage } from '../../utils/general';
   case we are using a test account that is already created for these tests specifically
 */
 
-test.describe('Polydoc User Billing', () => {
+test.describe('Polydoc User Billing Tests', () => {
   let page: Page;
   let po: PolydocUserBillingTestObject;
 
-  test.beforeAll(async ({ browser }) => {
+  test.beforeEach(async ({ browser }) => {
     page = await browser.newPage();
     po = new PolydocUserBillingTestObject(page);
 
     await po.auth.signUpFlow('/app/billing');
-
-    await waitAndRefreshPage(page, 2000);
+    await expect(po.managePlan.planName()).toBeVisible();
   });
 
-  test('Check if the user is in the free plan', async () => {
-    await po.evaluateSubscription('Free', 5, 5)
+  // Define reusable steps
+  const steps = {
+    verifyFreePlan: () => test.step('Verify Free Plan', async () => {
+      await po.evaluateSubscription('Free', 5, 5);
+    }),
+
+    upgradePlan: (quantity: number, planType: string) => test.step('Upgrade Plan', async () => {
+      await po.updatePlan(quantity, planType, true);
+      await po.evaluateSubscription('Pro', quantity, quantity);
+    }),
+
+    verifyDowngrade: (previousQuantity: number, newQuantity: number) => test.step('Verify Downgrade', async () => {
+      await expect(po.managePlan.planName()).toBeVisible();
+      await refreshPage(page);
+      await po.evaluateSubscription('Pro', previousQuantity, previousQuantity);
+      await po.evaluateDowngradeSubscription('Pro', newQuantity);
+      await expect(po.managePlan.customerPortalButton()).toBeVisible();
+    }),
+
+    cancelSubscriptionChange: () => test.step('Cancel Subscription Change', async () => {
+      await po.cancelSubscriptionChange();
+      await po.stripeCustomerPortal.returnToAppButton().click();
+      await expect(po.managePlan.planName()).toBeVisible();
+      await refreshPage(page);
+    }),
+
+    setupVATTest: () => test.step('Setup VAT Test', async () => {
+      await po.managePlan.goToUpgradePlanPage();
+      await po.upgradePlan.proceedToCheckout();
+      await po.stripeCheckoutSession.waitForForm();
+      await po.stripeCheckoutSession.viewDetail().click();
+    }),
+
+    checkVAT: (country: string, expectedLabel: string) => test.step('Check VAT', async () => {
+      await po.stripeCheckoutSession.fillCountryInForm({ billingCountry: country });
+      const vatLabel = po.stripeCheckoutSession.checkVATLabel();
+      await vatLabel.waitFor({ state: 'visible' });
+      await expect(vatLabel).toBeVisible();
+      await expect(vatLabel).toHaveText(expectedLabel);
+    }),
+  };
+
+  test('should start with free plan', async () => {
+    await steps.verifyFreePlan();
   });
 
-  test('Upgrade from Free to Pro', async () => {
+  test.describe('Complex test flow', () => {
+    test('Upgrade from Free to Pro', async () => {
+      await steps.verifyFreePlan();
+      await steps.upgradePlan(3000, 'pro-monthly');
+    });
 
-    const quantity = 3000
-
-    await po.updatePlan(quantity, 'pro-monthly', true)
-
-    await po.evaluateSubscription('Pro', quantity, quantity)
-  });
-
-  /**
     test('Upgrade Pro to Pro', async () => {
-
-      const quantity = 7000
-
-      await po.updatePlan(quantity, 'Pages(Pro Plan)', true)
-
-      await po.evaluateSubscription('Pro', quantity, quantity)
-    })
+      await steps.upgradePlan(7000, 'Pages(Pro Plan)');
+    });
 
     test('Downgrade Pro to Pro', async () => {
-      const quantity = 5000;
-
-      await po.updatePlan(quantity, 'Pages(Pro Plan)', true);
-
-      // Add a check to ensure the page has reloaded
-      await expect(po.managePlan.planName()).toBeVisible();
-
-      // Refresh the page and wait for it to load
-      await refreshPage(page);
-
-      //Previous quantity, either set it to a value you know  should be correct or hide the eval function
-      await po.evaluateSubscription('Pro', 7000, 7000)
-
-      await po.evaluateDowngradeSubscription('Pro', 5000)
-
-      await expect(po.managePlan.customerPortalButton()).toBeVisible();
-    })
+      await steps.upgradePlan(5000, 'Pages(Pro Plan)');
+      await steps.verifyDowngrade(7000, 5000);
+    });
 
     test('Cancel Pro Subscription Change', async () => {
-      await po.cancelSubscriptionChange()
-      await po.stripeCustomerPortal.returnToAppButton().click()
-        await expect(po.managePlan.planName()).toBeVisible();
-
-      await refreshPage(page);
-    })
-   */
-
-  test('All the tests together', async () => {
-
-    //Check if the user is in the free plan
-    await po.evaluateSubscription('Free', 5, 5)
-
-    //If so, upgrade to 7000 pages of the pro plan
-    let quantity = 7000
-
-    await po.updatePlan(quantity, 'pro-monthly', true)
-
-    await waitAndRefreshPage(page, 4000);
-
-    await po.evaluateSubscription('Pro', quantity, quantity)
-
-    //Now, downgrade to 5000 pages of the pro plan
-    quantity = 5000
-
-    await po.updatePlan(quantity, 'Pages(Pro Plan)', true)
-
-    await waitAndRefreshPage(page, 4000);
-
-    await po.evaluateDowngradeSubscription('Pro', quantity)
-
-    //Upgrade again to 9000 pages of the pro plan
-    quantity = 9000
-
-    await po.updatePlan(quantity, 'Pages(Pro Plan)', true)
-
-    await waitAndRefreshPage(page, 4000);
-
-    await po.evaluateSubscription('Pro', quantity, quantity)
-  })
-
-  test.describe('VAT Calculation', () => {
-
-    test.beforeAll('', async () => {
-      await po.managePlan.goToUpgradePlanPage()
-
-      await po.upgradePlan.proceedToCheckout()
-  
-      await po.stripeCheckoutSession.waitForForm()
-      await po.stripeCheckoutSession.viewDetail().click()
-    })
-
-    test('EU Country: VAT should be 23%', async () => {
-
-      await po.stripeCheckoutSession.fillCountryInForm({billingCountry: "PT"})
-
-      const vatLabel = po.stripeCheckoutSession.checkVATLabel();
-      await vatLabel.waitFor({ state: 'visible' });
-      
-      await expect(vatLabel).toBeVisible();
-      await expect(vatLabel).toHaveText('VAT (23%)');    
-    });
-  
-    test('Non-EU Country: VAT should be 0%', async () => {
-
-      await po.stripeCheckoutSession.fillCountryInForm({billingCountry: "US"})
-
-      const vatLabel = po.stripeCheckoutSession.checkVATLabel();
-      await vatLabel.waitFor({ state: 'visible' });
-
-      await expect(vatLabel).toBeVisible();
-      await expect(vatLabel).toHaveText('Tax');    
+      await steps.cancelSubscriptionChange();
     });
   });
-})
+
+  test.describe('VAT Calculation', () => {
+    test.beforeAll(async () => {
+      await steps.setupVATTest();
+    });
+
+    const vatTests = [
+      { country: 'PT', expectedLabel: 'VAT (23%)', description: 'EU Country: VAT should be 23%' },
+      { country: 'US', expectedLabel: 'Tax', description: 'Non-EU Country: VAT should be 0%' }
+    ];
+
+    for (const { country, expectedLabel, description } of vatTests) {
+      test(description, async () => {
+        await steps.checkVAT(country, expectedLabel);
+      });
+    }
+  });
+});

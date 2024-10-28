@@ -13,7 +13,7 @@ type UserTokens = {
 export default function CurrentPages() {
 
     const [tokens, setTokens] = useState<number>(0);
-    const [monthlyTokens, setMonthlyTokens] = useState<number>(0);
+    const [monthlyTokens, setMonthlyTokens] = useState<number>(1);
 
     const handleCreditsChange = (userTokens: UserTokens) => {
       setTokens(userTokens.credits);

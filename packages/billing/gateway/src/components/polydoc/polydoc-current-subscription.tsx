@@ -28,7 +28,6 @@ interface Props {
   subscription: Subscription & {
     items: LineItem[];
   };
-
   config: BillingConfig;
 }
 

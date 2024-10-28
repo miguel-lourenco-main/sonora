@@ -97,6 +97,12 @@ export class PolydocUserBillingTestObject {
     await this.upgradePlan.returnToManageBilling();
   }
 
+  /**
+   * Requirements:
+   * - The user must be in the billing page
+   * - The page must have a button to go to the customer portal
+   * - The user must have a change already planned
+   */
   async cancelSubscriptionChange() {
 
     await this.managePlan.goToCustomerPortal()

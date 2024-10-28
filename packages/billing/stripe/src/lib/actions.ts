@@ -97,6 +97,10 @@ export async function triggerSubscriptionSchedule(scheduleId: string) {
 
     //const currentPhase = await stripe.subscriptionSchedules.retrieve(scheduleId);
 
+    if(!schedule.phases[1] || !schedule.phases[1].items) {
+      throw new Error('No items found in the second phase');
+    }
+
     const releasedSchedule = await stripe.subscriptionSchedules.update(scheduleId, {
       default_settings: {
         billing_cycle_anchor: 'phase_start',
