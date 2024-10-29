@@ -10,7 +10,32 @@ type UserTokens = {
   monthly_credits: number;
 }
 
-export default function CurrentPages() {
+type CurrentPagesProps = {
+  size?: 'small' | 'normal' | 'large'
+}
+
+const sizeStyles = {
+  small: {
+    container: 'w-full',
+    value: 'text-lg',
+    label: 'text-xs',
+    progress: 'h-[0.5rem]'
+  },
+  normal: {
+    container: 'w-[30rem]',
+    value: 'text-2xl',
+    label: 'text-sm',
+    progress: 'h-[0.75rem]'
+  },
+  large: {
+    container: 'w-[40rem]',
+    value: 'text-3xl',
+    label: 'text-sm',
+    progress: 'h-[1rem]'
+  }
+} as const;
+
+export default function CurrentPages({ size = 'normal' }: CurrentPagesProps) {
 
     const [tokens, setTokens] = useState<number>(0);
     const [monthlyTokens, setMonthlyTokens] = useState<number>(1);
@@ -55,15 +80,33 @@ export default function CurrentPages() {
         subscribeChanges();
       }, []);
 
-  return (
-    <div className="flex w-[30rem] flex-col space-y-2">
+    const styles = sizeStyles[size];
+
+    return (
+      <div className={`flex flex-col space-y-2 ${styles.container}`}>
         <div className="flex space-x-2">
-            <div data-test={'polydoc-current-pages-left'} className="text-3xl text-foreground font-semibold">{tokens}</div>
-            <p className="text-sm mb-1 -mr-1 h-fit self-end text-muted-foreground">/</p>
-            <div data-test={'polydoc-current-pages-monthly'} className="text-sm mb-1 h-fit self-end text-muted-foreground">{monthlyTokens}</div>
-            <p className="text-sm mb-1 -mr-1 h-fit self-end text-muted-foreground">tokens left</p>
+          <div 
+            data-test={'polydoc-current-pages-left'} 
+            className={`${styles.value} text-foreground font-semibold`}
+          >
+            {tokens}
+          </div>
+          <p className={`${styles.label} mb-1 -mr-1 h-fit self-end text-muted-foreground`}>/</p>
+          <div 
+            data-test={'polydoc-current-pages-monthly'} 
+            className={`${styles.label} mb-1 h-fit self-end text-muted-foreground`}
+          >
+            {monthlyTokens}
+          </div>
+          <p className={`${styles.label} mb-1 -mr-1 h-fit self-end text-muted-foreground`}>
+            tokens left
+          </p>
         </div>
-        <Progress className='h-[1rem]' value={tokens > monthlyTokens ? 100 : (tokens/monthlyTokens) * 100} max={monthlyTokens} />
-    </div>
-  );
+        <Progress 
+          className={styles.progress} 
+          value={tokens > monthlyTokens ? 100 : (tokens/monthlyTokens) * 100} 
+          max={monthlyTokens} 
+        />
+      </div>
+    );
 }

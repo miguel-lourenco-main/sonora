@@ -161,7 +161,7 @@ export function PolydocCurrentSubscriptionCard({
         </If>
 
         <div className="flex w-full space-x-12">
-          <CurrentPages/>
+          <CurrentPages size="large" />
           <div className="flex flex-col space-y-0.5">
             <span className="font-semibold">
               <Trans i18nKey="billing:detailsLabel" />
