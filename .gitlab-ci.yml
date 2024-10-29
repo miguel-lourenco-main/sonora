@@ -19,7 +19,7 @@ test:
   stage: test
   tags: # required to run on our own runner
     - office-linux
-  image: 'node:18'
+  image: 'node:20'
   script:
     - echo "dummy test"
 
@@ -27,6 +27,6 @@ build:
   stage: build
   tags: # required to run on our own runner
     - office-linux
-  image: 'node:18'
+  image: 'node:20'
   script:
     - pnpm build
