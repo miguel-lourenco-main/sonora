@@ -23,6 +23,7 @@ import { cn } from '@kit/ui/utils';
 
 import { LineItemDetails } from '../line-item-details';
 import { PageAmountInput } from '../page-counter';
+import { calculateTieredCost } from '../../lib/utils';
 
 interface Paths {
   signUp: string;
@@ -112,9 +113,14 @@ export function PolydocPricingTable({
               ...modifiedProduct.features
             ];
 
-            modifiedLineItem.cost = modifiedLineItem.cost * pageCount
-          }
+            if (product.id === 'pro' && modifiedLineItem) {
+              if (primaryLineItem && primaryLineItem.tiers) {
+                const tiers = primaryLineItem.tiers;
 
+                modifiedLineItem.cost = calculateTieredCost(pageCount , tiers)
+              }
+            }
+          }
           
           return (
             <PricingItem
@@ -128,6 +134,7 @@ export function PolydocPricingTable({
               displayPlanDetails={displayPlanDetails}
               alwaysDisplayMonthlyPrice={alwaysDisplayMonthlyPrice}
               CheckoutButton={CheckoutButtonRenderer}
+              pageCount={pageCount}
             />
           );
         })}
@@ -175,6 +182,7 @@ function PricingItem(
       highlighted?: boolean;
       features: string[];
     };
+    pageCount: number;
   }>,
 ) {
   const highlighted = props.product.highlighted ?? false;
@@ -194,7 +202,7 @@ function PricingItem(
       data-cy={'subscription-plan'}
       className={cn(
         props.className,
-        `s-full relative flex flex-1 grow flex-col items-stretch justify-between self-stretch rounded-xl border p-8 lg:w-4/12 xl:max-w-[20rem]`,
+        `s-full relative flex flex-1 grow flex-col items-stretch justify-between self-stretch rounded-xl border p-8 lg:w-4/12 xl:max-w-[25rem]`,
         {
           ['border-primary']: highlighted,
           ['border-border']: !highlighted,
@@ -250,6 +258,7 @@ function PricingItem(
               interval={interval}
               lineItem={lineItem}
               alwaysDisplayMonthlyPrice={props.alwaysDisplayMonthlyPrice}
+
             />
           </Price>
 
@@ -340,6 +349,7 @@ function PricingItem(
               selectedInterval={props.plan.interval}
               currency={props.product.currency}
               lineItems={lineItemsToDisplay}
+              pageCount={props.pageCount}
             />
           </div>
         </If>

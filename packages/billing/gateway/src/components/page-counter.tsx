@@ -12,7 +12,7 @@ interface PageAmountInputProps {
 }
 
 export function PageAmountInput({ value, onPageCountChange, className }: PageAmountInputProps) {
-  const [pageCount, setPageCount] = useState(value ?? 0); 
+  const [pageCount, setPageCount] = useState(value ?? 5); 
 
   const updatePageCount = (value: number) => {
     const clampedValue = Math.min(Math.max(0, value), MAX_PAGES_SUBSCRIPTION);
@@ -20,9 +20,13 @@ export function PageAmountInput({ value, onPageCountChange, className }: PageAmo
     onPageCountChange(clampedValue);
   };
 
+  const [isFocused, setIsFocused] = useState(false);
+
   useEffect(() => {
-    setPageCount(value ?? 0);
-  }, [value]);
+    console.log('value', value);
+    console.log('isFocused', isFocused);
+    setPageCount(value !== undefined && (isFocused || value > 5) ? value : 5);
+  }, [value, isFocused]);
 
   return (
     <div className={`text-center py-2 ${className}`}>
@@ -31,15 +35,17 @@ export function PageAmountInput({ value, onPageCountChange, className }: PageAmo
         <UnderscoreInput
           pageCount={pageCount}
           setPageCount={updatePageCount}
+          isFocused={isFocused}
+          setIsFocused={setIsFocused}
         />
       </div>
       <div className="flex items-center justify-center space-x-4 mb-4">
         <Slider
-          min={1}
+          min={5}
           max={MAX_PAGES_SUBSCRIPTION}
           step={1}
           value={[pageCount]}
-          onValueChange={(value) => updatePageCount(value[0] ?? 0)}
+          onValueChange={(value) => updatePageCount(value[0] ?? 5)}
           className="w-[60%]"
         />
       </div>

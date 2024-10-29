@@ -23,7 +23,6 @@ import { Trans } from '@kit/ui/trans';
 import { cn } from '@kit/ui/utils';
 
 import { LineItemDetails } from './line-item-details';
-import { PageCounter } from './page-counter';
 
 interface Paths {
   signUp: string;
