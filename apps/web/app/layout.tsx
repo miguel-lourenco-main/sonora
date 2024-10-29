@@ -56,3 +56,5 @@ function getTheme() {
 }
 
 export const generateMetadata = generateRootMetadata;
+
+export const runtime = 'edge';
