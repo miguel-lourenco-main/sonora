@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
 
   const url = await service.verifyTokenHash(request, {
     joinTeamPath: pathsConfig.app.joinTeam,
-    redirectPath: pathsConfig.app.home,
+    redirectPath: pathsConfig.app.app,
   });
 
   return NextResponse.redirect(url);

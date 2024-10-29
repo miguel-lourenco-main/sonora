@@ -1,0 +1,28 @@
+speakeasyVersion: 1.395.0
+sources:
+    Polydoc-OAS:
+        sourceNamespace: polydoc-oas
+        sourceRevisionDigest: sha256:a8afe5920e60b8a825fc09d323501508eaa5d50d7fd6b69216db3f19afe84763
+        sourceBlobDigest: sha256:1913d8afaa73d69edd65bed670033b162a4fa64db52580bf4ca80fe2c50c45ce
+        tags:
+            - latest
+targets:
+    polydoc:
+        source: Polydoc-OAS
+        sourceNamespace: polydoc-oas
+        sourceRevisionDigest: sha256:a8afe5920e60b8a825fc09d323501508eaa5d50d7fd6b69216db3f19afe84763
+        sourceBlobDigest: sha256:1913d8afaa73d69edd65bed670033b162a4fa64db52580bf4ca80fe2c50c45ce
+        outLocation: /home/francis/edgen/frontend/apps/polydoc/lib/polydoc-typescript
+workflow:
+    workflowVersion: 1.0.0
+    speakeasyVersion: latest
+    sources:
+        Polydoc-OAS:
+            inputs:
+                - location: ../../../../../workflows/workflows-server/docs/openapi.yml
+            registry:
+                location: registry.speakeasyapi.dev/edgenai/edgenai/polydoc-oas
+    targets:
+        polydoc:
+            target: typescript
+            source: Polydoc-OAS

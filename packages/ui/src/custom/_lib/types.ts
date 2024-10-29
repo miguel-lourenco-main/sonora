@@ -16,3 +16,13 @@ export type CustomFileUploaderProps = {
   acceptFiles?: { [key: string]: string[] };
   children?: React.ReactNode;
 };
+
+export type CustomFileUploaderPropsV2 = {
+  files: File[];
+  addFiles: (files: File[]) => void;
+  removeFiles: (files: File[]) => void;
+  className?: string;
+  orientation?: "horizontal" | "vertical";
+  acceptFiles?: { [key: string]: string[] };
+  children?: React.ReactNode;
+};

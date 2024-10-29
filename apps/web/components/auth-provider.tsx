@@ -12,7 +12,7 @@ export function AuthProvider(props: React.PropsWithChildren) {
   const dispatchEvent = useDispatchAppEventFromAuthEvent();
 
   useAuthChangeListener({
-    appHomePath: pathsConfig.app.home,
+    appHomePath: pathsConfig.app.app,
     onEvent: (event, session) => {
       dispatchEvent(event, session?.user.id, {
         email: session?.user.email ?? '',

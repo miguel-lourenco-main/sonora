@@ -7,14 +7,8 @@ import { PDFFile } from "./_lib/types";
 import { pdfjs, Document, Page } from "react-pdf";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import "react-pdf/dist/esm/Page/TextLayer.css";
-import 'core-js/full/promise/with-resolvers.js';
 
 import { LinearBlur } from "progressive-blur";
-
-// Polyfill for environments where window is not available (e.g., server-side rendering)
-import { withResolvers } from '../utils/resolvers-polyfill'; // Create this file if needed
-
-const { promise, resolve, reject } = withResolvers();
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
@@ -23,9 +17,9 @@ const resizeObserverOptions = {};
 const maxWidth = 800;
 
 export default function PDFViewer(
-  { pdf, setLoaded, onScroll, scrollRef, filter }
+  { pdf, setLoaded, setPdfLoading, onScroll, scrollRef, filter }
   : 
-  { pdf: PDFFile; setLoaded?: (b: boolean) => void; scrollRef?: React.RefObject<HTMLDivElement>; onScroll?: UIEventHandler<HTMLDivElement> | undefined; filter?: React.ReactNode}
+  { pdf: PDFFile; setLoaded?: (b: boolean) => void; setPdfLoading?: (b: boolean) => void; scrollRef?: React.RefObject<HTMLDivElement>; onScroll?: UIEventHandler<HTMLDivElement> | undefined; filter?: React.ReactNode}
 ) {
 
   const [file, setFile] = useState<PDFFile>(pdf);
@@ -53,13 +47,23 @@ export default function PDFViewer(
 
   const updatePageHeight = useCallback(() => {
     if (firstPageRef.current) {
-      setPageHeight(firstPageRef.current.height);
+
+      const a4Width = 210; // mm
+      const a4Height = 297; // mm
+
+      const scale = a4Height / a4Width;
+
+      const expectedHeight = pageWidth * scale;
+
+      setPageHeight(expectedHeight);
     }
-  }, []);
+  }, [pageWidth]);
 
   function onDocumentLoadSuccess(pdf: pdfjs.PDFDocumentProxy): void {
+    updatePageHeight();
     setNumPages(pdf.numPages);
     if (setLoaded) setLoaded(true);
+    if (setPdfLoading) setPdfLoading(false);
   }
 
   useEffect(() => {

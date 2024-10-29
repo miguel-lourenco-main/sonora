@@ -12,7 +12,7 @@ import {
 import { ScrollArea } from "../shadcn/scroll-area";
 
 import PDFViewer from './pdf-viewer'
-import { cn } from "../utils";
+import { cn } from "../lib/utils";
 import LoadingPDF from "./loading-pdf"
 
 export default function PDFViewerDrawer({

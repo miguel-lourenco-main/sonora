@@ -5,7 +5,7 @@ export type UpsertSubscriptionParams =
     line_items: Array<LineItem>;
   };
 
-interface LineItem {
+export interface LineItem {
   id: string;
   quantity: number;
   subscription_id: string;
@@ -15,7 +15,7 @@ interface LineItem {
   price_amount: number | null | undefined;
   interval: string;
   interval_count: number;
-  type: 'flat' | 'metered' | 'per_seat' | undefined;
+  type: 'flat' | 'metered' | 'per_seat' | 'tiered' | undefined;
 }
 
 export type UpsertOrderParams =

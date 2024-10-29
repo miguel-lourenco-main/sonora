@@ -49,12 +49,17 @@ git branch -D update_makerkit
 ```
 
 ## Proliferate app subtree's new updates into app submodules
+
+## Setup
+```bash
+git remote add remote/frontend git@gitlab.com:edgenai/frontend/frontend.git
+
 ```bash
 # Update subtree
 git subtree split --prefix=apps/web --branch=subtree/apps-web
 git push origin subtree/apps-web
 
-cd apps/polydoc
+cd apps/<app>
 
 # Fetch and update our mirror branch
 git fetch remote/frontend subtree/apps-web
@@ -64,6 +69,6 @@ git push origin mirror/apps-web
 
 # Merge mirror into main
 git checkout main
-git merge mirror/apps-web
+git merge mirror/apps-web -m "Merge updates from mirror/apps-web"
 git push origin
 ```

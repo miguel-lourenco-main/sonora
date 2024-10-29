@@ -25,7 +25,7 @@ const ModeToggle = dynamic(
 );
 
 const paths = {
-  home: pathsConfig.app.home,
+  app: pathsConfig.app.app,
 };
 
 const features = {
@@ -52,6 +52,7 @@ function SuspendedPersonalAccountDropdown(props: { user: User | null }) {
   if (userData) {
     return (
       <PersonalAccountDropdown
+        showProfileName={false}
         paths={paths}
         features={features}
         user={userData}

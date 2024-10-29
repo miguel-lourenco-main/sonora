@@ -394,6 +394,7 @@ export class StripeBillingStrategyService
         periodEndsAt: subscription.current_period_end,
         trialStartsAt: subscription.trial_start,
         trialEndsAt: subscription.trial_end,
+        schedule: subscription.schedule as string | null,
       });
     } catch (error) {
       logger.error({ ...ctx, error }, 'Failed to retrieve subscription');

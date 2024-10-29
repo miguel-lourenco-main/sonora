@@ -3,45 +3,61 @@
 import { File, Trash2 } from "lucide-react";
 import { Button } from "../shadcn/button";
 import TooltipComponent from "./tooltip-component";
-import {IconDOC, IconDOCX, IconPDF } from "./icons";
-import { Dispatch, SetStateAction, useEffect, useRef } from "react";
+import { IconDOC, IconDOCX, IconPDF } from "./icons";
+import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 
-export default function FilesGrid({ files, setFiles }: { files: File[], setFiles: Dispatch<SetStateAction<File[]>> }) {
-    
+interface FilesGridProps {
+  files: File[];
+  onFileRemove?: (index: number) => void;
+}
+
+export default function FilesGrid({ files, onFileRemove }: FilesGridProps) {
     const gridRef = useRef<HTMLDivElement>(null);
     const { t } = useTranslation('ui');
 
     useEffect(() => {
-        const updateGridColumns = () => {
+        const updateGridLayout = () => {
             const grid = gridRef.current;
-
             if (grid) {
-                const width = grid.offsetWidth;
-                const columnCount = Math.floor(width / 120); // 120px is the minimum width for each item
+                const width = grid.offsetWidth; // Subtracting padding (24px on each side)
+                const height = grid.offsetHeight; // Subtracting padding (24px on each side)
+                const itemSize = 130;
+                const gap = 16;
+
+                const columnCount = Math.floor((width - gap) / (itemSize + gap));
+                const rowCount = Math.floor((height - gap) / (itemSize + gap));
 
                 grid.style.setProperty('--grid-column-count', `${columnCount}`);
+                grid.style.setProperty('--grid-row-count', `${rowCount}`);
             }
         };
 
-        updateGridColumns();
-        
-        window.addEventListener('resize', updateGridColumns);
-        return () => window.removeEventListener('resize', updateGridColumns);
+        updateGridLayout();
+
+        // TODO: improve listener, not every situation where the window resizes is being listened to
+        window.addEventListener('resize', updateGridLayout);
+        return () => window.removeEventListener('resize', updateGridLayout);
     }, []);
+
+    const handleRemoveFile = (index: number) => {
+        onFileRemove && onFileRemove(index);
+    };
 
     return (
         <div 
             ref={gridRef}
-            className="grid gap-4 size-full border-2 p-5 rounded-md"
+            className="grid gap-4 size-full border-2 p-4 rounded-md overflow-hidden"
             style={{
-                gridTemplateColumns: 'repeat(var(--grid-column-count, 3), minmax(100px, 1fr))'
+                gridTemplateColumns: 'repeat(var(--grid-column-count, 3), 130px)',
+                gridTemplateRows: 'repeat(var(--grid-row-count, 3), 130px)',
+                gridAutoRows: '130px',
+                gridAutoColumns: '130px',
             }}
         >
             {files.map((file, index) => {
-
-                const extension = file.type.split("/")[1]
-                let icon: React.ReactNode
+                const extension = file.type.split("/")[1];
+                let icon: React.ReactNode;
 
                 if (extension === "pdf") {
                     icon = <IconPDF className="size-12" />;
@@ -54,19 +70,19 @@ export default function FilesGrid({ files, setFiles }: { files: File[], setFiles
                 }
 
                 return (
-                    <div key={index} className="relative overflow-hidden rounded-lg group size-fit m-2 p-2 bg-muted/50">
-                        <div className="flex flex-col items-center justify-center size-24 space-y-2 object-cover group-hover:opacity-20 transition-opacity">
+                    <div key={index} className="relative overflow-hidden rounded-lg group size-full flex items-center justify-center">
+                        <div className="flex flex-col size-full items-center justify-center space-y-2 object-cover group-hover:opacity-20 transition-opacity">
                             {icon}
                             <p className="w-full px-2 text-sm text-center truncate">{file.name}</p>
                         </div>
-                        <div className="absolute inset-0 flex size-full items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                            <Button variant="light_foreground" size="fit" onClick={() => setFiles(prevFiles => prevFiles.filter((_, i) => i !== index))}>
-                                <TooltipComponent trigger={<Trash2 className="size-full p-2" />} content={<div>{t('delete')}</div>} />
+                        <div className="absolute inset-x-0 -inset-y-3 flex size-full items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            <Button type="button" variant="light_foreground" size="fit" onClick={() => handleRemoveFile(index)}>
+                                <TooltipComponent trigger={<Trash2 className="size-8 p-1.5" />} content={<div>{t('delete')}</div>} />
                             </Button>
                         </div>
                     </div>
-                )
+                );
             })}
         </div>
-    )
+    );
 }

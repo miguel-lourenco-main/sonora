@@ -1,6 +1,6 @@
 {
-  "homeTabLabel": "Home",
-  "homeTabDescription": "Welcome to your home page",
+  "homeTabLabel": "App",
+  "homeTabDescription": "Welcome to your app page",
   "accountMembers": "Team Members",
   "membersTabDescription": "Here you can manage the members of your team.",
   "billingTabLabel": "Billing",
@@ -18,7 +18,7 @@
   "cancel": "Cancel",
   "clear": "Clear",
   "notFound": "Not Found",
-  "backToHomePage": "Back to Home Page",
+  "backToHomePage": "Back to App Page",
   "goBack": "Go Back",
   "genericServerError": "Sorry, something went wrong.",
   "genericServerErrorHeading": "Sorry, something went wrong while processing your request. Please contact us if the issue persists.",
@@ -39,7 +39,7 @@
   "getStartedWithPlan": "Get Started with {{plan}}",
   "retry": "Retry",
   "contactUs": "Contact Us",
-  "loading": "Loading. Please wait...",
+  "translating": "Translating...",
   "yourAccounts": "Your Accounts",
   "continue": "Continue",
   "skip": "Skip",
@@ -56,7 +56,7 @@
   "newVersionSubmitButton": "Reload and Update",
   "back": "Back",
   "routes": {
-    "home": "Home",
+    "app": "App",
     "account": "Account",
     "members": "Members",
     "billing": "Billing",
@@ -77,5 +77,7 @@
     "description": "This website uses cookies to ensure you get the best experience on our website.",
     "reject": "Reject",
     "accept": "Accept"
-  }
+  },
+  "choosePlan": "Choose a plan",
+  "landingPage": "Landing Page"
 }

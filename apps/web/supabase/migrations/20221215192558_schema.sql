@@ -2296,9 +2296,10 @@ set
   search_path = '' as $$
 declare
     user_name text;
+    picture_url text;
 begin
-    if new.raw_user_meta_data ->> 'display_name' is not null then
-        user_name := new.raw_user_meta_data ->> 'display_name';
+    if new.raw_user_meta_data ->> 'name' is not null then
+        user_name := new.raw_user_meta_data ->> 'name';
 
     end if;
 
@@ -2312,17 +2313,25 @@ begin
 
     end if;
 
+    if new.raw_user_meta_data ->> 'avatar_url' is not null then
+        picture_url := new.raw_user_meta_data ->> 'avatar_url';
+    else
+        picture_url := null;
+    end if;
+
     insert into public.accounts(
         id,
         primary_owner_user_id,
         name,
         is_personal_account,
+        picture_url,
         email)
     values (
         new.id,
         new.id,
         user_name,
         true,
+        picture_url,
         new.email);
 
     return new;

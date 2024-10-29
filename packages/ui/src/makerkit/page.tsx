@@ -1,6 +1,7 @@
 import * as React from 'react';
 
-import { cn } from '../utils';
+import { cn } from '../lib/utils';
+import { If } from './if';
 
 export type PageLayoutStyle = 'sidebar' | 'header' | 'custom';
 
@@ -27,19 +28,35 @@ export function Page(props: PageProps) {
   }
 }
 
+export function ModifiedPage(props: PageProps) {
+  switch (props.style) {
+    case 'sidebar':
+      return <PageWithSidebar {...props} />;
+
+    case 'header':
+      return <ModifiedPageWithHeader {...props} />;
+
+    case 'custom':
+      return props.children;
+
+    default:
+      return <PageWithSidebar {...props} />;
+  }
+}
+
 function PageWithSidebar(props: PageProps) {
   const { Navigation, Children, MobileNavigation } = getSlotsFromPage(props);
 
   return (
     <div
-      className={cn('flex bg-gray-50/50 dark:bg-background', props.className)}
+      className={cn('flex bg-gray-50/95 dark:bg-background/85', props.className)}
     >
       {Navigation}
 
       <div
         className={
           props.contentContainerClassName ??
-          'mx-auto flex h-screen w-full flex-col overflow-y-auto px-4 lg:px-0'
+          'mx-auto flex h-screen w-full flex-col overflow-y-auto px-4 lg:px-0 bg-inherit'
         }
       >
         {MobileNavigation}
@@ -106,18 +123,51 @@ function PageWithHeader(props: PageProps) {
   );
 }
 
+function ModifiedPageWithHeader(props: PageProps) {
+  const { Navigation, Children, MobileNavigation } = getSlotsFromPage(props);
+
+  return (
+    <div className={cn('flex h-screen flex-col', props.className)}>
+      <div
+        className={
+          props.contentContainerClassName ?? 'flex size-full flex-col'
+        }
+      >
+        <div
+          className={cn(
+            'flex h-14 items-center justify-between bg-muted/40 px-4 py-2 dark:border-border dark:shadow-primary/10 lg:justify-start lg:shadow-sm',
+            {
+              'sticky top-0 z-10 backdrop-blur-md': props.sticky ?? true,
+            },
+          )}
+        >
+          <div
+            className={'hidden w-full flex-1 items-center space-x-8 lg:flex'}
+          >
+            {Navigation}
+          </div>
+
+          {MobileNavigation}
+        </div>
+
+        <div className={'flex flex-1 min-h-0 w-full flex-col'}>{Children}</div>
+      </div>
+    </div>
+  );
+}
+
 export function PageBody(
   props: React.PropsWithChildren<{
     className?: string;
   }>,
 ) {
-  const className = cn('w-full flex flex-col flex-1 lg:px-4', props.className);
+  const className = cn('flex w-full flex-1 flex-col lg:px-8', props.className);
 
   return <div className={className}>{props.children}</div>;
 }
 
 export function PageNavigation(props: React.PropsWithChildren) {
-  return <div className={'hidden flex-1 lg:flex'}>{props.children}</div>;
+  return <div className={'hidden flex-1 lg:flex bg-inherit'}>{props.children}</div>;
 }
 
 export function PageDescription(props: React.PropsWithChildren) {
@@ -163,9 +213,14 @@ export function PageHeader({
         className,
       )}
     >
-      <div className={'flex flex-col'}>
-        <PageDescription>{description}</PageDescription>
-        <PageTitle>{title}</PageTitle>
+      <div className={'flex flex-col space-y-2'}>
+        <If condition={description}>
+          <PageDescription>{description}</PageDescription>
+        </If>
+
+        <If condition={title}>
+          <PageTitle>{title}</PageTitle>
+        </If>
       </div>
 
       {children}

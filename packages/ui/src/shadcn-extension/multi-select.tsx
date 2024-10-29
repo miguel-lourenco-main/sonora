@@ -9,7 +9,7 @@ import {
   CommandList,
 } from "../shadcn/command";
 import { Separator } from "../shadcn/separator";
-import { cn } from "../utils";
+import { cn } from "../lib/utils";
 import { Command as CommandPrimitive } from "cmdk";
 import { X as RemoveIcon, Check } from "lucide-react";
 import React, {
@@ -25,6 +25,7 @@ interface MultiSelectorProps
   extends React.ComponentPropsWithoutRef<typeof CommandPrimitive> {
   values: string[];
   onValuesChange: (value: string[]) => void;
+  initialOpen?: boolean;
   loop?: boolean;
 }
 
@@ -60,6 +61,7 @@ const useMultiSelect = () => {
 const MultiSelector = ({
   values: value,
   onValuesChange: onValueChange,
+  initialOpen = false,
   loop = false,
   className,
   children,
@@ -67,7 +69,7 @@ const MultiSelector = ({
   ...props
 }: MultiSelectorProps) => {
   const [inputValue, setInputValue] = useState("");
-  const [open, setOpen] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(initialOpen);
   const [activeIndex, setActiveIndex] = useState<number>(-1);
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [isValueSelected, setIsValueSelected] = React.useState(false);
@@ -171,6 +173,7 @@ const MultiSelector = ({
           break;
 
         case "Enter":
+          console.log('enter')
           setOpen(true);
           break;
 
@@ -205,7 +208,7 @@ const MultiSelector = ({
       <Command
         onKeyDown={handleKeyDown}
         className={cn(
-          "overflow-visible bg-transparent flex flex-col space-y-2",
+          "overflow-visible bg-transparent flex flex-col",
           className,
         )}
         dir={dir}
@@ -232,7 +235,7 @@ const MultiSelectorTrigger = forwardRef<
     <div
       ref={ref}
       className={cn(
-        "flex flex-wrap gap-1 p-1 py-2 ring-1 ring-muted rounded-lg bg-background",
+        "flex flex-wrap gap-1 p-1 py-2 ring-1 ring-muted-foreground/30 rounded-lg bg-background",
         {
           "ring-1 focus-within:ring-ring": activeIndex === -1,
         },
@@ -264,13 +267,73 @@ const MultiSelectorTrigger = forwardRef<
               </Badge>
             ))}
         </div>
-        {value.length > 0 && <div className="w-full flex justify-center"><Separator className="w-[88%] mt-1 opacity-50"/></div>}
+        {value.length > 0 && <div className="w-full flex justify-center"><Separator className="w-[88%] mt-1"/></div>}
         {children}
     </div>
   );
 });
 
-MultiSelectorTrigger.displayName = "MultiSelectorTrigger";
+const MultiSelectorOpenTrigger = forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, children, ...props }, ref) => {
+  const { value, onValueChange, activeIndex } = useMultiSelect();
+
+  const mousePreventDefault = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      className={cn(
+        "flex flex-wrap gap-1 p-1 py-2 ring-1 ring-muted-foreground/30 rounded-lg bg-background",
+        {
+          "ring-1 focus-within:ring-ring": activeIndex === -1,
+        },
+        className,
+      )}
+      {...props}
+    >
+      <div className={"flex flex-wrap gap-2 max-h-[4.6rem] overflow-y-auto"}>
+        {value.map((item, index) => (
+          <Badge
+            key={item}
+            className={cn(
+                "px-2 rounded-xl flex items-center gap-1",
+                activeIndex === index && "ring-2 ring-muted-foreground ",
+            )}
+            variant={"secondary"}
+          >
+            <span className="text-xs">{item}</span>
+            <button
+              aria-label={`Remove ${item} option`}
+              aria-roledescription="button to remove option"
+              type="button"
+              onMouseDown={mousePreventDefault}
+              onClick={() => onValueChange(item)}
+            >
+              <span className="sr-only">Remove {item} option</span>
+              <RemoveIcon className="h-4 w-4 hover:stroke-destructive" />
+            </button>
+          </Badge>
+        ))}
+        {value.length <= 0 && (
+          <div
+            className={cn(
+              "h-[21.5px] bg-transparent",
+            )}
+          />
+        )}
+      </div>
+      <div className="w-full flex justify-center"><Separator className="w-[88%] mt-1"/></div>
+      {children}
+    </div>
+  );
+});
+
+MultiSelectorOpenTrigger.displayName = "MultiSelectorOpenTrigger";
 
 const MultiSelectorInput = forwardRef<
   React.ElementRef<typeof CommandPrimitive.Input>,
@@ -295,7 +358,9 @@ const MultiSelectorInput = forwardRef<
       onValueChange={activeIndex === -1 ? setInputValue : undefined}
       onSelect={handleSelect}
       onBlur={() => setOpen(false)}
-      onFocus={() => setOpen(true)}
+      onFocus={() => {
+        setOpen(true)
+      }}
       onClick={() => setActiveIndex(-1)}
       className={cn(
         "ml-2 bg-transparent outline-none placeholder:text-muted-foreground flex-1",
@@ -392,4 +457,5 @@ export {
   MultiSelectorContent,
   MultiSelectorList,
   MultiSelectorItem,
+  MultiSelectorOpenTrigger
 };

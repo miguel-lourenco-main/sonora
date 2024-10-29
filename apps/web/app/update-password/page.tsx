@@ -15,12 +15,14 @@ export const generateMetadata = async () => {
   };
 };
 
+const Logo = () => <AppLogo href={''} />;
+
 async function UpdatePasswordPage() {
   await requireUserInServerComponent();
 
   return (
-    <AuthLayoutShell Logo={AppLogo}>
-      <UpdatePasswordForm redirectTo={pathsConfig.app.home} />
+    <AuthLayoutShell Logo={Logo}>
+      <UpdatePasswordForm redirectTo={pathsConfig.app.app} />
     </AuthLayoutShell>
   );
 }

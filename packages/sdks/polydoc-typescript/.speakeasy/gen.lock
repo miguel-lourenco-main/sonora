@@ -1,0 +1,136 @@
+lockVersion: 2.0.0
+id: 894f4b12-56c7-4e54-97e2-c31dd2cd6b62
+management:
+  docChecksum: d113e2b1c7c33c565e01305cfd306df0
+  docVersion: 0.1.0
+  speakeasyVersion: 1.395.0
+  generationVersion: 2.415.0
+  releaseVersion: 0.1.3
+  configChecksum: 28f0a14c58d1534ea9e55471f53f8a64
+features:
+  typescript:
+    additionalDependencies: 0.1.0
+    core: 3.17.0
+    defaultEnabledRetries: 0.1.0
+    devContainers: 2.90.0
+    envVarSecurityUsage: 0.1.1
+    globalSecurity: 2.82.11
+    globalSecurityCallbacks: 0.1.0
+    globalSecurityFlattening: 0.1.0
+    globalServerURLs: 2.82.4
+    nullables: 0.1.0
+    responseFormat: 0.2.3
+    retries: 2.83.0
+    sdkHooks: 0.1.0
+    uploadStreams: 0.1.0
+generatedFiles:
+  - .devcontainer/README.md
+  - .devcontainer/devcontainer.json
+  - .devcontainer/setup.sh
+  - .eslintrc.cjs
+  - .gitattributes
+  - .npmignore
+  - CONTRIBUTING.md
+  - FUNCTIONS.md
+  - RUNTIMES.md
+  - USAGE.md
+  - docs/lib/utils/retryconfig.md
+  - docs/models/components/data.md
+  - docs/models/components/filet.md
+  - docs/models/components/fileupload.md
+  - docs/models/components/run.md
+  - docs/models/components/runcreate.md
+  - docs/models/components/runstatus.md
+  - docs/models/components/security.md
+  - docs/models/operations/filesdownloadrequest.md
+  - docs/models/operations/filesdownloadresponse.md
+  - docs/sdks/files/README.md
+  - docs/sdks/polydoc/README.md
+  - docs/sdks/runs/README.md
+  - jsr.json
+  - package.json
+  - src/core.ts
+  - src/funcs/filesFilesCreate.ts
+  - src/funcs/filesFilesDownload.ts
+  - src/funcs/filesFilesList.ts
+  - src/funcs/runsRunsCreate.ts
+  - src/funcs/runsRunsList.ts
+  - src/hooks/hooks.ts
+  - src/hooks/index.ts
+  - src/hooks/types.ts
+  - src/index.ts
+  - src/lib/base64.ts
+  - src/lib/config.ts
+  - src/lib/dlv.ts
+  - src/lib/encodings.ts
+  - src/lib/env.ts
+  - src/lib/files.ts
+  - src/lib/http.ts
+  - src/lib/is-plain-object.ts
+  - src/lib/logger.ts
+  - src/lib/matchers.ts
+  - src/lib/primitives.ts
+  - src/lib/retries.ts
+  - src/lib/schemas.ts
+  - src/lib/sdks.ts
+  - src/lib/security.ts
+  - src/lib/url.ts
+  - src/models/components/file.ts
+  - src/models/components/fileupload.ts
+  - src/models/components/index.ts
+  - src/models/components/run.ts
+  - src/models/components/runcreate.ts
+  - src/models/components/runstatus.ts
+  - src/models/components/security.ts
+  - src/models/errors/httpclienterrors.ts
+  - src/models/errors/index.ts
+  - src/models/errors/sdkerror.ts
+  - src/models/errors/sdkvalidationerror.ts
+  - src/models/operations/filesdownload.ts
+  - src/models/operations/index.ts
+  - src/sdk/files.ts
+  - src/sdk/index.ts
+  - src/sdk/runs.ts
+  - src/sdk/sdk.ts
+  - src/types/blobs.ts
+  - src/types/constdatetime.ts
+  - src/types/enums.ts
+  - src/types/fp.ts
+  - src/types/index.ts
+  - src/types/operations.ts
+  - src/types/rfcdate.ts
+  - src/types/streams.ts
+  - tsconfig.json
+examples:
+  files_list:
+    speakeasy-default-files-list:
+      responses:
+        "200":
+          application/json: []
+  files_create:
+    speakeasy-default-files-create:
+      requestBody:
+        multipart/form-data: {"data": {}}
+      responses:
+        "200":
+          application/json: {"account_id": "aa367179-0fa4-49c8-b326-da1b0c92173d", "created_at": "2022-05-11T10:05:00.718Z", "expires_at": "2023-08-04T03:37:15.406Z", "filename": "your_file_here", "id": "289e35f3-9a7f-486d-838c-7bc677ec7466", "num_pages": 686344, "s3_key": "<value>", "size": 966945}
+  files_download:
+    speakeasy-default-files-download:
+      parameters:
+        path:
+          file_id: "4a176118-b862-4d43-860a-6e4c9c893bde"
+      responses:
+        "200":
+          application/octet-stream: "0x5e29912bAb"
+  runs_list:
+    speakeasy-default-runs-list:
+      responses:
+        "200":
+          application/json: []
+  runs_create:
+    speakeasy-default-runs-create:
+      requestBody:
+        application/json: {"input_file_id": "75adfb37-7e83-4c34-abbd-4d5fa4c6153c", "target_language": "<value>"}
+      responses:
+        "200":
+          application/json: {"account_id": "b6fa6019-5e66-4655-b618-0157b036a1b9", "created_at": "2024-07-20T09:23:58.830Z", "id": "663dc1e4-05a3-4275-b04e-6034b018fa29", "input_file_id": "4f0ca305-c827-4203-9361-3f759f0a36b6", "status": "Succeeded", "target_language": "<value>"}

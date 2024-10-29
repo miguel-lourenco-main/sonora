@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 
 import type { LineItemSchema } from '@kit/billing';
-import { formatCurrency } from '@kit/shared/utils';
+import { formatCurrency, getPlanTier } from '@kit/shared/utils';
 import { If } from '@kit/ui/if';
 import { Trans } from '@kit/ui/trans';
 import { cn } from '@kit/ui/utils';
@@ -17,6 +17,8 @@ export function LineItemDetails(
     lineItems: z.infer<typeof LineItemSchema>[];
     currency: string;
     selectedInterval?: string | undefined;
+    pageCount?: number;
+    subscribed_page?: boolean
   }>,
 ) {
   const locale = useTranslation().i18n.language;
@@ -98,7 +100,7 @@ export function LineItemDetails(
               <span className={'text-xs font-semibold'}>
                 {formatCurrency({
                   currencyCode,
-                  value: item.cost,
+                  value: item.cost * (props.pageCount ?? 1),
                   locale,
                 })}
               </span>
@@ -198,6 +200,45 @@ export function LineItemDetails(
           </div>
         );
 
+        const Tiered = () => (
+          <div key={index} className={'flex flex-col'}>
+            <div className={className}>
+              <span className={'flex items-center space-x-1'}>
+                <span className={'flex items-center space-x-1.5'}>
+                  <PlusSquare className={'w-3'} />
+
+                  <span className={'flex space-x-1'}>
+                    <span>
+                      <If condition={!props.subscribed_page}>
+                        <Trans
+                          i18nKey={'billing:proPlanTiers'}
+                        />
+                      </If>
+                      <If condition={props.subscribed_page}>
+                        <Trans
+                          i18nKey={'billing:currentTier'}
+                        />
+                      </If>
+                    </span>
+                  </span>
+                </span>
+              </span>
+            </div>
+
+            <SetupFee />
+
+            {/* If there are tiers, we render them as a list */}
+            <If condition={item.tiers?.length && !props.subscribed_page}>
+              <VolumeTiers item={item} currency={props.currency} />
+            </If>
+
+            <If condition={props.subscribed_page}>
+              <CurrentTier item={item} currency={props.currency} pageCount={props.pageCount ?? 0}/>
+            </If>
+
+          </div>
+        );
+
         switch (item.type) {
           case 'flat':
             return <FlatFee key={item.id} />;
@@ -208,10 +249,147 @@ export function LineItemDetails(
           case 'metered': {
             return <Metered key={item.id} />;
           }
+          case 'tiered': {
+            return <Tiered key={item.id} />;
+          }
         }
       })}
     </div>
   );
+}
+
+function Tier({
+  currency,
+  item,
+  index,
+  tier
+}: {
+  currency: string;
+  item: z.infer<typeof LineItemSchema>;
+  index: number
+  tier: {
+    cost: number;
+    upTo: number | "unlimited";
+  }
+}){
+
+  const unit = item.unit;
+  const locale = useTranslation().i18n.language;
+
+  const previousTier = item.tiers?.[index - 1];
+  const isLastTier = tier.upTo === 'unlimited';
+
+  const upTo = tier.upTo;
+
+  return (
+    <span
+      className={'text-secondary-foreground flex space-x-1 text-xs'}
+      key={index}
+    >
+      <span>-</span>
+
+      <If condition={isLastTier}>
+        <span className={'font-bold'}>
+          {previousTier ? previousTier.upTo : upTo}+
+        </span>
+
+        <span>
+          <Trans
+            i18nKey={'billing:unitsPerMonth'}
+            values={{ unit }}
+          />
+        </span>
+
+        <span className={'font-bold'}>
+          {formatCurrency({
+            currencyCode: currency.toLowerCase(),
+            value: tier.cost,
+            locale,
+          })}
+        </span>
+
+        <span>
+          <Trans
+            i18nKey={'billing:perPage'}
+            values={{ unit }}
+          />
+        </span>
+      </If>
+
+      <If condition={!isLastTier}>
+
+        <span>
+          <Trans
+            i18nKey={'billing:upTo'}
+          />
+        </span>
+
+        <span className={'font-bold'}>
+          {upTo}
+        </span>
+
+        <span>
+          <Trans
+            i18nKey={'billing:unitsPerMonth'}
+            values={{ unit }}
+          />
+        </span>
+
+        <span className={'font-bold'}>
+          {formatCurrency({
+            currencyCode: currency.toLowerCase(),
+            value: tier.cost,
+            locale,
+          })}
+        </span>
+        
+        <span >
+          <Trans
+            i18nKey={'billing:perPage'}
+            values={{ unit }}
+          />
+        </span>
+      </If>
+    </span>
+  )
+}
+
+function CurrentTier({
+  currency,
+  item,
+  pageCount
+}: {
+  currency: string;
+  item: z.infer<typeof LineItemSchema>;
+  pageCount: number
+}){
+
+  if(item.tiers){
+    const tiersUpTo = item.tiers.map((tier) => tier.upTo)
+
+    const index = getPlanTier(pageCount, tiersUpTo)
+    const tier = item.tiers[index]
+
+    if(tier){
+      return (
+        <Tier 
+          currency={currency} 
+          item={item}
+          index={index}
+          tier={tier}
+        />
+      )
+    }else{
+      return(
+        <Trans i18nKey={'billing:errorGettingTier'}/>
+      )
+    }
+  }
+  else{
+    return(
+      <Trans i18nKey={'billing:errorGettingTier'}/>
+    )
+  }
 }
 
 function Tiers({
@@ -304,6 +482,29 @@ function Tiers({
           </If>
         </If>
       </span>
+    );
+  });
+
+  return <div className={'my-1 flex flex-col space-y-1.5'}>{tiers}</div>;
+}
+
+function VolumeTiers({
+  currency,
+  item,
+}: {
+  currency: string;
+  item: z.infer<typeof LineItemSchema>;
+}) {
+
+  const tiers = item.tiers?.map((tier, index) => {
+    return (
+      <Tier
+        key={index}
+        currency={currency} 
+        item={item}
+        index={index}
+        tier={tier}
+      />
     );
   });
 

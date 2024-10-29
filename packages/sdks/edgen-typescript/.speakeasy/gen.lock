@@ -1,0 +1,222 @@
+lockVersion: 2.0.0
+id: 7875c685-b821-4295-9f12-8233cc8c511e
+management:
+  docChecksum: e1a43c700903620cdae17edadd6f5a1e
+  docVersion: 0.1.0
+  speakeasyVersion: 1.401.2
+  generationVersion: 2.421.3
+  releaseVersion: 0.0.2
+  configChecksum: 16801a0ddf729d013effd72476ae6957
+features:
+  typescript:
+    additionalDependencies: 0.1.0
+    core: 3.17.6
+    defaultEnabledRetries: 0.1.0
+    devContainers: 2.90.0
+    enumUnions: 0.1.0
+    envVarSecurityUsage: 0.1.1
+    globalSecurity: 2.82.11
+    globalSecurityCallbacks: 0.1.0
+    globalSecurityFlattening: 0.1.0
+    globalServerURLs: 2.82.4
+    nullables: 0.1.0
+    responseFormat: 0.2.3
+    retries: 2.83.0
+    sdkHooks: 0.1.0
+    uploadStreams: 0.1.0
+generatedFiles:
+  - .devcontainer/README.md
+  - .devcontainer/devcontainer.json
+  - .devcontainer/setup.sh
+  - .eslintrc.cjs
+  - .gitattributes
+  - .npmignore
+  - CONTRIBUTING.md
+  - FUNCTIONS.md
+  - RUNTIMES.md
+  - USAGE.md
+  - docs/lib/utils/retryconfig.md
+  - docs/models/components/data.md
+  - docs/models/components/filet.md
+  - docs/models/components/fileupload.md
+  - docs/models/components/message.md
+  - docs/models/components/messagecreate.md
+  - docs/models/components/messagerole.md
+  - docs/models/components/run.md
+  - docs/models/components/runcreate.md
+  - docs/models/components/runstatus.md
+  - docs/models/components/security.md
+  - docs/models/components/thread.md
+  - docs/models/components/threadcreate.md
+  - docs/models/components/threadrun.md
+  - docs/models/operations/filesdownloadrequest.md
+  - docs/models/operations/filesdownloadresponse.md
+  - docs/models/operations/messagesgetrequest.md
+  - docs/models/operations/threadsdeleterequest.md
+  - docs/models/operations/threadsgetrequest.md
+  - docs/models/operations/threadsrunrequest.md
+  - docs/sdks/edgen/README.md
+  - docs/sdks/files/README.md
+  - docs/sdks/messages/README.md
+  - docs/sdks/runs/README.md
+  - docs/sdks/threads/README.md
+  - jsr.json
+  - package.json
+  - src/core.ts
+  - src/funcs/filesFilesCreate.ts
+  - src/funcs/filesFilesDownload.ts
+  - src/funcs/filesFilesList.ts
+  - src/funcs/messagesMessagesCreate.ts
+  - src/funcs/messagesMessagesGet.ts
+  - src/funcs/messagesMessagesList.ts
+  - src/funcs/runsRunsCreate.ts
+  - src/funcs/runsRunsList.ts
+  - src/funcs/threadsThreadsCreate.ts
+  - src/funcs/threadsThreadsDelete.ts
+  - src/funcs/threadsThreadsGet.ts
+  - src/funcs/threadsThreadsList.ts
+  - src/funcs/threadsThreadsRun.ts
+  - src/hooks/hooks.ts
+  - src/hooks/index.ts
+  - src/hooks/types.ts
+  - src/index.ts
+  - src/lib/base64.ts
+  - src/lib/config.ts
+  - src/lib/dlv.ts
+  - src/lib/encodings.ts
+  - src/lib/env.ts
+  - src/lib/files.ts
+  - src/lib/http.ts
+  - src/lib/is-plain-object.ts
+  - src/lib/logger.ts
+  - src/lib/matchers.ts
+  - src/lib/primitives.ts
+  - src/lib/retries.ts
+  - src/lib/schemas.ts
+  - src/lib/sdks.ts
+  - src/lib/security.ts
+  - src/lib/url.ts
+  - src/models/components/file.ts
+  - src/models/components/fileupload.ts
+  - src/models/components/index.ts
+  - src/models/components/message.ts
+  - src/models/components/messagecreate.ts
+  - src/models/components/messagerole.ts
+  - src/models/components/run.ts
+  - src/models/components/runcreate.ts
+  - src/models/components/runstatus.ts
+  - src/models/components/security.ts
+  - src/models/components/thread.ts
+  - src/models/components/threadcreate.ts
+  - src/models/components/threadrun.ts
+  - src/models/errors/httpclienterrors.ts
+  - src/models/errors/index.ts
+  - src/models/errors/sdkerror.ts
+  - src/models/errors/sdkvalidationerror.ts
+  - src/models/operations/filesdownload.ts
+  - src/models/operations/index.ts
+  - src/models/operations/messagesget.ts
+  - src/models/operations/threadsdelete.ts
+  - src/models/operations/threadsget.ts
+  - src/models/operations/threadsrun.ts
+  - src/sdk/files.ts
+  - src/sdk/index.ts
+  - src/sdk/messages.ts
+  - src/sdk/runs.ts
+  - src/sdk/sdk.ts
+  - src/sdk/threads.ts
+  - src/types/blobs.ts
+  - src/types/constdatetime.ts
+  - src/types/enums.ts
+  - src/types/fp.ts
+  - src/types/index.ts
+  - src/types/operations.ts
+  - src/types/rfcdate.ts
+  - src/types/streams.ts
+  - tsconfig.json
+examples:
+  files_list:
+    speakeasy-default-files-list:
+      responses:
+        "200":
+          application/json: [{"account_id": "ad66b96c-7d2f-4db8-b927-b2123d738ba5", "created_at": "2022-06-17T03:31:50.898Z", "expires_at": "2022-06-13T23:28:53.060Z", "filename": "example.file", "id": "7c6640f8-75a3-41d4-9190-37cb2bf77452", "num_pages": 814568, "s3_key": "<value>", "size": 284649}, {"account_id": "b01d50a2-c234-4cb2-834a-2776156fd9f5", "created_at": "2024-04-29T04:59:41.290Z", "expires_at": "2023-04-06T14:30:57.612Z", "filename": "example.file", "id": "c607e16c-20c5-4d89-a5d3-0a2c8327fdce", "num_pages": 953010, "s3_key": "<value>", "size": 747372}, {"account_id": "c228f663-3e04-444b-877c-136d3c6c4673", "created_at": "2024-03-28T21:15:09.930Z", "expires_at": "2022-04-10T00:57:31.900Z", "filename": "example.file", "id": "1d3e2637-ba41-4001-bd7c-5b807d7f5090", "num_pages": 844734, "s3_key": "<value>", "size": 193358}]
+  files_create:
+    speakeasy-default-files-create:
+      requestBody:
+        multipart/form-data: {"data": {}}
+      responses:
+        "200":
+          application/json: {"account_id": "aa367179-0fa4-49c8-b326-da1b0c92173d", "created_at": "2022-05-11T10:05:00.718Z", "expires_at": "2023-08-04T03:37:15.406Z", "filename": "example.file", "id": "289e35f3-9a7f-486d-838c-7bc677ec7466", "num_pages": 686344, "s3_key": "<value>", "size": 966945}
+  files_download:
+    speakeasy-default-files-download:
+      parameters:
+        path:
+          file_id: "4a176118-b862-4d43-860a-6e4c9c893bde"
+      responses:
+        "200":
+          application/octet-stream: "0xde703EeADa"
+  messages_list:
+    speakeasy-default-messages-list:
+      responses:
+        "200":
+          application/json: []
+  messages_create:
+    speakeasy-default-messages-create:
+      requestBody:
+        application/json: {"content": "<value>", "role": "Human", "thread_id": "eda049dc-d5f0-4489-b53e-b851131223ca"}
+      responses:
+        "201":
+          application/json: {"account_id": "2b220c79-898b-4a07-ab7d-5924fd609879", "content": "<value>", "created_at": "2024-09-24T01:31:19.581Z", "id": "4501c0f3-fb6e-4714-873b-b3cc7e3372a5", "role": "Human", "thread_id": "20fe4388-18f4-4f8c-a2fc-eeb5dd4608bd"}
+  messages_get:
+    speakeasy-default-messages-get:
+      parameters:
+        path:
+          message_id: "6431652e-ab0f-4d64-8eae-f06c0913f561"
+      responses:
+        "200":
+          application/json: {"account_id": "e6b01825-3e98-45be-a80e-38daf2359aeb", "content": "<value>", "created_at": "2022-05-08T04:17:36.135Z", "id": "ac34117b-cdaa-4ee1-809c-1efa16e47520", "role": "Human", "thread_id": "f137661e-a7ef-45c7-adfc-d5e2e294fec9"}
+  runs_list:
+    speakeasy-default-runs-list:
+      responses:
+        "200":
+          application/json: []
+  runs_create:
+    speakeasy-default-runs-create:
+      requestBody:
+        application/json: {"input_file_id": "75adfb37-7e83-4c34-abbd-4d5fa4c6153c", "target_language": "<value>"}
+      responses:
+        "200":
+          application/json: {"account_id": "b6fa6019-5e66-4655-b618-0157b036a1b9", "created_at": "2024-07-20T09:23:58.830Z", "id": "663dc1e4-05a3-4275-b04e-6034b018fa29", "input_file_id": "4f0ca305-c827-4203-9361-3f759f0a36b6", "status": "Succeeded", "target_language": "<value>"}
+  threads_list:
+    speakeasy-default-threads-list:
+      responses:
+        "200":
+          application/json: []
+  threads_create:
+    speakeasy-default-threads-create:
+      responses:
+        "201":
+          application/json: {"account_id": "7d5401cf-63d8-4d20-8f09-37768a272c21", "created_at": "2023-06-08T09:12:28.000Z", "id": "90538037-2376-4210-b0a4-3dd7bc954ee1"}
+  threads_get:
+    speakeasy-default-threads-get:
+      parameters:
+        path:
+          thread_id: "5cbb1729-2a62-482b-859c-b01fd70f2c6c"
+      responses:
+        "200":
+          application/json: {"account_id": "b6039314-1870-4766-b873-c5a429fcba6a", "created_at": "2024-11-27T09:34:41.533Z", "id": "221580c2-26f3-4a67-83dc-749ea6b31d9d"}
+  threads_delete:
+    speakeasy-default-threads-delete:
+      parameters:
+        path:
+          thread_id: "7681eb93-260a-4ca7-979f-0328ec2b0a53"
+  threads_run:
+    speakeasy-default-threads-run:
+      parameters:
+        path:
+          thread_id: "5bcafe07-1303-4b97-8471-440886ebcfb2"
+      requestBody:
+        application/json: {"input": "<value>"}
+      responses:
+        "200":
+          text/plain: "<value>"

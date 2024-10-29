@@ -1,18 +1,20 @@
 import { z } from 'zod';
 
-const STORAGE_KIND = process.env.KEYSTATIC_STORAGE_KIND ?? 'local';
+import { KeystaticStorage } from './keystatic-storage';
+import { keyStaticConfig } from './keystatic.config';
 
 /**
- * Create a KeyStatic reader based on the storage kind.
+ * @name createKeystaticReader
+ * @description Creates a new Keystatic reader instance.
  */
 export async function createKeystaticReader() {
-  switch (STORAGE_KIND) {
+  switch (KeystaticStorage.kind) {
     case 'local': {
+      // we need to import this dynamically to avoid parsing the package in edge environments
       if (process.env.NEXT_RUNTIME === 'nodejs') {
-        const { default: config } = await import('./keystatic.config');
         const { createReader } = await import('@keystatic/core/reader');
 
-        return createReader(process.cwd(), config);
+        return createReader(process.cwd(), keyStaticConfig);
       } else {
         // we should never get here but the compiler requires the check
         // to ensure we don't parse the package at build time
@@ -22,28 +24,34 @@ export async function createKeystaticReader() {
 
     case 'github':
     case 'cloud': {
-      const { default: config } = await import('./keystatic.config');
-
-      const githubConfig = z
-        .object({
-          token: z.string(),
-          repo: z.custom<`${string}/${string}`>(),
-          pathPrefix: z.string().optional(),
-        })
-        .parse({
-          token: process.env.KEYSTATIC_GITHUB_TOKEN,
-          repo: process.env.KEYSTATIC_STORAGE_REPO,
-          pathPrefix: process.env.KEYSTATIC_PATH_PREFIX,
-        });
-
       const { createGitHubReader } = await import(
         '@keystatic/core/reader/github'
       );
 
-      return createGitHubReader(config, githubConfig);
+      return createGitHubReader(
+        keyStaticConfig,
+        getKeystaticGithubConfiguration(),
+      );
     }
 
     default:
       throw new Error(`Unknown storage kind`);
   }
+}
+
+function getKeystaticGithubConfiguration() {
+  return z
+    .object({
+      token: z.string({
+        description:
+          'The GitHub token to use for authentication. Please provide the value through the "KEYSTATIC_GITHUB_TOKEN" environment variable.',
+      }),
+      repo: z.custom<`${string}/${string}`>(),
+      pathPrefix: z.string().optional(),
+    })
+    .parse({
+      token: process.env.KEYSTATIC_GITHUB_TOKEN,
+      repo: process.env.KEYSTATIC_STORAGE_REPO,
+      pathPrefix: process.env.KEYSTATIC_PATH_PREFIX,
+    });
 }

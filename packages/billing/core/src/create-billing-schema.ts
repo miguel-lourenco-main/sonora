@@ -7,7 +7,7 @@ export enum LineItemType {
 }
 
 const BillingIntervalSchema = z.enum(['month', 'year']);
-const LineItemTypeSchema = z.enum(['flat', 'per_seat', 'metered']);
+const LineItemTypeSchema = z.enum(['flat', 'per_seat', 'metered', 'tiered']);
 
 export const BillingProviderSchema = z.enum([
   'stripe',

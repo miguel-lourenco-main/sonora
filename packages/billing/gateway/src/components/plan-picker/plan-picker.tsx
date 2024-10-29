@@ -1,0 +1,94 @@
+'use client';
+
+import { useMemo } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Form, useForm } from 'react-hook-form';
+import {
+  BillingConfig,
+  getPlanIntervals,
+  getProductPlanPair,
+} from '@kit/billing';
+import { PlanPickerComponent } from './plan-picker-component';
+import { PlanDetails } from './plan-details';
+import { getPlanPickerSchema } from './plan-picker-schema';
+
+type PlanPickerFormData = {
+  planId: string;
+  productId: string;
+  interval?: string;
+};
+
+export function PlanPicker(
+  props: React.PropsWithChildren<{
+    config: BillingConfig;
+    onSubmit: (data: { planId: string; productId: string }) => void;
+    canStartTrial?: boolean;
+    pending?: boolean;
+  }>,
+) {
+
+  const intervals = useMemo(
+    () => getPlanIntervals(props.config),
+    [props.config],
+  ) as string[];
+
+  const planPickerSchema = getPlanPickerSchema(props.config)
+
+  const form = useForm<PlanPickerFormData>({
+    reValidateMode: 'onChange',
+    mode: 'onChange',
+    resolver: zodResolver(planPickerSchema),
+    defaultValues: {
+      interval: intervals[0],
+      planId: '',
+      productId: '',
+    },
+  });
+
+  const { interval: selectedInterval, productId: selectedProductId, planId: selectedPlanId } = form.watch();
+
+  const onSubmitForm = () => {
+    form.handleSubmit(props.onSubmit)
+  };
+
+  const getFormValue = (key: string) => {
+    const value = form.getValues(key as keyof PlanPickerFormData);
+
+    return value ?? '';
+  };
+
+  const setFormValue = (key: string, value: string, partial?: Partial<{
+    shouldValidate: boolean;
+    shouldDirty: boolean;
+    shouldTouch: boolean;
+  }> | undefined) => {
+
+    form.setValue(key as keyof PlanPickerFormData, value, partial);
+  };
+
+  const { product: selectedProduct, plan: selectedPlan } = getProductPlanPair(
+    props.config,
+    selectedPlanId,
+  );
+
+  return (
+    <Form {...form}>
+      <form
+        className={'flex space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0'}
+        onSubmit={onSubmitForm}
+      >
+        <PlanPickerComponent isFormValid={form.formState.isValid} setFormValue={setFormValue} getFormValue={getFormValue} onSubmitForm={onSubmitForm} intervals={intervals} {...props} />
+        {selectedPlanId && selectedInterval && selectedProductId ? (
+          <PlanDetails
+            selectedInterval={selectedInterval}
+            selectedPlan={selectedPlan}
+            selectedProduct={selectedProduct}
+          />
+          ) : null
+        }
+      </form>
+    </Form>
+    
+  );
+}
+

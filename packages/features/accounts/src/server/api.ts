@@ -124,6 +124,20 @@ class AccountsApi {
 
     return response.data?.customer_id;
   }
+
+  async getScheduleId(accountId: string) {
+    const response = await this.client
+      .from('subscriptions')
+      .select('schedule')
+      .eq('account_id', accountId)
+      .maybeSingle();
+
+    if (response.error) {
+      throw response.error;
+    }
+
+    return response.data?.schedule;
+  }
 }
 
 export function createAccountsApi(client: SupabaseClient<Database>) {

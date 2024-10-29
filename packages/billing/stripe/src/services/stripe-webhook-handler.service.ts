@@ -23,7 +23,7 @@ interface LineItem {
   price_amount: number | null | undefined;
   interval: string;
   interval_count: number;
-  type: 'flat' | 'metered' | 'per_seat' | undefined;
+  type: 'flat' | 'metered' | 'per_seat' | 'tiered' | undefined;
 }
 
 type UpsertOrderParams =
@@ -174,6 +174,8 @@ export class StripeWebhookHandlerService
       const subscriptionId = session.subscription as string;
       const subscription = await stripe.subscriptions.retrieve(subscriptionId);
 
+      const schedule = subscription.schedule as string | null;
+
       const payload = subscriptionPayloadBuilderService
         .withBillingConfig(this.config)
         .build({
@@ -181,6 +183,7 @@ export class StripeWebhookHandlerService
           customerId,
           id: subscription.id,
           lineItems: subscription.items.data,
+          schedule,
           status: subscription.status,
           currency: subscription.currency,
           periodStartsAt: subscription.current_period_start,
@@ -264,6 +267,8 @@ export class StripeWebhookHandlerService
     const subscriptionPayloadBuilderService =
       createStripeSubscriptionPayloadBuilderService();
 
+    const schedule = subscription.schedule as string | null;
+
     const payload = subscriptionPayloadBuilderService
       .withBillingConfig(this.config)
       .build({
@@ -271,6 +276,7 @@ export class StripeWebhookHandlerService
         id: subscriptionId,
         accountId,
         lineItems: subscription.items.data,
+        schedule,
         status: subscription.status,
         currency: subscription.currency,
         periodStartsAt: subscription.current_period_start,
@@ -318,6 +324,7 @@ export class StripeWebhookHandlerService
         accountId,
         lineItems: subscription.items.data,
         status: subscription.status,
+        schedule: subscription.schedule as string | null,
         currency: subscription.currency,
         periodStartsAt: subscription.current_period_start,
         periodEndsAt: subscription.current_period_end,

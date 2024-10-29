@@ -1,4 +1,6 @@
 import { COLLAPSE_PATHS, COLLAPSE_PATHS_FROM } from "./constants";
+import { PlainFileObject } from "./interfaces";
+import { UseFormReturn } from "react-hook-form";
 
 /**
  * Check if the code is running in a browser environment.
@@ -71,4 +73,88 @@ export function checkCollapseSidebar(currentPath: string) {
   return COLLAPSE_PATHS_FROM.some(path => currentPath.startsWith(path)) || COLLAPSE_PATHS.some(path => path === currentPath);
 }
 
-// Edgen-related function hidden
+export const handleInsertOrUpdate = <T extends { id: string }>(
+  setter: React.Dispatch<React.SetStateAction<T[]>>,
+  newItem: T
+) => {
+  setter((prev) => {
+    const index = prev.findIndex(item => item.id === newItem.id);
+    if (index !== -1) {
+      return [...prev.slice(0, index), newItem, ...prev.slice(index + 1)];
+    }
+    return [...prev, newItem];
+  });
+};
+
+export const handleDelete = <T extends { id: string }>(
+  setter: React.Dispatch<React.SetStateAction<T[]>>,
+  deletedItemId: string
+) => {
+  setter((prev) => prev.filter(item => item.id !== deletedItemId));
+};
+
+// TODO: switch other instances of this function thrghout the repo 
+export function fileToObject(file: File): Promise<PlainFileObject> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      const plainObject: PlainFileObject = {
+        name: file.name,
+        type: file.type,
+        size: file.size,
+        lastModified: file.lastModified,
+        content: reader.result
+      };
+      resolve(plainObject);
+    };
+
+    reader.onerror = () => {
+      reject(reader.error);
+    };
+
+    reader.readAsDataURL(file); // Read file content as Data URL (base64)
+  });
+}
+
+export function objectToFile(plainObject: PlainFileObject): File {
+  const { name, type, content, lastModified } = plainObject;
+
+  if (typeof content !== 'string') {
+    throw new Error('Invalid content format');
+  }
+
+  const byteString = atob(content.split(',')[1] ?? ""); // Decode base64
+  const arrayBuffer = new ArrayBuffer(byteString.length);
+  const uint8Array = new Uint8Array(arrayBuffer);
+
+  for (let i = 0; i < byteString.length; i++) {
+    uint8Array[i] = byteString.charCodeAt(i);
+  }
+
+  const blob = new Blob([uint8Array], { type });
+  const file = new File([blob], name, { type, lastModified });
+
+  return file;
+}
+
+export function getPlanTier(pageCount: number, tiers: (number | 'unlimited')[] ){
+  
+  let index: number = 0
+
+  for (const tier of tiers) {
+    const tierUpTo = tier === 'unlimited' ? Infinity : Number(tier);
+    
+    if (pageCount > tierUpTo) {
+      index=index+1
+    }else{
+      break
+    }
+  }
+
+  return index
+}
+
+export function getFormKeys<T extends Record<string, any>>(form: UseFormReturn<T>) {
+  return Object.keys(form.getValues()) as (keyof T)[];
+}

@@ -23,6 +23,7 @@ import { Trans } from '@kit/ui/trans';
 import { cn } from '@kit/ui/utils';
 
 import { LineItemDetails } from './line-item-details';
+import { PageCounter } from './page-counter';
 
 interface Paths {
   signUp: string;
@@ -65,7 +66,6 @@ export function PricingTable({
           />
         ) : null}
       </div>
-
       <div
         className={
           'flex flex-col items-start space-y-6 lg:space-y-0' +
@@ -91,6 +91,9 @@ export function PricingTable({
             throw new Error(`Primary line item not found for plan ${plan.id}`);
           }
 
+          // Create a copy of the product to avoid mutating the original config
+          const modifiedProduct = { ...product };
+
           return (
             <PricingItem
               selectable
@@ -98,7 +101,7 @@ export function PricingTable({
               plan={plan}
               redirectToCheckout={redirectToCheckout}
               primaryLineItem={primaryLineItem}
-              product={product}
+              product={modifiedProduct}
               paths={paths}
               displayPlanDetails={displayPlanDetails}
               alwaysDisplayMonthlyPrice={alwaysDisplayMonthlyPrice}

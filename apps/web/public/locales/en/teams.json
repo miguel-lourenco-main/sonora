@@ -1,6 +1,6 @@
 {
-  "home": {
-    "pageTitle": "Home"
+  "app": {
+    "pageTitle": "App"
   },
   "settings": {
     "pageTitle": "Settings",
@@ -145,7 +145,7 @@
   "inviteStatus": "Status",
   "inviteNotFoundOrExpired": "Invite not found or expired",
   "inviteNotFoundOrExpiredDescription": "The invite you are looking for is either expired or does not exist. Please contact the team owner to renew the invite.",
-  "backToHome": "Back to Home",
+  "backToHome": "Back to App",
   "renewInvitationDialogDescription": "You are about to renew the invitation to {{ email }}. The user will be able to join the team.",
   "renewInvitationErrorTitle": "Sorry, we couldn't renew the invitation.",
   "renewInvitationErrorDescription": "We encountered an error renewing the invitation. Please try again.",
@@ -157,5 +157,6 @@
   "joinTeamAccount": "Join Team",
   "joiningTeam": "Joining team...",
   "leaveTeamInputLabel": "Please type LEAVE to confirm leaving the team.",
-  "leaveTeamInputDescription": "By leaving the team, you will no longer have access to it."
+  "leaveTeamInputDescription": "By leaving the team, you will no longer have access to it.",
+  "reservedNameError": "This name is reserved. Please choose a different one."
 }

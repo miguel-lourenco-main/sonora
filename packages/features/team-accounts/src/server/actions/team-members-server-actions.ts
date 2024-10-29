@@ -87,7 +87,7 @@ export const transferOwnershipAction = enhanceAction(
     await service.transferOwnership(data, adminClient);
 
     // revalidate all pages that depend on the account
-    revalidatePath('/home/[account]', 'layout');
+    revalidatePath('/app/[account]', 'layout');
 
     return {
       success: true,

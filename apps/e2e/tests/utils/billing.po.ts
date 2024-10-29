@@ -1,12 +1,12 @@
 import { Page, expect } from '@playwright/test';
 
-import { StripePageObject } from './stripe.po';
+import { StripeCheckoutSessionPageObject } from './stripe.po';
 
 export class BillingPageObject {
-  public readonly stripe: StripePageObject;
+  public readonly stripe: StripeCheckoutSessionPageObject;
 
   constructor(private readonly page: Page) {
-    this.stripe = new StripePageObject(page);
+    this.stripe = new StripeCheckoutSessionPageObject(page);
   }
 
   plans() {
