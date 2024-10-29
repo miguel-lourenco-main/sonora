@@ -16,21 +16,28 @@ test.describe('Polydoc User Billing Tests', () => {
     po = new PolydocUserBillingTestObject(page);
 
     await po.auth.signUpFlow('/app/billing');
+
+    // Since the user is automatically subscribed to the free plan, we need wait for 
     await expect(po.managePlan.planName()).toBeVisible();
   });
 
   // Define reusable steps
   const steps = {
-    verifyFreePlan: () => test.step('Verify Free Plan', async () => {
+    verifyFreePlan: () => test.step('should verify if the free plan is visible', async () => {
       await po.evaluateSubscription('Free', 5, 5);
     }),
 
-    upgradePlan: (quantity: number, planType: string) => test.step('Upgrade Plan', async () => {
+    upgradePlan: (quantity: number, planType: string) => test.step('(from the billing page) should upgrade plan and change the user subscription card on the application', async () => {
+
+      const plan = planType[0]?.toLowerCase() === planType[0] 
+        ? planType.split('-')[0] || planType
+        : planType.match(/\((.*?)\s+Plan\)/)?.[1] || planType;
+      
       await po.updatePlan(quantity, planType, true);
-      await po.evaluateSubscription('Pro', quantity, quantity);
+      await po.evaluateSubscription(plan, quantity, quantity);
     }),
 
-    verifyDowngrade: (previousQuantity: number, newQuantity: number) => test.step('Verify Downgrade', async () => {
+    verifyDowngrade: (previousQuantity: number, newQuantity: number) => test.step('(from the billing page) should inspect all elements releavant to the downgrade in the subscription plan', async () => {
       await expect(po.managePlan.planName()).toBeVisible();
       await refreshPage(page);
       await po.evaluateSubscription('Pro', previousQuantity, previousQuantity);
@@ -38,14 +45,14 @@ test.describe('Polydoc User Billing Tests', () => {
       await expect(po.managePlan.customerPortalButton()).toBeVisible();
     }),
 
-    cancelSubscriptionChange: () => test.step('Cancel Subscription Change', async () => {
+    cancelSubscriptionChange: () => test.step('(from the billing page) should cancel the downgrade of a subscription', async () => {
       await po.cancelSubscriptionChange();
       await po.stripeCustomerPortal.returnToAppButton().click();
       await expect(po.managePlan.planName()).toBeVisible();
       await refreshPage(page);
     }),
 
-    setupVATTest: () => test.step('Setup VAT Test', async () => {
+    setupVATTest: () => test.step('(from the billing page) should open a stripe checkout session and open the details', async () => {
       await po.managePlan.goToUpgradePlanPage();
       await po.upgradePlan.proceedToCheckout();
       await po.stripeCheckoutSession.waitForForm();
@@ -65,24 +72,22 @@ test.describe('Polydoc User Billing Tests', () => {
     await steps.verifyFreePlan();
   });
 
-  test.describe('Complex test flow', () => {
-    test('Upgrade from Free to Pro', async () => {
-      await steps.verifyFreePlan();
-      await steps.upgradePlan(3000, 'pro-monthly');
-    });
+  test('Upgrade from Free to Pro', async () => {
+    await steps.verifyFreePlan();
+    await steps.upgradePlan(3000, 'pro-monthly');
+  });
 
-    test('Upgrade Pro to Pro', async () => {
-      await steps.upgradePlan(7000, 'Pages(Pro Plan)');
-    });
+  test('Upgrade Pro to Pro', async () => {
+    await steps.upgradePlan(7000, 'Pages(Pro Plan)');
+  });
 
-    test('Downgrade Pro to Pro', async () => {
-      await steps.upgradePlan(5000, 'Pages(Pro Plan)');
-      await steps.verifyDowngrade(7000, 5000);
-    });
+  test('Downgrade Pro to Pro', async () => {
+    await steps.upgradePlan(5000, 'Pages(Pro Plan)');
+    await steps.verifyDowngrade(7000, 5000);
+  });
 
-    test('Cancel Pro Subscription Change', async () => {
-      await steps.cancelSubscriptionChange();
-    });
+  test('Cancel Pro Subscription Change', async () => {
+    await steps.cancelSubscriptionChange();
   });
 
   test.describe('VAT Calculation', () => {

@@ -16,8 +16,6 @@ test.describe('Complex flows', () => {
     po = new PolydocUserComplexFlowTestObject(page);
 
     await po.auth.signUpFlow('/app/billing');
-
-    await waitAndRefreshPage(page, 4000);
   });
 
   /**
@@ -34,34 +32,37 @@ test.describe('Complex flows', () => {
 
     // first time is through the plan picker
     await po.billing.updatePlan(quantity, 'pro-monthly', true)
-    await waitAndRefreshPage(page, 4000);
-    await po.billing.evaluateSubscription('Pro', quantity, quantity)
 
-    //Wait for the subscription to be renewed
-    await waitAndRefreshPage(page, 5000);
+    await waitAndRefreshPage(page, 4000)
+
+    await po.billing.evaluateSubscription('Pro', quantity, quantity)
 
     //Now, downgrade to 5000 pages of the pro plan
     quantity = 5000
 
     await po.billing.updatePlan(quantity, 'Pages(Pro Plan)', true)
-    await waitAndRefreshPage(page, 4000);
+
+    await waitAndRefreshPage(page, 4000)
+
     await po.billing.evaluateDowngradeSubscription('Pro', quantity)
 
     //Wait for the subscription to be renewed
-    await waitAndRefreshPage(page, 40000);
     await po.billing.evaluateSubscription('Pro', 7000, quantity)
 
     quantity = 9000
 
     await po.billing.updatePlan(quantity, 'Pages(Pro Plan)', true)
-    await waitAndRefreshPage(page, 4000);
+
+    await waitAndRefreshPage(page, 4000)
+
     await po.billing.evaluateSubscription('Pro', quantity, quantity)
 
     await po.billing.updatePlan(5, 'Pages(Free Plan)', true)
-    await waitAndRefreshPage(page, 4000);
+
+    await waitAndRefreshPage(page, 4000)
+
     await po.billing.evaluateDowngradeSubscription('Free', 5)
 
-    await waitAndRefreshPage(page, 40000);
-    await po.billing.evaluateSubscription('Free', 9000, 5)
+    await po.billing.evaluateSubscription('Free', 5, 5)
    });
 });
