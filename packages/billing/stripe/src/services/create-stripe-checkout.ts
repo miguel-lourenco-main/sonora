@@ -61,7 +61,7 @@ export async function createStripeCheckout(
   });
 
   // we use the embedded mode, so the user does not leave the page
-  const uiMode = 'embedded';
+  const uiMode: Stripe.Checkout.SessionCreateParams.UiMode = 'embedded';
 
   const customerData = customer
     ? {
@@ -102,7 +102,7 @@ export async function createStripeCheckout(
       }
     : {};
 
-  return stripe.checkout.sessions.create({
+  const checkoutParams = {
     mode,
     allow_promotion_codes: params.enableDiscountField,
     ui_mode: uiMode,
@@ -119,12 +119,16 @@ export async function createStripeCheckout(
     ...customerData,
     ...urls,
     ...paymentCollectionMethod,
-    customer_update: {
-      address: 'auto',
-      shipping: 'auto',
-      name: 'auto',
-    },
-  });
+    ...(customer ? {
+      customer_update: {
+        address: 'auto' as const,
+        shipping: 'auto' as const,
+        name: 'auto' as const,
+      }
+    } : {})
+  };
+
+  return stripe.checkout.sessions.create(checkoutParams);
 }
 
 function getUrls(params: { returnUrl: string }) {

@@ -29,6 +29,7 @@ import { Trans } from '@kit/ui/trans';
 import { cn } from '@kit/ui/utils';
 import { z } from 'zod';
 import { toast } from 'sonner';
+import { calculateTieredCost } from '../../lib/utils';
 
 export function PlanPickerComponent(
   props: React.PropsWithChildren<{
@@ -202,18 +203,8 @@ export function PlanPickerComponent(
                       if (product.id === 'pro' && modifiedLineItem) {
                         if (primaryLineItem && primaryLineItem.tiers) {
                           const tiers = primaryLineItem.tiers;
-                          const tiersUpTo = tiers.map((tier) => tier.upTo)
 
-                          // Convert pageCount to a number, defaulting to 0 if it's not a valid number
-                          const pageCount = Number(props.getFormValue('pageCount')) || 0;
-
-                          let index = getPlanTier(pageCount, tiersUpTo);
-                          
-                          let cost = tiers[index]?.cost ?? 0; 
-
-                          // Apply the cost of the applicable tier to all pages
-                          const costPerPage = Number(cost);
-                          modifiedLineItem.cost = costPerPage * pageCount
+                          modifiedLineItem.cost = calculateTieredCost(props.getFormValue('pageCount') as number, tiers)
                         }
                       }
 
