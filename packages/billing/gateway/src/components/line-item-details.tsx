@@ -229,7 +229,7 @@ export function LineItemDetails(
 
             {/* If there are tiers, we render them as a list */}
             <If condition={item.tiers?.length && !props.subscribed_page}>
-              <VolumeTiers item={item} currency={props.currency} />
+              <VolumeTiers item={item} currency={props.currency} currentPages={props.pageCount ?? 0} />
             </If>
 
             <If condition={props.subscribed_page}>
@@ -258,21 +258,24 @@ export function LineItemDetails(
   );
 }
 
+interface TierProps {
+  currency: string;
+  item: z.infer<typeof LineItemSchema>;
+  index: number;
+  tier: {
+    cost: number;
+    upTo: number | "unlimited";
+  };
+  isActive?: boolean;
+}
+
 function Tier({
   currency,
   item,
   index,
-  tier
-}: {
-  currency: string;
-  item: z.infer<typeof LineItemSchema>;
-  index: number
-  tier: {
-    cost: number;
-    upTo: number | "unlimited";
-  }
-}){
-
+  tier,
+  isActive = false
+}: TierProps) {
   const unit = item.unit;
   const locale = useTranslation().i18n.language;
 
@@ -283,24 +286,19 @@ function Tier({
 
   return (
     <span
-      className={'text-secondary-foreground flex space-x-1 text-xs'}
+      className={cn(
+        'text-secondary-foreground flex w-fit space-x-1 text-xs p-2 rounded-md transition-all duration-200',
+        {
+          'shadow-md bg-primary/5 border border-primary/20': isActive,
+          'hover:bg-muted/50': !isActive
+        }
+      )}
       key={index}
     >
       <span>-</span>
 
       <If condition={isLastTier}>
         <span className={'font-bold'}>
-          {previousTier ? previousTier.upTo : upTo}+
-        </span>
-
-        <span>
-          <Trans
-            i18nKey={'billing:unitsPerMonth'}
-            values={{ unit }}
-          />
-        </span>
-
-        <span className={'font-bold'}>
           {formatCurrency({
             currencyCode: currency.toLowerCase(),
             value: tier.cost,
@@ -312,29 +310,21 @@ function Tier({
           <Trans
             i18nKey={'billing:perPage'}
             values={{ unit }}
+          />
+        </span>
+
+        <span>
+          <Trans
+            i18nKey={'billing:andAbove'}
+            values={{
+              unit,
+              previousTier: previousTier ? previousTier.upTo : 0,
+            }}
           />
         </span>
       </If>
 
       <If condition={!isLastTier}>
-
-        <span>
-          <Trans
-            i18nKey={'billing:upTo'}
-          />
-        </span>
-
-        <span className={'font-bold'}>
-          {upTo}
-        </span>
-
-        <span>
-          <Trans
-            i18nKey={'billing:unitsPerMonth'}
-            values={{ unit }}
-          />
-        </span>
-
         <span className={'font-bold'}>
           {formatCurrency({
             currencyCode: currency.toLowerCase(),
@@ -342,16 +332,27 @@ function Tier({
             locale,
           })}
         </span>
-        
-        <span >
+
+        <span>
           <Trans
             i18nKey={'billing:perPage'}
             values={{ unit }}
           />
         </span>
+
+        <span>
+          <Trans
+            i18nKey={'billing:fromPreviousTierUpTo'}
+            values={{
+              previousTierFrom: previousTier ? (previousTier.upTo as number) + 1 : 1,
+              unit,
+              upTo
+            }}
+          />
+        </span>
       </If>
     </span>
-  )
+  );
 }
 
 function CurrentTier({
@@ -371,6 +372,7 @@ function CurrentTier({
     const tier = item.tiers[index]
 
     if(tier){
+
       return (
         <Tier 
           currency={currency} 
@@ -491,12 +493,15 @@ function Tiers({
 function VolumeTiers({
   currency,
   item,
+  currentPages
 }: {
   currency: string;
   item: z.infer<typeof LineItemSchema>;
+  currentPages: number;
 }) {
-
   const tiers = item.tiers?.map((tier, index) => {
+    const isActive = isActiveTier(currentPages, index, item.tiers);
+    
     return (
       <Tier
         key={index}
@@ -504,9 +509,24 @@ function VolumeTiers({
         item={item}
         index={index}
         tier={tier}
+        isActive={isActive}
       />
     );
   });
 
   return <div className={'my-1 flex flex-col space-y-1.5'}>{tiers}</div>;
+}
+
+function isActiveTier(
+  currentPages: number,
+  currentTierIndex: number,
+  tiers: z.infer<typeof LineItemSchema>['tiers']
+): boolean {
+
+  if(!tiers) return false
+
+  const tiersUpTo = tiers.map((tier) => tier.upTo)
+  const index = getPlanTier(currentPages, tiersUpTo)
+  
+  return index === currentTierIndex
 }

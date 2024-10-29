@@ -224,7 +224,7 @@ export function PlanPickerComponent(
                           selected={selected || isCurrentPlan}
                           key={!plan.custom ? primaryLineItem?.id : plan.id + 'custom' }
                         >
-                          {plan.lineItems[0]?.id === props.currentSubscriptionVariantId ? (
+                          {props.currentSubscriptionVariantId !== undefined && plan.lineItems[0]?.id === props.currentSubscriptionVariantId ? (
                             <CircleCheck className={'h-5 w-5 stroke-green-400'} />
                           ):(
                             <RadioGroupItem
@@ -327,6 +327,7 @@ export function PlanPickerComponent(
 
         {selectedProduct?.id === 'business' ? (
           <Button
+            type={'button'}
             onClick={() => {
                 toast.success('This is a business account, please contact sales@polydoc.ai for pricing')
             }}

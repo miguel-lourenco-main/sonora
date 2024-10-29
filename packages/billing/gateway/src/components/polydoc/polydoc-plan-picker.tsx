@@ -17,7 +17,6 @@ import { PlanPickerComponent } from '../plan-picker/plan-picker-component';
 import { PlanDetails } from '../plan-picker/plan-details';
 import { getPolydocPlanPickerSchema } from './polydoc-plan-picker-schema';
 
-const MemoizedPlanDetails = memo(PlanDetails);
 
 type PolydocPlanPickerFormData = {
   planId: string;
@@ -34,8 +33,7 @@ export function PolydocPlanPicker(
     pending?: boolean;
     currentSubscriptionVariantId?: string;
   }>,
-) {
-    
+) {    
   const intervals = useMemo(
     () => getPlanIntervals(props.config),
     [props.config],
@@ -149,14 +147,12 @@ export function PolydocPlanPicker(
           currentSubscriptionVariantId={props.currentSubscriptionVariantId}
           {...props} 
         />
-        {selectedPlanId && selectedInterval && productId ? (
-          <MemoizedPlanDetails
-            selectedInterval={selectedInterval}
-            selectedPlan={selectedPlan}
-            selectedProduct={selectedProduct}
-          />
-          ) : null
-        }
+        <PlanDetails
+          selectedInterval={selectedInterval ?? 'month'}
+          selectedPlan={selectedPlan}
+          selectedProduct={selectedProduct}
+          pageCount={pageCount}
+        />
       </form>
     </Form>
   );

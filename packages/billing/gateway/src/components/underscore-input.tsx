@@ -4,15 +4,14 @@ import { MAX_PAGES_SUBSCRIPTION } from "@kit/shared/constants";
 import { cn } from "@kit/ui/utils";
 import { forwardRef, useEffect, useRef, useState } from "react";
 
-export const UnderscoreInput = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement> & { pageCount: number, setPageCount: (value: number) => void }>((props, ref) => {
-    const [isFocused, setIsFocused] = useState(false);
+export const UnderscoreInput = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement> & { isFocused: boolean, setIsFocused: (value: boolean) => void, pageCount: number, setPageCount: (value: number) => void }>((props, ref) => {
     const divRef = useRef<HTMLDivElement | null>(null);
     const [isVisible, setIsVisible] = useState(true);
   
     useEffect(() => {
       let interval: NodeJS.Timeout | null = null;
   
-      if (isFocused) {
+      if (props.isFocused) {
         interval = setInterval(() => {
           setIsVisible(prev => !prev);
         }, 480);
@@ -23,7 +22,7 @@ export const UnderscoreInput = forwardRef<HTMLDivElement, React.HTMLAttributes<H
       return () => {
         if (interval) clearInterval(interval);
       };
-    }, [isFocused]);
+    }, [props.isFocused]);
   
     const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
       if (e.key >= '0' && e.key <= '9') {
@@ -36,17 +35,17 @@ export const UnderscoreInput = forwardRef<HTMLDivElement, React.HTMLAttributes<H
     };
   
     useEffect(() => {
-      if (isFocused) {
+      if (props.isFocused) {
         divRef.current?.focus();
       }
-    }, [isFocused]);
+    }, [props.isFocused]);
   
     const maxDigits = MAX_PAGES_SUBSCRIPTION.toString().length;
     const currentDigits = props.pageCount.toString().length;
     const showUnderscore = currentDigits < maxDigits;
   
     return (
-       <div className={cn('hover:bg-muted ease-in-out duration-300 p-2 rounded-lg', isFocused && showUnderscore && props.pageCount !== 0 && 'pr-6')}>
+       <div className={cn('hover:bg-muted ease-in-out duration-300 p-2 rounded-lg', props.isFocused && showUnderscore && props.pageCount !== 0 && 'pr-6')}>
             <div className="relative inline-block">
                 <div 
                     ref={(node) => {
@@ -58,8 +57,8 @@ export const UnderscoreInput = forwardRef<HTMLDivElement, React.HTMLAttributes<H
                     }
                     }}
                     tabIndex={0}
-                    onFocus={() => setIsFocused(true)}
-                    onBlur={() => setIsFocused(false)}
+                    onFocus={() => props.setIsFocused(true)}
+                    onBlur={() => props.setIsFocused(false)}
                     onKeyDown={handleKeyDown}
                     className={cn(
                     "inline-block w-fit text-center text-2xl rounded-lg bg-transparent outline-none",
@@ -76,10 +75,10 @@ export const UnderscoreInput = forwardRef<HTMLDivElement, React.HTMLAttributes<H
                 >
                     <span className='text-current'>{props.pageCount}</span>
                 </div>
-                {isFocused && isVisible && showUnderscore && (
+                {props.isFocused && isVisible && showUnderscore && (
                     <span 
                         className={cn("absolute bottom-1 w-[1rem] h-[1.5px] bg-current animate-blink", {
-                            'right-[-1rem]': isFocused,
+                            'right-[-1rem]': props.isFocused,
                             'right-0': props.pageCount === 0,
                         })}
                         style={{ animation: 'blink 1s step-end infinite' }}
