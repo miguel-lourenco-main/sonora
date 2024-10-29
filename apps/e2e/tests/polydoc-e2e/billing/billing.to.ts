@@ -37,7 +37,7 @@ export class PolydocUserBillingTestObject {
     }
   }
 
-  async updatePlan(quantity: number, plan: string, checkVAT?: boolean) {
+  async updatePlan(plan: string, quantity: number, checkVAT?: boolean) {
 
     if ( await this.managePlan.customerPortalButton().isVisible() ) {
 
