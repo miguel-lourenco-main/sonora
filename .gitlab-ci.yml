@@ -15,22 +15,6 @@ stages:
   - build
   - deploy
 
-web-build:
-  stage: build
-  tags:
-    - office-linux
-  image: 'node:20'
-  script:
-    - pnpm --filter web cloudflare:build
-  artifacts:
-    paths:
-      - apps/web/.vercel/output/static/
-    expire_in: 1 hour
-  rules:
-    - changes:
-        - packages/**
-        - apps/web/**/*
-
 # Polydoc App Jobs
 polydoc-test:
   stage: test
