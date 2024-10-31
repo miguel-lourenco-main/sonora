@@ -43,7 +43,7 @@ polydoc-build:
   rules:
     - changes:
         - packages/**
-        - apps/polydoc/**/*
+        - apps/polydoc
 
 polydoc-deploy:
   stage: deploy
@@ -59,4 +59,4 @@ polydoc-deploy:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:
         - packages/**
-        - apps/polydoc/**/*
+        - apps/polydoc
