@@ -67,7 +67,7 @@ polydoc-deploy:
     - office-linux
   image: 'node:20'
   dependencies:
-    - build-polydoc
+    - polydoc-build
   script:
     - cd apps/polydoc
     - pnpm cloudflare:deploy
