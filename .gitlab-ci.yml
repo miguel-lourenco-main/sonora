@@ -6,7 +6,6 @@ variables:
   STRIPE_SECRET_KEY: 'test-only-secret'
   STRIPE_WEBHOOK_SECRET: 'test-only-secret'
 
-# This top-level before_script runs before the Git clone process.
 before_script:
   - npm install -g pnpm
   - pnpm i --frozen-lockfile
@@ -14,19 +13,66 @@ before_script:
 stages:
   - test
   - build
+  - deploy
 
-test:
-  stage: test
-  tags: # required to run on our own runner
-    - office-linux
-  image: 'node:20'
-  script:
-    - echo "dummy test"
-
-build:
+web-build:
   stage: build
-  tags: # required to run on our own runner
+  tags:
     - office-linux
   image: 'node:20'
   script:
-    - pnpm build
+    - pnpm --filter web cloudflare:build
+  artifacts:
+    paths:
+      - apps/web/.vercel/output/static/
+    expire_in: 1 hour
+  rules:
+    - changes:
+        - packages/**
+        - apps/web/**/*
+
+# Polydoc App Jobs
+polydoc-test:
+  stage: test
+  tags:
+    - office-linux
+  image: 'node:20'
+  script:
+    - echo "polydoc app test"
+  rules:
+    - changes:
+        - packages/**
+        - apps/polydoc/**/*
+
+polydoc-build:
+  stage: build
+  tags:
+    - office-linux
+  image: 'node:20'
+  script:
+    - cd apps/polydoc
+    - pnpm cloudflare:build
+  artifacts:
+    paths:
+      - apps/polydoc/.vercel/output/static/
+    expire_in: 1 hour
+  rules:
+    - changes:
+        - packages/**
+        - apps/polydoc/**/*
+
+polydoc-deploy:
+  stage: deploy
+  tags:
+    - office-linux
+  image: 'node:20'
+  dependencies:
+    - build-polydoc
+  script:
+    - cd apps/polydoc
+    - pnpm cloudflare:deploy
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes:
+        - packages/**
+        - apps/polydoc/**/*
