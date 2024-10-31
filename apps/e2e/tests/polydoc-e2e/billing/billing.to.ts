@@ -110,22 +110,27 @@ export class PolydocUserBillingTestObject {
 
     await this.stripeCustomerPortal.cancelIfChangeAlreadyPlanned()
   }
-  
+
   async evaluateSubscription(productName: string, leftTokens?: number, monthlyTokens?: number) {
     await expect(this.managePlan.planName()).toContainText(productName);
     
     if (leftTokens) {
-      await expect(this.managePlan.planLeftTokens()).toContainText(`${leftTokens}`);
+      const tokenElements = await this.managePlan.planLeftTokens();
+      // Test both elements
+      for (const element of tokenElements) {
+        await expect(element).toContainText(`${leftTokens}`);
+      }
     }
     if (monthlyTokens) {
-      await expect(this.managePlan.planMonthlyTokens()).toContainText(`${monthlyTokens}`);
+      const tokenElements = await this.managePlan.planMonthlyTokens();
+      // Test both elements
+      for (const element of tokenElements) {
+        await expect(element).toContainText(`${monthlyTokens}`);
+      }
     }
   
     if (productName === 'Pro') {
       await expect(this.managePlan.customerPortalButton()).toBeVisible();
-    }else if (productName === 'Free') {
-      //TODO: For now, dont check since it can be both buttons in different situations
-      //await expect(this.managePlan.upgradePlanButton()).toBeVisible();
     }
   }
   
