@@ -4,6 +4,7 @@ import { PolydocUpgradePlanPageObject } from '../../utils/polydoc/upgrade-plan.p
 import { StripeCustomerPortalPageObject } from '../../utils/polydoc/stripe.po';
 import { PolydocManagePlanPageObject } from '../../utils/polydoc/manage-plan.po';
 import { StripeCheckoutSessionPageObject } from '../../utils/stripe.po';
+import { MainPageObject } from '../../utils/main.po';
 
 export class PolydocUserBillingTestObject {
 
@@ -12,6 +13,7 @@ export class PolydocUserBillingTestObject {
   managePlan: PolydocManagePlanPageObject;
   stripeCustomerPortal: StripeCustomerPortalPageObject;
   stripeCheckoutSession: StripeCheckoutSessionPageObject;
+  main: MainPageObject;
 
   constructor(page: Page) {
     this.auth = new AuthPageObject(page);
@@ -19,6 +21,7 @@ export class PolydocUserBillingTestObject {
     this.managePlan = new PolydocManagePlanPageObject(page);
     this.stripeCustomerPortal = new StripeCustomerPortalPageObject(page);
     this.stripeCheckoutSession = new StripeCheckoutSessionPageObject(page);
+    this.main = new MainPageObject(page);
   }
 
 

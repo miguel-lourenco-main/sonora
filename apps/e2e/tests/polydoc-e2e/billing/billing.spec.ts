@@ -1,6 +1,7 @@
 import { expect, Page, test } from '@playwright/test';
 import { PolydocUserBillingTestObject } from './billing.to';
 import { refreshPage, waitAndRefreshPage } from '../../utils/general';
+import { retryOperation } from '../../utils/utils';
 
 /*
   This test depends on the account creation working and can only be run after an accoount is created, but in this
@@ -10,6 +11,8 @@ import { refreshPage, waitAndRefreshPage } from '../../utils/general';
 const TEST_RENEWAL_DELAY = process.env.TEST_RENEWAL_DELAY ? parseInt(process.env.TEST_RENEWAL_DELAY) : 1000;
 const TEST_DOWNGRADE_DELAY = process.env.TEST_DOWNGRADE_DELAY ? parseInt(process.env.TEST_DOWNGRADE_DELAY) : 10000;
 
+const TEST_DELAY = 2000; // 2 seconds
+
 test.describe('Polydoc User Billing Tests', () => {
   let page: Page;
   let po: PolydocUserBillingTestObject;
@@ -18,8 +21,37 @@ test.describe('Polydoc User Billing Tests', () => {
     page = await browser.newPage();
     po = new PolydocUserBillingTestObject(page);
 
-    await po.auth.signUpFlow('/app/billing');
+    await retryOperation(async () => {
+      try {
+
+        console.log('Navigating to /...');
+        await page.goto('/', { timeout: 5000 });
+
+        // Wait for either marketing page or billing page
+        await page.waitForSelector('[data-test-page="marketing"]', { timeout: 10000 })
+
+        console.log('Signing up...');
+        await po.auth.signUpFlow('/app/billing');
+
+        // Verify we reached billing page
+        console.log('Verifying billing page...');
+        await expect(page).toHaveURL(/.*\/app\/billing/);
+      } catch (error) {
+        console.error('Navigation failed:', error);
+        throw error;
+      }
+    }, 3, 30000); // 3 attempts, 30 second timeout
   });
+
+  /**
+   * test.afterEach(async () => {
+    // Cleanup and wait
+    if (page && !page.isClosed()) {
+      await page.close();
+    }
+    await new Promise(resolve => setTimeout(resolve, TEST_DELAY));
+  });
+   */
 
   // Define reusable steps
   const steps = {
@@ -42,6 +74,11 @@ test.describe('Polydoc User Billing Tests', () => {
 
       // checkVAT is true because we are testing the VAT label
       await po.updatePlan(newPlan, newPagesQuantity, true);
+
+      // This shows the new plan on the subscription card
+      console.log('Refreshing page before evaluating the subscription...');
+      await expect(page).toHaveURL(/.*\/app\/billing/);
+      await refreshPage(page);
 
       if(pageDiff > 0) {
         await po.evaluateSubscription(plan, leftPages + addedPages, newPagesQuantity);
@@ -95,7 +132,17 @@ test.describe('Polydoc User Billing Tests', () => {
 
   test.describe('(from the billing page) if the user has a free plan, we can proceed with further tests', () => {
     test.beforeEach(async () => {
-      await po.evaluateSubscription('Free', 5, 5);
+      await retryOperation(async () => {
+        try {
+  
+          await refreshPage(page);
+          await po.evaluateSubscription('Free', 5, 5);
+
+        } catch (error) {
+          console.error('Navigation failed:', error);
+          throw error;
+        }
+      }, 3, 5000);
     });
 
     test('(from the billing page) should upgrade user plan from Free to Pro plan. Expected: the subscription card is updated with the new plan and quantity', async () => {

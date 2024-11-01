@@ -81,6 +81,9 @@ export class AuthPageObject {
       repeatPassword: testPassword,
     });
 
+    // Wait for the email to be delivered
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
     await this.visitConfirmEmailLink(testEmail);
   }
 
