@@ -374,15 +374,13 @@ export class StripeBillingStrategyService
 
     try {
       const subscription = await stripe.subscriptions.retrieve(subscriptionId, {
-        expand: ['line_items'],
+        expand: ['items.data.price.product']
       });
-
-      logger.info(ctx, 'Subscription retrieved successfully');
 
       const customer = subscription.customer as string;
       const accountId = subscription.metadata?.accountId as string;
 
-      return subscriptionPayloadBuilder.build({
+      const sub = subscriptionPayloadBuilder.build({
         customerId: customer,
         accountId,
         id: subscription.id,
@@ -396,6 +394,9 @@ export class StripeBillingStrategyService
         trialEndsAt: subscription.trial_end,
         schedule: subscription.schedule as string | null,
       });
+
+      logger.info(ctx, 'Subscription retrieved successfully', sub);
+      return sub;
     } catch (error) {
       logger.error({ ...ctx, error }, 'Failed to retrieve subscription');
 

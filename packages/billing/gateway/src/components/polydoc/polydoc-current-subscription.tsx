@@ -37,6 +37,7 @@ export function PolydocCurrentSubscriptionCard({
   subscription,
   config,
 }: React.PropsWithChildren<Props>) {
+    
   const lineItems = subscription.items;
   const firstLineItem = lineItems[0];
 

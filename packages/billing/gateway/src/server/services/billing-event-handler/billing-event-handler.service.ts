@@ -118,6 +118,7 @@ class BillingEventHandlerService {
           provider: subscription.billing_provider,
           accountId: subscription.target_account_id,
           customerId: subscription.target_customer_id,
+          subscriptionSchedule: subscription.schedule,
         };
 
         logger.info(ctx, 'Processing subscription updated event ...');

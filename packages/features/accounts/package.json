@@ -14,7 +14,8 @@
     "./personal-account-settings": "./src/components/personal-account-settings/index.ts",
     "./components": "./src/components/index.ts",
     "./hooks/*": "./src/hooks/*.ts",
-    "./api": "./src/server/api.ts"
+    "./api": "./src/server/api.ts",
+    "./server/*": "./src/server/*.ts"
   },
   "dependencies": {
     "nanoid": "^5.0.7"
