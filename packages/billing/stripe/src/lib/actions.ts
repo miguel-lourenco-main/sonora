@@ -154,6 +154,8 @@ export async function createScheduleTestClock(scheduleId: string, accountId: str
   const logger = await getLogger();
 
   try {
+
+    
     // Retrieve the schedule to get its start date
     const schedule = await stripe.subscriptionSchedules.retrieve(scheduleId);
     if (!schedule.phases[1]?.start_date) {

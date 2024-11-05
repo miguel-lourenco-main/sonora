@@ -1,5 +1,9 @@
+import { Page } from "@playwright/test";
+import { refreshPage } from "./general";
+
 export async function retryOperation(
-  operation: () => Promise<void>, 
+  operation: () => Promise<void>,
+  page: Page,
   maxAttempts = 3,
   timeout = 10000
 ) {
@@ -7,6 +11,11 @@ export async function retryOperation(
   
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     try {
+
+      if(attempt > 1) {
+        await refreshPage(page);
+      }
+
       await operation();
       return;
     } catch (error) {

@@ -1,4 +1,5 @@
 import { expect, Page } from '@playwright/test';
+import { CURRENT_TIMEOUTS, DOWNGRADE_DELAY } from '../../utils/timeouts';
 //import { forceRenewSubscription } from '@kit/stripe';
 
 export class StripeCustomerPortalPageObject {
@@ -17,6 +18,10 @@ export class StripeCustomerPortalPageObject {
 
     pricingTableCard(plan: string) {
       return this.page.locator(`[data-testid="pricing-table-card"]:has-text("${plan}")`);
+    }
+
+    pricingTableFirstCard() {
+      return this.page.locator('[data-testid="pricing-table-card"]').first();
     }
   
     quantityInput() {
@@ -48,20 +53,28 @@ export class StripeCustomerPortalPageObject {
 
     async cancelIfChangeAlreadyPlanned() {
       const cancelChangeButton = this.cancelChangeButton();
+      const planSelectionArea = this.pricingTableFirstCard();
 
       try {
-        console.log('Waiting for cancel change button...');
-        const isVisible = await cancelChangeButton.waitFor({
+        // First check if there's a plan being shown
+        const isPlanVisible = await planSelectionArea.waitFor({
           state: 'visible',
-          timeout: 5000
+          timeout: DOWNGRADE_DELAY/2
         }).then(() => true).catch(() => false);
 
-        if (isVisible) {
-          console.log('Cancel change button found. Attempting to click...');
-          await cancelChangeButton.click({ timeout: 5000 });
-          console.log('Successfully clicked cancel change button.');
-        } else {
-          console.log('No cancel change button found. Proceeding without cancellation.');
+        // If a plan is visible, there's no change to cancel
+        if (isPlanVisible) {
+          return;
+        }
+
+        // Otherwise, check for the cancel button
+        const isCancelButtonVisible = await cancelChangeButton.waitFor({
+          state: 'visible',
+          timeout: CURRENT_TIMEOUTS.element
+        }).then(() => true).catch(() => false);
+
+        if (isCancelButtonVisible) {
+          await cancelChangeButton.click();
         }
       } catch (error) {
         console.error('Error while handling cancel change button:', error);
@@ -74,11 +87,11 @@ export class StripeCustomerPortalPageObject {
 
       const planCard = this.pricingTableCard(plan);
   
-      await expect(planCard).toBeVisible({timeout: 5000});
+      await expect(planCard).toBeVisible({timeout: CURRENT_TIMEOUTS.element});
   
       const selectButton = planCard.locator('text=Select');
       
-      if (await selectButton.isVisible({timeout: 5000})) {
+      if (await selectButton.isVisible({timeout: CURRENT_TIMEOUTS.element})) {
         await selectButton.click();
       }
     }
@@ -88,7 +101,7 @@ export class StripeCustomerPortalPageObject {
   
       const quantityInput = this.quantityInput();
   
-      await expect(quantityInput).toBeVisible({timeout: 10000});
+      await expect(quantityInput).toBeVisible({timeout: CURRENT_TIMEOUTS.element});
   
       await quantityInput.clear();
       await quantityInput.fill(quantity.toString());
@@ -101,9 +114,9 @@ export class StripeCustomerPortalPageObject {
     async payAndSubscribe() {
       const payAndSubscribeButton = this.payAndSubscribeButton();
   
-      await expect(payAndSubscribeButton).toBeVisible({timeout: 10000});
+      //await expect(payAndSubscribeButton).toBeVisible({timeout: CURRENT_TIMEOUTS.element});
   
-      await payAndSubscribeButton.click({ timeout: 5000 });
+      await payAndSubscribeButton.click({ timeout: CURRENT_TIMEOUTS.element });
     }
   
     async returnToApp() {

@@ -22,15 +22,57 @@ if (!enableBillingTests) {
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
+const TEST_TIERS = {
+  fast: {
+    testTimeout: 120 * 1000,      // 2 minutes
+    expectTimeout: 5 * 1000,      // 5 seconds
+    retries: {
+      local: 1,
+      CI: 2
+    },
+    workers: {
+      local: undefined,           // Use all available
+      CI: 2                       // Limited parallelization
+    }
+  },
+  default: {
+    testTimeout: 180 * 1000,      // 3 minutes (current)
+    expectTimeout: 10 * 1000,     // 10 seconds (current)
+    retries: {
+      local: 1,
+      CI: 3
+    },
+    workers: {
+      local: undefined,
+      CI: 1
+    }
+  },
+  slow: {
+    testTimeout: 300 * 1000,      // 5 minutes
+    expectTimeout: 20 * 1000,     // 20 seconds
+    retries: {
+      local: 2,
+      CI: 4
+    },
+    workers: {
+      local: 3,                   // Limit even locally
+      CI: 1
+    }
+  }
+};
+
+const tier = process.env.TEST_TIER || 'default';
+const config = TEST_TIERS[tier as keyof typeof TEST_TIERS] ?? TEST_TIERS.default;
+
 export default defineConfig({
   testDir: './tests',
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 3 : 1,
+  retries: process.env.CI ? config.retries.CI : config.retries.local,
   /* Limit parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  workers: process.env.CI ? config.workers.CI : config.workers.local,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
   /* Ignore billing tests if the environment variable is not set. */
@@ -47,13 +89,9 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
 
-
-  // test timeout set to 1 minutes
-  // (default)timeout: 180 * 1000,
-  timeout: 180 * 1000,
+  timeout: config.testTimeout,
   expect: {
-    // expect timeout set to 10 seconds
-    timeout: 10 * 1000,
+    timeout: config.expectTimeout,
   },
 
   /* Configure projects for major browsers */

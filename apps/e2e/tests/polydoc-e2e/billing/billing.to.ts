@@ -5,6 +5,7 @@ import { StripeCustomerPortalPageObject } from '../../utils/polydoc/stripe.po';
 import { PolydocManagePlanPageObject } from '../../utils/polydoc/manage-plan.po';
 import { StripeCheckoutSessionPageObject } from '../../utils/stripe.po';
 import { MainPageObject } from '../../utils/main.po';
+import { CURRENT_TIMEOUTS } from '../../utils/timeouts';
 
 export class PolydocUserBillingTestObject {
 
@@ -70,6 +71,9 @@ export class PolydocUserBillingTestObject {
     await this.stripeCustomerPortal.continueToPayment();
     await this.stripeCustomerPortal.payAndSubscribe();
 
+    // Wait for the change to take effect
+    await new Promise(resolve => setTimeout(resolve, CURRENT_TIMEOUTS.processAction));
+
     await this.stripeCustomerPortal.returnToApp();
   }
 
@@ -95,7 +99,10 @@ export class PolydocUserBillingTestObject {
 
     await this.stripeCheckoutSession.submitForm();
     
-    await expect(this.upgradePlan.successStatus()).toBeVisible({ timeout: 25_000 });
+    await expect(this.upgradePlan.successStatus()).toBeVisible({ timeout: CURRENT_TIMEOUTS.element });
+
+    // Wait for the email to be delivered
+    await new Promise(resolve => setTimeout(resolve, CURRENT_TIMEOUTS.processAction));
 
     await this.upgradePlan.returnToManageBilling();
   }
