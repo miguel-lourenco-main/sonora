@@ -9,6 +9,7 @@ import { getSupabaseServerClient } from '@kit/supabase/server-client';
 import billingConfig from '~/config/billing.config';
 import { withI18n } from '~/lib/i18n/with-i18n';
 import { requireUserInServerComponent } from '~/lib/server/require-user-in-server-component';
+import pathsConfig from '~/config/paths.config';
 
 interface SessionPageProps {
   searchParams: {
@@ -107,8 +108,9 @@ async function onRedirect() {
 
   // revalidate the home page to update cached pages
   // which may have changed due to the billing session
-  revalidatePath('/app', 'layout');
+  revalidatePath(pathsConfig.app.app, 'layout');
 
-  // redirect back to billing page
-  redirect('../billing');
+  // redirect back to billing page by constructing relative path
+  const relativePath = '../' + pathsConfig.app.personalAccountBilling.replace(pathsConfig.app.app + '/', '');
+  redirect(relativePath);
 }
