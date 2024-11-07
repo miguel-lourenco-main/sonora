@@ -49,11 +49,6 @@ export function SmoothScrollProvider({ children, threshold = 100 }: { children: 
     }
   }, [threshold, isLocked]);
 
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [handleScroll]);
-
   return (
     <SmoothScrollContext.Provider value={{ anchorRef, isNearAnchor, isLocked, setIsLocked }}>
       {children}
