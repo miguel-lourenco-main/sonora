@@ -2,7 +2,7 @@ configVersion: 2.0.0
 generation:
   devContainers:
     enabled: true
-    schemaPath: ../../../../workflows/workflows-server/docs/openapi.yml
+    schemaPath: ../../../backend/server/docs/openapi.yml
   sdkClassName: Polydoc
   maintainOpenAPIOrder: true
   usageSnippets:

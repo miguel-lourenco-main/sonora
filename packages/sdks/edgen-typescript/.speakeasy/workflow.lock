@@ -18,7 +18,7 @@ workflow:
     sources:
         Edgen-OAS:
             inputs:
-                - location: ../../../../../workflows/workflows-server/docs/openapi.yml
+                - location: ../../../../backend/server/docs/openapi.yml
             registry:
                 location: registry.speakeasyapi.dev/edgenai/edgenai/edgen-oas
     targets:
