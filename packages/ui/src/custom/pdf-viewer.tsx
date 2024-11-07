@@ -150,20 +150,29 @@ export default function PDFViewer(
   }, []);
 
   return (
-    <div className="flex size-full items-start justify-center overflow-auto" ref={containerRef} onScroll={onScroll}>
+    <div 
+      className="flex size-full items-start justify-center overflow-auto" 
+      ref={containerRef} 
+      onScroll={onScroll}
+      style={{ maxHeight: '100%', height: '100%' }}
+    >
       <Document
         file={file}
         onLoadSuccess={onDocumentLoadSuccess}
         onLoadError={cleanupPDF}
         options={options}
-        className="flex flex-col space-y-4"
-        loading={null} // Prevent default loading indicator
+        className="flex flex-col space-y-4 w-full"
+        loading={null}
       >
         {Array.from(new Array(numPages), (el, index) => (
           <div
             key={`page_${index + 1}`}
-            className="relative shadow-lg"
-            style={{ height: pageHeight, width: pageWidth }}
+            className="relative shadow-lg mx-auto"
+            style={{ 
+              height: pageHeight, 
+              width: pageWidth,
+              minHeight: pageHeight
+            }}
             data-page-number={index + 1}
             ref={(el) => {
               if (el && observerRef.current) {
