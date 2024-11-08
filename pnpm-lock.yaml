@@ -21,9 +21,6 @@ importers:
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
-      pnpm:
-        specifier: ^9.11.0
-        version: 9.12.3
       prettier:
         specifier: ^3.3.3
         version: 3.3.3
@@ -7782,11 +7779,6 @@ packages:
   playwright@1.48.2:
     resolution: {integrity: sha512-NjYvYgp4BPmiwfe31j4gHLa3J7bD2WiBz8Lk2RoSsmX38SVIARZ18VYjxLjAcDsAhA+F4iSEXTSGgjua0rrlgQ==}
     engines: {node: '>=18'}
-    hasBin: true
-
-  pnpm@9.12.3:
-    resolution: {integrity: sha512-zOD53pxafJW++UQWnMXf6HQav7FFB4wNUIuGgFaEiofIHmJiRstglny9f9KabAYu9z/4QNlrPIbECsks9KgT7g==}
-    engines: {node: '>=18.12'}
     hasBin: true
 
   possible-typed-array-names@1.0.0:
@@ -16721,8 +16713,6 @@ snapshots:
       playwright-core: 1.48.2
     optionalDependencies:
       fsevents: 2.3.2
-
-  pnpm@9.12.3: {}
 
   possible-typed-array-names@1.0.0: {}
 
