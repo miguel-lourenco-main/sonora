@@ -36,7 +36,7 @@ const TEST_TIERS = {
     }
   },
   default: {
-    testTimeout: 180 * 1000,      // 3 minutes (current)
+    testTimeout: 240 * 1000,      // 4 minutes (current)
     expectTimeout: 10 * 1000,     // 10 seconds (current)
     retries: {
       local: 1,

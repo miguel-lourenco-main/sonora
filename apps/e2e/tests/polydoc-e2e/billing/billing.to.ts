@@ -101,8 +101,12 @@ export class PolydocUserBillingTestObject {
     
     await expect(this.upgradePlan.successStatus()).toBeVisible({ timeout: CURRENT_TIMEOUTS.element });
 
+    console.log('Clicked button to return to the billing page...');
+
     // Wait for the email to be delivered
     await new Promise(resolve => setTimeout(resolve, CURRENT_TIMEOUTS.processAction));
+
+    console.log('clicking return to manage billing...');
 
     await this.upgradePlan.returnToManageBilling();
   }

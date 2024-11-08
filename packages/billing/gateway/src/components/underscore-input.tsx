@@ -4,33 +4,54 @@ import { MAX_PAGES_SUBSCRIPTION } from "@kit/shared/constants";
 import { cn } from "@kit/ui/utils";
 import { forwardRef, useEffect, useRef, useState } from "react";
 
-export const UnderscoreInput = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement> & { isFocused: boolean, setIsFocused: (value: boolean) => void, pageCount: number, setPageCount: (value: number) => void }>((props, ref) => {
+export const UnderscoreInput = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement> & { 
+  isFocused: boolean, 
+  setIsFocused: (value: boolean) => void, 
+  pageCount: number, 
+  setPageCount: (value: number) => void 
+}>((props, ref) => {
     const divRef = useRef<HTMLDivElement | null>(null);
     const [isVisible, setIsVisible] = useState(true);
+    const [tempValue, setTempValue] = useState<number>(props.pageCount);
+    const [lastValidValue, setLastValidValue] = useState<number>(props.pageCount);
+    const [isDirty, setIsDirty] = useState(false);
   
     useEffect(() => {
-      let interval: NodeJS.Timeout | null = null;
-  
-      if (props.isFocused) {
-        interval = setInterval(() => {
-          setIsVisible(prev => !prev);
-        }, 480);
-      } else {
-        setIsVisible(false);
+      if (!isDirty) {
+        setTempValue(props.pageCount);
+        setLastValidValue(props.pageCount);
       }
-  
-      return () => {
-        if (interval) clearInterval(interval);
-      };
-    }, [props.isFocused]);
-  
+    }, [props.pageCount, isDirty]);
+
     const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
       if (e.key >= '0' && e.key <= '9') {
-        const newValue = props.pageCount === 0 ? parseInt(e.key, 10) : parseInt(props.pageCount.toString() + e.key, 10);
-        props.setPageCount(newValue);
+        const newValue = tempValue === 0 ? 
+          parseInt(e.key, 10) : 
+          parseInt(tempValue.toString() + e.key, 10);
+        setTempValue(newValue);
+        setIsDirty(true);
       } else if (e.key === 'Backspace') {
-        const newValue = props.pageCount > 9 ? Math.floor(props.pageCount / 10) : 0;
-        props.setPageCount(newValue);
+        const newValue = tempValue > 9 ? Math.floor(tempValue / 10) : 0;
+        setTempValue(newValue);
+        setIsDirty(true);
+      }
+    };
+
+    const handleBlur = () => {
+      props.setIsFocused(false);
+      if (isDirty) {
+        let finalValue = tempValue;
+        
+        // Apply the 5-50 range logic
+        if (tempValue > 5 && tempValue < 50) {
+          finalValue = lastValidValue <= 5 ? 50 : 5;
+        } else {
+          // Clamp the value to valid ranges
+          finalValue = Math.min(Math.max(5, tempValue), MAX_PAGES_SUBSCRIPTION);
+        }
+        
+        props.setPageCount(finalValue);
+        setIsDirty(false);
       }
     };
   
@@ -41,52 +62,57 @@ export const UnderscoreInput = forwardRef<HTMLDivElement, React.HTMLAttributes<H
     }, [props.isFocused]);
   
     const maxDigits = MAX_PAGES_SUBSCRIPTION.toString().length;
-    const currentDigits = props.pageCount.toString().length;
+    const currentDigits = tempValue.toString().length;
     const showUnderscore = currentDigits < maxDigits;
-  
+
     return (
-       <div className={cn('hover:bg-muted ease-in-out duration-300 p-2 rounded-lg', props.isFocused && showUnderscore && props.pageCount !== 0 && 'pr-6')}>
-            <div className="relative inline-block">
-                <div 
-                    ref={(node) => {
-                    divRef.current = node;
-                    if (typeof ref === 'function') {
-                        ref(node);
-                    } else if (ref) {
-                        ref.current = node;
-                    }
-                    }}
-                    tabIndex={0}
-                    onFocus={() => props.setIsFocused(true)}
-                    onBlur={() => props.setIsFocused(false)}
-                    onKeyDown={handleKeyDown}
-                    className={cn(
-                    "inline-block w-fit text-center text-2xl rounded-lg bg-transparent outline-none",
-                    "ease-in-out duration-300",
-                    "border-0 ring-0 focus:ring-0 hover:ring-0",
-                    "shadow-none focus:shadow-none hover:shadow-none",
-                    props.className
-                    )}
-                    style={{
-                    ...props.style,
-                    minWidth: '1ch',
-                    }}
-                    data-test="polydoc-billing-quantity-input"
-                >
-                    <span className='text-current'>{props.pageCount}</span>
-                </div>
-                {props.isFocused && isVisible && showUnderscore && (
-                    <span 
-                        className={cn("absolute bottom-1 w-[1rem] h-[1.5px] bg-current animate-blink", {
-                            'right-[-1rem]': props.isFocused,
-                            'right-0': props.pageCount === 0,
-                        })}
-                        style={{ animation: 'blink 1s step-end infinite' }}
-                    />
-                )}
-            </div>
+      <div className={cn('hover:bg-muted ease-in-out duration-300 p-2 rounded-lg', 
+        props.isFocused && showUnderscore && tempValue !== 0 && 'pr-6')}>
+        <div className="relative inline-block">
+          <div 
+            ref={(node) => {
+              divRef.current = node;
+              if (typeof ref === 'function') {
+                ref(node);
+              } else if (ref) {
+                ref.current = node;
+              }
+            }}
+            tabIndex={0}
+            onFocus={() => {
+              props.setIsFocused(true);
+              setIsDirty(false);
+            }}
+            onBlur={handleBlur}
+            onKeyDown={handleKeyDown}
+            className={cn(
+              "inline-block w-fit text-center text-2xl rounded-lg bg-transparent outline-none",
+              "ease-in-out duration-300",
+              "border-0 ring-0 focus:ring-0 hover:ring-0",
+              "shadow-none focus:shadow-none hover:shadow-none",
+              props.className
+            )}
+            style={{
+              ...props.style,
+              minWidth: '1ch',
+            }}
+            data-test="polydoc-billing-quantity-input"
+          >
+            <span className='text-current'>{tempValue}</span>
+          </div>
+          {props.isFocused && isVisible && showUnderscore && (
+            <span 
+              className={cn("absolute bottom-1 w-[1rem] h-[1.5px] bg-current animate-blink", {
+                'right-[-1rem]': props.isFocused,
+                'right-0': tempValue === 0,
+              })}
+              style={{ animation: 'blink 1s step-end infinite' }}
+            />
+          )}
         </div>
+      </div>
     );
-});
+  }
+);
 
 UnderscoreInput.displayName = 'UnderscoreInput';
