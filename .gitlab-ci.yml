@@ -8,6 +8,10 @@ variables:
 
 before_script:
   - npm install -g pnpm
+  # TODO: handle this better - we are doing this because the cache is being used wrongly
+  - pnpm i --frozen-lockfile
+  - pnpm clean:workspaces || true
+  - pnpm clean || true
   - pnpm i --frozen-lockfile
   - pnpm clean:workspaces
   - pnpm clean
