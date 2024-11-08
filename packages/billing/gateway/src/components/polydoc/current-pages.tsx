@@ -12,6 +12,7 @@ type UserTokens = {
 
 type CurrentPagesProps = {
   size?: 'small' | 'normal' | 'large'
+  onlyLeft?: boolean
 }
 
 const sizeStyles = {
@@ -35,7 +36,7 @@ const sizeStyles = {
   }
 } as const;
 
-export default function CurrentPages({ size = 'normal' }: CurrentPagesProps) {
+export default function CurrentPages({ size = 'normal', onlyLeft }: CurrentPagesProps) {
 
     const [tokens, setTokens] = useState<number>(0);
     const [monthlyTokens, setMonthlyTokens] = useState<number>(1);
@@ -95,30 +96,36 @@ export default function CurrentPages({ size = 'normal' }: CurrentPagesProps) {
     const styles = sizeStyles[size];
 
     return (
-      <div className={`flex flex-col space-y-2 ${styles.container}`}>
-        <div className="flex space-x-2">
-          <div 
-            data-test={'polydoc-current-pages-left'} 
-            className={`${styles.value} text-foreground font-semibold`}
-          >
-            {tokens}
+      <>
+        {onlyLeft ? (
+          <p>{tokens}</p>
+        ):(
+          <div className={`flex flex-col space-y-2 ${styles.container}`}>
+            <div className="flex space-x-2">
+              <div 
+                data-test={'polydoc-current-pages-left'} 
+                className={`${styles.value} text-foreground font-semibold`}
+              >
+                {tokens}
+              </div>
+              <p className={`${styles.label} mb-1 -mr-1 h-fit self-end text-muted-foreground`}>/</p>
+              <div 
+                data-test={'polydoc-current-pages-monthly'} 
+                className={`${styles.label} mb-1 h-fit self-end text-muted-foreground`}
+              >
+                {monthlyTokens}
+              </div>
+              <p className={`${styles.label} mb-1 -mr-1 h-fit self-end text-muted-foreground`}>
+                tokens left
+              </p>
+            </div>
+            <Progress 
+              className={styles.progress} 
+              value={tokens > monthlyTokens ? 100 : (tokens/monthlyTokens) * 100} 
+              max={monthlyTokens} 
+            />
           </div>
-          <p className={`${styles.label} mb-1 -mr-1 h-fit self-end text-muted-foreground`}>/</p>
-          <div 
-            data-test={'polydoc-current-pages-monthly'} 
-            className={`${styles.label} mb-1 h-fit self-end text-muted-foreground`}
-          >
-            {monthlyTokens}
-          </div>
-          <p className={`${styles.label} mb-1 -mr-1 h-fit self-end text-muted-foreground`}>
-            tokens left
-          </p>
-        </div>
-        <Progress 
-          className={styles.progress} 
-          value={tokens > monthlyTokens ? 100 : (tokens/monthlyTokens) * 100} 
-          max={monthlyTokens} 
-        />
-      </div>
+        )}
+      </>
     );
 }

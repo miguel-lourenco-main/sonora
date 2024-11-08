@@ -52,8 +52,11 @@ git branch -D update_makerkit
 
 ## Setup
 ```bash
+cd apps/<app>
 git remote add remote/frontend git@gitlab.com:edgenai/frontend/frontend.git
+```
 
+## Proliferate
 ```bash
 # Update subtree
 git subtree split --prefix=apps/web --branch=subtree/apps-web

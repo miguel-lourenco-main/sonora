@@ -38,6 +38,7 @@
   "dependencies": {
     "@edge-csrf/nextjs": "2.3.0",
     "@hookform/resolvers": "^3.9.0",
+    "@keystatic/next": "^5.0.1",
     "@kit/accounts": "workspace:^",
     "@kit/admin": "workspace:^",
     "@kit/analytics": "workspace:^",
@@ -48,6 +49,7 @@
     "@kit/database-webhooks": "workspace:^",
     "@kit/email-templates": "workspace:^",
     "@kit/i18n": "workspace:^",
+    "@kit/keystatic": "workspace:*",
     "@kit/mailers": "workspace:^",
     "@kit/monitoring": "workspace:^",
     "@kit/next": "workspace:^",
