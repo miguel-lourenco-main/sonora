@@ -20,7 +20,7 @@ polydoc-test:
   stage: test
   tags:
     - cm3588
-  image: 'node:20'
+  image: 'node:22.11'
   script:
     - echo "polydoc app test"
   rules:
@@ -32,7 +32,7 @@ polydoc-build:
   stage: build
   tags:
     - cm3588
-  image: 'node:20'
+  image: 'node:22.11'
   script:
     - cd apps/polydoc
     - pnpm cloudflare:build
@@ -49,7 +49,7 @@ polydoc-deploy:
   stage: deploy
   tags:
     - cm3588
-  image: 'node:20'
+  image: 'node:22.11'
   dependencies:
     - polydoc-build
   script:
