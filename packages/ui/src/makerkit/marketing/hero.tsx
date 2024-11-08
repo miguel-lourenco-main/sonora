@@ -52,7 +52,7 @@ export function Hero({
             <HeroTitle>{title}</HeroTitle>
 
             {subtitle && (
-              <div className="flex max-w-2xl flex-col space-y-1">
+              <div className="flex max-w-3xl flex-col space-y-1">
                 <Heading
                   level={3}
                   className="p-0 text-center font-sans text-base font-normal"

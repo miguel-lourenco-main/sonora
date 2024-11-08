@@ -80,6 +80,10 @@ function CustomCombobox({list, tooltip, onChange, initialValue, placeholder}: {l
 
   const { t } = useTranslation('ui');
 
+  useEffect(() => {
+    setValue(initialValue);
+  }, [initialValue]);
+
   return (
     <TooltipComponent className="w-full" trigger={
       <div className="flex w-full justify-center">

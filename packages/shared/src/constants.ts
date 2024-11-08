@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { Language } from './interfaces';
 
 export const EDGEN_BACKEND_URL = process.env.EDGEN_BACKEND_URL || "http://127.0.0.1:30000";
 
@@ -49,19 +50,19 @@ export const POLYDOC_CUSTOM_PATHS = {
     upgrade: POLYDOC_BILLING_UPGRADE_PAGE_PATH
 }
 
-export const LANGUAGES = [
-    { value: "chinese", label: "🇨🇳 Chinese" },
-    { value: "english", label: "🇬🇧 English" },
-    { value: "french", label: "🇫🇷 French" },
-    { value: "german", label: "🇩🇪 German" },
-    { value: "italian", label: "🇮🇹 Italian" },
-    { value: "japanese", label: "🇯🇵 Japanese" },
-    { value: "korean", label: "🇰🇷 Korean" },
-    { value: "polish", label: "🇵🇱 Polish" },
-    { value: "portuguese", label: "🇵🇹 Portuguese" },
-    { value: "romanian", label: "🇷🇴 Romanian" },
-    { value: "russian", label: "🇷🇺 Russian" },
-    { value: "spanish", label: "🇪🇸 Spanish" },
+export const LANGUAGES: Language[] = [
+    { value: "english", shortValue: "en", label: "🇬🇧 English" },
+    { value: "chinese", shortValue: "zh", label: "🇨🇳 Chinese" },
+    { value: "french", shortValue: "fr", label: "🇫🇷 French" },
+    { value: "german", shortValue: "de", label: "🇩🇪 German" },
+    { value: "italian", shortValue: "it", label: "🇮🇹 Italian" },
+    { value: "japanese", shortValue: "ja", label: "🇯🇵 Japanese" },
+    { value: "korean", shortValue: "ko", label: "🇰🇷 Korean" },
+    { value: "polish", shortValue: "pl", label: "🇵🇱 Polish" },
+    { value: "portuguese", shortValue: "pt", label: "🇵🇹 Portuguese" },
+    { value: "romanian", shortValue: "ro", label: "🇷🇴 Romanian" },
+    { value: "russian", shortValue: "ru", label: "🇷🇺 Russian" },
+    { value: "spanish", shortValue: "es", label: "🇪🇸 Spanish" },
 ]
 
 export const MAX_PAGES_SUBSCRIPTION  = 10000;

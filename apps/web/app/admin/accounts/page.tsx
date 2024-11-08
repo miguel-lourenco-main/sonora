@@ -4,6 +4,7 @@ import { AdminAccountsTable } from '@kit/admin/components/admin-accounts-table';
 import { AdminGuard } from '@kit/admin/components/admin-guard';
 import { getSupabaseServerAdminClient } from '@kit/supabase/server-admin-client';
 import { PageBody, PageHeader } from '@kit/ui/page';
+import { Database } from '~/lib/database.types';
 
 interface SearchParams {
   page?: string;
@@ -16,7 +17,7 @@ export const metadata = {
 };
 
 function AccountsPage({ searchParams }: { searchParams: SearchParams }) {
-  const client = getSupabaseServerAdminClient();
+  const client = getSupabaseServerAdminClient<Database>();
 
   const page = searchParams.page ? parseInt(searchParams.page) : 1;
   const filters = getFilters(searchParams);

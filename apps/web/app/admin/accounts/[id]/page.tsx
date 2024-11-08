@@ -4,6 +4,7 @@ import { AdminAccountPage } from '@kit/admin/components/admin-account-page';
 import { AdminGuard } from '@kit/admin/components/admin-guard';
 import { getSupabaseServerAdminClient } from '@kit/supabase/server-admin-client';
 import { PageBody } from '@kit/ui/page';
+import { Database } from '~/lib/database.types';
 
 interface Params {
   params: {
@@ -34,7 +35,7 @@ export default AdminGuard(AccountPage);
 const loadAccount = cache(accountLoader);
 
 async function accountLoader(id: string) {
-  const client = getSupabaseServerAdminClient();
+  const client = getSupabaseServerAdminClient<Database>();
 
   const { data, error } = await client
     .from('accounts')

@@ -12,21 +12,42 @@ interface PageAmountInputProps {
 }
 
 export function PageAmountInput({ value, onPageCountChange, className }: PageAmountInputProps) {
-  const [pageCount, setPageCount] = useState(value ?? 5); 
-
-  const updatePageCount = (value: number) => {
-    const clampedValue = Math.min(Math.max(0, value), MAX_PAGES_SUBSCRIPTION);
-    setPageCount(clampedValue);
-    onPageCountChange(clampedValue);
-  };
-
+  const [pageCount, setPageCount] = useState(value ?? 50);
+  const [lastValidValue, setLastValidValue] = useState(value ?? 50);
   const [isFocused, setIsFocused] = useState(false);
 
+  const updatePageCount = (value: number) => {
+    let newValue;
+    
+    // If we're in the forbidden range (5-50)
+    if (value > 5 && value < 50) {
+      // Stick to the last valid value
+      newValue = lastValidValue;
+    } else {
+      // Outside forbidden range - clamp to valid ranges
+      newValue = Math.min(Math.max(5, value), MAX_PAGES_SUBSCRIPTION);
+      setLastValidValue(newValue); // Update last valid value
+    }
+    
+    setPageCount(newValue);
+    onPageCountChange(newValue);
+  };
+
+  const valueToSliderPosition = (value: number) => {
+    return Math.log(value / 5) / Math.log(MAX_PAGES_SUBSCRIPTION / 5);
+  };
+
+  const sliderPositionToValue = (position: number) => {
+    return Math.round(5 * Math.pow(MAX_PAGES_SUBSCRIPTION / 5, position));
+  };
+
   useEffect(() => {
-    console.log('value', value);
-    console.log('isFocused', isFocused);
-    setPageCount(value !== undefined && (isFocused || value > 5) ? value : 5);
-  }, [value, isFocused]);
+    const newValue = value !== undefined ? value : 50;
+    setPageCount(newValue);
+    setLastValidValue(newValue);
+  }, [value]);
+
+  const isPro = pageCount > 5;
 
   return (
     <div className={`text-center py-2 ${className}`}>
@@ -41,11 +62,11 @@ export function PageAmountInput({ value, onPageCountChange, className }: PageAmo
       </div>
       <div className="flex items-center justify-center space-x-4 mb-4">
         <Slider
-          min={5}
-          max={MAX_PAGES_SUBSCRIPTION}
-          step={1}
-          value={[pageCount]}
-          onValueChange={(value) => updatePageCount(value[0] ?? 5)}
+          min={0}
+          max={1}
+          step={0.001}
+          value={[valueToSliderPosition(pageCount)]}
+          onValueChange={(value) => updatePageCount(sliderPositionToValue(value[0] ?? 0))}
           className="w-[60%]"
         />
       </div>

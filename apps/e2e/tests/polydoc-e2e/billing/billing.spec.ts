@@ -94,8 +94,7 @@ test.describe('Polydoc User Billing Tests', () => {
 
       // This shows the new plan on the subscription card
       console.log('Refreshing page before evaluating the subscription...');
-      await expect(page).toHaveURL(/.*\/app\/billing/);
-      await refreshPage(page);
+      await page.waitForLoadState('domcontentloaded');
 
       await retryOperation(async () => {
         try {

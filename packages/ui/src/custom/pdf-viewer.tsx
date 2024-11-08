@@ -17,9 +17,9 @@ const resizeObserverOptions = {};
 const maxWidth = 800;
 
 export default function PDFViewer(
-  { pdf, setLoaded, setPdfLoading, onScroll, scrollRef, filter }
+  { pdf, setLoaded, onScroll, scrollRef, filter }
   : 
-  { pdf: PDFFile; setLoaded?: (b: boolean) => void; setPdfLoading?: (b: boolean) => void; scrollRef?: React.RefObject<HTMLDivElement>; onScroll?: UIEventHandler<HTMLDivElement> | undefined; filter?: React.ReactNode}
+  { pdf: PDFFile; setLoaded?: (b: boolean) => void; scrollRef?: React.RefObject<HTMLDivElement>; onScroll?: UIEventHandler<HTMLDivElement> | undefined; filter?: React.ReactNode}
 ) {
 
   const [file, setFile] = useState<PDFFile>(pdf);
@@ -29,7 +29,10 @@ export default function PDFViewer(
   const [visiblePages, setVisiblePages] = useState<number[]>([]);
   const [hasEnoughCredits, setHasEnoughCredits] = useState<boolean>(false);
 
-  const observerRef = useRef<IntersectionObserver | null>(null)
+  const pdfDocumentRef = useRef<pdfjs.PDFDocumentProxy | null>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const mountedRef = useRef(true);
+  const observerRef = useRef<IntersectionObserver | null>(null);
   const genericRef = useRef<HTMLDivElement | null>(null);
   const firstPageRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -59,16 +62,67 @@ export default function PDFViewer(
     }
   }, [pageWidth]);
 
-  function onDocumentLoadSuccess(pdf: pdfjs.PDFDocumentProxy): void {
-    updatePageHeight();
-    setNumPages(pdf.numPages);
-    if (setLoaded) setLoaded(true);
-    if (setPdfLoading) setPdfLoading(false);
-  }
+  const cleanupPDF = useCallback(() => {
+    if (pdfDocumentRef.current) {
+      pdfDocumentRef.current.destroy();
+      pdfDocumentRef.current = null;
+    }
+    setNumPages(0);
+    setVisiblePages([]);
+    if (setLoaded) setLoaded(false);
+  }, [setLoaded]);
 
   useEffect(() => {
     setFile(pdf);
-  }, [pdf]);
+    cleanupPDF();
+    if (setLoaded) {
+      setLoaded(false); // Reset loaded state when PDF changes
+    }
+  }, [pdf, cleanupPDF, setLoaded]);
+
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+      cleanupPDF();
+    };
+  }, [cleanupPDF]);
+
+  function onDocumentLoadSuccess(pdfDoc: pdfjs.PDFDocumentProxy): void {
+    if (!mountedRef.current) return;
+    
+    pdfDocumentRef.current = pdfDoc;
+    setNumPages(pdfDoc.numPages);
+    updatePageHeight();
+    
+    // Add a small delay before setting loaded to true
+    timerRef.current = setTimeout(() => {
+      if (mountedRef.current && setLoaded) {
+        setLoaded(true);
+      }
+    }, 500);
+  }
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+      mountedRef.current = false;
+      cleanupPDF();
+    };
+  }, [cleanupPDF]);
+
+  useEffect(() => {
+    const currentTimer = mountedRef.current;
+    return () => {
+      if (typeof currentTimer === 'number') {
+        clearTimeout(currentTimer);
+      }
+      mountedRef.current = false;
+      cleanupPDF();
+    };
+  }, [cleanupPDF]);
 
   useEffect(() => {
     const options = {
@@ -96,18 +150,29 @@ export default function PDFViewer(
   }, []);
 
   return (
-    <div className="flex size-full items-start justify-center overflow-auto" ref={containerRef} onScroll={onScroll}>
+    <div 
+      className="flex size-full items-start justify-center overflow-auto" 
+      ref={containerRef} 
+      onScroll={onScroll}
+      style={{ maxHeight: '100%', height: '100%' }}
+    >
       <Document
         file={file}
         onLoadSuccess={onDocumentLoadSuccess}
+        onLoadError={cleanupPDF}
         options={options}
-        className="flex flex-col space-y-4"
+        className="flex flex-col space-y-4 w-full"
+        loading={null}
       >
         {Array.from(new Array(numPages), (el, index) => (
           <div
             key={`page_${index + 1}`}
-            className="relative shadow-lg"
-            style={{ height: pageHeight, width: pageWidth }}
+            className="relative shadow-lg mx-auto"
+            style={{ 
+              height: pageHeight, 
+              width: pageWidth,
+              minHeight: pageHeight
+            }}
             data-page-number={index + 1}
             ref={(el) => {
               if (el && observerRef.current) {
@@ -117,12 +182,13 @@ export default function PDFViewer(
           >
             {visiblePages.includes(index + 1) && (
               <Page
-                canvasRef={firstPageRef}
+                canvasRef={index === 0 ? firstPageRef : undefined}
                 pageNumber={index + 1}
                 width={pageWidth}
                 renderAnnotationLayer={false}
                 renderTextLayer={false}
                 onLoadSuccess={index === 0 ? updatePageHeight : undefined}
+                loading={null} // Prevent default loading indicator
               />
             )}
             {!hasEnoughCredits && filter && index > 0 && (
