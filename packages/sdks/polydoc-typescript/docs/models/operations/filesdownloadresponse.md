@@ -11,7 +11,7 @@ let value: FilesDownloadResponse = {
       "<value>",
     ],
   },
-  result: new TextEncoder().encode("0xf26AB98eD5"),
+  result: new TextEncoder().encode("0xBFFD6F52E5"),
 };
 ```
 

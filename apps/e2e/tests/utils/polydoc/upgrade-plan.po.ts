@@ -1,5 +1,5 @@
 import { Page, expect } from '@playwright/test';
-import { StripeCheckoutSessionPageObject } from '../stripe.po';
+import { CURRENT_TIMEOUTS } from '../../utils/timeouts';
 
 // Represents the page at '/app/billing/upgrade'
 export class PolydocUpgradePlanPageObject {
@@ -49,7 +49,7 @@ export class PolydocUpgradePlanPageObject {
 
     await expect(plan).toBeVisible();
 
-    await plan.click({timeout: 1000});
+    await plan.click({timeout: CURRENT_TIMEOUTS.element});
   }
 
   async selectPagesQuantity(quantity: number) {
@@ -63,6 +63,6 @@ export class PolydocUpgradePlanPageObject {
     await this.page.keyboard.type(quantity.toString(), { delay: 100 }); // Type new value
 
     // Click outside the input to unselect
-    await this.page.click('body', { position: { x: 0, y: 0 }, timeout: 100 });
+    await this.page.click('body', { position: { x: 0, y: 0 }, timeout: CURRENT_TIMEOUTS.element });
   }
 }

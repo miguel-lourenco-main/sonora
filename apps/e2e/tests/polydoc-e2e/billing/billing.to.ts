@@ -4,6 +4,8 @@ import { PolydocUpgradePlanPageObject } from '../../utils/polydoc/upgrade-plan.p
 import { StripeCustomerPortalPageObject } from '../../utils/polydoc/stripe.po';
 import { PolydocManagePlanPageObject } from '../../utils/polydoc/manage-plan.po';
 import { StripeCheckoutSessionPageObject } from '../../utils/stripe.po';
+import { MainPageObject } from '../../utils/main.po';
+import { CURRENT_TIMEOUTS } from '../../utils/timeouts';
 
 export class PolydocUserBillingTestObject {
 
@@ -12,6 +14,7 @@ export class PolydocUserBillingTestObject {
   managePlan: PolydocManagePlanPageObject;
   stripeCustomerPortal: StripeCustomerPortalPageObject;
   stripeCheckoutSession: StripeCheckoutSessionPageObject;
+  main: MainPageObject;
 
   constructor(page: Page) {
     this.auth = new AuthPageObject(page);
@@ -19,6 +22,7 @@ export class PolydocUserBillingTestObject {
     this.managePlan = new PolydocManagePlanPageObject(page);
     this.stripeCustomerPortal = new StripeCustomerPortalPageObject(page);
     this.stripeCheckoutSession = new StripeCheckoutSessionPageObject(page);
+    this.main = new MainPageObject(page);
   }
 
 
@@ -67,6 +71,9 @@ export class PolydocUserBillingTestObject {
     await this.stripeCustomerPortal.continueToPayment();
     await this.stripeCustomerPortal.payAndSubscribe();
 
+    // Wait for the change to take effect
+    await new Promise(resolve => setTimeout(resolve, CURRENT_TIMEOUTS.processAction));
+
     await this.stripeCustomerPortal.returnToApp();
   }
 
@@ -92,7 +99,10 @@ export class PolydocUserBillingTestObject {
 
     await this.stripeCheckoutSession.submitForm();
     
-    await expect(this.upgradePlan.successStatus()).toBeVisible({ timeout: 25_000 });
+    await expect(this.upgradePlan.successStatus()).toBeVisible({ timeout: CURRENT_TIMEOUTS.element });
+
+    // Wait for the email to be delivered
+    await new Promise(resolve => setTimeout(resolve, CURRENT_TIMEOUTS.processAction));
 
     await this.upgradePlan.returnToManageBilling();
   }
@@ -110,22 +120,27 @@ export class PolydocUserBillingTestObject {
 
     await this.stripeCustomerPortal.cancelIfChangeAlreadyPlanned()
   }
-  
+
   async evaluateSubscription(productName: string, leftTokens?: number, monthlyTokens?: number) {
     await expect(this.managePlan.planName()).toContainText(productName);
     
     if (leftTokens) {
-      await expect(this.managePlan.planLeftTokens()).toContainText(`${leftTokens}`);
+      const tokenElements = await this.managePlan.planLeftTokens();
+      // Test both elements
+      for (const element of tokenElements) {
+        await expect(element).toContainText(`${leftTokens}`);
+      }
     }
     if (monthlyTokens) {
-      await expect(this.managePlan.planMonthlyTokens()).toContainText(`${monthlyTokens}`);
+      const tokenElements = await this.managePlan.planMonthlyTokens();
+      // Test both elements
+      for (const element of tokenElements) {
+        await expect(element).toContainText(`${monthlyTokens}`);
+      }
     }
   
     if (productName === 'Pro') {
       await expect(this.managePlan.customerPortalButton()).toBeVisible();
-    }else if (productName === 'Free') {
-      //TODO: For now, dont check since it can be both buttons in different situations
-      //await expect(this.managePlan.upgradePlanButton()).toBeVisible();
     }
   }
   

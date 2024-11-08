@@ -19,11 +19,11 @@ export class PolydocManagePlanPageObject {
   }
 
   planLeftTokens() {
-    return this.page.locator('[data-test="polydoc-current-pages-left"]');
+    return this.page.locator('[data-test="polydoc-current-pages-left"]').all();
   }
 
   planMonthlyTokens() {
-    return this.page.locator('[data-test="polydoc-current-pages-monthly"]');
+    return this.page.locator('[data-test="polydoc-current-pages-monthly"]').all();
   }
 
   upgradePlanButton() {
@@ -47,20 +47,5 @@ export class PolydocManagePlanPageObject {
 
   async goToCustomerPortal() {
     await this.customerPortalButton().click();
-  }
-
-  async evaluateSubscription(productName: string, leftTokens?: number, monthlyTokens?: number) {
-    await expect(this.planName()).toContainText(productName);
-    
-    if (leftTokens) {
-      await expect(this.planLeftTokens()).toContainText(`${leftTokens}`);
-    }
-    if (monthlyTokens) {
-      await expect(this.planMonthlyTokens()).toContainText(`${monthlyTokens}`);
-    }
-  
-    if (productName === 'Pro') {
-      await expect(this.customerPortalButton()).toBeVisible();
-    }
   }
 }

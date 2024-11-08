@@ -1,6 +1,7 @@
 import { Page, expect } from '@playwright/test';
 
 import { Mailbox } from '../../utils/mailbox';
+import { CURRENT_TIMEOUTS } from '../../utils/timeouts';
 
 export class AuthPageObject {
   private readonly page: Page;
@@ -80,6 +81,9 @@ export class AuthPageObject {
       password: testPassword,
       repeatPassword: testPassword,
     });
+
+    // Wait for the email to be delivered
+    await new Promise(resolve => setTimeout(resolve, CURRENT_TIMEOUTS.processAction));
 
     await this.visitConfirmEmailLink(testEmail);
   }

@@ -174,12 +174,10 @@ export function match<T, E>(
     let raw: unknown;
     let matcher: Matcher<T, E> | undefined;
     for (const match of matchers) {
-
       const { codes } = match;
       const ctpattern = "ctype" in match
         ? match.ctype
         : DEFAULT_CONTENT_TYPES[match.enc];
-
       if (ctpattern && matchResponse(response, codes, ctpattern)) {
         matcher = match;
         break;
@@ -202,7 +200,6 @@ export function match<T, E>(
     }
 
     const encoding = matcher.enc;
-
     switch (encoding) {
       case "json":
         raw = await response.json();

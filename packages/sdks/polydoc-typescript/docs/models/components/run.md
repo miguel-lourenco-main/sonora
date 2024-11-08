@@ -6,11 +6,11 @@
 import { Run } from "polydoc/models/components";
 
 let value: Run = {
-  accountId: "92059293-96fe-4a75-96eb-10faaa2352c5",
-  createdAt: new Date("2023-10-29T04:22:40.285Z"),
-  id: "55907aff-1a3a-42fa-9467-739251aa52c3",
-  inputFileId: "f5ad019d-a1ff-4e78-b097-b0074f15471b",
-  status: "Running",
+  accountId: "fa3fb438-0365-4749-8d18-2b692275fcbe",
+  createdAt: new Date("2023-08-29T04:52:14.624Z"),
+  id: "9f4310ea-c491-47fe-95f3-ffcad4d9052f",
+  inputFileId: "7a52d383-1dff-4ec5-b163-20b0c211a368",
+  status: "Failed",
   targetLanguage: "<value>",
 };
 ```

@@ -93,7 +93,9 @@ const polydoc = new Polydoc({
 });
 
 async function run() {
-  const result = await polydoc.files.filesList();
+  const result = await polydoc.converts.convertsCreate({
+    inputFileId: "19f09514-b864-4ae9-a56f-ff84e381a3ed",
+  });
 
   // Handle the result
   console.log(result);
@@ -107,16 +109,40 @@ run();
 <!-- Start Available Resources and Operations [operations] -->
 ## Available Resources and Operations
 
+<details open>
+<summary>Available methods</summary>
+
+### [converts](docs/sdks/converts/README.md)
+
+* [convertsCreate](docs/sdks/converts/README.md#convertscreate)
+
 ### [files](docs/sdks/files/README.md)
 
 * [filesList](docs/sdks/files/README.md#fileslist)
 * [filesCreate](docs/sdks/files/README.md#filescreate)
 * [filesDownload](docs/sdks/files/README.md#filesdownload)
 
+### [messages](docs/sdks/messages/README.md)
+
+* [messagesList](docs/sdks/messages/README.md#messageslist)
+* [messagesCreate](docs/sdks/messages/README.md#messagescreate)
+* [messagesGet](docs/sdks/messages/README.md#messagesget)
+
+
 ### [runs](docs/sdks/runs/README.md)
 
 * [runsList](docs/sdks/runs/README.md#runslist)
 * [runsCreate](docs/sdks/runs/README.md#runscreate)
+
+### [threads](docs/sdks/threads/README.md)
+
+* [threadsList](docs/sdks/threads/README.md#threadslist)
+* [threadsCreate](docs/sdks/threads/README.md#threadscreate)
+* [threadsGet](docs/sdks/threads/README.md#threadsget)
+* [threadsDelete](docs/sdks/threads/README.md#threadsdelete)
+* [threadsRun](docs/sdks/threads/README.md#threadsrun)
+
+</details>
 <!-- End Available Resources and Operations [operations] -->
 
 <!-- Start Standalone functions [standalone-funcs] -->
@@ -134,12 +160,20 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 
 <summary>Available standalone functions</summary>
 
-- [filesFilesCreate](docs/sdks/files/README.md#filescreate)
-- [filesFilesDownload](docs/sdks/files/README.md#filesdownload)
-- [filesFilesList](docs/sdks/files/README.md#fileslist)
-- [runsRunsCreate](docs/sdks/runs/README.md#runscreate)
-- [runsRunsList](docs/sdks/runs/README.md#runslist)
-
+- [`convertsConvertsCreate`](docs/sdks/converts/README.md#convertscreate)
+- [`filesFilesCreate`](docs/sdks/files/README.md#filescreate)
+- [`filesFilesDownload`](docs/sdks/files/README.md#filesdownload)
+- [`filesFilesList`](docs/sdks/files/README.md#fileslist)
+- [`messagesMessagesCreate`](docs/sdks/messages/README.md#messagescreate)
+- [`messagesMessagesGet`](docs/sdks/messages/README.md#messagesget)
+- [`messagesMessagesList`](docs/sdks/messages/README.md#messageslist)
+- [`runsRunsCreate`](docs/sdks/runs/README.md#runscreate)
+- [`runsRunsList`](docs/sdks/runs/README.md#runslist)
+- [`threadsThreadsCreate`](docs/sdks/threads/README.md#threadscreate)
+- [`threadsThreadsDelete`](docs/sdks/threads/README.md#threadsdelete)
+- [`threadsThreadsGet`](docs/sdks/threads/README.md#threadsget)
+- [`threadsThreadsList`](docs/sdks/threads/README.md#threadslist)
+- [`threadsThreadsRun`](docs/sdks/threads/README.md#threadsrun)
 
 </details>
 <!-- End Standalone functions [standalone-funcs] -->
@@ -168,7 +202,7 @@ const polydoc = new Polydoc({
 
 async function run() {
   const result = await polydoc.files.filesCreate({
-    data: await openAsBlob("./sample-file"),
+    data: await openAsBlob("example.file"),
   });
 
   // Handle the result
@@ -194,7 +228,9 @@ const polydoc = new Polydoc({
 });
 
 async function run() {
-  const result = await polydoc.files.filesList({
+  const result = await polydoc.converts.convertsCreate({
+    inputFileId: "19f09514-b864-4ae9-a56f-ff84e381a3ed",
+  }, {
     retries: {
       strategy: "backoff",
       backoff: {
@@ -234,7 +270,9 @@ const polydoc = new Polydoc({
 });
 
 async function run() {
-  const result = await polydoc.files.filesList();
+  const result = await polydoc.converts.convertsCreate({
+    inputFileId: "19f09514-b864-4ae9-a56f-ff84e381a3ed",
+  });
 
   // Handle the result
   console.log(result);
@@ -248,14 +286,23 @@ run();
 <!-- Start Error Handling [errors] -->
 ## Error Handling
 
-All SDK methods return a response object or throw an error. If Error objects are specified in your OpenAPI Spec, the SDK will throw the appropriate Error type.
+All SDK methods return a response object or throw an error. By default, an API error will throw a `errors.SDKError`.
 
-| Error Object    | Status Code     | Content Type    |
+If a HTTP request fails, an operation my also throw an error from the `models/errors/httpclienterrors.ts` module:
+
+| HTTP Client Error                                    | Description                                          |
+| ---------------------------------------------------- | ---------------------------------------------------- |
+| RequestAbortedError                                  | HTTP request was aborted by the client               |
+| RequestTimeoutError                                  | HTTP request timed out due to an AbortSignal signal  |
+| ConnectionError                                      | HTTP client was unable to make a request to a server |
+| InvalidRequestError                                  | Any input used to create a request is invalid        |
+| UnexpectedClientError                                | Unrecognised or unexpected error                     |
+
+In addition, when custom error responses are specified for an operation, the SDK may throw their associated Error type. You can refer to respective *Errors* tables in SDK docs for more details on possible error types for each operation. For example, the `convertsCreate` method may throw the following errors:
+
+| Error Type      | Status Code     | Content Type    |
 | --------------- | --------------- | --------------- |
-| errors.SDKError | 4xx-5xx         | */*             |
-
-Validation errors can also occur when either method arguments or data returned from the server do not match the expected format. The `SDKValidationError` that is thrown as a result will capture the raw value that failed validation in an attribute called `rawValue`. Additionally, a `pretty()` method is available on this error that can be used to log a nicely formatted string since validation errors can list many issues and the plain error string may be difficult read when debugging. 
-
+| errors.SDKError | 4XX, 5XX        | \*/\*           |
 
 ```typescript
 import { Polydoc } from "polydoc";
@@ -268,7 +315,9 @@ const polydoc = new Polydoc({
 async function run() {
   let result;
   try {
-    result = await polydoc.files.filesList();
+    result = await polydoc.converts.convertsCreate({
+      inputFileId: "19f09514-b864-4ae9-a56f-ff84e381a3ed",
+    });
 
     // Handle the result
     console.log(result);
@@ -291,6 +340,8 @@ async function run() {
 run();
 
 ```
+
+Validation errors can also occur when either method arguments or data returned from the server do not match the expected format. The `SDKValidationError` that is thrown as a result will capture the raw value that failed validation in an attribute called `rawValue`. Additionally, a `pretty()` method is available on this error that can be used to log a nicely formatted string since validation errors can list many issues and the plain error string may be difficult read when debugging.
 <!-- End Error Handling [errors] -->
 
 <!-- Start Server Selection [server] -->
@@ -314,7 +365,9 @@ const polydoc = new Polydoc({
 });
 
 async function run() {
-  const result = await polydoc.files.filesList();
+  const result = await polydoc.converts.convertsCreate({
+    inputFileId: "19f09514-b864-4ae9-a56f-ff84e381a3ed",
+  });
 
   // Handle the result
   console.log(result);
@@ -338,7 +391,9 @@ const polydoc = new Polydoc({
 });
 
 async function run() {
-  const result = await polydoc.files.filesList();
+  const result = await polydoc.converts.convertsCreate({
+    inputFileId: "19f09514-b864-4ae9-a56f-ff84e381a3ed",
+  });
 
   // Handle the result
   console.log(result);
@@ -418,7 +473,9 @@ const polydoc = new Polydoc({
 });
 
 async function run() {
-  const result = await polydoc.files.filesList();
+  const result = await polydoc.converts.convertsCreate({
+    inputFileId: "19f09514-b864-4ae9-a56f-ff84e381a3ed",
+  });
 
   // Handle the result
   console.log(result);

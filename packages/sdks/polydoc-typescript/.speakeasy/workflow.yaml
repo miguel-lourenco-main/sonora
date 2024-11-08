@@ -3,10 +3,14 @@ speakeasyVersion: latest
 sources:
     Polydoc-OAS:
         inputs:
-            - location: ../../../../../workflows/workflows-server/docs/openapi.yml
+            - location: ../../../../backend/server/docs/openapi.yml
         registry:
             location: registry.speakeasyapi.dev/edgenai/edgenai/polydoc-oas
 targets:
     polydoc:
         target: typescript
         source: Polydoc-OAS
+        codeSamples:
+            registry:
+                location: registry.speakeasyapi.dev/edgenai/edgenai/polydoc-oas-code-samples
+            blocking: false

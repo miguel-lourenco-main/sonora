@@ -3,17 +3,35 @@
  */
 
 import { ClientSDK } from "../lib/sdks.js";
+import { Converts } from "./converts.js";
 import { Files } from "./files.js";
+import { Messages } from "./messages.js";
 import { Runs } from "./runs.js";
+import { Threads } from "./threads.js";
 
 export class Polydoc extends ClientSDK {
+  private _converts?: Converts;
+  get converts(): Converts {
+    return (this._converts ??= new Converts(this._options));
+  }
+
   private _files?: Files;
   get files(): Files {
-    return (this._files ??= new Files(this.options$));
+    return (this._files ??= new Files(this._options));
+  }
+
+  private _messages?: Messages;
+  get messages(): Messages {
+    return (this._messages ??= new Messages(this._options));
   }
 
   private _runs?: Runs;
   get runs(): Runs {
-    return (this._runs ??= new Runs(this.options$));
+    return (this._runs ??= new Runs(this._options));
+  }
+
+  private _threads?: Threads;
+  get threads(): Threads {
+    return (this._threads ??= new Threads(this._options));
   }
 }

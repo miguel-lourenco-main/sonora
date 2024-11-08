@@ -6,7 +6,7 @@
 import { FilesDownloadRequest } from "polydoc/models/operations";
 
 let value: FilesDownloadRequest = {
-  fileId: "802d502a-94bb-44f6-bc96-9e9a3efa77df",
+  fileId: "42019ff6-2a7f-41c4-93a3-a8684b65de03",
 };
 ```
 

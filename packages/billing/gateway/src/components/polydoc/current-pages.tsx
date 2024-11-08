@@ -42,6 +42,8 @@ export default function CurrentPages({ size = 'normal', onlyLeft }: CurrentPages
     const [monthlyTokens, setMonthlyTokens] = useState<number>(1);
 
     const handleCreditsChange = (userTokens: UserTokens) => {
+      console.log('new userTokens', userTokens);
+
       setTokens(userTokens.credits);
       setMonthlyTokens(userTokens.monthly_credits);
     }
@@ -56,30 +58,40 @@ export default function CurrentPages({ size = 'normal', onlyLeft }: CurrentPages
         const { data } = await client.from('credit').select('*').filter('account_id', 'eq', accountId);
 
         setTokens(data?.[0]?.credits ?? 0);
-        setMonthlyTokens(data?.[0]?.monthly_credits ?? 0);
+        setMonthlyTokens(data?.[0]?.monthly_credits ?? 1);
       }
 
       setupCredits();
     }, []);
 
     useEffect(() => {
-        const subscribeChanges = async () => {
-          const client = getSupabaseBrowserClient();
+      const subscribeChanges = async () => {
+        const client = getSupabaseBrowserClient();
+        const { data: { session } } = await client.auth.getSession();
+        const accountId = session?.user.id;
+        
+        const channelName = `credit-${Math.random().toString(36).slice(2, 9)}`;
+        const channel = client.channel(channelName)
+          .on(
+            'postgres_changes',
+            { event: '*', schema: 'public', table: 'credit', filter: `account_id=eq.${accountId}` },
+            (payload) => handleCreditsChange(payload.new as UserTokens)
+          )
+          .subscribe()
 
-          const { data: { session } } = await client.auth.getSession();
-          const accountId = session?.user.id;
-          
-          client.channel('credit')
-            .on(
-              'postgres_changes',
-              { event: '*', schema: 'public', table: 'credit', filter: `account_id=eq.${accountId}` },
-              (payload) => handleCreditsChange(payload.new as UserTokens)
-            )
-            .subscribe()
+        // Return cleanup function
+        return () => {
+          channel.unsubscribe();
         };
-    
-        subscribeChanges();
-      }, []);
+      };
+
+      const subscription = subscribeChanges();
+      
+      // Cleanup on unmount
+      return () => {
+        subscription.then(cleanup => cleanup?.());
+      };
+    }, []);
 
     const styles = sizeStyles[size];
 

@@ -1,28 +1,33 @@
-speakeasyVersion: 1.395.0
+speakeasyVersion: 1.434.7
 sources:
     Polydoc-OAS:
         sourceNamespace: polydoc-oas
-        sourceRevisionDigest: sha256:a8afe5920e60b8a825fc09d323501508eaa5d50d7fd6b69216db3f19afe84763
-        sourceBlobDigest: sha256:1913d8afaa73d69edd65bed670033b162a4fa64db52580bf4ca80fe2c50c45ce
+        sourceRevisionDigest: sha256:7cb15340aebe606c7a872f46ee83ee17eaa07c4beea6b0a02d58ba0ced6fc196
+        sourceBlobDigest: sha256:d160ab03ba41cd00808a42eaa851a20b06fc3f827c91dad4fffbd6b74042ae88
         tags:
             - latest
 targets:
     polydoc:
         source: Polydoc-OAS
         sourceNamespace: polydoc-oas
-        sourceRevisionDigest: sha256:a8afe5920e60b8a825fc09d323501508eaa5d50d7fd6b69216db3f19afe84763
-        sourceBlobDigest: sha256:1913d8afaa73d69edd65bed670033b162a4fa64db52580bf4ca80fe2c50c45ce
-        outLocation: /home/francis/edgen/frontend/apps/polydoc/lib/polydoc-typescript
+        sourceRevisionDigest: sha256:7cb15340aebe606c7a872f46ee83ee17eaa07c4beea6b0a02d58ba0ced6fc196
+        sourceBlobDigest: sha256:d160ab03ba41cd00808a42eaa851a20b06fc3f827c91dad4fffbd6b74042ae88
+        codeSamplesNamespace: polydoc-oas-code-samples
+        codeSamplesRevisionDigest: sha256:16d352547de08bff46630666f3e2b59c053a98bcebc900eecbc3a60260aff894
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: latest
     sources:
         Polydoc-OAS:
             inputs:
-                - location: ../../../../../workflows/workflows-server/docs/openapi.yml
+                - location: ../../../../backend/server/docs/openapi.yml
             registry:
                 location: registry.speakeasyapi.dev/edgenai/edgenai/polydoc-oas
     targets:
         polydoc:
             target: typescript
             source: Polydoc-OAS
+            codeSamples:
+                registry:
+                    location: registry.speakeasyapi.dev/edgenai/edgenai/polydoc-oas-code-samples
+                blocking: false

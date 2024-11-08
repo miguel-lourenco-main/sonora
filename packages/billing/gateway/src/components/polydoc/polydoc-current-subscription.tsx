@@ -37,6 +37,7 @@ export function PolydocCurrentSubscriptionCard({
   subscription,
   config,
 }: React.PropsWithChildren<Props>) {
+  
   const lineItems = subscription.items;
   const firstLineItem = lineItems[0];
 
@@ -141,7 +142,7 @@ export function PolydocCurrentSubscriptionCard({
           </Alert>
         </If>
 
-        <If condition={!subscription.cancel_at_period_end && scheduledQuantity && scheduledProductName }>
+        <If condition={!subscription.cancel_at_period_end && scheduledQuantity && scheduledProductName && subscription.schedule}>
           <Alert variant={'warning'} className={'w-fit'} data-testid={'polydoc-billing-downgrade-subscription-alert'}>
             <AlertTitle>
               <Trans i18nKey="billing:subscriptionDowngraded" />

@@ -18,8 +18,8 @@ stages:
 # Polydoc App Jobs
 polydoc-test:
   stage: test
-  #tags:
-  #  - office-linux
+  tags:
+    - cm3588
   image: 'node:20'
   script:
     - echo "polydoc app test"
@@ -30,8 +30,8 @@ polydoc-test:
 
 polydoc-build:
   stage: build
-  #tags:
-  #  - office-linux
+  tags:
+    - cm3588
   image: 'node:20'
   script:
     - cd apps/polydoc
@@ -47,8 +47,8 @@ polydoc-build:
 
 polydoc-deploy:
   stage: deploy
-  #tags:
-  #  - office-linux
+  tags:
+    - cm3588
   image: 'node:20'
   dependencies:
     - polydoc-build
