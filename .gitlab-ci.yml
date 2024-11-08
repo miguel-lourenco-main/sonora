@@ -9,6 +9,9 @@ variables:
 before_script:
   - npm install -g pnpm
   - pnpm i --frozen-lockfile
+  - pnpm clean:workspaces
+  - pnpm clean
+  - pnpm i --frozen-lockfile
 
 stages:
   - test
