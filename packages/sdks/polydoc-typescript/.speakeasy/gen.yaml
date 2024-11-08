@@ -14,8 +14,9 @@ generation:
     requestResponseComponentNamesFeb2024: true
   auth:
     oAuth2ClientCredentialsEnabled: false
+    oAuth2PasswordEnabled: false
 typescript:
-  version: 0.1.3
+  version: 0.2.0
   additionalDependencies:
     dependencies: {}
     devDependencies: {}
@@ -26,6 +27,7 @@ typescript:
   enumFormat: union
   envVarPrefix: POLYDOC
   flattenGlobalSecurity: true
+  flatteningOrder: body-first
   imports:
     option: openapi
     paths:

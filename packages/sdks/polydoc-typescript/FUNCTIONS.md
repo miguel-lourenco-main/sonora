@@ -20,7 +20,7 @@ specific category of applications.
 
 ```typescript
 import { PolydocCore } from "polydoc/core.js";
-import { filesFilesList } from "polydoc/funcs/filesFilesList.js";
+import { convertsConvertsCreate } from "polydoc/funcs/convertsConvertsCreate.js";
 import { SDKValidationError } from "polydoc/models/errors/sdkvalidationerror.js";
 
 // Use `PolydocCore` for best tree-shaking performance.
@@ -30,7 +30,9 @@ const polydoc = new PolydocCore({
 });
 
 async function run() {
-  const res = await filesFilesList(polydoc);
+  const res = await convertsConvertsCreate(polydoc, {
+    inputFileId: "19f09514-b864-4ae9-a56f-ff84e381a3ed",
+  });
 
   switch (true) {
     case res.ok:
@@ -52,7 +54,7 @@ async function run() {
   const { value: result } = res;
 
   // Handle the result
-  console.log(result)
+  console.log(result);
 }
 
 run();

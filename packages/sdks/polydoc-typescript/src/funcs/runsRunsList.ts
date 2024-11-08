@@ -4,7 +4,7 @@
 
 import * as z from "zod";
 import { PolydocCore } from "../core.js";
-import * as m$ from "../lib/matchers.js";
+import * as M from "../lib/matchers.js";
 import { RequestOptions } from "../lib/sdks.js";
 import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
 import { pathToFunc } from "../lib/url.js";
@@ -21,7 +21,7 @@ import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import { Result } from "../types/fp.js";
 
 export async function runsRunsList(
-  client$: PolydocCore,
+  client: PolydocCore,
   options?: RequestOptions,
 ): Promise<
   Result<
@@ -35,46 +35,50 @@ export async function runsRunsList(
     | ConnectionError
   >
 > {
-  const path$ = pathToFunc("/v1/runs")();
+  const path = pathToFunc("/v1/runs")();
 
-  const headers$ = new Headers({
+  const headers = new Headers({
     Accept: "application/json",
   });
 
-  const bearerAuth$ = await extractSecurity(client$.options$.bearerAuth);
-  const security$ = bearerAuth$ == null ? {} : { bearerAuth: bearerAuth$ };
+  const secConfig = await extractSecurity(client._options.bearerAuth);
+  const securityInput = secConfig == null ? {} : { bearerAuth: secConfig };
+  const requestSecurity = resolveGlobalSecurity(securityInput);
+
   const context = {
     operationID: "runs_list",
     oAuth2Scopes: [],
-    securitySource: client$.options$.bearerAuth,
+    securitySource: client._options.bearerAuth,
+    retryConfig: options?.retries
+      || client._options.retryConfig
+      || { strategy: "none" },
+    retryCodes: options?.retryCodes || ["429", "500", "502", "503", "504"],
   };
-  const securitySettings$ = resolveGlobalSecurity(security$);
 
-  const requestRes = client$.createRequest$(context, {
-    security: securitySettings$,
+  const requestRes = client._createRequest(context, {
+    security: requestSecurity,
     method: "GET",
-    path: path$,
-    headers: headers$,
-    timeoutMs: options?.timeoutMs || client$.options$.timeoutMs || -1,
+    path: path,
+    headers: headers,
+    timeoutMs: options?.timeoutMs || client._options.timeoutMs || -1,
   }, options);
   if (!requestRes.ok) {
     return requestRes;
   }
-  const request$ = requestRes.value;
+  const req = requestRes.value;
 
-  const doResult = await client$.do$(request$, {
+  const doResult = await client._do(req, {
     context,
     errorCodes: ["4XX", "5XX"],
-    retryConfig: options?.retries
-      || client$.options$.retryConfig,
-    retryCodes: options?.retryCodes || ["429", "500", "502", "503", "504"],
+    retryConfig: context.retryConfig,
+    retryCodes: context.retryCodes,
   });
   if (!doResult.ok) {
     return doResult;
   }
   const response = doResult.value;
 
-  const [result$] = await m$.match<
+  const [result] = await M.match<
     Array<components.Run>,
     | SDKError
     | SDKValidationError
@@ -84,12 +88,12 @@ export async function runsRunsList(
     | RequestTimeoutError
     | ConnectionError
   >(
-    m$.json(200, z.array(components.Run$inboundSchema)),
-    m$.fail(["4XX", "5XX"]),
+    M.json(200, z.array(components.Run$inboundSchema)),
+    M.fail(["4XX", "5XX"]),
   )(response);
-  if (!result$.ok) {
-    return result$;
+  if (!result.ok) {
+    return result;
   }
 
-  return result$;
+  return result;
 }

@@ -24,9 +24,9 @@ const polydoc = new Polydoc({
 
 async function run() {
   const result = await polydoc.files.filesList();
-  
+
   // Handle the result
-  console.log(result)
+  console.log(result);
 }
 
 run();
@@ -56,7 +56,7 @@ async function run() {
   const { value: result } = res;
 
   // Handle the result
-  console.log(result)
+  console.log(result);
 }
 
 run();
@@ -76,10 +76,9 @@ run();
 
 ### Errors
 
-| Error Object    | Status Code     | Content Type    |
+| Error Type      | Status Code     | Content Type    |
 | --------------- | --------------- | --------------- |
-| errors.SDKError | 4xx-5xx         | */*             |
-
+| errors.SDKError | 4XX, 5XX        | \*/\*           |
 
 ## filesCreate
 
@@ -95,11 +94,11 @@ const polydoc = new Polydoc({
 
 async function run() {
   const result = await polydoc.files.filesCreate({
-    data: await openAsBlob("./sample-file"),
+    data: await openAsBlob("example.file"),
   });
-  
+
   // Handle the result
-  console.log(result)
+  console.log(result);
 }
 
 run();
@@ -122,7 +121,7 @@ const polydoc = new PolydocCore({
 
 async function run() {
   const res = await filesFilesCreate(polydoc, {
-    data: await openAsBlob("./sample-file"),
+    data: await openAsBlob("example.file"),
   });
 
   if (!res.ok) {
@@ -132,7 +131,7 @@ async function run() {
   const { value: result } = res;
 
   // Handle the result
-  console.log(result)
+  console.log(result);
 }
 
 run();
@@ -153,10 +152,9 @@ run();
 
 ### Errors
 
-| Error Object    | Status Code     | Content Type    |
+| Error Type      | Status Code     | Content Type    |
 | --------------- | --------------- | --------------- |
-| errors.SDKError | 4xx-5xx         | */*             |
-
+| errors.SDKError | 4XX, 5XX        | \*/\*           |
 
 ## filesDownload
 
@@ -173,9 +171,9 @@ async function run() {
   const result = await polydoc.files.filesDownload({
     fileId: "4a176118-b862-4d43-860a-6e4c9c893bde",
   });
-  
+
   // Handle the result
-  console.log(result)
+  console.log(result);
 }
 
 run();
@@ -207,7 +205,7 @@ async function run() {
   const { value: result } = res;
 
   // Handle the result
-  console.log(result)
+  console.log(result);
 }
 
 run();
@@ -228,6 +226,6 @@ run();
 
 ### Errors
 
-| Error Object    | Status Code     | Content Type    |
+| Error Type      | Status Code     | Content Type    |
 | --------------- | --------------- | --------------- |
-| errors.SDKError | 4xx-5xx         | */*             |
+| errors.SDKError | 4XX, 5XX        | \*/\*           |

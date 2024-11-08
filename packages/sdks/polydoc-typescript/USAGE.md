@@ -7,7 +7,9 @@ const polydoc = new Polydoc({
 });
 
 async function run() {
-  const result = await polydoc.files.filesList();
+  const result = await polydoc.converts.convertsCreate({
+    inputFileId: "19f09514-b864-4ae9-a56f-ff84e381a3ed",
+  });
 
   // Handle the result
   console.log(result);

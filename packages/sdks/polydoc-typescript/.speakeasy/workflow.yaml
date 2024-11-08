@@ -10,3 +10,7 @@ targets:
     polydoc:
         target: typescript
         source: Polydoc-OAS
+        codeSamples:
+            registry:
+                location: registry.speakeasyapi.dev/edgenai/edgenai/polydoc-oas-code-samples
+            blocking: false

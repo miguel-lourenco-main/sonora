@@ -6,14 +6,14 @@
 import { FileT } from "polydoc/models/components";
 
 let value: FileT = {
-  accountId: "89bd9d8d-69a6-474e-8f46-7cc8796ed151",
-  createdAt: new Date("2023-12-12T09:30:46.948Z"),
-  expiresAt: new Date("2022-01-23T03:49:29.173Z"),
-  filename: "your_file_here",
-  id: "5dfc2ddf-7cc7-48ca-9ba9-28fc816742cb",
-  numPages: 456150,
+  accountId: "8b986a7e-f6c8-49e1-910d-cdfc7c1a2f86",
+  createdAt: new Date("2024-04-28T13:26:34.681Z"),
+  expiresAt: new Date("2023-05-15T22:34:42.019Z"),
+  filename: "example.file",
+  id: "90999fa5-6b0a-4a32-8559-7f132a47321a",
+  numPages: 196582,
   s3Key: "<value>",
-  size: 216550,
+  size: 368725,
 };
 ```
 
