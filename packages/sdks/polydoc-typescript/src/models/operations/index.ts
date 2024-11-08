@@ -3,3 +3,7 @@
  */
 
 export * from "./filesdownload.js";
+export * from "./messagesget.js";
+export * from "./threadsdelete.js";
+export * from "./threadsget.js";
+export * from "./threadsrun.js";

@@ -3,7 +3,7 @@
  */
 
 import * as z from "zod";
-//import * as b64$ from "../../lib/base64.js";
+import * as b64$ from "../../lib/base64.js";
 import { remap as remap$ } from "../../lib/primitives.js";
 
 export type FilesDownloadRequest = {
@@ -15,7 +15,7 @@ export type FilesDownloadRequest = {
 
 export type FilesDownloadResponse = {
   headers: { [k: string]: Array<string> };
-  result: ReadableStream;
+  result: Uint8Array | string;
 };
 
 /** @internal */
@@ -69,7 +69,7 @@ export const FilesDownloadResponse$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   Headers: z.record(z.array(z.string())),
-  Result: z.instanceof(ReadableStream),
+  Result: b64$.zodInbound,
 }).transform((v) => {
   return remap$(v, {
     "Headers": "headers",
@@ -80,7 +80,7 @@ export const FilesDownloadResponse$inboundSchema: z.ZodType<
 /** @internal */
 export type FilesDownloadResponse$Outbound = {
   Headers: { [k: string]: Array<string> };
-  Result: ReadableStream;
+  Result: Uint8Array;
 };
 
 /** @internal */
@@ -90,7 +90,7 @@ export const FilesDownloadResponse$outboundSchema: z.ZodType<
   FilesDownloadResponse
 > = z.object({
   headers: z.record(z.array(z.string())),
-  result: z.instanceof(ReadableStream),
+  result: b64$.zodOutbound,
 }).transform((v) => {
   return remap$(v, {
     headers: "Headers",
