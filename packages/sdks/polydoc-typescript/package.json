@@ -3,12 +3,39 @@
   "version": "0.2.0",
   "author": "Speakeasy",
   "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./models/errors": {
+      "types": "./dist/models/errors/index.d.ts",
+      "default": "./dist/models/errors/index.js"
+    },
+    "./models/components": {
+      "types": "./dist/models/components/index.d.ts",
+      "default": "./dist/models/components/index.js"
+    },
+    "./models/operations": {
+      "types": "./dist/models/operations/index.d.ts",
+      "default": "./dist/models/operations/index.js"
+    },
+    "./lib/files": {
+      "types": "./dist/lib/files.d.ts",
+      "default": "./dist/lib/files.js"
+    },
+    "./types": {
+      "types": "./dist/types/index.d.ts",
+      "default": "./dist/types/index.js"
+    }
+  },
   "scripts": {
     "lint": "eslint --max-warnings=0 src",
     "build": "tsc",
-    "clean": "rm -rf dist && rm -rf .tsbuildinfo && rm -rf node_modules && rm -rf package-lock.json && rm -rf pnpm-lock.yaml && rm -rf .turbo",
-    "prepublishOnly": "npm run build"
+    "prepare": "pnpm run build",
+    "clean": "rm -rf dist && rm -rf .tsbuildinfo && rm -rf node_modules && rm -rf package-lock.json && rm -rf pnpm-lock.yaml && rm -rf .turbo"
   },
   "peerDependencies": {
     "zod": ">= 3"
