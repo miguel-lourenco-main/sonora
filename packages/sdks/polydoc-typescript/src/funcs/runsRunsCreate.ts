@@ -62,6 +62,9 @@ export async function runsRunsCreate(
   const context = {
     operationID: "runs_create",
     oAuth2Scopes: [],
+
+    resolvedSecurity: requestSecurity,
+
     securitySource: client._options.bearerAuth,
     retryConfig: options?.retries
       || client._options.retryConfig

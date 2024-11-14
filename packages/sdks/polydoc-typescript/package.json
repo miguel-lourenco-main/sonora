@@ -1,53 +1,27 @@
 {
   "name": "polydoc",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": "Speakeasy",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./index.js",
   "sideEffects": false,
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
-    },
-    "./models/errors": {
-      "types": "./dist/models/errors/index.d.ts",
-      "default": "./dist/models/errors/index.js"
-    },
-    "./models/components": {
-      "types": "./dist/models/components/index.d.ts",
-      "default": "./dist/models/components/index.js"
-    },
-    "./models/operations": {
-      "types": "./dist/models/operations/index.d.ts",
-      "default": "./dist/models/operations/index.js"
-    },
-    "./lib/files": {
-      "types": "./dist/lib/files.d.ts",
-      "default": "./dist/lib/files.js"
-    },
-    "./types": {
-      "types": "./dist/types/index.d.ts",
-      "default": "./dist/types/index.js"
-    }
-  },
   "scripts": {
     "lint": "eslint --max-warnings=0 src",
     "build": "tsc",
-    "prepare": "pnpm run build",
-    "clean": "rm -rf dist && rm -rf .tsbuildinfo && rm -rf node_modules && rm -rf package-lock.json && rm -rf pnpm-lock.yaml && rm -rf .turbo"
+    "prepublishOnly": "npm run build"
   },
   "peerDependencies": {
     "zod": ">= 3"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^8.3.0",
-    "@typescript-eslint/parser": "^8.3.0",
+    "@typescript-eslint/eslint-plugin": "^7.7.1",
+    "@typescript-eslint/parser": "^7.7.1",
     "eslint": "^8.57.0",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "^2.29.1",
-    "typescript": "^5.5.4",
-    "zod": "^3.23.8"
+    "typescript": "^5.4.5",
+    "zod": "^3.23.4"
   },
-  "dependencies": {}
+  "dependencies": {
+    
+  }
 }

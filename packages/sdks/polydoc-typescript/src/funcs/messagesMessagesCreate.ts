@@ -62,6 +62,9 @@ export async function messagesMessagesCreate(
   const context = {
     operationID: "messages_create",
     oAuth2Scopes: [],
+
+    resolvedSecurity: requestSecurity,
+
     securitySource: client._options.bearerAuth,
     retryConfig: options?.retries
       || client._options.retryConfig
