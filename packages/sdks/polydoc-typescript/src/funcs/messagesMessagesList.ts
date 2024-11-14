@@ -48,6 +48,9 @@ export async function messagesMessagesList(
   const context = {
     operationID: "messages_list",
     oAuth2Scopes: [],
+
+    resolvedSecurity: requestSecurity,
+
     securitySource: client._options.bearerAuth,
     retryConfig: options?.retries
       || client._options.retryConfig

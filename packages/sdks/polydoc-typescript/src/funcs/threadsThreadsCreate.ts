@@ -62,6 +62,9 @@ export async function threadsThreadsCreate(
   const context = {
     operationID: "threads_create",
     oAuth2Scopes: [],
+
+    resolvedSecurity: requestSecurity,
+
     securitySource: client._options.bearerAuth,
     retryConfig: options?.retries
       || client._options.retryConfig

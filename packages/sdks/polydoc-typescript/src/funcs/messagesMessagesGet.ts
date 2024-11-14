@@ -69,6 +69,9 @@ export async function messagesMessagesGet(
   const context = {
     operationID: "messages_get",
     oAuth2Scopes: [],
+
+    resolvedSecurity: requestSecurity,
+
     securitySource: client._options.bearerAuth,
     retryConfig: options?.retries
       || client._options.retryConfig

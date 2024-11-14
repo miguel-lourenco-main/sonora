@@ -70,6 +70,9 @@ export async function threadsThreadsRun(
   const context = {
     operationID: "threads_run",
     oAuth2Scopes: [],
+
+    resolvedSecurity: requestSecurity,
+
     securitySource: client._options.bearerAuth,
     retryConfig: options?.retries
       || client._options.retryConfig

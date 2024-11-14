@@ -69,6 +69,9 @@ export async function threadsThreadsGet(
   const context = {
     operationID: "threads_get",
     oAuth2Scopes: [],
+
+    resolvedSecurity: requestSecurity,
+
     securitySource: client._options.bearerAuth,
     retryConfig: options?.retries
       || client._options.retryConfig
