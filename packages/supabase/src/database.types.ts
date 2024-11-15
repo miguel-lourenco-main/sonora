@@ -256,8 +256,8 @@ export type Database = {
           filename: string
           id: string
           num_pages: number
-          s3_key: string
           size: number
+          url: string
         }
         Insert: {
           account_id?: string
@@ -266,8 +266,8 @@ export type Database = {
           filename: string
           id?: string
           num_pages: number
-          s3_key: string
           size: number
+          url: string
         }
         Update: {
           account_id?: string
@@ -276,8 +276,8 @@ export type Database = {
           filename?: string
           id?: string
           num_pages?: number
-          s3_key?: string
           size?: number
+          url?: string
         }
         Relationships: [
           {
