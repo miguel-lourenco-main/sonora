@@ -4,6 +4,9 @@
 
 import * as z from "zod";
 import { remap as remap$ } from "../../lib/primitives.js";
+import { safeParse } from "../../lib/schemas.js";
+import { Result as SafeParseResult } from "../../types/fp.js";
+import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 export type Thread = {
   accountId: string;
@@ -64,4 +67,18 @@ export namespace Thread$ {
   export const outboundSchema = Thread$outboundSchema;
   /** @deprecated use `Thread$Outbound` instead. */
   export type Outbound = Thread$Outbound;
+}
+
+export function threadToJSON(thread: Thread): string {
+  return JSON.stringify(Thread$outboundSchema.parse(thread));
+}
+
+export function threadFromJSON(
+  jsonString: string,
+): SafeParseResult<Thread, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Thread$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Thread' from JSON`,
+  );
 }

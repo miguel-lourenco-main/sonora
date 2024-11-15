@@ -6,7 +6,7 @@
 import { ThreadsGetRequest } from "polydoc/models/operations";
 
 let value: ThreadsGetRequest = {
-  threadId: "ef849e68-4763-4845-98c5-ed04715ba9b3",
+  threadId: "4f31f3b0-be46-45b3-8274-d38fadfcbff7",
 };
 ```
 

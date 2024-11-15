@@ -1,19 +1,19 @@
-speakeasyVersion: 1.439.0
+speakeasyVersion: 1.440.1
 sources:
     Polydoc-OAS:
         sourceNamespace: polydoc-oas
-        sourceRevisionDigest: sha256:e67ef6cfb71eda1483201716f4a83fef2054954484220258ad445100262b40aa
-        sourceBlobDigest: sha256:8626b22dd79f549686e6a87e3ba333ae94f4503f916e03d1e0896e845ee823b8
+        sourceRevisionDigest: sha256:08d841d85c3213bd7955d8eefee82c2c54c1bb024b7c6e453c2e7051fe7bf086
+        sourceBlobDigest: sha256:56e6f3fc91ca3eb5d0192f67424da7dd71f1699a9773891042ba5eb784f32520
         tags:
             - latest
 targets:
     polydoc:
         source: Polydoc-OAS
         sourceNamespace: polydoc-oas
-        sourceRevisionDigest: sha256:e67ef6cfb71eda1483201716f4a83fef2054954484220258ad445100262b40aa
-        sourceBlobDigest: sha256:8626b22dd79f549686e6a87e3ba333ae94f4503f916e03d1e0896e845ee823b8
+        sourceRevisionDigest: sha256:08d841d85c3213bd7955d8eefee82c2c54c1bb024b7c6e453c2e7051fe7bf086
+        sourceBlobDigest: sha256:56e6f3fc91ca3eb5d0192f67424da7dd71f1699a9773891042ba5eb784f32520
         codeSamplesNamespace: polydoc-oas-code-samples
-        codeSamplesRevisionDigest: sha256:1fa8e7f82ca88add56b8efcaa6dcc662024dd95bc8b8705c3388eade24d0619e
+        codeSamplesRevisionDigest: sha256:ab3d96533766812f705060f58f06780c3232fcaf55e18214bcc40e16d912cd11
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: latest

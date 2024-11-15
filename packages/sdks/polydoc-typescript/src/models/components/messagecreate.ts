@@ -4,6 +4,9 @@
 
 import * as z from "zod";
 import { remap as remap$ } from "../../lib/primitives.js";
+import { safeParse } from "../../lib/schemas.js";
+import { Result as SafeParseResult } from "../../types/fp.js";
+import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import {
   MessageRole,
   MessageRole$inboundSchema,
@@ -64,4 +67,18 @@ export namespace MessageCreate$ {
   export const outboundSchema = MessageCreate$outboundSchema;
   /** @deprecated use `MessageCreate$Outbound` instead. */
   export type Outbound = MessageCreate$Outbound;
+}
+
+export function messageCreateToJSON(messageCreate: MessageCreate): string {
+  return JSON.stringify(MessageCreate$outboundSchema.parse(messageCreate));
+}
+
+export function messageCreateFromJSON(
+  jsonString: string,
+): SafeParseResult<MessageCreate, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => MessageCreate$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'MessageCreate' from JSON`,
+  );
 }

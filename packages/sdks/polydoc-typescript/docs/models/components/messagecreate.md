@@ -7,8 +7,8 @@ import { MessageCreate } from "polydoc/models/components";
 
 let value: MessageCreate = {
   content: "<value>",
-  role: "Assistant",
-  threadId: "b734064b-6201-4a78-8ef3-a40c569dad4c",
+  role: "Human",
+  threadId: "064b6201-a78e-4f3a-b40c-569dad4c2fa3",
 };
 ```
 

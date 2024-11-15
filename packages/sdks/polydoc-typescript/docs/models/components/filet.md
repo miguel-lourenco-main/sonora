@@ -12,8 +12,8 @@ let value: FileT = {
   filename: "example.file",
   id: "90999fa5-6b0a-4a32-8559-7f132a47321a",
   numPages: 196582,
-  s3Key: "<value>",
   size: 368725,
+  url: "https://busy-spirit.com",
 };
 ```
 
@@ -27,5 +27,5 @@ let value: FileT = {
 | `filename`                                                                                    | *string*                                                                                      | :heavy_check_mark:                                                                            | N/A                                                                                           |
 | `id`                                                                                          | *string*                                                                                      | :heavy_check_mark:                                                                            | N/A                                                                                           |
 | `numPages`                                                                                    | *number*                                                                                      | :heavy_check_mark:                                                                            | N/A                                                                                           |
-| `s3Key`                                                                                       | *string*                                                                                      | :heavy_check_mark:                                                                            | N/A                                                                                           |
 | `size`                                                                                        | *number*                                                                                      | :heavy_check_mark:                                                                            | N/A                                                                                           |
+| `url`                                                                                         | *string*                                                                                      | :heavy_check_mark:                                                                            | N/A                                                                                           |

@@ -3,7 +3,10 @@
  */
 
 import * as z from "zod";
+import { safeParse } from "../../lib/schemas.js";
 import { blobLikeSchema } from "../../types/blobs.js";
+import { Result as SafeParseResult } from "../../types/fp.js";
+import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 export type Data = {
   fileName: string;
@@ -57,6 +60,20 @@ export namespace Data$ {
   export type Outbound = Data$Outbound;
 }
 
+export function dataToJSON(data: Data): string {
+  return JSON.stringify(Data$outboundSchema.parse(data));
+}
+
+export function dataFromJSON(
+  jsonString: string,
+): SafeParseResult<Data, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Data$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Data' from JSON`,
+  );
+}
+
 /** @internal */
 export const FileUpload$inboundSchema: z.ZodType<
   FileUpload,
@@ -91,4 +108,18 @@ export namespace FileUpload$ {
   export const outboundSchema = FileUpload$outboundSchema;
   /** @deprecated use `FileUpload$Outbound` instead. */
   export type Outbound = FileUpload$Outbound;
+}
+
+export function fileUploadToJSON(fileUpload: FileUpload): string {
+  return JSON.stringify(FileUpload$outboundSchema.parse(fileUpload));
+}
+
+export function fileUploadFromJSON(
+  jsonString: string,
+): SafeParseResult<FileUpload, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => FileUpload$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'FileUpload' from JSON`,
+  );
 }

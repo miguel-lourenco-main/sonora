@@ -4,6 +4,9 @@
 
 import * as z from "zod";
 import { remap as remap$ } from "../../lib/primitives.js";
+import { safeParse } from "../../lib/schemas.js";
+import { Result as SafeParseResult } from "../../types/fp.js";
+import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 export type RunCreate = {
   inputFileId: string;
@@ -57,4 +60,18 @@ export namespace RunCreate$ {
   export const outboundSchema = RunCreate$outboundSchema;
   /** @deprecated use `RunCreate$Outbound` instead. */
   export type Outbound = RunCreate$Outbound;
+}
+
+export function runCreateToJSON(runCreate: RunCreate): string {
+  return JSON.stringify(RunCreate$outboundSchema.parse(runCreate));
+}
+
+export function runCreateFromJSON(
+  jsonString: string,
+): SafeParseResult<RunCreate, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => RunCreate$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'RunCreate' from JSON`,
+  );
 }

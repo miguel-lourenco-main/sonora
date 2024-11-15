@@ -4,6 +4,9 @@
 
 import * as z from "zod";
 import { remap as remap$ } from "../../lib/primitives.js";
+import { safeParse } from "../../lib/schemas.js";
+import { Result as SafeParseResult } from "../../types/fp.js";
+import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 export type ConvertCreate = {
   inputFileId: string;
@@ -51,4 +54,18 @@ export namespace ConvertCreate$ {
   export const outboundSchema = ConvertCreate$outboundSchema;
   /** @deprecated use `ConvertCreate$Outbound` instead. */
   export type Outbound = ConvertCreate$Outbound;
+}
+
+export function convertCreateToJSON(convertCreate: ConvertCreate): string {
+  return JSON.stringify(ConvertCreate$outboundSchema.parse(convertCreate));
+}
+
+export function convertCreateFromJSON(
+  jsonString: string,
+): SafeParseResult<ConvertCreate, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ConvertCreate$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ConvertCreate' from JSON`,
+  );
 }

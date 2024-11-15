@@ -4,7 +4,10 @@
 
 import * as z from "zod";
 import { remap as remap$ } from "../../lib/primitives.js";
+import { safeParse } from "../../lib/schemas.js";
+import { Result as SafeParseResult } from "../../types/fp.js";
 import * as components from "../components/index.js";
+import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 export type ThreadsRunRequest = {
   /**
@@ -61,4 +64,22 @@ export namespace ThreadsRunRequest$ {
   export const outboundSchema = ThreadsRunRequest$outboundSchema;
   /** @deprecated use `ThreadsRunRequest$Outbound` instead. */
   export type Outbound = ThreadsRunRequest$Outbound;
+}
+
+export function threadsRunRequestToJSON(
+  threadsRunRequest: ThreadsRunRequest,
+): string {
+  return JSON.stringify(
+    ThreadsRunRequest$outboundSchema.parse(threadsRunRequest),
+  );
+}
+
+export function threadsRunRequestFromJSON(
+  jsonString: string,
+): SafeParseResult<ThreadsRunRequest, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ThreadsRunRequest$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ThreadsRunRequest' from JSON`,
+  );
 }
