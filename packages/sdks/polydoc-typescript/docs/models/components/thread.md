@@ -6,9 +6,9 @@
 import { Thread } from "polydoc/models/components";
 
 let value: Thread = {
-  accountId: "688a426f-2e87-4e7b-b6eb-b5ca32cf79d7",
-  createdAt: new Date("2023-09-24T00:33:30.839Z"),
-  id: "ded2a616-4d0f-4550-826e-1fd753900614",
+  accountId: "426f2e87-e7b6-4ebb-b5ca-32cf79d7f9de",
+  createdAt: new Date("2022-06-24T17:14:16.967Z"),
+  id: "a6164d0f-5502-46e1-8fd7-539006143420",
 };
 ```
 

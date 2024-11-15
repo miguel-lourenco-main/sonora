@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 894f4b12-56c7-4e54-97e2-c31dd2cd6b62
 management:
-  docChecksum: d36d19db6f5215e25af7fff9f8398740
+  docChecksum: c8d8cbf7b8a598c0dcf9457e0d34943e
   docVersion: 0.1.0
-  speakeasyVersion: 1.439.0
-  generationVersion: 2.457.9
-  releaseVersion: 0.2.1
-  configChecksum: f8fe883be25b7ca206ef762ad87aeb05
+  speakeasyVersion: 1.440.1
+  generationVersion: 2.460.1
+  releaseVersion: 0.2.2
+  configChecksum: fdcbb61a25e6998283f6f3e421f6adad
 features:
   typescript:
     additionalDependencies: 0.1.0
-    core: 3.18.4
+    core: 3.18.5
     defaultEnabledRetries: 0.1.0
     devContainers: 2.90.0
     enumUnions: 0.1.0
@@ -50,8 +50,6 @@ generatedFiles:
   - docs/models/components/thread.md
   - docs/models/components/threadcreate.md
   - docs/models/components/threadrun.md
-  - docs/models/operations/filesdownloadrequest.md
-  - docs/models/operations/filesdownloadresponse.md
   - docs/models/operations/messagesgetrequest.md
   - docs/models/operations/threadsdeleterequest.md
   - docs/models/operations/threadsgetrequest.md
@@ -67,7 +65,6 @@ generatedFiles:
   - src/core.ts
   - src/funcs/convertsConvertsCreate.ts
   - src/funcs/filesFilesCreate.ts
-  - src/funcs/filesFilesDownload.ts
   - src/funcs/filesFilesList.ts
   - src/funcs/messagesMessagesCreate.ts
   - src/funcs/messagesMessagesGet.ts
@@ -117,7 +114,6 @@ generatedFiles:
   - src/models/errors/index.ts
   - src/models/errors/sdkerror.ts
   - src/models/errors/sdkvalidationerror.ts
-  - src/models/operations/filesdownload.ts
   - src/models/operations/index.ts
   - src/models/operations/messagesget.ts
   - src/models/operations/threadsdelete.ts
@@ -151,7 +147,7 @@ examples:
         multipart/form-data: {"data": {}}
       responses:
         "200":
-          application/json: {"account_id": "aa367179-0fa4-49c8-b326-da1b0c92173d", "created_at": "2022-05-11T10:05:00.718Z", "expires_at": "2023-08-04T03:37:15.406Z", "filename": "your_file_here", "id": "289e35f3-9a7f-486d-838c-7bc677ec7466", "num_pages": 686344, "s3_key": "<value>", "size": 966945}
+          application/json: {"account_id": "aa367179-0fa4-49c8-b326-da1b0c92173d", "created_at": "2022-05-11T10:05:00.718Z", "expires_at": "2023-08-04T03:37:15.406Z", "filename": "your_file_here", "id": "289e35f3-9a7f-486d-838c-7bc677ec7466", "num_pages": 686344, "size": 966945, "url": "https://exhausted-individual.info"}
   files_download:
     speakeasy-default-files-download:
       parameters:
@@ -178,7 +174,7 @@ examples:
         application/json: {"input_file_id": "19f09514-b864-4ae9-a56f-ff84e381a3ed"}
       responses:
         "200":
-          application/json: {"account_id": "7e2f9cd7-84fd-4445-bd9f-fc2d86bf0b12", "created_at": "2022-09-01T05:28:55.251Z", "expires_at": "2024-07-04T02:30:19.101Z", "filename": "example.file", "id": "d1f81e45-e616-4838-b6c9-df17e76377b2", "num_pages": 354434, "s3_key": "<value>", "size": 86117}
+          application/json: {"account_id": "7e2f9cd7-84fd-4445-bd9f-fc2d86bf0b12", "created_at": "2022-09-01T05:28:55.251Z", "expires_at": "2024-07-04T02:30:19.101Z", "filename": "example.file", "id": "d1f81e45-e616-4838-b6c9-df17e76377b2", "num_pages": 354434, "size": 86117, "url": "https://portly-underpants.com/"}
   messages_list:
     speakeasy-default-messages-list:
       responses:

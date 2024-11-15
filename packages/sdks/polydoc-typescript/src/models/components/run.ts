@@ -4,6 +4,9 @@
 
 import * as z from "zod";
 import { remap as remap$ } from "../../lib/primitives.js";
+import { safeParse } from "../../lib/schemas.js";
+import { Result as SafeParseResult } from "../../types/fp.js";
+import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import {
   RunStatus,
   RunStatus$inboundSchema,
@@ -108,4 +111,18 @@ export namespace Run$ {
   export const outboundSchema = Run$outboundSchema;
   /** @deprecated use `Run$Outbound` instead. */
   export type Outbound = Run$Outbound;
+}
+
+export function runToJSON(run: Run): string {
+  return JSON.stringify(Run$outboundSchema.parse(run));
+}
+
+export function runFromJSON(
+  jsonString: string,
+): SafeParseResult<Run, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Run$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Run' from JSON`,
+  );
 }

@@ -6,12 +6,12 @@
 import { Message } from "polydoc/models/components";
 
 let value: Message = {
-  accountId: "0d0a4bf3-9993-4f7d-9b4d-6e9ebb8fa690",
+  accountId: "4bf39993-f7db-44d6-9e9e-bb8fa6904a49",
   content: "<value>",
-  createdAt: new Date("2023-12-25T13:12:17.029Z"),
-  id: "49624999-aa6e-456e-8cb1-ebf2d291dc96",
+  createdAt: new Date("2022-05-29T11:30:35.227Z"),
+  id: "4999aa6e-56ec-4b1e-bbf2-d291dc961b7b",
   role: "Assistant",
-  threadId: "7bdfd05b-2803-40c3-85eb-02993e989b46",
+  threadId: "d05b2803-0c35-4eb0-9299-3e989b4632fb",
 };
 ```
 

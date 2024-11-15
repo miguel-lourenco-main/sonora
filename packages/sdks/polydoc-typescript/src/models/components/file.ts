@@ -4,6 +4,9 @@
 
 import * as z from "zod";
 import { remap as remap$ } from "../../lib/primitives.js";
+import { safeParse } from "../../lib/schemas.js";
+import { Result as SafeParseResult } from "../../types/fp.js";
+import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 export type FileT = {
   accountId: string;
@@ -12,8 +15,8 @@ export type FileT = {
   filename: string;
   id: string;
   numPages: number;
-  s3Key: string;
   size: number;
+  url: string;
 };
 
 /** @internal */
@@ -29,15 +32,14 @@ export const FileT$inboundSchema: z.ZodType<FileT, z.ZodTypeDef, unknown> = z
     filename: z.string(),
     id: z.string(),
     num_pages: z.number().int(),
-    s3_key: z.string(),
     size: z.number().int(),
+    url: z.string(),
   }).transform((v) => {
     return remap$(v, {
       "account_id": "accountId",
       "created_at": "createdAt",
       "expires_at": "expiresAt",
       "num_pages": "numPages",
-      "s3_key": "s3Key",
     });
   });
 
@@ -49,8 +51,8 @@ export type FileT$Outbound = {
   filename: string;
   id: string;
   num_pages: number;
-  s3_key: string;
   size: number;
+  url: string;
 };
 
 /** @internal */
@@ -65,15 +67,14 @@ export const FileT$outboundSchema: z.ZodType<
   filename: z.string(),
   id: z.string(),
   numPages: z.number().int(),
-  s3Key: z.string(),
   size: z.number().int(),
+  url: z.string(),
 }).transform((v) => {
   return remap$(v, {
     accountId: "account_id",
     createdAt: "created_at",
     expiresAt: "expires_at",
     numPages: "num_pages",
-    s3Key: "s3_key",
   });
 });
 
@@ -88,4 +89,18 @@ export namespace FileT$ {
   export const outboundSchema = FileT$outboundSchema;
   /** @deprecated use `FileT$Outbound` instead. */
   export type Outbound = FileT$Outbound;
+}
+
+export function fileTToJSON(fileT: FileT): string {
+  return JSON.stringify(FileT$outboundSchema.parse(fileT));
+}
+
+export function fileTFromJSON(
+  jsonString: string,
+): SafeParseResult<FileT, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => FileT$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'FileT' from JSON`,
+  );
 }

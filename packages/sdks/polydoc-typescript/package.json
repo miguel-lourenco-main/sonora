@@ -1,12 +1,52 @@
 {
   "name": "polydoc",
-  "version": "0.2.1",
+  "version": "0.2.0",
   "author": "Speakeasy",
-  "main": "./index.js",
-  "sideEffects": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./models/errors": {
+      "types": "./dist/models/errors/index.d.ts",
+      "default": "./dist/models/errors/index.js"
+    },
+    "./models/errors/*": {
+      "types": "./dist/models/errors/*.d.ts",
+      "default": "./dist/models/errors/*.js"
+    },
+    "./models/components": {
+      "types": "./dist/models/components/index.d.ts",
+      "default": "./dist/models/components/index.js"
+    },
+    "./models/operations": {
+      "types": "./dist/models/operations/index.d.ts",
+      "default": "./dist/models/operations/index.js"
+    },
+    "./models/*": {
+      "types": "./dist/models/*.d.ts",
+      "default": "./dist/models/*.js"
+    },
+    "./lib/files": {
+      "types": "./dist/lib/files.d.ts",
+      "default": "./dist/lib/files.js"
+    },
+    "./lib/*": {
+      "types": "./dist/lib/*.d.ts",
+      "default": "./dist/lib/*.js"
+    },
+    "./types": {
+      "types": "./dist/types/index.d.ts",
+      "default": "./dist/types/index.js"
+    }
+  },
   "scripts": {
     "lint": "eslint --max-warnings=0 src",
     "build": "tsc",
+    "prepare": "pnpm run build",
+    "clean": "rm -rf dist && rm -rf .tsbuildinfo && rm -rf node_modules && rm -rf package-lock.json && rm -rf pnpm-lock.yaml && rm -rf .turbo",
     "prepublishOnly": "npm run build"
   },
   "peerDependencies": {
@@ -20,6 +60,5 @@
     "eslint-plugin-import": "^2.29.1",
     "typescript": "^5.5.4",
     "zod": "^3.23.8"
-  },
-  "dependencies": {}
+  }
 }

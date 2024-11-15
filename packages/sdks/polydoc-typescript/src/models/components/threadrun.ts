@@ -3,6 +3,9 @@
  */
 
 import * as z from "zod";
+import { safeParse } from "../../lib/schemas.js";
+import { Result as SafeParseResult } from "../../types/fp.js";
+import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 export type ThreadRun = {
   input: string;
@@ -42,4 +45,18 @@ export namespace ThreadRun$ {
   export const outboundSchema = ThreadRun$outboundSchema;
   /** @deprecated use `ThreadRun$Outbound` instead. */
   export type Outbound = ThreadRun$Outbound;
+}
+
+export function threadRunToJSON(threadRun: ThreadRun): string {
+  return JSON.stringify(ThreadRun$outboundSchema.parse(threadRun));
+}
+
+export function threadRunFromJSON(
+  jsonString: string,
+): SafeParseResult<ThreadRun, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ThreadRun$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ThreadRun' from JSON`,
+  );
 }

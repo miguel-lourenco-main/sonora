@@ -120,7 +120,6 @@ run();
 
 * [filesList](docs/sdks/files/README.md#fileslist)
 * [filesCreate](docs/sdks/files/README.md#filescreate)
-* [filesDownload](docs/sdks/files/README.md#filesdownload)
 
 ### [messages](docs/sdks/messages/README.md)
 
@@ -162,7 +161,6 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 
 - [`convertsConvertsCreate`](docs/sdks/converts/README.md#convertscreate)
 - [`filesFilesCreate`](docs/sdks/files/README.md#filescreate)
-- [`filesFilesDownload`](docs/sdks/files/README.md#filesdownload)
 - [`filesFilesList`](docs/sdks/files/README.md#fileslist)
 - [`messagesMessagesCreate`](docs/sdks/messages/README.md#messagescreate)
 - [`messagesMessagesGet`](docs/sdks/messages/README.md#messagesget)

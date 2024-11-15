@@ -3,6 +3,9 @@
  */
 
 import * as z from "zod";
+import { safeParse } from "../../lib/schemas.js";
+import { Result as SafeParseResult } from "../../types/fp.js";
+import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 export type ThreadCreate = {
   title?: string | null | undefined;
@@ -42,4 +45,18 @@ export namespace ThreadCreate$ {
   export const outboundSchema = ThreadCreate$outboundSchema;
   /** @deprecated use `ThreadCreate$Outbound` instead. */
   export type Outbound = ThreadCreate$Outbound;
+}
+
+export function threadCreateToJSON(threadCreate: ThreadCreate): string {
+  return JSON.stringify(ThreadCreate$outboundSchema.parse(threadCreate));
+}
+
+export function threadCreateFromJSON(
+  jsonString: string,
+): SafeParseResult<ThreadCreate, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ThreadCreate$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ThreadCreate' from JSON`,
+  );
 }

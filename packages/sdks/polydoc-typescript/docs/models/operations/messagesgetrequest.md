@@ -6,7 +6,7 @@
 import { MessagesGetRequest } from "polydoc/models/operations";
 
 let value: MessagesGetRequest = {
-  messageId: "b0be465b-3274-4d38-9fad-fcbff7142629",
+  messageId: "9ff62a7f-1c43-4a3a-b868-4b65de035dff",
 };
 ```
 

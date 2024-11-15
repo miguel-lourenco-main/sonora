@@ -3,11 +3,9 @@
  */
 
 import { filesFilesCreate } from "../funcs/filesFilesCreate.js";
-import { filesFilesDownload } from "../funcs/filesFilesDownload.js";
 import { filesFilesList } from "../funcs/filesFilesList.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as components from "../models/components/index.js";
-import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
 
 export class Files extends ClientSDK {
@@ -25,17 +23,6 @@ export class Files extends ClientSDK {
     options?: RequestOptions,
   ): Promise<components.FileT> {
     return unwrapAsync(filesFilesCreate(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  async filesDownload(
-    request: operations.FilesDownloadRequest,
-    options?: RequestOptions,
-  ): Promise<operations.FilesDownloadResponse> {
-    return unwrapAsync(filesFilesDownload(
       this,
       request,
       options,
