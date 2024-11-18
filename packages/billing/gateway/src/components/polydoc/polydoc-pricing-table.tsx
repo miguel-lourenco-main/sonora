@@ -28,14 +28,9 @@ import { cn } from '@kit/ui/utils';
 import { LineItemDetails } from '../line-item-details';
 import { PageAmountInput } from '../page-counter';
 import { calculateTieredCost, getBillingInfoForPageCount, getTierText } from '../../lib/utils';
-import { CurrentBillingInfo } from '../../lib/interfaces';
+import { CurrentBillingInfo, Interval, Paths } from '../../lib/interfaces';
+import FeaturesList from '../features-list';
 
-interface Paths {
-  signUp: string;
-  return: string;
-}
-
-type Interval = 'month' | 'year';
 
 export function PolydocPricingTable({
   config,
@@ -64,6 +59,7 @@ export function PolydocPricingTable({
     tierText: '$0.25 / page',
     tierIndex: 0
   });
+
   const [pageCount, setPageCount] = useState(50);
 
   const updatePageCount = (value: number) => {
@@ -343,7 +339,6 @@ function PricingItem(
 
         <div className={'flex flex-col'}>
           <FeaturesList
-            highlighted={props.highlighted}
             features={props.product.features}
             pageCount={props.pageCount}
             interval={props.plan.interval ?? 'month'}
@@ -380,47 +375,6 @@ function PricingItem(
   );
 }
 
-function FeaturesList(
-  props: React.PropsWithChildren<{
-    features: string[];
-    highlighted?: boolean;
-    pageCount: number;
-    interval: Interval;
-  }>,
-) {
-  return (
-    <ul className={'flex flex-col space-y-2'}>
-      {props.features.map((feature) => {
-
-        let featureText = feature;
-
-        if(feature === '{pagesPerMonth}'){
-          featureText = `Pages per ${props.interval}: ${props.pageCount}`;
-        }
-
-        if(feature === '{languagesLink}'){
-
-          featureText = 'Supported Languages';
-
-          return (
-            <ListItem key={feature}>
-              <Link href={'/'} className='underline'>
-                <Trans i18nKey={featureText} defaults={featureText} />
-              </Link>
-            </ListItem>
-          );
-        }
-
-        return (
-          <ListItem key={featureText}>
-            <Trans i18nKey={featureText} defaults={featureText} />
-          </ListItem>
-        );
-      })}
-    </ul>
-  );
-}
-
 function Price({
   children,
   isMonthlyPrice = true,
@@ -445,22 +399,6 @@ function Price({
         </span>
       </If>
     </div>
-  );
-}
-
-function ListItem({ children }: React.PropsWithChildren) {
-  return (
-    <li className={'flex items-center space-x-2.5'}>
-      <CheckCircle className={'text-primary h-4 min-h-4 w-4 min-w-4'} />
-
-      <span
-        className={cn('text-sm', {
-          ['text-secondary-foreground']: true,
-        })}
-      >
-        {children}
-      </span>
-    </li>
   );
 }
 

@@ -17,6 +17,7 @@ import { PlanPickerComponent } from '../plan-picker/plan-picker-component';
 import { PlanDetails } from '../plan-picker/plan-details';
 import { getPolydocPlanPickerSchema } from './polydoc-plan-picker-schema';
 import { getBillingInfoForPageCount, getTierText } from '../../lib/utils';
+import { CurrentBillingInfo } from '../../lib/interfaces';
 
 
 type PolydocPlanPickerFormData = {
@@ -46,7 +47,7 @@ export function PolydocPlanPicker(
     resolver: zodResolver(getPolydocPlanPickerSchema(props.config)),
     defaultValues: {
       interval: 'month',
-      pageCount: 6,
+      pageCount: 50,
       planId: 'pro-monthly',
       productId: 'pro',
     },
@@ -131,9 +132,27 @@ export function PolydocPlanPicker(
     selectedPlanId,
   );
 
+    const [currentBillingInfo, setCurrentBillingInfo] = useState<CurrentBillingInfo>({
+    productName: 'Pro',
+    tierText: '$0.25 / page',
+    tierIndex: 0
+  });
+
+  useEffect(() => {
+    const {product, plan, tier, index} = getBillingInfoForPageCount(props.config.products, pageCount, selectedInterval);
+    
+    if(product && tier && plan){
+      setCurrentBillingInfo({
+        productName: product.name,
+        tierText: getTierText(tier, plan.lineItems[0]?.unit),
+        tierIndex: index
+      });
+    }
+  }, [pageCount]);
+
   return (
     <Form {...form}>
-      <PageAmountInput value={pageCount} onPageCountChange={updatePageCount} tier={currentTier}/>
+      <PageAmountInput value={pageCount} onPageCountChange={updatePageCount} billingInfo={currentBillingInfo}/>
       <form
         className={'flex space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0'}
         onSubmit={form.handleSubmit(props.onSubmit)}

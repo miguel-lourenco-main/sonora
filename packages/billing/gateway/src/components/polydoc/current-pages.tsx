@@ -36,7 +36,7 @@ const sizeStyles = {
   }
 } as const;
 
-export default function CurrentPages({ size = 'normal', collapsed }: CurrentPagesProps) {
+export default function CurrentPages({ size = 'normal', collapsed = false }: CurrentPagesProps) {
 
   const [tokens, setTokens] = useState<number>(0);
   const [monthlyTokens, setMonthlyTokens] = useState<number>(1);

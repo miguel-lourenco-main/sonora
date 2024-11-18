@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Slider } from '@kit/ui/slider';
+import Slider from '@kit/ui/slider';
 import { UnderscoreInput } from './underscore-input';
 import { MAX_PAGES_SUBSCRIPTION } from '@kit/shared/constants';
 import { CurrentBillingInfo } from '../lib/interfaces';
