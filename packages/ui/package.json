@@ -127,6 +127,7 @@
     "./input-otp": "./src/shadcn/input-otp.tsx",
     "./textarea": "./src/shadcn/textarea.tsx",
     "./switch": "./src/shadcn/switch.tsx",
+    "./shadcn-sidebar": "./src/shadcn/sidebar.tsx",
     "./skeleton": "./src/shadcn/skeleton.tsx",
     "./resizable": "./src/shadcn/resizable.tsx",
     "./breadcrumbs": "./src/shadcn/breadcrumbs.tsx",

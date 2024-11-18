@@ -69,36 +69,36 @@ importers:
         version: 3.9.1(react-hook-form@7.53.2(react@18.3.1))
       '@keystatic/next':
         specifier: ^5.0.1
-        version: 5.0.1(@keystatic/core@0.5.39(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(babel-plugin-react-compiler@19.0.0-beta-a7bf2bd-20241110)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(babel-plugin-react-compiler@19.0.0-beta-a7bf2bd-20241110)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 5.0.1(@keystatic/core@0.5.39(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@kit/accounts':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/features/accounts
       '@kit/admin':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/features/admin
       '@kit/analytics':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/analytics
       '@kit/auth':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/features/auth
       '@kit/billing':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/billing/core
       '@kit/billing-gateway':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/billing/gateway
       '@kit/cms':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/cms/core
       '@kit/database-webhooks':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/database-webhooks
       '@kit/email-templates':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/email-templates
       '@kit/i18n':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/i18n
       '@kit/keystatic':
         specifier: workspace:*
@@ -135,7 +135,7 @@ importers:
         version: 0.0.8(@supabase/postgrest-js@1.17.5)(@supabase/supabase-js@2.46.1)
       '@makerkit/data-loader-supabase-nextjs':
         specifier: ^1.2.3
-        version: 1.2.3(@supabase/postgrest-js@1.17.5)(@supabase/supabase-js@2.46.1)(@tanstack/react-query@5.60.2(react@18.3.1))(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(babel-plugin-react-compiler@19.0.0-beta-a7bf2bd-20241110)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+        version: 1.2.3(@supabase/postgrest-js@1.17.5)(@supabase/supabase-js@2.46.1)(@tanstack/react-query@5.60.2(react@18.3.1))(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       '@marsidev/react-turnstile':
         specifier: ^1.0.2
         version: 1.0.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -153,7 +153,7 @@ importers:
         version: 5.60.2(react@18.3.1)
       '@tanstack/react-query-next-experimental':
         specifier: ^5.53.1
-        version: 5.60.5(@tanstack/react-query@5.60.2(react@18.3.1))(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+        version: 5.60.5(@tanstack/react-query@5.60.2(react@18.3.1))(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(babel-plugin-react-compiler@19.0.0-beta-a7bf2bd-20241110)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       '@tanstack/react-table':
         specifier: ^8.20.5
         version: 8.20.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -254,6 +254,9 @@ importers:
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.49)
+      babel-plugin-react-compiler:
+        specifier: 19.0.0-beta-a7bf2bd-20241110
+        version: 19.0.0-beta-a7bf2bd-20241110
       dotenv-cli:
         specifier: ^7.4.2
         version: 7.4.2
@@ -283,7 +286,7 @@ importers:
         version: 3.9.1(react-hook-form@7.53.2(react@18.3.1))
       '@keystatic/next':
         specifier: ^5.0.1
-        version: 5.0.1(@keystatic/core@0.5.39(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(babel-plugin-react-compiler@19.0.0-beta-a7bf2bd-20241110)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(babel-plugin-react-compiler@19.0.0-beta-a7bf2bd-20241110)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 5.0.1(@keystatic/core@0.5.39(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@kit/accounts':
         specifier: workspace:*
         version: link:../../packages/features/accounts
@@ -346,7 +349,7 @@ importers:
         version: 0.0.8(@supabase/postgrest-js@1.17.5)(@supabase/supabase-js@2.46.1)
       '@makerkit/data-loader-supabase-nextjs':
         specifier: ^1.2.3
-        version: 1.2.3(@supabase/postgrest-js@1.17.5)(@supabase/supabase-js@2.46.1)(@tanstack/react-query@5.60.2(react@18.3.1))(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(babel-plugin-react-compiler@19.0.0-beta-a7bf2bd-20241110)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+        version: 1.2.3(@supabase/postgrest-js@1.17.5)(@supabase/supabase-js@2.46.1)(@tanstack/react-query@5.60.2(react@18.3.1))(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       '@marsidev/react-turnstile':
         specifier: ^1.0.2
         version: 1.0.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -694,10 +697,10 @@ importers:
     dependencies:
       '@keystatic/core':
         specifier: 0.5.39
-        version: 0.5.39(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(babel-plugin-react-compiler@19.0.0-beta-a7bf2bd-20241110)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 0.5.39(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@keystatic/next':
         specifier: ^5.0.1
-        version: 5.0.1(@keystatic/core@0.5.39(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(babel-plugin-react-compiler@19.0.0-beta-a7bf2bd-20241110)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(babel-plugin-react-compiler@19.0.0-beta-a7bf2bd-20241110)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 5.0.1(@keystatic/core@0.5.39(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@markdoc/markdoc':
         specifier: ^0.4.0
         version: 0.4.0(react@18.3.1)(types-react@19.0.0-rc.1)
@@ -952,7 +955,7 @@ importers:
         version: 0.0.8(@supabase/postgrest-js@1.17.5)(@supabase/supabase-js@2.46.1)
       '@makerkit/data-loader-supabase-nextjs':
         specifier: ^1.2.3
-        version: 1.2.3(@supabase/postgrest-js@1.17.5)(@supabase/supabase-js@2.46.1)(@tanstack/react-query@5.60.2(react@18.3.1))(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(babel-plugin-react-compiler@19.0.0-beta-a7bf2bd-20241110)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+        version: 1.2.3(@supabase/postgrest-js@1.17.5)(@supabase/supabase-js@2.46.1)(@tanstack/react-query@5.60.2(react@18.3.1))(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       '@supabase/supabase-js':
         specifier: ^2.46.1
         version: 2.46.1
@@ -10090,7 +10093,7 @@ snapshots:
 
   '@juggle/resize-observer@3.4.0': {}
 
-  '@keystar/ui@0.7.12(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(babel-plugin-react-compiler@19.0.0-beta-a7bf2bd-20241110)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@keystar/ui@0.7.12(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@babel/runtime': 7.26.0
       '@emotion/css': 11.13.4
@@ -10185,7 +10188,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@keystatic/core@0.5.39(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(babel-plugin-react-compiler@19.0.0-beta-a7bf2bd-20241110)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@keystatic/core@0.5.39(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@babel/runtime': 7.26.0
       '@braintree/sanitize-url': 6.0.4
@@ -10193,7 +10196,7 @@ snapshots:
       '@emotion/weak-memoize': 0.3.1
       '@floating-ui/react': 0.24.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@internationalized/string': 3.2.4
-      '@keystar/ui': 0.7.12(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(babel-plugin-react-compiler@19.0.0-beta-a7bf2bd-20241110)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@keystar/ui': 0.7.12(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@markdoc/markdoc': 0.4.0(@types/react@18.3.12)(react@18.3.1)
       '@react-aria/focus': 3.18.4(react@18.3.1)
       '@react-aria/i18n': 3.12.3(react@18.3.1)
@@ -10264,10 +10267,10 @@ snapshots:
       - next
       - supports-color
 
-  '@keystatic/next@5.0.1(@keystatic/core@0.5.39(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(babel-plugin-react-compiler@19.0.0-beta-a7bf2bd-20241110)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(babel-plugin-react-compiler@19.0.0-beta-a7bf2bd-20241110)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@keystatic/next@5.0.1(@keystatic/core@0.5.39(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@babel/runtime': 7.26.0
-      '@keystatic/core': 0.5.39(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(babel-plugin-react-compiler@19.0.0-beta-a7bf2bd-20241110)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@keystatic/core': 0.5.39(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@types/react': 18.3.12
       chokidar: 3.6.0
       next: 15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(babel-plugin-react-compiler@19.0.0-beta-a7bf2bd-20241110)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -10283,7 +10286,7 @@ snapshots:
       '@supabase/supabase-js': 2.46.1
       ts-case-convert: 2.1.0
 
-  '@makerkit/data-loader-supabase-nextjs@1.2.3(@supabase/postgrest-js@1.17.5)(@supabase/supabase-js@2.46.1)(@tanstack/react-query@5.60.2(react@18.3.1))(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(babel-plugin-react-compiler@19.0.0-beta-a7bf2bd-20241110)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)':
+  '@makerkit/data-loader-supabase-nextjs@1.2.3(@supabase/postgrest-js@1.17.5)(@supabase/supabase-js@2.46.1)(@tanstack/react-query@5.60.2(react@18.3.1))(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@makerkit/data-loader-supabase-core': 0.0.8(@supabase/postgrest-js@1.17.5)(@supabase/supabase-js@2.46.1)
       '@supabase/supabase-js': 2.46.1
@@ -13060,7 +13063,7 @@ snapshots:
 
   '@tanstack/query-core@5.59.20': {}
 
-  '@tanstack/react-query-next-experimental@5.60.5(@tanstack/react-query@5.60.2(react@18.3.1))(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)':
+  '@tanstack/react-query-next-experimental@5.60.5(@tanstack/react-query@5.60.2(react@18.3.1))(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(babel-plugin-react-compiler@19.0.0-beta-a7bf2bd-20241110)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@tanstack/react-query': 5.60.2(react@18.3.1)
       next: 15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(babel-plugin-react-compiler@19.0.0-beta-a7bf2bd-20241110)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
