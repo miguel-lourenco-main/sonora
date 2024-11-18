@@ -8,30 +8,22 @@ export type Json =
 
 export type Database = {
   graphql_public: {
-    Tables: {
-      [_ in never]: never
-    }
-    Views: {
-      [_ in never]: never
-    }
+    Tables: Record<never, never>;
+    Views: Record<never, never>;
     Functions: {
       graphql: {
         Args: {
-          operationName?: string
-          query?: string
-          variables?: Json
-          extensions?: Json
-        }
-        Returns: Json
-      }
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
-  }
+          operationName?: string;
+          query?: string;
+          variables?: Json;
+          extensions?: Json;
+        };
+        Returns: Json;
+      };
+    };
+    Enums: Record<never, never>;
+    CompositeTypes: Record<never, never>;
+  };
   public: {
     Tables: {
       accounts: {
@@ -1413,12 +1405,10 @@ export type Database = {
             referencedRelation: "s3_multipart_uploads"
             referencedColumns: ["id"]
           },
-        ]
-      }
-    }
-    Views: {
-      [_ in never]: never
-    }
+        ];
+      };
+    };
+    Views: Record<never, never>;
     Functions: {
       can_insert_object: {
         Args: {
@@ -1501,23 +1491,19 @@ export type Database = {
           sortorder?: string
         }
         Returns: {
-          name: string
-          id: string
-          updated_at: string
-          created_at: string
-          last_accessed_at: string
-          metadata: Json
-        }[]
-      }
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
-  }
-}
+          name: string;
+          id: string;
+          updated_at: string;
+          created_at: string;
+          last_accessed_at: string;
+          metadata: Json;
+        }[];
+      };
+    };
+    Enums: Record<never, never>;
+    CompositeTypes: Record<never, never>;
+  };
+};
 
 type PublicSchema = Database[Extract<keyof Database, "public">]
 

@@ -5,10 +5,14 @@ import { fontFamily } from 'tailwindcss/defaultTheme';
 export default {
   darkMode: ['class'],
   content: [
-    '../../packages/**/src/**/*.tsx',
-    '../../apps/**/*.tsx',
-    '!../../packages/**/node_modules',
-    '!../../apps/**/node_modules',
+    '../../packages/ui/src/**/*.tsx',
+    '../../packages/billing/gateway/src/**/*.tsx',
+    '../../packages/features/auth/src/**/*.tsx',
+    '../../packages/features/notifications/src/**/*.tsx',
+    '../../packages/features/admin/src/**/*.tsx',
+    '../../packages/features/accounts/src/**/*.tsx',
+    '../../packages/features/team-accounts/src/**/*.tsx',
+    '!**/node_modules',
   ],
   theme: {
     container: {
@@ -65,6 +69,16 @@ export default {
         card: {
           DEFAULT: 'hsl(var(--card) / <alpha-value>)',
           foreground: 'hsl(var(--card-foreground) / <alpha-value>)',
+        },
+        sidebar: {
+          DEFAULT: 'hsl(var(--sidebar-background))',
+          foreground: 'hsl(var(--sidebar-foreground))',
+          primary: 'hsl(var(--sidebar-primary))',
+          'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
+          accent: 'hsl(var(--sidebar-accent))',
+          'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
+          border: 'hsl(var(--sidebar-border))',
+          ring: 'hsl(var(--sidebar-ring))',
         },
       },
       borderRadius: {

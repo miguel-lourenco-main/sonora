@@ -40,6 +40,7 @@ interface AccountSelectorProps {
   selectedAccount?: string;
   collapsed?: boolean;
   className?: string;
+  collisionPadding?: number;
 
   onAccountChange: (value: string | undefined) => void;
 }
@@ -56,6 +57,7 @@ export function AccountSelector({
     enableTeamCreation: true,
   },
   collapsed = false,
+  collisionPadding = 20,
 }: React.PropsWithChildren<AccountSelectorProps>) {
   const [open, setOpen] = useState<boolean>(false);
   const [isCreatingAccount, setIsCreatingAccount] = useState<boolean>(false);
@@ -84,7 +86,7 @@ export function AccountSelector({
     pictureUrl ? (
       <UserAvatar pictureUrl={pictureUrl} />
     ) : (
-      <PersonIcon className="h-4 min-h-4 w-4 min-w-4" />
+      <PersonIcon className="h-5 min-h-5 w-5 min-w-5" />
     );
 
   return (
@@ -101,7 +103,7 @@ export function AccountSelector({
               'dark:shadow-primary/10 group w-full min-w-0 px-2 lg:w-auto lg:max-w-fit',
               {
                 'justify-start': !collapsed,
-                'm-auto justify-center px-4 lg:w-full': collapsed,
+                'm-auto justify-center px-2 lg:w-full': collapsed,
               },
               className,
             )}
@@ -109,7 +111,7 @@ export function AccountSelector({
             <If
               condition={selected}
               fallback={
-                <span className={'flex max-w-full items-center space-x-2'}>
+                <span className={'flex max-w-full items-center space-x-4'}>
                   <PersonalAccountAvatar />
 
                   <span
@@ -123,11 +125,13 @@ export function AccountSelector({
               }
             >
               {(account) => (
-                <span className={'flex max-w-full items-center space-x-2'}>
-                  <Avatar className={'h-5 w-5'}>
+                <span className={'flex max-w-full items-center space-x-4'}>
+                  <Avatar className={'h-6 w-6 rounded-sm'}>
                     <AvatarImage src={account.image ?? undefined} />
 
-                    <AvatarFallback className={'group-hover:bg-background'}>
+                    <AvatarFallback
+                      className={'group-hover:bg-background rounded-sm'}
+                    >
                       {account.label ? account.label[0] : ''}
                     </AvatarFallback>
                   </Avatar>
@@ -154,7 +158,7 @@ export function AccountSelector({
         <PopoverContent
           data-test={'account-selector-content'}
           className="w-full p-0"
-          collisionPadding={20}
+          collisionPadding={collisionPadding}
         >
           <Command>
             <CommandInput placeholder={t('searchAccount')} className="h-9" />
@@ -208,11 +212,11 @@ export function AccountSelector({
                       }}
                     >
                       <div className={'flex items-center'}>
-                        <Avatar className={'mr-2 h-5 w-5'}>
+                        <Avatar className={'mr-2 h-6 w-6 rounded-sm'}>
                           <AvatarImage src={account.image ?? undefined} />
 
                           <AvatarFallback
-                            className={cn({
+                            className={cn('rounded-sm', {
                               ['bg-background']: value === account.value,
                               ['group-hover:bg-background']:
                                 value !== account.value,
@@ -272,7 +276,7 @@ export function AccountSelector({
 
 function UserAvatar(props: { pictureUrl?: string }) {
   return (
-    <Avatar className={'h-6 w-6'}>
+    <Avatar className={'h-6 w-6 rounded-sm'}>
       <AvatarImage src={props.pictureUrl} />
     </Avatar>
   );

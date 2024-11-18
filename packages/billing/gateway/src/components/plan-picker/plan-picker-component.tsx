@@ -1,6 +1,9 @@
 'use client';
 
 import { useMemo } from 'react';
+
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm, useWatch } from 'react-hook-form';
 import { ArrowRight, CircleCheck } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import {

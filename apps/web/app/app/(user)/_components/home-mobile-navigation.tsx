@@ -44,15 +44,6 @@ export function HomeMobileNavigation(props: { workspace: UserWorkspace }) {
     if ('divider' in item) {
       return <DropdownMenuSeparator key={index} />;
     }
-
-    return (
-      <DropdownLink
-        key={item.path}
-        Icon={item.Icon}
-        path={item.path}
-        label={item.label}
-      />
-    );
   });
 
   return (
@@ -71,6 +62,7 @@ export function HomeMobileNavigation(props: { workspace: UserWorkspace }) {
             <HomeAccountSelector
               userId={props.workspace.user.id}
               accounts={props.workspace.accounts}
+              collisionPadding={0}
             />
           </DropdownMenuGroup>
 

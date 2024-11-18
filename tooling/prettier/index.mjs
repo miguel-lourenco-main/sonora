@@ -1,5 +1,5 @@
 /** @typedef  {import("prettier").Config} PrettierConfig */
-/** @typedef  {import("@ianvs/prettier-plugin-sort-imports").PluginConfig} SortImportsConfig */
+/** @typedef  {import("@trivago/prettier-plugin-sort-imports").PluginConfig} SortImportsConfig */
 
 /** @type { PrettierConfig | SortImportsConfig } */
 const config = {
@@ -23,12 +23,12 @@ const config = {
     '^~/(.*)$', // app-specific imports
     '^[./]', // relative imports
   ],
-  tailwindFunctions: ['tw', 'clsx', 'cn'],
+  tailwindFunctions: ['tw', 'clsx', 'cn', 'cva'],
   importOrderSeparation: true,
   importOrderSortSpecifiers: true,
   plugins: [
-    '@trivago/prettier-plugin-sort-imports',
-    'prettier-plugin-tailwindcss',
+    import.meta.resolve('@trivago/prettier-plugin-sort-imports'),
+    import.meta.resolve('prettier-plugin-tailwindcss'),
   ],
 };
 

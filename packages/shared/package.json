@@ -24,13 +24,13 @@
     "@kit/tsconfig": "workspace:*",
     "@types/react": "^18.3.10",
     "clsx": "^2.1.1",
-    "react": "18.3.1",
+    "react": "19.0.0-rc-45804af1-20241021",
     "tailwind-merge": "^2.5.2",
     "zod": "^3.23.8"
   },
   "dependencies": {
     "pino": "^9.4.0",
-    "react-hook-form": "^7.53.0"
+    "react-hook-form": "^7.53.2"
   },
   "eslintConfig": {
     "root": true,
