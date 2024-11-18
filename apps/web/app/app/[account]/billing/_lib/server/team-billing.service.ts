@@ -150,7 +150,7 @@ class TeamBillingService {
     accountId: string;
     slug: string;
   }) {
-    const client = getSupabaseServerClient();
+    const client = getSupabaseServerClient<Database>();
     const logger = await getLogger();
 
     logger.info(

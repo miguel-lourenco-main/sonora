@@ -13,6 +13,7 @@ import {
   TeamCheckoutSchema,
 } from '../schema/team-billing.schema';
 import { createTeamBillingService } from './team-billing.service';
+import { Database } from '~/lib/database.types';
 
 /**
  * @name enabled
@@ -30,7 +31,7 @@ export const createTeamAccountCheckoutSession = enhanceAction(
       throw new Error('Team account billing is not enabled');
     }
 
-    const client = getSupabaseServerClient();
+    const client = getSupabaseServerClient<Database>();
     const service = createTeamBillingService(client);
 
     return service.createCheckout(data);
@@ -53,7 +54,7 @@ export const createBillingPortalSession = enhanceAction(
 
     const params = TeamBillingPortalSchema.parse(Object.fromEntries(formData));
 
-    const client = getSupabaseServerClient();
+    const client = getSupabaseServerClient<Database>();
     const service = createTeamBillingService(client);
 
     // get url to billing portal

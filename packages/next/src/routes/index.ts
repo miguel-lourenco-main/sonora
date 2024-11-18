@@ -12,6 +12,7 @@ import { requireUser } from '@kit/supabase/require-user';
 import { getSupabaseServerClient } from '@kit/supabase/server-client';
 
 import { zodParseFactory } from '../utils';
+import { Database } from '@kit/supabase/database';
 
 interface Config<Schema> {
   auth?: boolean;
@@ -94,7 +95,7 @@ export const enhanceRouteHandler = <
       }
     }
 
-    const client = getSupabaseServerClient();
+    const client = getSupabaseServerClient<Database>();
 
     const shouldVerifyAuth = params?.auth ?? true;
 

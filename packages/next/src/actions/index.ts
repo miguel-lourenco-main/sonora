@@ -11,6 +11,7 @@ import { requireUser } from '@kit/supabase/require-user';
 import { getSupabaseServerClient } from '@kit/supabase/server-client';
 
 import { zodParseFactory } from '../utils';
+import { Database } from '@kit/supabase/database';
 
 /**
  * @name enhanceAction
@@ -61,7 +62,7 @@ export function enhanceAction<
     // verify the user is authenticated if required
     if (requireAuth) {
       // verify the user is authenticated if required
-      const auth = await requireUser(getSupabaseServerClient());
+      const auth = await requireUser(getSupabaseServerClient<Database>());
 
       // If the user is not authenticated, redirect to the specified URL.
       if (!auth.data) {

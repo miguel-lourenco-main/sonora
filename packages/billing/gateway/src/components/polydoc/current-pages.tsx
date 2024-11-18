@@ -1,7 +1,9 @@
 'use client'
 
 import { getSupabaseBrowserClient } from "@kit/supabase/browser-client";
+import { Database } from "@kit/supabase/database";
 import { Progress } from "@kit/ui/progress";
+import { cn } from "@kit/ui/utils";
 import { useEffect, useState } from "react";
 
 type UserTokens = {
@@ -51,7 +53,7 @@ export default function CurrentPages({ size = 'normal', collapsed = false }: Cur
   useEffect(() => {
 
     const setupCredits = async () => {
-      const client = getSupabaseBrowserClient();
+      const client = getSupabaseBrowserClient<Database>();
 
       const { data: { session } } = await client.auth.getSession();
       const accountId = session?.user.id;
@@ -66,7 +68,7 @@ export default function CurrentPages({ size = 'normal', collapsed = false }: Cur
 
   useEffect(() => {
     const subscribeChanges = async () => {
-      const client = getSupabaseBrowserClient();
+      const client = getSupabaseBrowserClient<Database>();
       const { data: { session } } = await client.auth.getSession();
       const accountId = session?.user.id;
       
@@ -98,7 +100,7 @@ export default function CurrentPages({ size = 'normal', collapsed = false }: Cur
   return (
     <>
       {collapsed ? (
-        <p>{tokens}</p>
+        <p className={cn(tokens.toString().length > 3 && 'text-xs')}>{tokens}</p>
       ):(
         <div className={`flex flex-col space-y-2 ${styles.container}`}>
           <div className="flex space-x-2">

@@ -17,6 +17,7 @@ import { AppLogo } from '~/components/app-logo';
 import pathsConfig from '~/config/paths.config';
 import { createI18nServerInstance } from '~/lib/i18n/i18n.server';
 import { withI18n } from '~/lib/i18n/with-i18n';
+import { Database } from '~/lib/database.types';
 
 interface JoinTeamAccountPageProps {
   searchParams: Promise<{
@@ -42,7 +43,7 @@ async function JoinTeamAccountPage(props: JoinTeamAccountPageProps) {
     notFound();
   }
 
-  const client = getSupabaseServerClient();
+  const client = getSupabaseServerClient<Database>();
   const auth = await requireUser(client);
 
   // if the user is not logged in or there is an error
@@ -61,7 +62,7 @@ async function JoinTeamAccountPage(props: JoinTeamAccountPageProps) {
   }
 
   // get api to interact with team accounts
-  const adminClient = getSupabaseServerAdminClient();
+  const adminClient = getSupabaseServerAdminClient<Database>();
   const api = createTeamAccountsApi(client);
 
   // the user is logged in, we can now check if the token is valid

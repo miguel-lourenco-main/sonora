@@ -9,6 +9,7 @@ import { createTeamAccountsApi } from '@kit/team-accounts/api';
 
 import pathsConfig from '~/config/paths.config';
 import { requireUserInServerComponent } from '~/lib/server/require-user-in-server-component';
+import { Database } from '~/lib/database.types';
 
 export type TeamAccountWorkspace = Awaited<
   ReturnType<typeof loadTeamWorkspace>
@@ -26,7 +27,7 @@ export type TeamAccountWorkspace = Awaited<
 export const loadTeamWorkspace = cache(workspaceLoader);
 
 async function workspaceLoader(accountSlug: string) {
-  const client = getSupabaseServerClient();
+  const client = getSupabaseServerClient<Database>();
   const api = createTeamAccountsApi(client);
 
   const [workspace, user] = await Promise.all([

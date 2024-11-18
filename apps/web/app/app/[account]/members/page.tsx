@@ -25,6 +25,7 @@ import { withI18n } from '~/lib/i18n/with-i18n';
 // local imports
 import { TeamAccountLayoutPageHeader } from '../_components/team-account-layout-page-header';
 import { loadMembersPageData } from './_lib/server/members-page.loader';
+import { Database } from '~/lib/database.types';
 
 interface TeamAccountMembersPageProps {
   params: Promise<{ account: string }>;
@@ -40,7 +41,7 @@ export const generateMetadata = async () => {
 };
 
 async function TeamAccountMembersPage({ params }: TeamAccountMembersPageProps) {
-  const client = getSupabaseServerClient();
+  const client = getSupabaseServerClient<Database>();
   const slug = (await params).account;
 
   const [members, invitations, canAddMember, { user, account }] =

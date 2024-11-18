@@ -7,10 +7,11 @@ import { getLogger } from '@kit/shared/logger';
 import { getSupabaseServerClient } from '@kit/supabase/server-client';
 
 import { UpdateTeamNameSchema } from '../../schema/update-team-name.schema';
+import { Database } from '@kit/supabase/database';
 
 export const updateTeamAccountName = enhanceAction(
   async (params) => {
-    const client = getSupabaseServerClient();
+    const client = getSupabaseServerClient<Database>();
     const logger = await getLogger();
     const { name, path, slug } = params;
 

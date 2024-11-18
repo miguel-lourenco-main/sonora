@@ -75,3 +75,6 @@ git checkout main
 git merge mirror/apps-web -m "Merge updates from mirror/apps-web"
 git push origin
 ```
+
+# Create a new app
+Remove `pnpm run supabase:typegen:packages` from `package.json`

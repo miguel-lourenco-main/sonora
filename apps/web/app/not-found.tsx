@@ -10,6 +10,7 @@ import { Trans } from '@kit/ui/trans';
 import { SiteHeader } from '~/(marketing)/_components/site-header';
 import { createI18nServerInstance } from '~/lib/i18n/i18n.server';
 import { withI18n } from '~/lib/i18n/with-i18n';
+import { Database } from '~/lib/database.types';
 
 export const generateMetadata = async () => {
   const i18n = await createI18nServerInstance();
@@ -21,7 +22,7 @@ export const generateMetadata = async () => {
 };
 
 const NotFoundPage = async () => {
-  const client = getSupabaseServerClient();
+  const client = getSupabaseServerClient<Database>();
 
   const {
     data: { user },

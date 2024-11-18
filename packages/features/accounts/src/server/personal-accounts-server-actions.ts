@@ -12,6 +12,7 @@ import { getSupabaseServerClient } from '@kit/supabase/server-client';
 
 import { DeletePersonalAccountSchema } from '../schema/delete-personal-account.schema';
 import { createDeletePersonalAccountService } from './services/delete-personal-account.service';
+import { Database } from '@kit/supabase/database';
 
 const emailSettings = getEmailSettingsFromEnvironment();
 
@@ -19,7 +20,7 @@ const enableAccountDeletion =
   process.env.NEXT_PUBLIC_ENABLE_PERSONAL_ACCOUNT_DELETION === 'true';
 
 export async function refreshAuthSession() {
-  const client = getSupabaseServerClient();
+  const client = getSupabaseServerClient<Database>();
 
   await client.auth.refreshSession();
 
@@ -52,7 +53,7 @@ export const deletePersonalAccountAction = enhanceAction(
 
     logger.info(ctx, `Deleting account...`);
 
-    const client = getSupabaseServerClient();
+    const client = getSupabaseServerClient<Database>();
 
     // create a new instance of the personal accounts service
     const service = createDeletePersonalAccountService();
@@ -62,7 +63,7 @@ export const deletePersonalAccountAction = enhanceAction(
 
     // delete the user's account and cancel all subscriptions
     await service.deletePersonalAccount({
-      adminClient: getSupabaseServerAdminClient(),
+      adminClient: getSupabaseServerAdminClient<Database>(),
       userId: user.id,
       userEmail: user.email ?? null,
       emailSettings,

@@ -8,11 +8,12 @@ import { getSupabaseServerClient } from '@kit/supabase/server-client';
 
 import { CreateTeamSchema } from '../../schema/create-team.schema';
 import { createCreateTeamAccountService } from '../services/create-team-account.service';
+import { Database } from '@kit/supabase/database';
 
 export const createTeamAccountAction = enhanceAction(
   async ({ name }, user) => {
     const logger = await getLogger();
-    const client = getSupabaseServerClient();
+    const client = getSupabaseServerClient<Database>();
     const service = createCreateTeamAccountService(client);
 
     const ctx = {

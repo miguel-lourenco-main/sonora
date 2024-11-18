@@ -9,6 +9,10 @@ import { withI18n } from '~/lib/i18n/with-i18n';
 import { requireUserInServerComponent } from '~/lib/server/require-user-in-server-component';
 
 import { EmbeddedCheckoutForm } from '../_components/embedded-checkout-form';
+import { Database } from '~/lib/database.types';
+import pathsConfig from '~/config/paths.config';
+import { revalidatePath } from 'next/cache';
+
 
 interface SessionPageProps {
   searchParams: Promise<{
@@ -64,7 +68,7 @@ function BlurryBackdrop() {
 async function loadCheckoutSession(sessionId: string) {
   await requireUserInServerComponent();
 
-  const client = getSupabaseServerClient();
+  const client = getSupabaseServerClient<Database>();
   const gateway = await getBillingGatewayProvider(client);
 
   const session = await gateway.retrieveCheckoutSession({

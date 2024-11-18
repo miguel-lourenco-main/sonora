@@ -11,6 +11,7 @@ import { createI18nServerInstance } from '~/lib/i18n/i18n.server';
 
 // local imports
 import { TeamAccountLayoutPageHeader } from '../_components/team-account-layout-page-header';
+import { Database } from '~/lib/database.types';
 
 export const generateMetadata = async () => {
   const i18n = await createI18nServerInstance();
@@ -30,7 +31,7 @@ const paths = {
 };
 
 async function TeamAccountSettingsPage(props: TeamAccountSettingsPageProps) {
-  const api = createTeamAccountsApi(getSupabaseServerClient());
+  const api = createTeamAccountsApi(getSupabaseServerClient<Database>());
   const slug = (await props.params).account;
   const data = await api.getTeamAccount(slug);
 

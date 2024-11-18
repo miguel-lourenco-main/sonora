@@ -38,7 +38,7 @@ const SIDEBAR_WIDTH = '16rem';
 const SIDEBAR_WIDTH_MOBILE = '18rem';
 const SIDEBAR_WIDTH_ICON = '3rem';
 const SIDEBAR_KEYBOARD_SHORTCUT = 'b';
-const SIDEBAR_MINIMIZED_WIDTH = '4rem';
+const SIDEBAR_MINIMIZED_WIDTH = '4.5rem';
 
 type SidebarContext = {
   state: 'expanded' | 'collapsed';
