@@ -1,4 +1,4 @@
-import { cn } from '../lib/utils';
+import { cn } from '../lib';
 import { Avatar, AvatarFallback, AvatarImage } from '../shadcn/avatar';
 
 type SessionProps = {

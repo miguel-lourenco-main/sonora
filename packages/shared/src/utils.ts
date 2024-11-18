@@ -1,4 +1,4 @@
-import { COLLAPSE_PATHS, COLLAPSE_PATHS_FROM } from "./constants";
+import { COLLAPSE_PATHS, COLLAPSE_PATHS_FROM, FILE_SUPPORTED_TYPES } from "./constants";
 import { PlainFileObject } from "./interfaces";
 import { UseFormReturn } from "react-hook-form";
 
@@ -138,7 +138,7 @@ export function objectToFile(plainObject: PlainFileObject): File {
   return file;
 }
 
-export function getPlanTier(pageCount: number, tiers: (number | 'unlimited')[] ){
+export function getCurrentTier(pageCount: number, tiers: (number | 'unlimited')[] ){
   
   let index: number = 0
 
@@ -157,4 +157,17 @@ export function getPlanTier(pageCount: number, tiers: (number | 'unlimited')[] )
 
 export function getFormKeys<T extends Record<string, any>>(form: UseFormReturn<T>) {
   return Object.keys(form.getValues()) as (keyof T)[];
+}
+
+export function getFileExtensionType(filename: string): {extension: string, mimeType: string} {
+  const extension = filename.split('.').pop()?.toLowerCase();
+  if (!extension) return {extension: '', mimeType: ''};
+
+  for (const [mimeType, extensions] of Object.entries(FILE_SUPPORTED_TYPES)) {
+    if (extensions.includes(`.${extension}`)) {
+      return {extension, mimeType};
+    }
+  }
+  
+  return {extension, mimeType: ''};
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { Input } from "../shadcn/input";
-import { cn } from "../lib/utils";
+import { cn } from "../lib";
 import {
   Dispatch,
   SetStateAction,
@@ -148,7 +148,7 @@ export const FilesDragNDrop = forwardRef<
             break;
           }
         }
-        toast.warning(`${rejectedFiles.length} file(s) were not accepted due to incorrect file type.`);
+        //toast.warning(`${rejectedFiles.length} file(s) were not accepted due to incorrect file type.`);
       }
     }, [setFiles]);
 
@@ -460,10 +460,6 @@ export const FilesDragNDropV2 = forwardRef<
 
       if (validFiles.length > 0) {
         addFiles(validFiles);
-      }
-
-      if (invalidFiles.length > 0) {
-        toast.warning(`${invalidFiles.length} file(s) were not accepted due to incorrect file type or size.`);
       }
 
       if (rejectedFiles.length > 0) {

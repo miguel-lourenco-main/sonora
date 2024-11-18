@@ -1,7 +1,7 @@
 "use client";
 
 import { Input } from "../shadcn/input";
-import { cn } from "../lib/utils";
+import { cn } from "../lib";
 import {
   Dispatch,
   SetStateAction,

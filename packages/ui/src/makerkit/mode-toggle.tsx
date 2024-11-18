@@ -5,7 +5,7 @@ import { useMemo } from 'react';
 import { Computer, Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
 
-import { cn } from '../lib/utils';
+import { cn } from '../lib';
 import { Button } from '../shadcn/button';
 import {
   DropdownMenu,

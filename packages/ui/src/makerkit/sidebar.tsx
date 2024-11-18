@@ -9,7 +9,7 @@ import { cva } from 'class-variance-authority';
 import { ChevronDown } from 'lucide-react';
 import { z } from 'zod';
 
-import { cn, isRouteActive } from '../lib/utils';
+import { cn, isRouteActive } from '../lib';
 import { Button } from '../shadcn/button';
 import {
   Tooltip,

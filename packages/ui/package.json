@@ -141,7 +141,9 @@
     "./file-upload": "./src/shadcn-extension/file-upload.tsx",
     "./file-upload-example": "./src/shadcn-extension/file-upload-example.tsx",
     "./multi-select": "./src/shadcn-extension/multi-select.tsx",
-    "./utils": "./src/lib/utils/index.ts",
+    "./utils": "./src/lib/index.ts",
+    "./get-file-icon": "./src/lib/get-file-icon.tsx",
+    "./get-country-flag": "./src/lib/get-country-flag.tsx",
     "./if": "./src/makerkit/if.tsx",
     "./trans": "./src/makerkit/trans.tsx",
     "./divider": "./src/makerkit/divider.tsx",
@@ -187,7 +189,12 @@
     "./general-loading": "./src/custom/general-loading.tsx",
     "./file-upload-simple": "./src/custom/file-upload-simple.tsx",
     "./data-table-row-actions": "./src/custom/data-table-components/data-table-row-actions.tsx",
-    "./resolvers-polyfill": "./src/utils/resolvers-polyfill.tsx"
+    "./resolvers-polyfill": "./src/utils/resolvers-polyfill.tsx",
+    "./shine-border": "./src/magic-ui/shine-border.tsx",
+    "./neon-gradient-card": "./src/magic-ui/neon-gradient-card.tsx",
+    "./border-beam": "./src/magic-ui/border-beam.tsx",
+    "./tier-effect": "./src/magic-ui/tier-effect.tsx",
+    "./animated-translated-files": "./src/magic-ui/animated-translated-files.tsx"
   },
   "typesVersions": {
     "*": {

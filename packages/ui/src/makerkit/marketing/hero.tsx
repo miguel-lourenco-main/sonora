@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { cn } from '../../lib/utils';
+import { cn } from '../../lib';
 import { Heading } from '../../shadcn/heading';
 import { HeroTitle } from './hero-title';
 

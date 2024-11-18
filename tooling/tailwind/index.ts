@@ -126,12 +126,35 @@ export default {
           from: { height: 'var(--radix-accordion-content-height)' },
           to: { height: '0' },
         },
+        "border-beam": {
+          "100%": {
+            "offset-distance": "100%",
+          },
+        },
+        shine: {
+          "0%": {
+            "background-position": "0% 0%",
+          },
+          "50%": {
+            "background-position": "100% 100%",
+          },
+          to: {
+            "background-position": "0% 0%",
+          },
+        },
+         "background-position-spin": {
+          "0%": { backgroundPosition: "top center" },
+          "100%": { backgroundPosition: "bottom center" },
+        },
       },
       animation: {
         'fade-up': 'fade-up 0.5s',
         'fade-down': 'fade-down 0.5s',
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        "border-beam": "border-beam calc(var(--duration)*1s) infinite linear",
+        shine: "shine var(--duration) infinite linear",
+        "background-position-spin": "background-position-spin 3000ms infinite alternate",
       },
     },
   },

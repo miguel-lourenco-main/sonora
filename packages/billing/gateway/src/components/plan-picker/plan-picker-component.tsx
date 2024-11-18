@@ -2,8 +2,6 @@
 
 import { useMemo } from 'react';
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm, useWatch } from 'react-hook-form';
 import { ArrowRight, CircleCheck } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -12,7 +10,7 @@ import {
   getProductPlanPair,
   LineItemSchema,
 } from '@kit/billing';
-import { formatCurrency, getPlanTier } from '@kit/shared/utils';
+import { formatCurrency, getCurrentTier } from '@kit/shared/utils';
 import { Button } from '@kit/ui/button';
 import {
   FormControl,

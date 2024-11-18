@@ -34,10 +34,6 @@ export function FileInputButton({
       }
     });
 
-    if (rejectedFiles.length > 0) {
-      toast.warning(`${rejectedFiles.length} file(s) were not accepted due to incorrect file type.`);
-    }
-
     addDroppedFiles(acceptedFiles);
   };
 

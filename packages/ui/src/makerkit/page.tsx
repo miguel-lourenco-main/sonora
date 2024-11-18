@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { cn } from '../lib/utils';
+import { cn } from '../lib';
 import { If } from './if';
 
 export type PageLayoutStyle = 'sidebar' | 'header' | 'custom';
