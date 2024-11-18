@@ -6,6 +6,7 @@ import { z } from 'zod';
 
 import { getSupabaseServerClient } from '@kit/supabase/server-client';
 import { createTeamAccountsApi } from '@kit/team-accounts/api';
+import { Database } from '~/lib/database.types';
 
 /**
  * The variable BILLING_MODE represents the billing mode for a service. It can
@@ -29,7 +30,7 @@ const BILLING_MODE = z
 export const loadTeamAccountBillingPage = cache(teamAccountBillingPageLoader);
 
 function teamAccountBillingPageLoader(accountId: string) {
-  const client = getSupabaseServerClient();
+  const client = getSupabaseServerClient<Database>();
   const api = createTeamAccountsApi(client);
 
   const data =

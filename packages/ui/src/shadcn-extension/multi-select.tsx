@@ -9,7 +9,7 @@ import {
   CommandList,
 } from "../shadcn/command";
 import { Separator } from "../shadcn/separator";
-import { cn } from "../lib/utils";
+import { cn } from "../lib";
 import { Command as CommandPrimitive } from "cmdk";
 import { X as RemoveIcon, Check } from "lucide-react";
 import React, {

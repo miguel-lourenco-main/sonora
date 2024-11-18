@@ -6,6 +6,7 @@ import { getSupabaseServerAdminClient } from '@kit/supabase/server-admin-client'
 import { RecordChange, Tables } from '../record-change.type';
 import { createDatabaseWebhookRouterService } from './database-webhook-router.service';
 import { getDatabaseWebhookVerifier } from './verifier';
+import { Database } from '@kit/supabase/database';
 
 /**
  * @name DatabaseChangePayload
@@ -62,7 +63,7 @@ class DatabaseWebhookHandlerService {
     // all good, we can now the webhook
 
     // create a client with admin access since we are handling webhooks and no user is authenticated
-    const adminClient = getSupabaseServerAdminClient();
+    const adminClient = getSupabaseServerAdminClient<Database>();
 
     const service = createDatabaseWebhookRouterService(adminClient);
 

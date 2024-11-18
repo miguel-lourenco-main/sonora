@@ -65,15 +65,6 @@ export const TeamAccountLayoutMobileNavigation = (
       if ('divider' in item) {
         return <DropdownMenuSeparator key={index} />;
       }
-
-      return (
-        <DropdownLink
-          key={item.path}
-          Icon={item.Icon}
-          path={item.path}
-          label={item.label}
-        />
-      );
     },
   );
 
@@ -166,6 +157,7 @@ function TeamAccountsModal(props: { accounts: Accounts; userId: string }) {
         <div className={'py-16'}>
           <AccountSelector
             className={'w-full max-w-full'}
+            collisionPadding={0}
             userId={props.userId}
             onAccountChange={(value) => {
               const path = value

@@ -19,7 +19,7 @@ import {
   PopoverTrigger,
 } from "../../shadcn/popover"
 import { Separator } from "../../shadcn/separator"
-import { cn } from "../../lib/utils"
+import { cn } from "../../lib"
 import { I18nComponent } from "@kit/i18n"
 
 interface DataTableFacetedFilterProps<TData, TValue> {

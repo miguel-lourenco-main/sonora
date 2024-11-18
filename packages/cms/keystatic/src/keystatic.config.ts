@@ -66,6 +66,10 @@ function getKeystaticCollections(path: string) {
       format: { contentField: 'content' },
       schema: {
         title: fields.slug({ name: { label: 'Title' } }),
+        label: fields.text({
+          label: 'Label',
+          validation: { isRequired: false },
+        }),
         image: fields.image({
           label: 'Image',
           directory: 'public/site/images',
@@ -101,6 +105,10 @@ function getKeystaticCollections(path: string) {
       format: { contentField: 'content' },
       schema: {
         title: fields.slug({ name: { label: 'Title' } }),
+        label: fields.text({
+          label: 'Label',
+          validation: { isRequired: false },
+        }),
         content: getContentField(),
         image: fields.image({
           label: 'Image',

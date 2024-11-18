@@ -10,6 +10,7 @@
     "name": "MakerKit"
   },
   "scripts": {
+    "preinstall": "pnpm run --filter scripts requirements",
     "postinstall": "manypkg fix",
     "build": "turbo build --cache-dir=.turbo",
     "build:vercel-sdk": "turbo build --cache-dir=.turbo --filter=vercel-sdk-core --filter=vercel-sdk-edgen --filter=vercel-sdk-react --filter=vercel-sdk-ui-utils --filter=vercel-sdk-provider-utils --filter=vercel-sdk-provider",

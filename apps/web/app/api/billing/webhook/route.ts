@@ -4,6 +4,7 @@ import { getLogger } from '@kit/shared/logger';
 import { getSupabaseServerAdminClient } from '@kit/supabase/server-admin-client';
 
 import billingConfig from '~/config/billing.config';
+import { Database } from '~/lib/database.types';
 
 /**
  * @description Handle the webhooks from Stripe related to checkouts
@@ -20,7 +21,7 @@ export const POST = enhanceRouteHandler(
 
     logger.info(ctx, `Received billing webhook. Processing...`);
 
-    const supabaseClientProvider = () => getSupabaseServerAdminClient();
+    const supabaseClientProvider = () => getSupabaseServerAdminClient<Database>();
 
     const service = await getBillingEventHandlerService(
       supabaseClientProvider,

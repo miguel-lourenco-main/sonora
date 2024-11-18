@@ -4,7 +4,7 @@ import { Fragment, useCallback } from 'react';
 
 import { cva } from 'class-variance-authority';
 
-import { cn } from '../lib/utils';
+import { cn } from '../lib';
 import { If } from './if';
 import { Trans } from './trans';
 
@@ -42,7 +42,7 @@ export function Stepper(props: {
       const isDotsVariant = variant === 'dots';
 
       const labelClassName = cn({
-        ['text-xs px-1.5 py-2']: !isNumberVariant,
+        ['px-1.5 py-2 text-xs']: !isNumberVariant,
         ['hidden']: isDotsVariant,
       });
 
@@ -89,10 +89,10 @@ function getClassNameBuilder() {
   return cva(``, {
     variants: {
       variant: {
-        default: `flex flex-col h-[2.5px] w-full transition-all duration-500`,
+        default: `flex h-[2.5px] w-full flex-col transition-all duration-500`,
         numbers:
-          'w-9 h-9 font-bold rounded-full flex items-center justify-center text-sm border',
-        dots: 'w-2.5 h-2.5 rounded-full bg-muted transition-colors',
+          'flex h-9 w-9 items-center justify-center rounded-full border text-sm font-bold',
+        dots: 'h-2.5 w-2.5 rounded-full bg-muted transition-colors',
       },
       selected: {
         true: '',
@@ -182,15 +182,15 @@ function StepDivider({
   selected: boolean;
   complete: boolean;
 }>) {
-  const spanClassName = cn('font-medium text-sm min-w-max', {
-    ['text-muted-foreground hidden sm:flex']: !selected,
+  const spanClassName = cn('min-w-max text-sm font-medium', {
+    ['hidden text-muted-foreground sm:flex']: !selected,
     ['text-secondary-foreground']: selected || complete,
     ['font-medium']: selected,
   });
 
   const className = cn(
-    'flex flex-1 last:flex-[0_0_0] items-center h-9 justify-center' +
-      ' items-center w-full group px-3 flex space-x-3',
+    'flex h-9 flex-1 items-center justify-center last:flex-[0_0_0]' +
+      ' group flex w-full items-center space-x-3 px-3',
   );
 
   return (

@@ -16,6 +16,7 @@ import { RenewInvitationSchema } from '../../schema/renew-invitation.schema';
 import { UpdateInvitationSchema } from '../../schema/update-invitation.schema';
 import { createAccountInvitationsService } from '../services/account-invitations.service';
 import { createAccountPerSeatBillingService } from '../services/account-per-seat-billing.service';
+import { Database } from '@kit/supabase/database';
 
 /**
  * @name createInvitationsAction
@@ -23,7 +24,7 @@ import { createAccountPerSeatBillingService } from '../services/account-per-seat
  */
 export const createInvitationsAction = enhanceAction(
   async (params) => {
-    const client = getSupabaseServerClient();
+    const client = getSupabaseServerClient<Database>();
 
     // Create the service
     const service = createAccountInvitationsService(client);
@@ -52,7 +53,7 @@ export const createInvitationsAction = enhanceAction(
  */
 export const deleteInvitationAction = enhanceAction(
   async (data) => {
-    const client = getSupabaseServerClient();
+    const client = getSupabaseServerClient<Database>();
     const service = createAccountInvitationsService(client);
 
     // Delete the invitation
@@ -75,7 +76,7 @@ export const deleteInvitationAction = enhanceAction(
  */
 export const updateInvitationAction = enhanceAction(
   async (invitation) => {
-    const client = getSupabaseServerClient();
+    const client = getSupabaseServerClient<Database>();
     const service = createAccountInvitationsService(client);
 
     await service.updateInvitation(invitation);
@@ -97,7 +98,7 @@ export const updateInvitationAction = enhanceAction(
  */
 export const acceptInvitationAction = enhanceAction(
   async (data: FormData, user) => {
-    const client = getSupabaseServerClient();
+    const client = getSupabaseServerClient<Database>();
 
     const { inviteToken, nextPath } = AcceptInvitationSchema.parse(
       Object.fromEntries(data),
@@ -108,7 +109,7 @@ export const acceptInvitationAction = enhanceAction(
     const service = createAccountInvitationsService(client);
 
     // use admin client to accept invitation
-    const adminClient = getSupabaseServerAdminClient();
+    const adminClient = getSupabaseServerAdminClient<Database>();
 
     // Accept the invitation
     const accountId = await service.acceptInvitationToTeam(adminClient, {
@@ -135,7 +136,7 @@ export const acceptInvitationAction = enhanceAction(
  */
 export const renewInvitationAction = enhanceAction(
   async (params) => {
-    const client = getSupabaseServerClient();
+    const client = getSupabaseServerClient<Database>();
     const { invitationId } = RenewInvitationSchema.parse(params);
 
     const service = createAccountInvitationsService(client);

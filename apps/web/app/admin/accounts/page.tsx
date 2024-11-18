@@ -12,12 +12,17 @@ interface SearchParams {
   query?: string;
 }
 
+interface AdminAccountsPageProps {
+  searchParams: Promise<SearchParams>;
+}
+
 export const metadata = {
   title: `Accounts`,
 };
 
-function AccountsPage({ searchParams }: { searchParams: SearchParams }) {
+async function AccountsPage(props: AdminAccountsPageProps) {
   const client = getSupabaseServerAdminClient<Database>();
+  const searchParams = await props.searchParams;
 
   const page = searchParams.page ? parseInt(searchParams.page) : 1;
   const filters = getFilters(searchParams);

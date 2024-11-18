@@ -25,11 +25,10 @@ import { withI18n } from '~/lib/i18n/with-i18n';
 // local imports
 import { TeamAccountLayoutPageHeader } from '../_components/team-account-layout-page-header';
 import { loadMembersPageData } from './_lib/server/members-page.loader';
+import { Database } from '~/lib/database.types';
 
-interface Params {
-  params: {
-    account: string;
-  };
+interface TeamAccountMembersPageProps {
+  params: Promise<{ account: string }>;
 }
 
 export const generateMetadata = async () => {
@@ -41,11 +40,12 @@ export const generateMetadata = async () => {
   };
 };
 
-async function TeamAccountMembersPage({ params }: Params) {
-  const client = getSupabaseServerClient();
+async function TeamAccountMembersPage({ params }: TeamAccountMembersPageProps) {
+  const client = getSupabaseServerClient<Database>();
+  const slug = (await params).account;
 
   const [members, invitations, canAddMember, { user, account }] =
-    await loadMembersPageData(client, params.account);
+    await loadMembersPageData(client, slug);
 
   const canManageRoles = account.permissions.includes('roles.manage');
   const canManageInvitations = account.permissions.includes('invites.manage');

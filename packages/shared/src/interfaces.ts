@@ -12,3 +12,8 @@ export interface Language {
   shortValue: string;
   label: string;
 }
+
+export interface LanguageRegion {
+  code: string;
+  name: string;
+}

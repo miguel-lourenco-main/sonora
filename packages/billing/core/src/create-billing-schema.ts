@@ -17,6 +17,11 @@ export const BillingProviderSchema = z.enum([
 
 export const PaymentTypeSchema = z.enum(['one-time', 'recurring']);
 
+export const TierSchema = z.object({
+  cost: z.number().min(0),
+  upTo: z.union([z.number().min(0), z.literal('unlimited')]),
+})
+
 export const LineItemSchema = z
   .object({
     id: z
@@ -56,12 +61,7 @@ export const LineItemSchema = z
       .positive()
       .optional(),
     tiers: z
-      .array(
-        z.object({
-          cost: z.number().min(0),
-          upTo: z.union([z.number().min(0), z.literal('unlimited')]),
-        }),
-      )
+      .array(TierSchema)
       .optional(),
   })
   .refine(
@@ -205,7 +205,7 @@ export const PlanSchema = z
     },
   );
 
-const ProductSchema = z
+export const ProductSchema = z
   .object({
     id: z
       .string({

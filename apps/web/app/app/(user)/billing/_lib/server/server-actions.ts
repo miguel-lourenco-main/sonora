@@ -9,6 +9,7 @@ import featureFlagsConfig from '~/config/feature-flags.config';
 
 import { PersonalAccountCheckoutSchema } from '../schema/personal-account-checkout.schema';
 import { createUserBillingService } from './user-billing.service';
+import { Database } from '~/lib/database.types';
 
 /**
  * @name enabled
@@ -26,7 +27,7 @@ export const createPersonalAccountCheckoutSession = enhanceAction(
       throw new Error('Personal account billing is not enabled');
     }
 
-    const client = getSupabaseServerClient();
+    const client = getSupabaseServerClient<Database>();
     const service = createUserBillingService(client);
 
     return await service.createCheckoutSession(data);
@@ -46,7 +47,7 @@ export const createPersonalAccountBillingPortalSession = enhanceAction(
       throw new Error('Personal account billing is not enabled');
     }
 
-    const client = getSupabaseServerClient();
+    const client = getSupabaseServerClient<Database>();
     const service = createUserBillingService(client);
 
     // get url to billing portal

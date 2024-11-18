@@ -150,7 +150,7 @@ class TeamBillingService {
     accountId: string;
     slug: string;
   }) {
-    const client = getSupabaseServerClient();
+    const client = getSupabaseServerClient<Database>();
     const logger = await getLogger();
 
     logger.info(
@@ -229,6 +229,7 @@ class TeamBillingService {
           customerId,
           accountId,
           name: this.namespace,
+          error,
         },
         `Billing Portal session was not created`,
       );
@@ -288,7 +289,7 @@ class TeamBillingService {
         `Encountered an error while fetching the number of existing seats`,
       );
 
-      return Promise.reject(error);
+      return Promise.reject(error as Error);
     }
   }
 }

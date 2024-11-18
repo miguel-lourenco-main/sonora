@@ -10,7 +10,7 @@ import {
   DialogTrigger,
 } from '../shadcn/dialog';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../shadcn/tooltip';
-import { cn } from "../lib/utils"
+import { cn } from "../lib"
 
 
 export default function DialogLayout({

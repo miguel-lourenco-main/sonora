@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useEffect, useMemo } from 'react';
+import { memo, useEffect, useMemo, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import {
@@ -16,6 +16,8 @@ import { PageAmountInput } from '../page-counter';
 import { PlanPickerComponent } from '../plan-picker/plan-picker-component';
 import { PlanDetails } from '../plan-picker/plan-details';
 import { getPolydocPlanPickerSchema } from './polydoc-plan-picker-schema';
+import { getBillingInfoForPageCount, getTierText } from '../../lib/utils';
+import { CurrentBillingInfo } from '../../lib/interfaces';
 
 
 type PolydocPlanPickerFormData = {
@@ -45,7 +47,7 @@ export function PolydocPlanPicker(
     resolver: zodResolver(getPolydocPlanPickerSchema(props.config)),
     defaultValues: {
       interval: 'month',
-      pageCount: 6,
+      pageCount: 50,
       planId: 'pro-monthly',
       productId: 'pro',
     },
@@ -62,12 +64,7 @@ export function PolydocPlanPicker(
 
   const { interval: selectedInterval, planId: selectedPlanId, productId, pageCount } = form.watch();
 
-  // Function to determine the plan based on page count
-  const determinePlan = (pages: number) => {
-    if (pages <= 5) return 'Free';
-    if (pages !== MAX_PAGES_SUBSCRIPTION) return 'Pro';
-    return 'Business';
-  };
+  const [currentTier, setCurrentTier] = useState<string>('');
 
   useEffect(() => {
     const planName = props.config.products.find(p => p.id === productId)?.name;
@@ -96,15 +93,18 @@ export function PolydocPlanPicker(
   // Update form values when currentPlan changes
   useEffect(() => {
 
-    const product = props.config.products.find(p => p.name === determinePlan(pageCount));
+    const {product, plan, tier} = getBillingInfoForPageCount(props.config.products, pageCount, selectedInterval);
 
-    if (product && product.id !== productId) {
-      const plan = product.plans.find(p => p.interval === selectedInterval);
-      if (plan) {
-        form.setValue('planId', plan.id, { shouldValidate: true });
-        form.setValue('productId', product.id, { shouldValidate: true });
-      }
+    if (product && plan) {
+      form.setValue('planId', plan.id, { shouldValidate: true });
+      form.setValue('productId', product.id, { shouldValidate: true });
     }
+
+    if(tier && plan){
+      const tierText = getTierText(tier, plan.lineItems[0]?.unit);
+      setCurrentTier(tierText);
+    };
+
   }, [pageCount]);
 
   // Update the getFormValue function
@@ -132,9 +132,27 @@ export function PolydocPlanPicker(
     selectedPlanId,
   );
 
+    const [currentBillingInfo, setCurrentBillingInfo] = useState<CurrentBillingInfo>({
+    productName: 'Pro',
+    tierText: '$0.25 / page',
+    tierIndex: 0
+  });
+
+  useEffect(() => {
+    const {product, plan, tier, index} = getBillingInfoForPageCount(props.config.products, pageCount, selectedInterval);
+    
+    if(product && tier && plan){
+      setCurrentBillingInfo({
+        productName: product.name,
+        tierText: getTierText(tier, plan.lineItems[0]?.unit),
+        tierIndex: index
+      });
+    }
+  }, [pageCount]);
+
   return (
     <Form {...form}>
-      <PageAmountInput value={pageCount} onPageCountChange={updatePageCount} />
+      <PageAmountInput value={pageCount} onPageCountChange={updatePageCount} billingInfo={currentBillingInfo}/>
       <form
         className={'flex space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0'}
         onSubmit={form.handleSubmit(props.onSubmit)}

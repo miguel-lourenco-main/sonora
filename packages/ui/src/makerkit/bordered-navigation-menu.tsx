@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { cn, isRouteActive } from '../lib/utils';
+import { cn, isRouteActive } from '../lib';
 import { Button } from '../shadcn/button';
 import {
   NavigationMenu,

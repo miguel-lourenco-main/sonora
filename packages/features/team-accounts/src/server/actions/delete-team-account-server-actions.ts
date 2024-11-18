@@ -55,7 +55,7 @@ async function deleteTeamAccount(params: {
   accountId: string;
   userId: string;
 }) {
-  const client = getSupabaseServerClient();
+  const client = getSupabaseServerClient<Database>();
   const service = createDeleteTeamAccountService();
 
   // verify that the user has the necessary permissions to delete the team account

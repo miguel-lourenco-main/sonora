@@ -3,9 +3,10 @@
 import { File, Trash2 } from "lucide-react";
 import { Button } from "../shadcn/button";
 import TooltipComponent from "./tooltip-component";
-import { IconDOC, IconDOCX, IconPDF } from "./icons";
+import { IconDOC, IconDOCX, IconPDF, IconPPTX } from "./icons";
 import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { FILE_SUPPORTED_TYPES, FILE_SUPPORTED_TYPES_KEYS } from "@kit/shared/constants";
 
 interface FilesGridProps {
   files: File[];
@@ -56,15 +57,21 @@ export default function FilesGrid({ files, onFileRemove }: FilesGridProps) {
             }}
         >
             {files.map((file, index) => {
-                const extension = file.type.split("/")[1];
+                const extensions = FILE_SUPPORTED_TYPES[file.type as keyof typeof FILE_SUPPORTED_TYPES];
                 let icon: React.ReactNode;
 
-                if (extension === "pdf") {
-                    icon = <IconPDF className="size-12" />;
-                } else if (extension === "vnd.openxmlformats-officedocument.wordprocessingml.document") {
-                    icon = <IconDOCX className="size-12" />;
-                } else if (extension === "doc" || extension === "msword") {
-                    icon = <IconDOC className="size-12" />;
+                if( extensions.length > 0) {
+                    if (extensions.includes(".pdf")) {
+                        icon = <IconPDF className="size-12" />;
+                    } else if (extensions.includes(".docx")) {
+                        icon = <IconDOCX className="size-12" />;
+                    } else if (extensions.includes(".doc")) {
+                        icon = <IconDOC className="size-12" />;
+                    } else if (extensions.includes(".pptx")) {
+                        icon = <IconPPTX className="size-12" />;
+                    } else {
+                        icon = <File className="size-12" />;
+                    }
                 } else {
                     icon = <File className="size-12" />;
                 }

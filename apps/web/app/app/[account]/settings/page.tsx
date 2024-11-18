@@ -11,6 +11,7 @@ import { createI18nServerInstance } from '~/lib/i18n/i18n.server';
 
 // local imports
 import { TeamAccountLayoutPageHeader } from '../_components/team-account-layout-page-header';
+import { Database } from '~/lib/database.types';
 
 export const generateMetadata = async () => {
   const i18n = await createI18nServerInstance();
@@ -21,19 +22,18 @@ export const generateMetadata = async () => {
   };
 };
 
-interface Props {
-  params: {
-    account: string;
-  };
+interface TeamAccountSettingsPageProps {
+  params: Promise<{ account: string }>;
 }
 
 const paths = {
   teamAccountSettings: pathsConfig.app.accountSettings,
 };
 
-async function TeamAccountSettingsPage(props: Props) {
-  const api = createTeamAccountsApi(getSupabaseServerClient());
-  const data = await api.getTeamAccount(props.params.account);
+async function TeamAccountSettingsPage(props: TeamAccountSettingsPageProps) {
+  const api = createTeamAccountsApi(getSupabaseServerClient<Database>());
+  const slug = (await props.params).account;
+  const data = await api.getTeamAccount(slug);
 
   const account = {
     id: data.id,

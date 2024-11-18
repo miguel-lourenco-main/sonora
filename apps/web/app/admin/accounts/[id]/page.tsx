@@ -7,12 +7,13 @@ import { PageBody } from '@kit/ui/page';
 import { Database } from '~/lib/database.types';
 
 interface Params {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
-export const generateMetadata = async ({ params }: Params) => {
+export const generateMetadata = async (props: Params) => {
+  const params = await props.params;
   const account = await loadAccount(params.id);
 
   return {
@@ -20,7 +21,8 @@ export const generateMetadata = async ({ params }: Params) => {
   };
 };
 
-async function AccountPage({ params }: Params) {
+async function AccountPage(props: Params) {
+  const params = await props.params;
   const account = await loadAccount(params.id);
 
   return (

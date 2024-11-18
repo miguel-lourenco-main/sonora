@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from 'react';
 
-import { cn } from '../lib/utils';
+import { cn } from '../lib';
 import { Spinner } from './spinner';
 import { Loader } from 'lucide-react';
 import GeneralLoading from '../custom/general-loading';

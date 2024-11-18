@@ -7,7 +7,7 @@ import Image from 'next/image';
 
 import { UploadCloud, X } from 'lucide-react';
 
-import { cn } from '../lib/utils';
+import { cn } from '../lib';
 import { Button } from '../shadcn/button';
 import { Label } from '../shadcn/label';
 import { If } from './if';
@@ -34,7 +34,7 @@ export const ImageUploadInput = forwardRef<React.ElementRef<'input'>, Props>(
     },
     forwardedRef,
   ) {
-    const localRef = useRef<HTMLInputElement>();
+    const localRef = useRef<HTMLInputElement>(null);
 
     const [state, setState] = useState({
       image,

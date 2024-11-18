@@ -1,7 +1,7 @@
 "use client";
 
 import { ScrollArea } from "../shadcn/scroll-area";
-import { cn } from "../lib/utils";
+import { cn } from "../lib";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import { FileIcon, FolderIcon, FolderOpenIcon } from "lucide-react";
 import React, {

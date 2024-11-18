@@ -9,7 +9,7 @@ import { cva } from 'class-variance-authority';
 import { ChevronDown } from 'lucide-react';
 import { z } from 'zod';
 
-import { cn, isRouteActive } from '../lib/utils';
+import { cn, isRouteActive } from '../lib';
 import { Button } from '../shadcn/button';
 import {
   Tooltip,
@@ -26,6 +26,11 @@ export type SidebarConfig = z.infer<typeof NavigationConfigSchema>;
 
 export { SidebarContext };
 
+/**
+ * @deprecated
+ * This component is deprecated and will be removed in a future version.
+ * Please use the Shadcn Sidebar component instead.
+ */
 export function Sidebar(props: {
   collapsed?: boolean;
   expandOnHover?: boolean;
@@ -324,31 +329,28 @@ export function SidebarNavigation({
               collapsed={item.collapsed}
             >
               {item.children.map((child) => {
-                return (
-                  <SidebarItem
-                    key={child.path}
-                    end={child.end}
-                    path={child.path}
-                    Icon={child.Icon}
-                  >
-                    <Trans i18nKey={child.label} defaults={child.label} />
-                  </SidebarItem>
-                );
+                if ('collapsible' in child && child.collapsible) {
+                  throw new Error(
+                    'Collapsible groups are not supported in the old Sidebar. Please migrate to the new Sidebar.',
+                  );
+                }
+
+                if ('path' in child) {
+                  return (
+                    <SidebarItem
+                      key={child.path}
+                      end={child.end}
+                      path={child.path}
+                      Icon={child.Icon}
+                    >
+                      <Trans i18nKey={child.label} defaults={child.label} />
+                    </SidebarItem>
+                  );
+                }
               })}
             </SidebarGroup>
           );
         }
-
-        return (
-          <SidebarItem
-            key={item.path}
-            end={item.end}
-            path={item.path}
-            Icon={item.Icon}
-          >
-            <Trans i18nKey={item.label} defaults={item.label} />
-          </SidebarItem>
-        );
       })}
     </>
   );

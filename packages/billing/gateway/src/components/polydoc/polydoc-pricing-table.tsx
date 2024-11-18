@@ -1,15 +1,19 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 import { ArrowRight, CheckCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 
+import { MAX_PAGES_SUBSCRIPTION } from '@kit/shared/constants';
+
 import {
   BillingConfig,
   type LineItemSchema,
+  TierSchema,
+  ProductSchema,
   getPlanIntervals,
   getPrimaryLineItem,
 } from '@kit/billing';
@@ -23,14 +27,10 @@ import { cn } from '@kit/ui/utils';
 
 import { LineItemDetails } from '../line-item-details';
 import { PageAmountInput } from '../page-counter';
-import { calculateTieredCost } from '../../lib/utils';
+import { calculateTieredCost, getBillingInfoForPageCount, getTierText } from '../../lib/utils';
+import { CurrentBillingInfo, Interval, Paths } from '../../lib/interfaces';
+import FeaturesList from '../features-list';
 
-interface Paths {
-  signUp: string;
-  return: string;
-}
-
-type Interval = 'month' | 'year';
 
 export function PolydocPricingTable({
   config,
@@ -45,7 +45,6 @@ export function PolydocPricingTable({
   displayPlanDetails?: boolean;
   alwaysDisplayMonthlyPrice?: boolean;
   redirectToCheckout?: boolean;
-
   CheckoutButtonRenderer?: React.ComponentType<{
     planId: string;
     productId: string;
@@ -55,15 +54,37 @@ export function PolydocPricingTable({
   const intervals = getPlanIntervals(config).filter(Boolean) as Interval[];
   
   const [interval, setInterval] = useState(intervals[0]!);
-  const [pageCount, setPageCount] = useState(5);
+  const [currentBillingInfo, setCurrentBillingInfo] = useState<CurrentBillingInfo>({
+    productName: 'Pro',
+    tierText: '$0.25 / page',
+    tierIndex: 0
+  });
+
+  const [pageCount, setPageCount] = useState(50);
 
   const updatePageCount = (value: number) => {
     setPageCount(value);
   };
 
+  useEffect(() => {
+    const {product, plan, tier, index} = getBillingInfoForPageCount(config.products, pageCount, interval);
+    
+    if(product && tier && plan){
+      setCurrentBillingInfo({
+        productName: product.name,
+        tierText: getTierText(tier, plan.lineItems[0]?.unit),
+        tierIndex: index
+      });
+    }
+  }, [pageCount]);
+
   return (
     <div className={'flex flex-col space-y-8 xl:space-y-12'}>
-      <PageAmountInput onPageCountChange={updatePageCount} value={pageCount} />
+      <PageAmountInput 
+        onPageCountChange={updatePageCount} 
+        value={pageCount} 
+        billingInfo={currentBillingInfo}
+      />
       <div className={'flex justify-center'}>
         {intervals.length > 1 ? (
           <PlanIntervalSwitcher
@@ -73,18 +94,12 @@ export function PolydocPricingTable({
           />
         ) : null}
       </div>
-      <div
-        className={
-          'flex flex-col items-start space-y-6 lg:space-y-0' +
-          ' justify-center lg:flex-row lg:space-x-4'
-        }
-      >
+      <div className={'flex flex-col items-start space-y-6 lg:space-y-0 justify-center lg:flex-row lg:space-x-4'}>
         {config.products.map((product) => {
           const plan = product.plans.find((plan) => {
             if (plan.paymentType === 'recurring') {
               return plan.interval === interval;
             }
-
             return plan;
           });
 
@@ -98,29 +113,22 @@ export function PolydocPricingTable({
             throw new Error(`Primary line item not found for plan ${plan.id}`);
           }
 
-          // Create a copy of the product to avoid mutating the original config
           const modifiedProduct = { ...product };
           const modifiedLineItem = {...primaryLineItem} as z.infer<typeof LineItemSchema>;
 
-          // If the product is 'pro', add the page count feature
           if (product.id === 'pro' && modifiedLineItem) {
-            const intervalText = interval === 'year' ? 'year' : 'month';
-            const pageFeature = `${pageCount} pages per ${intervalText}`;
-            
-            // Insert the page count feature at index 1
-            modifiedProduct.features = [
-              pageFeature,
-              ...modifiedProduct.features
-            ];
-
-            if (product.id === 'pro' && modifiedLineItem) {
-              if (primaryLineItem && primaryLineItem.tiers) {
-                const tiers = primaryLineItem.tiers;
-
-                modifiedLineItem.cost = calculateTieredCost(pageCount , tiers)
-              }
+            if (primaryLineItem && primaryLineItem.tiers) {
+              const tiers = primaryLineItem.tiers;
+              modifiedLineItem.cost = calculateTieredCost(pageCount, tiers);
             }
           }
+
+          // Determine if this plan should be highlighted
+          const isHighlighted = (
+            (product.id === 'free' && pageCount === 5) ||
+            (product.id === 'business' && pageCount === MAX_PAGES_SUBSCRIPTION) ||
+            (product.id === 'pro' && pageCount > 5 && pageCount < MAX_PAGES_SUBSCRIPTION)
+          );
           
           return (
             <PricingItem
@@ -135,6 +143,8 @@ export function PolydocPricingTable({
               alwaysDisplayMonthlyPrice={alwaysDisplayMonthlyPrice}
               CheckoutButton={CheckoutButtonRenderer}
               pageCount={pageCount}
+              highlighted={isHighlighted}
+              popular={product.id === 'pro'}
             />
           );
         })}
@@ -183,9 +193,11 @@ function PricingItem(
       features: string[];
     };
     pageCount: number;
+    highlighted?: boolean;
+    popular?: boolean;
   }>,
 ) {
-  const highlighted = props.product.highlighted ?? false;
+  //const highlighted = props.product.highlighted ?? false;
 
   const lineItem = props.primaryLineItem;
 
@@ -197,35 +209,28 @@ function PricingItem(
 
   const interval = props.plan.interval as Interval;
 
+  const [openDetails, setOpenDetails] = useState<boolean>(false);
+
   return (
     <div
       data-cy={'subscription-plan'}
       className={cn(
         props.className,
-        `s-full relative flex flex-1 grow flex-col items-stretch justify-between self-stretch rounded-xl border p-8 lg:w-4/12 xl:max-w-[25rem]`,
+        `w-full relative flex flex-1 grow flex-col items-stretch justify-between self-stretch rounded-xl border p-8 lg:w-4/12 xl:max-w-[25rem]`,
+        `transition-all duration-300 ease-in-out`,
         {
-          ['border-primary']: highlighted,
-          ['border-border']: !highlighted,
+          ['border-primary']: props.highlighted,
+          ['border-border']: !props.highlighted,
         },
       )}
     >
-      <If condition={props.product.badge}>
-        <div className={'absolute -top-2.5 left-0 flex w-full justify-center'}>
-          <Badge
-            className={highlighted ? '' : 'bg-background'}
-            variant={highlighted ? 'default' : 'outline'}
-          >
-            <span>
-              <Trans
-                i18nKey={props.product.badge}
-                defaults={props.product.badge}
-              />
-            </span>
-          </Badge>
+      {props.popular && (
+        <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+          <Badge>Popular</Badge>
         </div>
-      </If>
+      )}
 
-      <div className={'flex flex-col space-y-6'}>
+      <div className={'flex flex-col space-y-6 justify-center'}>
         <div className={'flex flex-col space-y-2.5'}>
           <div className={'flex items-center space-x-6'}>
             <b
@@ -279,28 +284,30 @@ function PricingItem(
                 </If>
               </span>
 
-              <If condition={lineItem && lineItem?.type !== 'flat' && props.product.id !== 'business'}>
-                <span>/</span>
+              {/**
+               *<If condition={lineItem && lineItem?.type !== 'flat' && props.product.id !== 'business'}>
+                  <span>/</span>
 
-                <span
-                  className={cn(
-                    `animate-in slide-in-from-left-4 fade-in text-sm capitalize`,
-                  )}
-                >
-                  <If condition={lineItem?.type === 'per_seat'}>
-                    <Trans i18nKey={'billing:perTeamMember'} />
-                  </If>
+                  <span
+                    className={cn(
+                      `animate-in slide-in-from-left-4 fade-in text-sm capitalize`,
+                    )}
+                  >
+                    <If condition={lineItem?.type === 'per_seat'}>
+                      <Trans i18nKey={'billing:perTeamMember'} />
+                    </If>
 
-                  <If condition={lineItem?.unit}>
-                    <Trans
-                      i18nKey={'billing:perUnit'}
-                      values={{
-                        unit: lineItem?.unit,
-                      }}
-                    />
-                  </If>
-                </span>
-              </If>
+                    <If condition={lineItem?.unit}>
+                        <Trans
+                          i18nKey={'billing:perUnit'}
+                          values={{
+                            unit: lineItem?.unit,
+                          }}
+                        />
+                      </If>
+                  </span>
+                </If>
+              */}
             </span>
           </If>
         </div>
@@ -312,7 +319,7 @@ function PricingItem(
               <DefaultCheckoutButton
                 paths={props.paths}
                 product={props.product}
-                highlighted={highlighted}
+                highlighted={props.highlighted}
                 plan={props.plan}
                 redirectToCheckout={props.redirectToCheckout}
               />
@@ -320,7 +327,7 @@ function PricingItem(
           >
             {(CheckoutButton) => (
               <CheckoutButton
-                highlighted={highlighted}
+                highlighted={props.highlighted}
                 planId={props.plan.id}
                 productId={props.product.id}
               />
@@ -332,48 +339,39 @@ function PricingItem(
 
         <div className={'flex flex-col'}>
           <FeaturesList
-            highlighted={highlighted}
             features={props.product.features}
+            pageCount={props.pageCount}
+            interval={props.plan.interval ?? 'month'}
           />
         </div>
 
         <If condition={props.displayPlanDetails && lineItemsToDisplay.length}>
           <Separator />
 
-          <div className={'flex flex-col space-y-2'}>
-            <h6 className={'text-sm font-semibold'}>
-              <Trans i18nKey={'billing:detailsLabel'} />
-            </h6>
-
-            <LineItemDetails
-              selectedInterval={props.plan.interval}
-              currency={props.product.currency}
-              lineItems={lineItemsToDisplay}
-              pageCount={props.pageCount}
-            />
+          <div className="overflow-hidden">
+            {openDetails ? (
+              <div className='flex flex-col space-y-2 items-center justify-center transition-all duration-300 ease-in-out origin-top scale-100 opacity-100'>
+                <LineItemDetails
+                  selectedInterval={props.plan.interval}
+                  currency={props.product.currency}
+                  lineItems={lineItemsToDisplay}
+                  pageCount={props.pageCount}
+                />
+                <Button variant={'default'} color='primary' className='w-fit' onClick={() => setOpenDetails(false)}>
+                  <Trans i18nKey={'billing:seeLessDetails'} />
+                </Button>
+              </div>
+            ) : (
+              <div className='flex justify-center transition-all duration-300 ease-in-out origin-top scale-95'>
+                <Button variant={'default'} color='primary' className='w-fit' onClick={() => setOpenDetails(true)}>
+                  <Trans i18nKey={'billing:seeMoreDetails'} />
+                </Button>
+              </div>
+            )}
           </div>
         </If>
       </div>
     </div>
-  );
-}
-
-function FeaturesList(
-  props: React.PropsWithChildren<{
-    features: string[];
-    highlighted?: boolean;
-  }>,
-) {
-  return (
-    <ul className={'flex flex-col space-y-2'}>
-      {props.features.map((feature) => {
-        return (
-          <ListItem key={feature}>
-            <Trans i18nKey={feature} defaults={feature} />
-          </ListItem>
-        );
-      })}
-    </ul>
   );
 }
 
@@ -401,22 +399,6 @@ function Price({
         </span>
       </If>
     </div>
-  );
-}
-
-function ListItem({ children }: React.PropsWithChildren) {
-  return (
-    <li className={'flex items-center space-x-2.5'}>
-      <CheckCircle className={'text-primary h-4 min-h-4 w-4 min-w-4'} />
-
-      <span
-        className={cn('text-sm', {
-          ['text-secondary-foreground']: true,
-        })}
-      >
-        {children}
-      </span>
-    </li>
   );
 }
 

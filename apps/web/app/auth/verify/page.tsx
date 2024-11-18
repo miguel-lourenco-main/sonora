@@ -7,11 +7,12 @@ import { getSupabaseServerClient } from '@kit/supabase/server-client';
 import pathsConfig from '~/config/paths.config';
 import { createI18nServerInstance } from '~/lib/i18n/i18n.server';
 import { withI18n } from '~/lib/i18n/with-i18n';
+import { Database } from '~/lib/database.types';
 
 interface Props {
-  searchParams: {
+  searchParams: Promise<{
     next?: string;
-  };
+  }>;
 }
 
 export const generateMetadata = async () => {
@@ -23,7 +24,7 @@ export const generateMetadata = async () => {
 };
 
 async function VerifyPage(props: Props) {
-  const client = getSupabaseServerClient();
+  const client = getSupabaseServerClient<Database>();
 
   const {
     data: { user },
@@ -39,7 +40,8 @@ async function VerifyPage(props: Props) {
     redirect(pathsConfig.auth.signIn);
   }
 
-  const redirectPath = props.searchParams.next ?? pathsConfig.app.app;
+  const nextPath = (await props.searchParams).next;
+  const redirectPath = nextPath ?? pathsConfig.app.app;
 
   return (
     <MultiFactorChallengeContainer

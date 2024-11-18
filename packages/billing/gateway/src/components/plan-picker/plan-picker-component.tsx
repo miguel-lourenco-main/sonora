@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
+
 import { ArrowRight, CircleCheck } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -9,7 +10,7 @@ import {
   getProductPlanPair,
   LineItemSchema,
 } from '@kit/billing';
-import { formatCurrency, getPlanTier } from '@kit/shared/utils';
+import { formatCurrency, getCurrentTier } from '@kit/shared/utils';
 import { Button } from '@kit/ui/button';
 import {
   FormControl,
@@ -30,6 +31,7 @@ import { cn } from '@kit/ui/utils';
 import { z } from 'zod';
 import { toast } from 'sonner';
 import { calculateTieredCost } from '../../lib/utils';
+import { MAX_PAGES_SUBSCRIPTION } from '@kit/shared/constants';
 
 export function PlanPickerComponent(
   props: React.PropsWithChildren<{
@@ -187,6 +189,7 @@ export function PlanPickerComponent(
 
                       const planId = plan.id;
                       const selected = field.value === planId;
+                      const pageCount = props.getFormValue('pageCount') as number;
 
                       const primaryLineItem = getPrimaryLineItem(
                         props.config,
@@ -204,15 +207,13 @@ export function PlanPickerComponent(
                         if (primaryLineItem && primaryLineItem.tiers) {
                           const tiers = primaryLineItem.tiers;
 
-                          modifiedLineItem.cost = calculateTieredCost(props.getFormValue('pageCount') as number, tiers)
+                          modifiedLineItem.cost = calculateTieredCost(pageCount, tiers)
                         }
                       }
 
-                      const isCurrentPlan = product.id === planId;
-
                       return (
                         <RadioGroupItemLabel
-                          selected={selected || isCurrentPlan}
+                          selected={selected}
                           key={!plan.custom ? primaryLineItem?.id : plan.id + 'custom' }
                         >
                           {props.currentSubscriptionVariantId !== undefined && plan.lineItems[0]?.id === props.currentSubscriptionVariantId ? (

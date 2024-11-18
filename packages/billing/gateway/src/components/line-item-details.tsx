@@ -5,10 +5,11 @@ import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 
 import type { LineItemSchema } from '@kit/billing';
-import { formatCurrency, getPlanTier } from '@kit/shared/utils';
+import { formatCurrency, getCurrentTier } from '@kit/shared/utils';
 import { If } from '@kit/ui/if';
 import { Trans } from '@kit/ui/trans';
 import { cn } from '@kit/ui/utils';
+import { isActiveTier } from '../lib/utils';
 
 const className = 'flex text-secondary-foreground items-center text-sm';
 
@@ -368,7 +369,7 @@ function CurrentTier({
   if(item.tiers){
     const tiersUpTo = item.tiers.map((tier) => tier.upTo)
 
-    const index = getPlanTier(pageCount, tiersUpTo)
+    const index = getCurrentTier(pageCount, tiersUpTo)
     const tier = item.tiers[index]
 
     if(tier){
@@ -515,18 +516,4 @@ function VolumeTiers({
   });
 
   return <div className={'my-1 flex flex-col space-y-1.5'}>{tiers}</div>;
-}
-
-function isActiveTier(
-  currentPages: number,
-  currentTierIndex: number,
-  tiers: z.infer<typeof LineItemSchema>['tiers']
-): boolean {
-
-  if(!tiers) return false
-
-  const tiersUpTo = tiers.map((tier) => tier.upTo)
-  const index = getPlanTier(currentPages, tiersUpTo)
-  
-  return index === currentTierIndex
 }

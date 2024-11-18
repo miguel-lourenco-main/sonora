@@ -12,8 +12,8 @@ import {
 import { ScrollArea } from "../shadcn/scroll-area";
 
 import PDFViewer from './pdf-viewer'
-import { cn } from "../lib/utils";
-import LoadingPDF from "./loading-pdf"
+import { cn } from "../lib";
+import LoadingDocument from "./loading-pdf"
 
 export default function PDFViewerDrawer({
     file,
@@ -40,7 +40,7 @@ export default function PDFViewerDrawer({
                     <DrawerDescription>{description}</DrawerDescription>
                 </DrawerHeader>
                 <ScrollArea className='h-screen px-10'>
-                    {!loaded && <LoadingPDF />}
+                    {!loaded && <LoadingDocument />}
                     <div className={cn(loaded ? "flex" : "hidden")}>
                         <PDFViewer pdf={file} setLoaded={setLoaded} />
                     </div>

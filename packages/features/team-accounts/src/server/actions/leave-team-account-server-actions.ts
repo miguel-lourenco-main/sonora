@@ -8,6 +8,7 @@ import { getSupabaseServerAdminClient } from '@kit/supabase/server-admin-client'
 
 import { LeaveTeamAccountSchema } from '../../schema/leave-team-account.schema';
 import { createLeaveTeamAccountService } from '../services/leave-team-account.service';
+import { Database } from '@kit/supabase/database';
 
 export const leaveTeamAccountAction = enhanceAction(
   async (formData: FormData, user) => {
@@ -15,7 +16,7 @@ export const leaveTeamAccountAction = enhanceAction(
     const params = LeaveTeamAccountSchema.parse(body);
 
     const service = createLeaveTeamAccountService(
-      getSupabaseServerAdminClient(),
+      getSupabaseServerAdminClient<Database>(),
     );
 
     await service.leaveTeamAccount({

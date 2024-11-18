@@ -5,6 +5,7 @@ import { getSupabaseServerClient } from '@kit/supabase/server-client';
 
 import featureFlagsConfig from '~/config/feature-flags.config';
 import { requireUserInServerComponent } from '~/lib/server/require-user-in-server-component';
+import { Database } from '~/lib/database.types';
 
 const shouldLoadAccounts = featureFlagsConfig.enableTeamAccounts;
 
@@ -19,7 +20,7 @@ export type UserWorkspace = Awaited<ReturnType<typeof loadUserWorkspace>>;
 export const loadUserWorkspace = cache(workspaceLoader);
 
 async function workspaceLoader() {
-  const client = getSupabaseServerClient();
+  const client = getSupabaseServerClient<Database>();
   const api = createAccountsApi(client);
 
   const accountsPromise = shouldLoadAccounts

@@ -6,7 +6,7 @@ import {
   VenetianMask,
 } from 'lucide-react';
 
-import { Tables } from '@kit/supabase/database';
+import { Database, Tables } from '@kit/supabase/database';
 import { getSupabaseServerAdminClient } from '@kit/supabase/server-admin-client';
 import { Alert, AlertDescription, AlertTitle } from '@kit/ui/alert';
 import { AppBreadcrumbs } from '@kit/ui/app-breadcrumbs';
@@ -48,7 +48,7 @@ export function AdminAccountPage(props: {
 }
 
 async function PersonalAccountPage(props: { account: Account }) {
-  const client = getSupabaseServerAdminClient();
+  const client = getSupabaseServerAdminClient<Database>();
 
   const memberships = await getMemberships(props.account.id);
   const { data, error } = await client.auth.admin.getUserById(props.account.id);
@@ -193,7 +193,7 @@ async function TeamAccountPage(props: {
 }
 
 async function SubscriptionsTable(props: { accountId: string }) {
-  const client = getSupabaseServerAdminClient();
+  const client = getSupabaseServerAdminClient<Database>();
 
   const { data: subscription, error } = await client
     .from('subscriptions')
@@ -340,7 +340,7 @@ async function SubscriptionsTable(props: { accountId: string }) {
 }
 
 async function getMemberships(userId: string) {
-  const client = getSupabaseServerAdminClient();
+  const client = getSupabaseServerAdminClient<Database>();
 
   const memberships = await client
     .from('accounts_memberships')
@@ -363,7 +363,7 @@ async function getMemberships(userId: string) {
 }
 
 async function getMembers(accountSlug: string) {
-  const client = getSupabaseServerAdminClient();
+  const client = getSupabaseServerAdminClient<Database>();
 
   const members = await client.rpc('get_account_members', {
     account_slug: accountSlug,

@@ -1,5 +1,3 @@
-import { revalidatePath } from 'next/cache';
-import dynamic from 'next/dynamic';
 import { notFound, redirect } from 'next/navigation';
 
 import { getBillingGatewayProvider } from '@kit/billing-gateway';
@@ -9,27 +7,21 @@ import { getSupabaseServerClient } from '@kit/supabase/server-client';
 import billingConfig from '~/config/billing.config';
 import { withI18n } from '~/lib/i18n/with-i18n';
 import { requireUserInServerComponent } from '~/lib/server/require-user-in-server-component';
+
+import { EmbeddedCheckoutForm } from '../_components/embedded-checkout-form';
+import { Database } from '~/lib/database.types';
 import pathsConfig from '~/config/paths.config';
+import { revalidatePath } from 'next/cache';
+
 
 interface SessionPageProps {
-  searchParams: {
+  searchParams: Promise<{
     session_id: string;
-  };
+  }>;
 }
 
-const LazyEmbeddedCheckout = dynamic(
-  async () => {
-    const { EmbeddedCheckout } = await import('@kit/billing-gateway/checkout');
-
-    return EmbeddedCheckout;
-  },
-  {
-    ssr: false,
-  },
-);
-
 async function ReturnCheckoutSessionPage({ searchParams }: SessionPageProps) {
-  const sessionId = searchParams.session_id;
+  const sessionId = (await searchParams).session_id;
 
   if (!sessionId) {
     redirect('../');
@@ -39,7 +31,7 @@ async function ReturnCheckoutSessionPage({ searchParams }: SessionPageProps) {
 
   if (checkoutToken) {
     return (
-      <LazyEmbeddedCheckout
+      <EmbeddedCheckoutForm
         checkoutToken={checkoutToken}
         provider={billingConfig.provider}
       />
@@ -50,7 +42,7 @@ async function ReturnCheckoutSessionPage({ searchParams }: SessionPageProps) {
     <>
       <div className={'fixed left-0 top-48 z-50 mx-auto w-full'}>
         <BillingSessionStatus
-          onRedirect={onRedirect}
+          redirectPath={'../billing'}
           customerEmail={customerEmail ?? ''}
         />
       </div>
@@ -76,7 +68,7 @@ function BlurryBackdrop() {
 async function loadCheckoutSession(sessionId: string) {
   await requireUserInServerComponent();
 
-  const client = getSupabaseServerClient();
+  const client = getSupabaseServerClient<Database>();
   const gateway = await getBillingGatewayProvider(client);
 
   const session = await gateway.retrieveCheckoutSession({

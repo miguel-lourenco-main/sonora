@@ -5,10 +5,14 @@ import { fontFamily } from 'tailwindcss/defaultTheme';
 export default {
   darkMode: ['class'],
   content: [
-    '../../packages/**/src/**/*.tsx',
-    '../../apps/**/*.tsx',
-    '!../../packages/**/node_modules',
-    '!../../apps/**/node_modules',
+    '../../packages/ui/src/**/*.tsx',
+    '../../packages/billing/gateway/src/**/*.tsx',
+    '../../packages/features/auth/src/**/*.tsx',
+    '../../packages/features/notifications/src/**/*.tsx',
+    '../../packages/features/admin/src/**/*.tsx',
+    '../../packages/features/accounts/src/**/*.tsx',
+    '../../packages/features/team-accounts/src/**/*.tsx',
+    '!**/node_modules',
   ],
   theme: {
     container: {
@@ -66,6 +70,16 @@ export default {
           DEFAULT: 'hsl(var(--card) / <alpha-value>)',
           foreground: 'hsl(var(--card-foreground) / <alpha-value>)',
         },
+        sidebar: {
+          DEFAULT: 'hsl(var(--sidebar-background))',
+          foreground: 'hsl(var(--sidebar-foreground))',
+          primary: 'hsl(var(--sidebar-primary))',
+          'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
+          accent: 'hsl(var(--sidebar-accent))',
+          'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
+          border: 'hsl(var(--sidebar-border))',
+          ring: 'hsl(var(--sidebar-ring))',
+        },
       },
       borderRadius: {
         lg: `var(--radius)`,
@@ -112,12 +126,35 @@ export default {
           from: { height: 'var(--radix-accordion-content-height)' },
           to: { height: '0' },
         },
+        "border-beam": {
+          "100%": {
+            "offset-distance": "100%",
+          },
+        },
+        shine: {
+          "0%": {
+            "background-position": "0% 0%",
+          },
+          "50%": {
+            "background-position": "100% 100%",
+          },
+          to: {
+            "background-position": "0% 0%",
+          },
+        },
+         "background-position-spin": {
+          "0%": { backgroundPosition: "top center" },
+          "100%": { backgroundPosition: "bottom center" },
+        },
       },
       animation: {
         'fade-up': 'fade-up 0.5s',
         'fade-down': 'fade-down 0.5s',
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        "border-beam": "border-beam calc(var(--duration)*1s) infinite linear",
+        shine: "shine var(--duration) infinite linear",
+        "background-position-spin": "background-position-spin 3000ms infinite alternate",
       },
     },
   },

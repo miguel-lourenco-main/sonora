@@ -5,6 +5,7 @@ import { cache } from 'react';
 import { getSupabaseServerAdminClient } from '@kit/supabase/server-admin-client';
 
 import { createAdminDashboardService } from '../services/admin-dashboard.service';
+import { Database } from '@kit/supabase/database';
 
 /**
  * @name loadAdminDashboard
@@ -14,7 +15,7 @@ import { createAdminDashboardService } from '../services/admin-dashboard.service
 export const loadAdminDashboard = cache(adminDashboardLoader);
 
 function adminDashboardLoader() {
-  const client = getSupabaseServerAdminClient();
+  const client = getSupabaseServerAdminClient<Database>();
   const service = createAdminDashboardService(client);
 
   return service.getDashboardData();

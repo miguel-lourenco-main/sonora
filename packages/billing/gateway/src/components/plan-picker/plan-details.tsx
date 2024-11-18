@@ -1,11 +1,12 @@
 import { Separator } from "@kit/ui/separator";
 import { Trans } from "@kit/ui/trans";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, Link } from "lucide-react";
 import { LineItemDetails } from "../line-item-details";
 import { LineItemSchema } from "@kit/billing";
 import { If } from '@kit/ui/if';
 import { z } from "zod";
-
+import FeaturesList from "../features-list";
+import { Interval } from "../../lib/interfaces";
 
 export function PlanDetails({
   selectedProduct,
@@ -27,9 +28,9 @@ export function PlanDetails({
     lineItems: z.infer<typeof LineItemSchema>[];
     paymentType: string;
   };
-
   pageCount?: number;  
 }) {
+
   const isRecurring = selectedPlan.paymentType === 'recurring';
 
   return (
@@ -85,17 +86,11 @@ export function PlanDetails({
           <Trans i18nKey={'billing:featuresLabel'} />
         </span>
 
-        {selectedProduct.features.map((item) => {
-          return (
-            <div key={item} className={'flex items-center space-x-1 text-sm'}>
-              <CheckCircle className={'h-4 text-green-500'} />
-
-              <span className={'text-secondary-foreground'}>
-                <Trans i18nKey={item} defaults={item} />
-              </span>
-            </div>
-          );
-        })}
+        <FeaturesList 
+          features={selectedProduct.features} 
+          interval={selectedInterval as Interval} 
+          pageCount={pageCount ?? 0} 
+        />
       </div>
     </div>
   );

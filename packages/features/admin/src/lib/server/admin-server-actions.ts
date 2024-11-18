@@ -18,6 +18,7 @@ import {
 import { createAdminAccountsService } from './services/admin-accounts.service';
 import { createAdminAuthUserService } from './services/admin-auth-user.service';
 import { adminAction } from './utils/admin-action';
+import { Database } from '@kit/supabase/database';
 
 /**
  * @name banUserAction
@@ -151,14 +152,14 @@ export const deleteAccountAction = adminAction(
 );
 
 function getAdminAuthService() {
-  const client = getSupabaseServerClient();
-  const adminClient = getSupabaseServerAdminClient();
+  const client = getSupabaseServerClient<Database>();
+  const adminClient = getSupabaseServerAdminClient<Database>();
 
   return createAdminAuthUserService(client, adminClient);
 }
 
 function getAdminAccountsService() {
-  const adminClient = getSupabaseServerAdminClient();
+  const adminClient = getSupabaseServerAdminClient<Database>();
 
   return createAdminAccountsService(adminClient);
 }
