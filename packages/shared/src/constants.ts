@@ -126,6 +126,14 @@ export const LANGUAGES_BY_REGION: Record<string, Language[]> = {
   ],
 };
 
+export const LANGUAGE_OPTIONS = Object.entries(LANGUAGES_BY_REGION).map(([region, languages]) => ({
+  group: region,
+  items: languages.map(lang => ({
+    value: lang.shortValue,
+    label: lang.label,
+  }))
+})).flatMap(group => group.items);
+
 // For backwards compatibility
 export const LANGUAGES = Object.values(LANGUAGES_BY_REGION).flat();
 
