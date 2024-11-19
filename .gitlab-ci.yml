@@ -20,7 +20,6 @@ stages:
   - build
   - deploy
 
-# Polydoc App Jobs
 polydoc-lint:
   stage: lint
   tags:
@@ -29,6 +28,18 @@ polydoc-lint:
   script:
     - pnpm typecheck
     - pnpm lint
+
+polydoc-test:
+  stage: test
+  tags:
+    - cm3588
+  image: 'node:22.11'
+  script:
+    - echo "polydoc app test"
+  rules:
+    - changes:
+        - packages/**
+        - apps/polydoc
 
 polydoc-build:
   stage: build
