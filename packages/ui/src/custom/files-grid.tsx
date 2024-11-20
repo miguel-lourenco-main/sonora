@@ -6,7 +6,7 @@ import TooltipComponent from "./tooltip-component";
 import { IconDOC, IconDOCX, IconPDF, IconPPTX } from "./icons";
 import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { FILE_SUPPORTED_TYPES, FILE_SUPPORTED_TYPES_KEYS } from "@kit/shared/constants";
+import { FILE_SUPPORTED_TYPES } from "@kit/shared/constants";
 
 interface FilesGridProps {
   files: File[];

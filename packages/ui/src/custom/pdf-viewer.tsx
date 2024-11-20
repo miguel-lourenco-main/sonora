@@ -17,9 +17,9 @@ const resizeObserverOptions = {};
 const maxWidth = 800;
 
 export default function PDFViewer(
-  { pdf, setLoaded, type, onScroll, scrollRef, filter }
+  { pdf, setIsRendered, type, onScroll, scrollRef, filter }
   : 
-  { pdf: PDFFile; setLoaded?: (b: boolean) => void; type?: string; onScroll?: UIEventHandler<HTMLDivElement> | undefined; scrollRef?: React.RefObject<HTMLDivElement>; filter?: React.ReactNode}
+  { pdf: PDFFile; setIsRendered?: (b: boolean) => void; type?: string; onScroll?: UIEventHandler<HTMLDivElement> | undefined; scrollRef?: React.RefObject<HTMLDivElement>; filter?: React.ReactNode}
 ) {
 
   const [file, setFile] = useState<PDFFile>(pdf);
@@ -74,16 +74,16 @@ export default function PDFViewer(
     }
     setNumPages(0);
     setVisiblePages([]);
-    if (setLoaded) setLoaded(false);
-  }, [setLoaded]);
+    if (setIsRendered) setIsRendered(false);
+  }, [setIsRendered]);
 
   useEffect(() => {
     setFile(pdf);
     cleanupPDF();
-    if (setLoaded) {
-      setLoaded(false); // Reset loaded state when PDF changes
+    if (setIsRendered) {
+      setIsRendered(false); // Reset loaded state when PDF changes
     }
-  }, [pdf, cleanupPDF, setLoaded]);
+  }, [pdf, cleanupPDF, setIsRendered]);
 
   useEffect(() => {
     mountedRef.current = true;
@@ -102,8 +102,8 @@ export default function PDFViewer(
     
     // Add a small delay before setting loaded to true
     timerRef.current = setTimeout(() => {
-      if (mountedRef.current && setLoaded) {
-        setLoaded(true);
+      if (mountedRef.current && setIsRendered) {
+        setIsRendered(true);
       }
     }, 500);
   }
