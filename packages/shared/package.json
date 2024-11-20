@@ -14,7 +14,8 @@
     "./utils": "./src/utils.ts",
     "./hooks": "./src/hooks/index.ts",
     "./events": "./src/events/index.tsx",
-    "./constants": "./src/constants.ts"
+    "./constants": "./src/constants.ts",
+    "./interfaces": "./src/interfaces.ts"
   },
   "devDependencies": {
     "@kit/eslint-config": "workspace:*",

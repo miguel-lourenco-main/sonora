@@ -7,7 +7,8 @@ import { cn } from "../lib"
 import { useState, useRef, useEffect } from "react"
 import TooltipComponent from "./tooltip-component"
 import { useTranslation } from "react-i18next"
-import { POPULAR_LANGUAGE_OPTIONS } from "@kit/shared/constants"
+import { POPULAR_LANGUAGES } from "@kit/shared/constants"
+import { Language } from "@kit/shared/interfaces"
 
 function CustomCombobox({
   list,
@@ -15,14 +16,14 @@ function CustomCombobox({
   onChange,
   initialValue,
   placeholder,
-  popularLanguages = POPULAR_LANGUAGE_OPTIONS
+  popularLanguages = POPULAR_LANGUAGES
 }: {
-  list: {value: string, label: string}[],
+  list: Language[],
   tooltip: string,
   onChange?: (value: string | undefined) => void,
   initialValue?: string,
   placeholder?: string,
-  popularLanguages?: {value: string, label: string}[]
+  popularLanguages?: Language[]
 }) {
   
   const [open, setOpen] = useState(false)
@@ -107,7 +108,6 @@ function CustomCombobox({
         key={item.value}
         value={item.value}
         onSelect={(currentValue) => {
-          console.log(currentValue)
           setValue(currentValue)
           setOpen(false)
           onChange?.(currentValue)
@@ -144,8 +144,21 @@ function CustomCombobox({
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-full p-0">
-            <Command>
-              <CommandInput placeholder={placeholder ?? t('selectLanguagePlaceholder')} />
+            <Command
+              filter={(value, search) => {
+                const matches = value.toLowerCase().includes(search.toLowerCase()) ||
+                  list.some(item => 
+                    item.value === value &&
+                    (item.label.toLowerCase().includes(search.toLowerCase()) ||
+                    item.longValue.toLowerCase().includes(search.toLowerCase()))
+                  );
+
+                return matches ? 1 : 0;
+              }}
+            >
+              <CommandInput 
+                placeholder={placeholder ?? t('selectLanguagePlaceholder')}
+              />
               <CommandList>
               {popularLanguages.length > 0 && (
                   <>
