@@ -177,6 +177,8 @@ export const POPULAR_LANGUAGES = [
   { longValue: "chinese_simplified", value: "zh_cn", label: "🇨🇳 Simplified Chinese" },
 ];
 
+export const DEFAULT_TARGET_LANGUAGE = POPULAR_LANGUAGES[0]?.value ?? 'en'
+
 // For backwards compatibility
 export const LANGUAGES = Object.values(LANGUAGES_BY_REGION).flat();
 

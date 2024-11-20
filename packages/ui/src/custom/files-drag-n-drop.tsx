@@ -44,7 +44,7 @@ export const FilesDragNDrop = forwardRef<
 
     const { t } = useTranslation('ui')
 
-    const maxSize = 1024 * 1024 * 4;
+    const maxSize = 1024 * 1024 * 256;
     const multiple = true;
 
     const accept = acceptFiles ?? {
