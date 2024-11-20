@@ -2,15 +2,32 @@ import { Check, ChevronsUpDown } from "lucide-react"
 import { Button } from "../shadcn/button"
 import { Popover, PopoverContent, PopoverTrigger } from "../shadcn/popover"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../shadcn/command"
+import { Separator } from "../shadcn/separator"
 import { cn } from "../lib"
 import { useState, useRef, useEffect } from "react"
 import TooltipComponent from "./tooltip-component"
 import { useTranslation } from "react-i18next"
+import { POPULAR_LANGUAGE_OPTIONS } from "@kit/shared/constants"
 
-function CustomCombobox({list, tooltip, onChange, initialValue, placeholder}: {list: {value: string, label: string}[], tooltip: string, onChange?: (value: string | undefined) => void, initialValue?: string, placeholder?: string}) {
+function CustomCombobox({
+  list,
+  tooltip,
+  onChange,
+  initialValue,
+  placeholder,
+  popularLanguages = POPULAR_LANGUAGE_OPTIONS
+}: {
+  list: {value: string, label: string}[],
+  tooltip: string,
+  onChange?: (value: string | undefined) => void,
+  initialValue?: string,
+  placeholder?: string,
+  popularLanguages?: {value: string, label: string}[]
+}) {
   
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState(initialValue)
+  const [activeTab, setActiveTab] = useState<"popular" | "all">("popular")
   const scrollAttempts = useRef(0)
   const lastScrollTime = useRef(0)
 
@@ -84,6 +101,30 @@ function CustomCombobox({list, tooltip, onChange, initialValue, placeholder}: {l
     setValue(initialValue);
   }, [initialValue]);
 
+  const renderCommandItems = (items: typeof list) => (
+    items.map((item) => (
+      <CommandItem
+        key={item.value}
+        value={item.value}
+        onSelect={(currentValue) => {
+          console.log(currentValue)
+          setValue(currentValue)
+          setOpen(false)
+          onChange?.(currentValue)
+        }}
+        className="flex justify-between"
+      >
+        <p>{item.label}</p>
+        <Check
+          className={cn(
+            "mr-2 h-4 w-4",
+            value === item.value ? "opacity-100" : "opacity-0"
+          )}
+        />
+      </CommandItem>
+    ))
+  );
+
   return (
     <TooltipComponent className="w-full" trigger={
       <div className="flex w-full justify-center">
@@ -96,9 +137,7 @@ function CustomCombobox({list, tooltip, onChange, initialValue, placeholder}: {l
               className="w-full max-w-[250px] justify-between"
             >
               {value
-                ? <p>
-                    {list.find((item) => item.value === value)?.label}
-                  </p>
+                ? <p>{list.find((item) => item.value === value)?.label}</p>
                 : placeholder ?? t('selectItem')
               }
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -108,34 +147,17 @@ function CustomCombobox({list, tooltip, onChange, initialValue, placeholder}: {l
             <Command>
               <CommandInput placeholder={placeholder ?? t('selectLanguagePlaceholder')} />
               <CommandList>
+              {popularLanguages.length > 0 && (
+                  <>
+                    <CommandGroup heading={t('popular')}>
+                      {renderCommandItems(popularLanguages)}
+                    </CommandGroup>
+                    <Separator className="my-2" />
+                  </>
+                )}
                 <CommandEmpty>{t('noItemsFound')}</CommandEmpty>
                 <CommandGroup>
-                  {list.map((item) => (
-                    <CommandItem
-                      key={item.value}
-                      value={item.value}
-                      onSelect={(currentValue) => {
-
-                        const isReselected = currentValue === value
-
-                        setValue(isReselected ? "" : currentValue)
-                        setOpen(false)
-
-                        onChange ? onChange(isReselected ? undefined : currentValue) : null
-                      }}
-                      className="flex justify-between"
-                    >
-                      <p>
-                        {item.label}
-                      </p>
-                      <Check
-                        className={cn(
-                          "mr-2 h-4 w-4",
-                          value === item.value ? "opacity-100" : "opacity-0"
-                        )}
-                      />
-                    </CommandItem>
-                  ))}
+                  {renderCommandItems(list)}
                 </CommandGroup>
               </CommandList>
             </Command>

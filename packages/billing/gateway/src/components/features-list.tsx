@@ -29,7 +29,7 @@ export default function FeaturesList(
   
             return (
               <ListItem key={feature}>
-                <Link href={'/'} className='underline'>
+                <Link href={'/#supported-languages'} className='underline'>
                   <Trans i18nKey={featureText} defaults={featureText} />
                 </Link>
               </ListItem>
