@@ -7,9 +7,9 @@ import { cn } from "../lib";
 
 export interface AnimatedBeamProps {
   className?: string;
-  containerRef: RefObject<HTMLElement>; // Container ref
-  fromRef: RefObject<HTMLElement>;
-  toRef: RefObject<HTMLElement>;
+  containerRef: RefObject<HTMLElement | null>; // Container ref
+  fromRef: RefObject<HTMLElement | null>;
+  toRef: RefObject<HTMLElement | null>;
   curvature?: number;
   flowToCenter?: boolean; // true for input beams (flow TO center), false for output beams (flow FROM center)
   pathColor?: string;
@@ -32,7 +32,7 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
   toRef,
   curvature = 0,
   flowToCenter = true,
-  duration = Math.random() * 3 + 4,
+  duration = 4,
   delay = 0,
   pathColor = "gray",
   pathWidth = 2,
@@ -47,9 +47,15 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
   const id = useId();
   const [pathD, setPathD] = useState("");
   const [svgDimensions, setSvgDimensions] = useState({ width: 0, height: 0 });
+  const [randomDuration, setRandomDuration] = useState(duration);
+
+  useEffect(() => {
+    // Generate random duration between 2.5 and 4 seconds
+    setRandomDuration(Math.random() * 1.5 + 2.5);
+  }, []); // Empty dependency array means this runs once on mount
 
   // Increase speed by dividing duration by 1.6
-  const adjustedDuration = duration / 1.6;
+  const adjustedDuration = randomDuration / 1.6;
 
   useEffect(() => {
     const updatePath = () => {
