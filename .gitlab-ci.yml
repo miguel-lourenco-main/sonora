@@ -29,7 +29,7 @@ polydoc-test:
     - echo "polydoc app test"
   rules:
     - changes:
-        - packages/**
+        - packages/*
         - apps/polydoc
 
 polydoc-build:
@@ -46,7 +46,7 @@ polydoc-build:
     expire_in: 1 hour
   rules:
     - changes:
-        - packages/**
+        - packages/*
         - apps/polydoc
 
 polydoc-deploy:
@@ -62,5 +62,5 @@ polydoc-deploy:
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:
-        - packages/**
+        - packages/*
         - apps/polydoc
