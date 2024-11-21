@@ -27,10 +27,6 @@ polydoc-test:
   image: 'node:22.11'
   script:
     - echo "polydoc app test"
-  rules:
-    - changes:
-        - packages/*
-        - apps/polydoc
 
 polydoc-build:
   stage: build
@@ -44,10 +40,6 @@ polydoc-build:
     paths:
       - apps/polydoc/.vercel/output/static/
     expire_in: 1 hour
-  rules:
-    - changes:
-        - packages/*
-        - apps/polydoc
 
 polydoc-deploy:
   stage: deploy
@@ -61,6 +53,3 @@ polydoc-deploy:
     - pnpm cloudflare:deploy
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
-      changes:
-        - packages/*
-        - apps/polydoc
