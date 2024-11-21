@@ -28,7 +28,6 @@ function CustomCombobox({
   
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState(initialValue)
-  const [activeTab, setActiveTab] = useState<"popular" | "all">("popular")
   const scrollAttempts = useRef(0)
   const lastScrollTime = useRef(0)
 
