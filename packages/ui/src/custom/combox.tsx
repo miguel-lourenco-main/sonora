@@ -10,20 +10,22 @@ import { useTranslation } from "react-i18next"
 import { POPULAR_LANGUAGES } from "@kit/shared/constants"
 import { Language } from "@kit/shared/interfaces"
 
-function CustomCombobox({
+function CustomCombox({
   list,
   tooltip,
   onChange,
   initialValue,
   placeholder,
-  popularLanguages = POPULAR_LANGUAGES
+  popularLanguages = POPULAR_LANGUAGES,
+  disabled
 }: {
   list: Language[],
   tooltip: string,
   onChange?: (value: string | undefined) => void,
   initialValue?: string,
   placeholder?: string,
-  popularLanguages?: Language[]
+  popularLanguages?: Language[],
+  disabled?: boolean
 }) {
   
   const [open, setOpen] = useState(false)
@@ -127,13 +129,14 @@ function CustomCombobox({
   return (
     <TooltipComponent className="w-full" trigger={
       <div className="flex w-full justify-center">
-        <Popover open={open} onOpenChange={setOpen}>
+        <Popover open={open} onOpenChange={disabled ? undefined : setOpen}>
           <PopoverTrigger asChild>
             <Button
               variant="outline"
               role="combobox"
               aria-expanded={open}
               className="w-full max-w-[250px] justify-between"
+              disabled={disabled}
             >
               {value
                 ? <p>{list.find((item) => item.value === value)?.label}</p>
@@ -157,6 +160,7 @@ function CustomCombobox({
             >
               <CommandInput 
                 placeholder={placeholder ?? t('selectLanguagePlaceholder')}
+                disabled={disabled}
               />
               <CommandList>
               {popularLanguages.length > 0 && (
@@ -180,4 +184,4 @@ function CustomCombobox({
   )
 }
 
-export default CustomCombobox
+export default CustomCombox

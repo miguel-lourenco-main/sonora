@@ -139,7 +139,7 @@
     "./tree-view-api": "./src/magic-ui/tree-view-api.tsx",
     "./tree-view": "./src/magic-ui/tree-view.tsx",
     "./typing-animation": "./src/magic-ui/typing-animation.tsx",
-    "./file-upload": "./src/shadcn-extension/file-upload.tsx",
+    "./shadcn-file-upload": "./src/shadcn-extension/file-upload.tsx",
     "./file-upload-example": "./src/shadcn-extension/file-upload-example.tsx",
     "./multi-select": "./src/shadcn-extension/multi-select.tsx",
     "./utils": "./src/lib/index.ts",
@@ -195,7 +195,10 @@
     "./neon-gradient-card": "./src/magic-ui/neon-gradient-card.tsx",
     "./border-beam": "./src/magic-ui/border-beam.tsx",
     "./tier-effect": "./src/magic-ui/tier-effect.tsx",
-    "./animated-translated-files": "./src/magic-ui/animated-translated-files.tsx"
+    "./animated-translated-files": "./src/magic-ui/animated-translated-files.tsx",
+    "./custom-file-uploader": "./src/custom/file-uploader.tsx",
+    "./pdf-viewer-dialog": "./src/custom/pdf-viewer-dialog.tsx",
+    "./pdf-compare": "./src/custom/pdf-compare.tsx"
   },
   "typesVersions": {
     "*": {

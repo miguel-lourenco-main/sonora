@@ -1,6 +1,7 @@
 import { COLLAPSE_PATHS, COLLAPSE_PATHS_FROM, FILE_SUPPORTED_TYPES } from "./constants";
 import { PlainFileObject } from "./interfaces";
 import { UseFormReturn } from "react-hook-form";
+import { TrackableFile } from "./types";
 
 /**
  * Check if the code is running in a browser environment.
@@ -67,10 +68,6 @@ export function processChatMessages(messages: any[]) {
   };
 
   return separateWorkflowMessages(messages, []);
-}
-
-export function checkCollapseSidebar(currentPath: string) {
-  return COLLAPSE_PATHS_FROM.some(path => currentPath.startsWith(path)) || COLLAPSE_PATHS.some(path => path === currentPath);
 }
 
 export const handleInsertOrUpdate = <T extends { id: string }>(
@@ -171,3 +168,5 @@ export function getFileExtensionType(filename: string): {extension: string, mime
   
   return {extension, mimeType: ''};
 }
+
+export const generateFallbackId = () => Math.floor(10000 + Math.random() * 90000).toString();
