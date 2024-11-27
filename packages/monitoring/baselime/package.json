@@ -42,5 +42,14 @@
         "src/*"
       ]
     }
+  },
+  "nextjs": {
+    "config": {
+      "experimental": {
+        "serverComponentsExternalPackages": [
+          "@baselime/node-opentelemetry"
+        ]
+      }
+    }
   }
 }
