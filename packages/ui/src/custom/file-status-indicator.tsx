@@ -16,13 +16,13 @@ export function StatusIndicator({ id, status, className }: StatusIndicatorProps)
       "text-white",
       className
     )}>
-      {id ? (
+      {id && status === "uploaded" ? (
         <CheckCircle className={`${size} text-green-500`} />
       ) : status === "uploading" ? (
         <Loader2 className={`${size} animate-spin text-blue-500`} />
       ) : status === "error" ? (
         <XCircle className={`${size} text-red-500`} />
-      ) : !status && (
+      ) : (
         <div className={`${size} border border-gray-800 bg-gray-700 rounded-full`} />
       )}
     </div>

@@ -1,4 +1,4 @@
 export type TrackableFile = File & {
     id?: string;
-    uploadingStatus?: "uploading" | "uploaded" | "error";
+    uploadingStatus?: "uploading" | "uploaded" | "client" | "error";
 };
