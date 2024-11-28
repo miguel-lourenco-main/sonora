@@ -17,7 +17,7 @@
     "translateFiles": "Translate files",
     "translateFilesDescription": "Add files to translate",
     "delete": "Delete",
-    "id": "ID",
+    "id": "Id",
     "name": "Name",
     "status": "Status",
     "usage": "Usage",
@@ -66,5 +66,6 @@
     "added": "added",
     "file": "file",
     "files": "files",
-    "retry": "Retry"
+    "retry": "Retry",
+    "popular": "Popular"
 }

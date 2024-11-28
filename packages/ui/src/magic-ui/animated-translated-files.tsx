@@ -70,7 +70,7 @@ export function AnimatedBeamTranslatedFiles({
               <Circle ref={leftInput4Ref} className="absolute" style={{ transform: 'translate(45px, -95px)' }}><IconCSV className="size-8" /></Circle>
               <Circle ref={leftInput5Ref} className="absolute" style={{ transform: 'translate(85px, -100px)' }}>
                 <div className="flex items-center justify-center">
-                  <span className="text-foreground text-sm font-semibold">+3</span>
+                  <span className="text-foreground dark:text-background text-sm font-semibold">+3</span>
                 </div>
               </Circle>
             </div>
@@ -93,7 +93,7 @@ export function AnimatedBeamTranslatedFiles({
               </Circle>
               <Circle ref={rightInput5Ref} className="absolute" style={{ transform: 'translate(-85px, -100px)' }}>
                 <div className="flex items-center justify-center">
-                  <span className="text-foreground text-sm font-semibold">+50</span>
+                  <span className="text-foreground dark:text-background text-sm font-semibold">+50</span>
                 </div>
               </Circle>
             </div>

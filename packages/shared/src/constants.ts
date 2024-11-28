@@ -20,7 +20,7 @@ export const FILE_FORMAT_GROUPS = [
     },
     {
         name: "Code",
-        formats: ["Json", "Html", "Xml", "Go", "Yml", "Yaml", "Php"]
+        formats: ["Json", "Html", "Xml", "Go", "Php"]
     },
     {
         name: "Other",
@@ -70,61 +70,114 @@ export const POLYDOC_CUSTOM_PATHS = {
 }
 
 export const LANGUAGES_BY_REGION: Record<string, Language[]> = {
-  "Western Europe": [
-    { value: "english", shortValue: "en", label: "🇬🇧 English" },
-    { value: "french", shortValue: "fr", label: "🇫🇷 French" },
-    { value: "german", shortValue: "de", label: "🇩🇪 German" },
-    { value: "spanish", shortValue: "es", label: "🇪🇸 Spanish" },
-    { value: "italian", shortValue: "it", label: "🇮🇹 Italian" },
-    { value: "portuguese", shortValue: "pt", label: "🇵🇹 Portuguese" },
-    { value: "dutch", shortValue: "nl", label: "🇳🇱 Dutch" },
+  "Asia": [
+    { longValue: "arabic", value: "ar", label: "🇸🇦 Arabic" },
+    { longValue: "armenian", value: "hy", label: "🇦🇲 Armenian" },
+    { longValue: "azerbaijani", value: "az", label: "🇦🇿 Azerbaijani" },
+    { longValue: "bengali", value: "bn", label: "🇧🇩 Bengali" },
+    { longValue: "burmese", value: "my", label: "🇲🇲 Burmese" },
+    { longValue: "cantonese", value: "yue", label: "🇭🇰 Cantonese" },
+    { longValue: "filipino", value: "fil", label: "🇵🇭 Filipino" },
+    { longValue: "gujarati", value: "gu", label: "🇮🇳 Gujarati" },
+    { longValue: "hebrew", value: "he", label: "🇮🇱 Hebrew" },
+    { longValue: "hindi", value: "hi", label: "🇮🇳 Hindi" },
+    { longValue: "indonesian", value: "id", label: "🇮🇩 Indonesian" },
+    { longValue: "japanese", value: "ja", label: "🇯🇵 Japanese" },
+    { longValue: "japanese_honorific", value: "ja_hon", label: "🇯🇵 Japanese (Honorifics)" },
+    { longValue: "japanese_humble", value: "ja_hum", label: "🇯🇵 Japanese (Humble)" },
+    { longValue: "japanese_polite", value: "ja_pol", label: "🇯🇵 Japanese (Polite)" },
+    { longValue: "korean", value: "ko", label: "🇰🇷 Korean" },
+    { longValue: "kazakh", value: "kk", label: "🇰🇿 Kazakh" },
+    { longValue: "khmer", value: "km", label: "🇰🇭 Khmer" },
+    { longValue: "kannada", value: "kn", label: "🇮🇳 Kannada" },
+    { longValue: "lao", value: "lo", label: "🇱🇦 Lao" },
+    { longValue: "malay", value: "ms", label: "🇲🇾 Malay" },
+    { longValue: "mongolian", value: "mn", label: "🇲🇳 Mongolian (Cyrillic)" },
+    { longValue: "marathi", value: "mr", label: "🇮🇳 Marathi" },
+    { longValue: "malayalam", value: "ml", label: "🇮🇳 Malayalam" },
+    { longValue: "odia", value: "or", label: "🇮🇳 Odia" },
+    { longValue: "persian", value: "fa", label: "🇮🇷 Persian" },
+    { longValue: "punjabi", value: "pa", label: "🇮🇳 Punjabi" },
+    { longValue: "russian", value: "ru", label: "🇷🇺 Russian" },
+    { longValue: "chinese_simplified", value: "zh_cn", label: "🇨🇳 Simplified Chinese" },
+    { longValue: "sinhala", value: "si", label: "🇱🇰 Sinhalese" },
+    { longValue: "chinese_hk", value: "zh_hk", label: "🇭🇰 Traditional Chinese (Hong Kong)" },
+    { longValue: "chinese_tw", value: "zh_tw", label: "🇹🇼 Traditional Chinese (Taiwan)" },
+    { longValue: "chinese_traditional", value: "zh_t", label: "🇹🇼 Traditional Chinese" },
+    { longValue: "thai", value: "th", label: "🇹🇭 Thai" },
+    { longValue: "tamil", value: "ta", label: "🇮🇳 Tamil" },
+    { longValue: "telugu", value: "te", label: "🇮🇳 Telugu" },
+    { longValue: "uzbek", value: "uz", label: "🇺🇿 Uzbek" },
+    { longValue: "urdu", value: "ur", label: "🇵🇰 Urdu" },
+    { longValue: "uyghur", value: "ug", label: "🇨🇳 Uyghur" },
+    { longValue: "vietnamese", value: "vi", label: "🇻🇳 Vietnamese" },
+    { longValue: "yiddish", value: "yi", label: "🇮🇱 Yiddish" },
   ],
 
-  "Northern Europe": [
-    { value: "swedish", shortValue: "se", label: "🇸🇪 Swedish" },
-    { value: "norwegian", shortValue: "no", label: "🇳🇴 Norwegian" },
-    { value: "danish", shortValue: "dk", label: "🇩🇰 Danish" },
-    { value: "finnish", shortValue: "fi", label: "🇫🇮 Finnish" },
-    { value: "icelandic", shortValue: "is", label: "🇮🇸 Icelandic" },
+  "Europe": [
+    { longValue: "albanian", value: "sq", label: "🇦🇱 Albanian" },
+    { longValue: "belarusian", value: "be", label: "🇧🇾 Belarusian" },
+    { longValue: "bulgarian", value: "bg", label: "🇧🇬 Bulgarian" },
+    { longValue: "catalan", value: "ca", label: "🏴 Catalan" },
+    { longValue: "croatian", value: "hr", label: "🇭🇷 Croatian" },
+    { longValue: "czech", value: "cs", label: "🇨🇿 Czech" },
+    { longValue: "danish", value: "da", label: "🇩🇰 Danish" },
+    { longValue: "dutch", value: "nl", label: "🇳🇱 Dutch" },
+    { longValue: "estonian", value: "et", label: "🇪🇪 Estonian" },
+    { longValue: "french", value: "fr", label: "🇫🇷 French" },
+    { longValue: "finnish", value: "fi", label: "🇫🇮 Finnish" },
+    { longValue: "german", value: "de", label: "🇩🇪 German" },
+    { longValue: "georgian", value: "ka", label: "🇬🇪 Georgian" },
+    { longValue: "greek", value: "el", label: "🇬🇷 Greek" },
+    { longValue: "hungarian", value: "hu", label: "🇭🇺 Hungarian" },
+    { longValue: "italian", value: "it", label: "🇮🇹 Italian" },
+    { longValue: "icelandic", value: "is", label: "🇮🇸 Icelandic" },
+    { longValue: "irish", value: "ga", label: "🇮🇪 Irish" },
+    { longValue: "latin", value: "la", label: "🏛️ Latin" },
+    { longValue: "latvian", value: "lv", label: "🇱🇻 Latvian" },
+    { longValue: "lithuanian", value: "lt", label: "🇱🇹 Lithuanian" },
+    { longValue: "macedonian", value: "mk", label: "🇲🇰 Macedonian" },
+    { longValue: "maltese", value: "mt", label: "🇲🇹 Maltese" },
+    { longValue: "norwegian", value: "no", label: "🇳🇴 Norwegian" },
+    { longValue: "portuguese", value: "pt", label: "🇵🇹 Portuguese" },
+    { longValue: "polish", value: "pl", label: "🇵🇱 Polish" },
+    { longValue: "romanian", value: "ro", label: "🇷🇴 Romanian" },
+    { longValue: "spanish", value: "es", label: "🇪🇸 Spanish" },
+    { longValue: "swedish", value: "sv", label: "🇸🇪 Swedish" },
+    { longValue: "serbian_cyrillic", value: "sr_cyrl", label: "🇷🇸 Serbian (Cyrillic)" },
+    { longValue: "serbian_latin", value: "sr_latn", label: "🇷🇸 Serbian (Latin)" },
+    { longValue: "slovak", value: "sk", label: "🇸🇰 Slovak" },
+    { longValue: "slovenian", value: "sl", label: "🇸🇮 Slovenian" },
+    { longValue: "turkish", value: "tr", label: "🇹🇷 Turkish" },
+    { longValue: "ukrainian", value: "uk", label: "🇺🇦 Ukrainian" },
   ],
 
-  "Eastern Europe": [
-    { value: "russian", shortValue: "ru", label: "🇷🇺 Russian" },
-    { value: "polish", shortValue: "pl", label: "🇵🇱 Polish" },
-    { value: "ukrainian", shortValue: "uk", label: "🇺🇦 Ukrainian" },
-    { value: "czech", shortValue: "cs", label: "🇨🇿 Czech" },
-    { value: "slovak", shortValue: "sk", label: "🇸🇰 Slovak" },
-    { value: "hungarian", shortValue: "hu", label: "🇭🇺 Hungarian" },
-    { value: "romanian", shortValue: "ro", label: "🇷🇴 Romanian" },
-    { value: "bulgarian", shortValue: "bg", label: "🇧🇬 Bulgarian" },
+  "North America": [
+    { longValue: "french_ca", value: "fr_ca", label: "🇨🇦 Canadian French" },
+    { longValue: "english", value: "en", label: "🇺🇸 English" },
+    { longValue: "haitian_creole", value: "ht", label: "🇭🇹 Haitian Creole" },
   ],
 
-  "East Asia": [
-    { value: "chinese", shortValue: "zh", label: "🇨🇳 Chinese" },
-    { value: "japanese", shortValue: "ja", label: "🇯🇵 Japanese" },
-    { value: "korean", shortValue: "ko", label: "🇰🇷 Korean" },
+  "Africa": [
+    { longValue: "amharic", value: "am", label: "🇪🇹 Amharic" },
+    { longValue: "swahili", value: "sw", label: "🇹🇿 Swahili" },
+    { longValue: "tigrinya", value: "ti", label: "🇪🇷 Tigrinya" },
   ],
 
-  "Southeast Asia": [
-    { value: "vietnamese", shortValue: "vi", label: "🇻🇳 Vietnamese" },
-    { value: "thai", shortValue: "th", label: "🇹🇭 Thai" },
-    { value: "indonesian", shortValue: "id", label: "🇮🇩 Indonesian" },
-    { value: "malay", shortValue: "ms", label: "🇲🇾 Malay" },
-  ],
-
-  "South Asia": [
-    { value: "hindi", shortValue: "hi", label: "🇮🇳 Hindi" },
-    { value: "bengali", shortValue: "bn", label: "🇧🇩 Bengali" },
-    { value: "urdu", shortValue: "ur", label: "🇵🇰 Urdu" },
-  ],
-
-  "Americas": [
-    { value: "english_us", shortValue: "en_us", label: "🇺🇸 English (US)" },
-    { value: "spanish_mx", shortValue: "es_mx", label: "🇲🇽 Spanish (Mexico)" },
-    { value: "portuguese_br", shortValue: "pt_br", label: "🇧🇷 Portuguese (Brazil)" },
-    { value: "french_ca", shortValue: "fr_ca", label: "🇨🇦 French (Canada)" },
+  "South America": [
+    { longValue: "portuguese_br", value: "pt_br", label: "🇧🇷 Brazilian Portuguese" },
+    { longValue: "spanish_419", value: "es_419", label: "🌎 Latin American Spanish" },
   ],
 };
+
+export const POPULAR_LANGUAGES = [
+  { longValue: "english", value: "en", label: "🇺🇸 English" },
+  { longValue: "spanish", value: "es", label: "🇪🇸 Spanish" },
+  { longValue: "french", value: "fr", label: "🇫🇷 French" },
+  { longValue: "chinese_simplified", value: "zh_cn", label: "🇨🇳 Simplified Chinese" },
+];
+
+export const DEFAULT_TARGET_LANGUAGE = POPULAR_LANGUAGES[0]?.value ?? 'en'
 
 // For backwards compatibility
 export const LANGUAGES = Object.values(LANGUAGES_BY_REGION).flat();

@@ -1,4 +1,4 @@
-import { IconPDF, IconDOCX, IconDOC, IconPPTX, IconCSV, IconHTML, IconXML, IconTXT } from "../custom/icons";
+import { IconPDF, IconDOCX, IconPPTX, IconCSV, IconHTML, IconXML, IconTXT, IconPHP, IconJSON, IconGO } from "../custom/icons";
 import { FileIcon } from "lucide-react";
 
 export function getFileIcon(format: string, className?: string): React.ReactNode {
@@ -10,6 +10,9 @@ export function getFileIcon(format: string, className?: string): React.ReactNode
     Html: <IconHTML className={className} />,
     Xml: <IconXML className={className} />,
     Txt: <IconTXT className={className} />,
+    Json: <IconJSON className={className} />,
+    Php: <IconPHP className={className} />,
+    Go: <IconGO className={className} />,
   };
 
   return iconMap[format] ?? <FileIcon className={className} />;

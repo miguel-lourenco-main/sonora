@@ -34,7 +34,7 @@ export function TierEffect({
   const containerClassName = "h-[34px] min-w-[120px] flex shadow-xl items-center justify-center text-sm";
 
   const outsideClassName = "h-[28px] min-w-[120px]";
-  const insideClassName = "flex size-full items-center justify-center text-sm bg-transparent text-background font-semibold";  
+  const insideClassName = "flex size-full items-center justify-center text-sm bg-transparent text-foreground font-semibold";  
 
   switch (effectType) {
     case 'beam':

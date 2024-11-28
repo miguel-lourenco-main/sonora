@@ -1,4 +1,3 @@
-
 export interface PlainFileObject {
   name: string;
   type: string;
@@ -8,8 +7,8 @@ export interface PlainFileObject {
 }
 
 export interface Language {
+  longValue: string;
   value: string;
-  shortValue: string;
   label: string;
 }
 

@@ -17,9 +17,9 @@ const resizeObserverOptions = {};
 const maxWidth = 800;
 
 export default function PDFViewer(
-  { pdf, setLoaded, onScroll, scrollRef, filter }
+  { pdf, setIsRendered, type, onScroll, scrollRef, filter }
   : 
-  { pdf: PDFFile; setLoaded?: (b: boolean) => void; scrollRef?: React.RefObject<HTMLDivElement>; onScroll?: UIEventHandler<HTMLDivElement> | undefined; filter?: React.ReactNode}
+  { pdf: PDFFile; setIsRendered?: (b: boolean) => void; type?: string; onScroll?: UIEventHandler<HTMLDivElement> | undefined; scrollRef?: React.RefObject<HTMLDivElement>; filter?: React.ReactNode}
 ) {
 
   const [file, setFile] = useState<PDFFile>(pdf);
@@ -51,10 +51,15 @@ export default function PDFViewer(
   const updatePageHeight = useCallback(() => {
     if (firstPageRef.current) {
 
-      const a4Width = 210; // mm
-      const a4Height = 297; // mm
+      let fileWidth = 210; // mm
+      let fileHeight = 297; // mm
 
-      const scale = a4Height / a4Width;
+      if ((file instanceof File && file.name.endsWith('.pptx')) || type === 'pptx') {
+        fileWidth = 254;  // 10 inches in mm
+        fileHeight = 190.5;
+      }
+
+      const scale = fileHeight / fileWidth;
 
       const expectedHeight = pageWidth * scale;
 
@@ -69,16 +74,16 @@ export default function PDFViewer(
     }
     setNumPages(0);
     setVisiblePages([]);
-    if (setLoaded) setLoaded(false);
-  }, [setLoaded]);
+    if (setIsRendered) setIsRendered(false);
+  }, [setIsRendered]);
 
   useEffect(() => {
     setFile(pdf);
     cleanupPDF();
-    if (setLoaded) {
-      setLoaded(false); // Reset loaded state when PDF changes
+    if (setIsRendered) {
+      setIsRendered(false); // Reset loaded state when PDF changes
     }
-  }, [pdf, cleanupPDF, setLoaded]);
+  }, [pdf, cleanupPDF, setIsRendered]);
 
   useEffect(() => {
     mountedRef.current = true;
@@ -97,8 +102,8 @@ export default function PDFViewer(
     
     // Add a small delay before setting loaded to true
     timerRef.current = setTimeout(() => {
-      if (mountedRef.current && setLoaded) {
-        setLoaded(true);
+      if (mountedRef.current && setIsRendered) {
+        setIsRendered(true);
       }
     }, 500);
   }

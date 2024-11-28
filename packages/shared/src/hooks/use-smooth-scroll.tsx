@@ -1,7 +1,9 @@
-import { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
+'use client';
+
+import { createContext, useContext, useState, useCallback, useRef } from 'react';
 
 interface SmoothScrollContextType {
-  anchorRef: React.RefObject<HTMLDivElement>;
+  anchorRef: React.RefObject<HTMLDivElement | null>;
   isNearAnchor: boolean;
   isLocked: boolean;
   setIsLocked: React.Dispatch<React.SetStateAction<boolean>>;
