@@ -7,7 +7,7 @@ import { FileIcon } from 'lucide-react';
 import { cn } from '@kit/ui/utils';
 import dynamic from 'next/dynamic';
 import { Card } from '@kit/ui/card';
-import { TabData } from '~/(marketing)/_lib/types';
+import { TabData } from '@kit/shared/types';
 
 const PDFViewer = dynamic(() => import('@kit/ui/pdf-viewer'), { ssr: false });
 
