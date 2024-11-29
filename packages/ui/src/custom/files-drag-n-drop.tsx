@@ -48,7 +48,7 @@ export const FilesDragNDrop = forwardRef<
     const maxSize = 256 * 1024 * 1024; // 256MB
     const direction: DirectionOptions = "ltr";
 
-    const onDrop = useCallback((acceptedFiles: File[], rejectedFiles: FileRejection[], event: DropEvent) => {
+    const onDrop = useCallback((acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
       if (!acceptedFiles?.length) {
         toast.error("file error, probably too big");
         return;
@@ -58,13 +58,13 @@ export const FilesDragNDrop = forwardRef<
       addFiles(acceptedFiles);
 
       if (rejectedFiles.length > 0) {
-        for (let i = 0; i < rejectedFiles.length; i++) {
-          if (maxSize && rejectedFiles[i]?.errors[0]?.code === "file-too-large") {
+        for (const rejectedFile of rejectedFiles) {
+          if (maxSize && rejectedFile?.errors[0]?.code === "file-too-large") {
             toast.error(`${t("fileTooLarge")} ${maxSize / 1024 / 1024}MB`);
             break;
           }
-          if (rejectedFiles[i]?.errors[0]?.message) {
-            toast.error(rejectedFiles[i]?.errors[0]?.message);
+          if (rejectedFile?.errors[0]?.message) {
+            toast.error(rejectedFile?.errors[0]?.message);
             break;
           }
         }
@@ -133,7 +133,7 @@ export const FilesDragNDrop = forwardRef<
           setActiveIndex(-1);
         }
       },
-      [files, activeIndex, removeFiles, orientation, direction]
+      [files, activeIndex, removeFiles, orientation, direction, dropzone.inputRef]
     );
 
     useEffect(() => {

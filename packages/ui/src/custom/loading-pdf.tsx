@@ -1,5 +1,5 @@
 import { I18nComponent } from "@kit/i18n";
-import { Loader, Loader2 } from "lucide-react";
+import { Loader } from "lucide-react";
 import { cn } from "../lib";
 
 export default function LoadingDocument(

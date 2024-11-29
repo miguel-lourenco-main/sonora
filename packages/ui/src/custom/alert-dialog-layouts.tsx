@@ -29,7 +29,7 @@ export function AlertDialogContentLayout({
 
   return (
     <AlertDialogContent>
-      {(title || description) && (
+      {(title ?? description) && (
         <AlertDialogHeader>
           {title && <AlertDialogTitle>{title}</AlertDialogTitle>}
           {description && (
@@ -51,8 +51,8 @@ export function AlertDialogWTriggerLayout({
   title,
   description,
   tooltip,
-  reset = () => {},
-  trigger = () => <></>,
+  reset,
+  trigger = () => {return <div></div>},
 }: {
   footer: () => JSX.Element;
   children?: React.ReactNode;
@@ -99,35 +99,32 @@ export function AlertDialogWSetOpenLayout({
   children,
   title,
   description,
-  tooltip,
-  openModal = false,
-  reset = () => {},
-  setOpen = () => {},
+  reset,
+  setOpen,
 }: {
   footer: () => JSX.Element;
   children?: React.ReactNode;
   title?: string;
   description?: string;
-  tooltip?: string;
-  openModal?: boolean;
   reset?: () => void;
   setOpen?: (open: boolean) => void;
 }) {
   
   function onOpenChange(open: boolean) {
-    setOpen(open);
+    if(setOpen) setOpen(open);
 
-    if (!open) reset();
+    if (!open && reset) reset();
   }
 
   return (
     <AlertDialog open onOpenChange={(open) => onOpenChange(open)}>
       <AlertDialogContentLayout
         footer={footer}
-        children={children}
         description={description}
         title={title}
-      />
+      >
+        {children}
+      </AlertDialogContentLayout>
     </AlertDialog>
   );
 }
@@ -136,18 +133,16 @@ export function DeleteDialogLayout({
   footer,
   children,
   title,
-  open,
   description,
   label,
   tooltip,
-  reset = () => {},
-  setOpen = () => {},
-  trigger = () => <></>,
+  reset,
+  setOpen,
+  trigger,
 }: {
   footer: () => JSX.Element;
   children?: React.ReactNode;
   title?: string;
-  open?: boolean;
   description?: string;
   label?: string;
   tooltip?: string;
@@ -177,10 +172,8 @@ export function DeleteDialogLayout({
         footer={footer}
         title={title}
         reset={reset}
-        openModal={open}
         setOpen={setOpen}
         description={descript}
-        tooltip={tooltip}
       >
         {children}
       </AlertDialogWSetOpenLayout>

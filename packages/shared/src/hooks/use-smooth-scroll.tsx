@@ -1,58 +1,43 @@
 'use client';
 
-import { createContext, useContext, useState, useCallback, useRef } from 'react';
+import { createContext, useContext, useRef } from 'react';
 
 interface SmoothScrollContextType {
   anchorRef: React.RefObject<HTMLDivElement | null>;
-  isNearAnchor: boolean;
-  isLocked: boolean;
-  setIsLocked: React.Dispatch<React.SetStateAction<boolean>>;
+  smoothScrollTo: (targetY: number) => void;
 }
 
 export const SmoothScrollContext = createContext<SmoothScrollContextType | undefined>(undefined);
 
-export function SmoothScrollProvider({ children, threshold = 100 }: { children: React.ReactNode, threshold?: number }) {
+export function SmoothScrollProvider({ children }: { children: React.ReactNode, threshold?: number }) {
   const anchorRef = useRef<HTMLDivElement>(null);
-  const [isNearAnchor, setIsNearAnchor] = useState(false);
-  const [isLocked, setIsLocked] = useState(false);
-  const lastScrollY = useRef(0);
 
-  const handleScroll = useCallback(() => {
-    if (anchorRef.current) {
-      const anchorRect = anchorRef.current.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
-      const anchorCenter = anchorRect.top + anchorRect.height / 2;
-      const targetPosition = viewportHeight / 2;
-      const offset = anchorCenter - targetPosition;
-      const currentScrollY = window.scrollY;
-      const scrollDelta = currentScrollY - lastScrollY.current;
+  const smoothScrollTo = (targetY: number) => {
+    const startY = window.scrollY;
+    const distance = targetY - startY;
+    const duration = 1000; // ms
+    let start: number;
 
-      if (Math.abs(offset) < threshold) {
-        if (!isLocked) {
-          window.scrollTo({
-            top: currentScrollY + offset,
-            behavior: 'smooth'
-          });
-          setIsLocked(true);
-          setIsNearAnchor(true);
-        }
-      } else if (isLocked) {
-        if (Math.abs(scrollDelta) > 5) {
-          const resistance = 0.3;
-          const newScrollY = currentScrollY - (scrollDelta * resistance);
-          window.scrollTo(0, newScrollY);
-          setIsLocked(false);
-        }
-      } else {
-        setIsNearAnchor(false);
+    const step = (timestamp: number) => {
+      if (!start) start = timestamp;
+      const progress = timestamp - start;
+      const percentage = Math.min(progress / duration, 1);
+      
+      const easeInOutCubic = (t: number) => 
+        t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+
+      window.scrollTo(0, startY + distance * easeInOutCubic(percentage));
+
+      if (progress < duration) {
+        window.requestAnimationFrame(step);
       }
+    };
 
-      lastScrollY.current = window.scrollY;
-    }
-  }, [threshold, isLocked]);
+    window.requestAnimationFrame(step);
+  }
 
   return (
-    <SmoothScrollContext.Provider value={{ anchorRef, isNearAnchor, isLocked, setIsLocked }}>
+    <SmoothScrollContext.Provider value={{ anchorRef, smoothScrollTo }}>
       {children}
     </SmoothScrollContext.Provider>
   );

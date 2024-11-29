@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { Language } from './interfaces';
 
-export const EDGEN_BACKEND_URL = process.env.EDGEN_BACKEND_URL || "http://127.0.0.1:30000";
+export const EDGEN_BACKEND_URL = process.env.EDGEN_BACKEND_URL ?? "http://127.0.0.1:30000";
 
 export const FILE_SUPPORTED_TYPES = {
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"],

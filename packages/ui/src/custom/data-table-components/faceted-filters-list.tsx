@@ -3,23 +3,24 @@ import { Table } from "@tanstack/react-table"
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 import { Filter } from "../_lib/interface";
 
-export default function FacetedFilters({
+export default function FacetedFilters<TData>({
     table,
     filters
 }:{
-    //TODO - fix: table: Table<TData>
-    table: Table<any>
+    table: Table<TData>
     filters: Filter[]
 }){
     return(
         <>
             {filters.map((filter) => {
-                {table.getColumn(filter.id) && (
-                    <DataTableFacetedFilter
-                        column={table.getColumn(filter.id)}
-                        title={filter.id}
-                        options={filter.options}
-                    />
+                if(table.getColumn(filter.id)){
+                    return(
+                        <DataTableFacetedFilter
+                            key={filter.id}
+                            column={table.getColumn(filter.id)}
+                            title={filter.id}
+                            options={filter.options}
+                        />
                 )}
             })}
         </>

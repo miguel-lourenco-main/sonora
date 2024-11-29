@@ -14,6 +14,8 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
+  PaginationState,
+  Updater
 } from "@tanstack/react-table"
 import {
   Table as UITable,
@@ -73,7 +75,7 @@ export function CustomDataTable<TData, TValue>({
    *        can be problematic. If possible come up witha better solution
    */
 
-  const handlePaginationChange = useCallback((updater: any) => {
+  const handlePaginationChange = useCallback((updater: Updater<PaginationState>) => {
     firstTryRef.current = false
 
     if (isDataChangingRef.current) {
@@ -136,7 +138,7 @@ export function CustomDataTable<TData, TValue>({
 
     return createToolbarButtons(rowSelection, setRowSelection, table.getIsSomeRowsSelected() || table.getIsAllRowsSelected())
 
-  }, [createToolbarButtons, setRowSelection, rowSelection])
+  }, [createToolbarButtons, setRowSelection, rowSelection, table])
 
   return (
     <div className="flex flex-col h-full space-y-4">
@@ -173,7 +175,7 @@ export function CustomDataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  onClick={() => onRowClick(row.getValue("id") as string)}
+                  onClick={() => onRowClick(row.getValue("id"))}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} >

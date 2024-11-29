@@ -1,7 +1,6 @@
-import { COLLAPSE_PATHS, COLLAPSE_PATHS_FROM, FILE_SUPPORTED_TYPES } from "./constants";
+import { FILE_SUPPORTED_TYPES } from "./constants";
 import { PlainFileObject } from "./interfaces";
 import { UseFormReturn } from "react-hook-form";
-import { TrackableFile } from "./types";
 
 /**
  * Check if the code is running in a browser environment.
@@ -28,46 +27,6 @@ export function filterParagraphs(input: string): string {
   const paragraphs = input.split('\n');
   const filteredParagraphs = paragraphs.filter(paragraph => !paragraph.trim().startsWith('Sources: /'));
   return filteredParagraphs.join('\n');
-}
-
-export function processWorkflowMessages(messages: any[]) {
-  if (messages.length < 2) return [];
-
-  const terminateMessages = messages
-    .filter((message: any) => message.content !== "TERMINATE")
-    .map((message: any) => {
-      if (message.content.includes("TERMINATE")) {
-        return {
-          ...message,
-          content: filterParagraphs(message.content.replace("\n\nTERMINATE", ""))
-        };
-      }
-      return message;
-    });
-
-  const len = terminateMessages.length;
-  const lastMessage = terminateMessages[len - 2].receiver === "userproxy"
-    ? terminateMessages[len - 2]
-    : terminateMessages[len - 1];
-
-  return [terminateMessages[0], lastMessage];
-}
-
-export function processChatMessages(messages: any[]) {
-  const separateWorkflowMessages = (messages: any[], output: any[]): any[] => {
-    if (messages.length < 2) return output;
-
-    const lastWorkflowMessageIndex = messages.findIndex((message: any, index: number) => message.sender === "user" && index !== 0);
-    const workflowMessages = lastWorkflowMessageIndex === -1 ? messages : messages.slice(0, lastWorkflowMessageIndex);
-    const leftMessages = messages.slice(lastWorkflowMessageIndex);
-
-    const processedWorkflowMessages = processWorkflowMessages(workflowMessages);
-    output.push(processedWorkflowMessages[0], processedWorkflowMessages[1]);
-
-    return separateWorkflowMessages(leftMessages, output);
-  };
-
-  return separateWorkflowMessages(messages, []);
 }
 
 export const handleInsertOrUpdate = <T extends { id: string }>(
@@ -107,10 +66,10 @@ export function fileToObject(file: File): Promise<PlainFileObject> {
     };
 
     reader.onerror = () => {
-      reject(reader.error);
+      reject(new Error(reader.error?.message ?? 'Failed to read file'));
     };
 
-    reader.readAsDataURL(file); // Read file content as Data URL (base64)
+    reader.readAsDataURL(file);
   });
 }
 
@@ -137,7 +96,7 @@ export function objectToFile(plainObject: PlainFileObject): File {
 
 export function getCurrentTier(pageCount: number, tiers: (number | 'unlimited')[] ){
   
-  let index: number = 0
+  let index = 0
 
   for (const tier of tiers) {
     const tierUpTo = tier === 'unlimited' ? Infinity : Number(tier);
@@ -152,7 +111,7 @@ export function getCurrentTier(pageCount: number, tiers: (number | 'unlimited')[
   return index
 }
 
-export function getFormKeys<T extends Record<string, any>>(form: UseFormReturn<T>) {
+export function getFormKeys<T extends Record<string, unknown>>(form: UseFormReturn<T>) {
   return Object.keys(form.getValues()) as (keyof T)[];
 }
 

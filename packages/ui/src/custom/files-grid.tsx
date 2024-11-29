@@ -15,14 +15,12 @@ interface FilesGridProps {
   files: TrackableFile[];
   onFileRemove?: (filteredFiles: File[]) => void;
   disabled?: boolean;
-  loadingFiles?: Set<number>;
 }
 
 export default function FilesGrid({ 
   files, 
   onFileRemove, 
   disabled,
-  loadingFiles = new Set() 
 }: FilesGridProps) {
     const gridRef = useRef<HTMLDivElement>(null);
     const { t } = useTranslation('ui');

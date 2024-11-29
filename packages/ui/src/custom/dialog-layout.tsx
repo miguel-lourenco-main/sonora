@@ -56,7 +56,7 @@ export default function DialogLayout({
     } else {
       reset?.();
     }
-  }, [isControlled, isOpen, externalSetOpen, onOpen, reset]);
+  }, [isControlled, externalSetOpen, onOpen, reset]);
 
   return (
     <Dialog 

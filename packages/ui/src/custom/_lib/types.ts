@@ -1,6 +1,5 @@
 import { z } from "zod";
 import { formSchema } from "./schemas/translate-files";
-import { Dispatch, SetStateAction } from "react";
 import { TrackableFile } from "@kit/shared/types";
 
 export type PDFFile = string | File | null;
@@ -15,7 +14,7 @@ export type CustomFileUploaderProps = {
   removeFiles: (files: TrackableFile[]) => void;
   className?: string;
   orientation?: "horizontal" | "vertical";
-  acceptFiles?: { [key: string]: string[] };
+  acceptFiles?: Record<string, string[]>;
   children?: React.ReactNode;
   disabled?: boolean;
 };
