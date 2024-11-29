@@ -6,12 +6,12 @@ export type TrackableFile = File & {
 };
 
 export type FileSet = {
-    original: File | null;
-    translated: File | null;
-  };
+  original: File | null;
+  translated: File | null;
+};
 
 export type TabData = {
-    icon: JSX.Element;
-    file: string;
-    exampleFiles: FileSet;
-  };
+  icon: JSX.Element;
+  file: string;
+  exampleFiles: FileSet;
+};

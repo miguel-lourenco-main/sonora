@@ -3,7 +3,7 @@ import { cn } from "../lib";
 
 interface StatusIndicatorProps {
   id?: string;
-  status?: "uploading" | "uploaded" | "error";
+  status?: "uploading" | "uploaded" | "client" | "error";
   className?: string;
 }
 
