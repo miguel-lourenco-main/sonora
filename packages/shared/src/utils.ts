@@ -50,7 +50,7 @@ export const handleDelete = <T extends { id: string }>(
 };
 
 // TODO: switch other instances of this function thrghout the repo 
-export function fileToObject(file: File): Promise<PlainFileObject> {
+export function fileToPlainObject(file: File): Promise<PlainFileObject> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
 

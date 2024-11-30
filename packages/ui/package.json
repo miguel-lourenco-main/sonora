@@ -196,9 +196,10 @@
     "./border-beam": "./src/magic-ui/border-beam.tsx",
     "./tier-effect": "./src/magic-ui/tier-effect.tsx",
     "./animated-translated-files": "./src/magic-ui/animated-translated-files.tsx",
-    "./custom-file-uploader": "./src/custom/file-uploader.tsx",
+    "./custom-file-uploader": "./src/custom/custom-file-uploader.tsx",
     "./pdf-viewer-dialog": "./src/custom/pdf-viewer-dialog.tsx",
-    "./pdf-compare": "./src/custom/pdf-compare.tsx"
+    "./pdf-compare": "./src/custom/pdf-compare.tsx",
+    "./i18n-component": "./src/custom/i18n-component.tsx"
   },
   "typesVersions": {
     "*": {

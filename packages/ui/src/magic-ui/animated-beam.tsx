@@ -1,7 +1,6 @@
 "use client";
 
 import { RefObject, useEffect, useId, useState } from "react";
-import { motion } from "framer-motion";
 
 import { cn } from "../lib";
 
@@ -17,7 +16,6 @@ export interface AnimatedBeamProps {
   pathOpacity?: number;
   gradientStartColor?: string;
   gradientStopColor?: string;
-  delay?: number;
   duration?: number;
   startXOffset?: number;
   startYOffset?: number;
@@ -33,7 +31,6 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
   curvature = 0,
   flowToCenter = true,
   duration = 4,
-  delay = 0,
   pathColor = "gray",
   pathWidth = 2,
   pathOpacity = 0.2,
@@ -88,7 +85,7 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
     // Initialize ResizeObserver
     const resizeObserver = new ResizeObserver((entries) => {
       // For all entries, recalculate the path
-      for (let entry of entries) {
+      for (const _entry of entries) {
         updatePath();
       }
     });

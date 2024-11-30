@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, UIEvent, useState, useCallback } from 'react';
+import { useEffect, useRef, UIEvent, useState, useCallback, useMemo } from 'react';
 import LoadingDocument from "@kit/ui/loading-pdf";
 import { useTranslation } from 'react-i18next';
 import { FileIcon } from 'lucide-react';
@@ -32,7 +32,7 @@ export function PDFView({
 }) {
     const { t } = useTranslation("custom");
     const onScroll = handleScroll ? handleScroll(index) : undefined;
-    const ref = scrollRefs && scrollRefs[index] ? scrollRefs[index] : undefined;
+    const ref = scrollRefs?.[index] ? scrollRefs[index] : undefined;
 
     return (
         <div 
@@ -52,7 +52,6 @@ export function PDFView({
                         setIsRendered={setIsRendered}
                         onScroll={onScroll} 
                         scrollRef={ref} 
-                        filter={undefined}
                         type={type}
                     />
                 </div>
@@ -91,7 +90,10 @@ export default function PDFCompare({
     });
     const [inputFileRendered, setInputFileRendered] = useState(false);
     const [outputFileRendered, setOutputFileRendered] = useState(false);
-    const scrollRefs = [useRef<HTMLDivElement>(null), useRef<HTMLDivElement>(null)];
+
+    const scrollRef1 = useRef<HTMLDivElement>(null);
+    const scrollRef2 = useRef<HTMLDivElement>(null);
+    const scrollRefs = useMemo(() => [scrollRef1, scrollRef2], []);
     
     useEffect(() => {
         setInputFileState({
@@ -106,10 +108,11 @@ export default function PDFCompare({
 
     const handleScroll = useCallback((index: number) => (e: UIEvent<HTMLDivElement>) => {
         const otherIndex = 1 - index;
-        if (scrollRefs[otherIndex]?.current) {
-            scrollRefs[otherIndex]!.current!.scrollTop = e.currentTarget.scrollTop;
+        const otherRef = scrollRefs[otherIndex]?.current;
+        if (otherRef) {
+            otherRef.scrollTop = e.currentTarget.scrollTop;
         }
-    }, []);
+    }, [scrollRefs]);
 
     return (
         <div className="flex flex-col size-full overflow-hidden">

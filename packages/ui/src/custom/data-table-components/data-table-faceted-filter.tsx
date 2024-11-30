@@ -20,7 +20,9 @@ import {
 } from "../../shadcn/popover"
 import { Separator } from "../../shadcn/separator"
 import { cn } from "../../lib"
-import { I18nComponent } from "@kit/i18n"
+import I18nComponent from "@kit/ui/i18n-component"
+
+
 
 interface DataTableFacetedFilterProps<TData, TValue> {
   column?: Column<TData, TValue>

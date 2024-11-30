@@ -1,4 +1,6 @@
-import { I18nComponent } from "@kit/i18n";
+import I18nComponent from "@kit/ui/i18n-component"
+
+;
 import { Loader } from "lucide-react";
 import { cn } from "../lib";
 

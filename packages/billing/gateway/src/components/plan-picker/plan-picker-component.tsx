@@ -10,7 +10,7 @@ import {
   getProductPlanPair,
   LineItemSchema,
 } from '@kit/billing';
-import { formatCurrency, getCurrentTier } from '@kit/shared/utils';
+import { formatCurrency } from '@kit/shared/utils';
 import { Button } from '@kit/ui/button';
 import {
   FormControl,
@@ -31,7 +31,7 @@ import { cn } from '@kit/ui/utils';
 import { z } from 'zod';
 import { toast } from 'sonner';
 import { calculateTieredCost } from '../../lib/utils';
-import { MAX_PAGES_SUBSCRIPTION } from '@kit/shared/constants';
+
 
 export function PlanPickerComponent(
   props: React.PropsWithChildren<{
@@ -39,11 +39,11 @@ export function PlanPickerComponent(
       shouldValidate: boolean;
       shouldDirty: boolean;
       shouldTouch: boolean;
-    }> | undefined) => void;
-    getFormValue: (key: string) => string | number | undefined;
+    }>) => void;
     isFormValid: boolean;
     config: BillingConfig;
     intervals: string[];
+    getFormValue: (key: string) => string | number | undefined;
     canStartTrial?: boolean;
     pending?: boolean;
     currentSubscriptionVariantId?: string;
@@ -53,8 +53,10 @@ export function PlanPickerComponent(
 
   const { t: commonT } = useTranslation(`common`);
 
-  const planId = useMemo(() => props.getFormValue('planId') as string, [props.getFormValue]);
-  const selectedInterval = useMemo(() => props.getFormValue('interval') as string, [props.getFormValue]);
+  const memoedProps = useMemo(() => props, [props])
+
+  const planId = useMemo(() => memoedProps.getFormValue('planId') as string, [memoedProps]);
+  const selectedInterval = useMemo(() => memoedProps.getFormValue('interval') as string, [memoedProps]);
 
   const { plan: selectedPlan, product: selectedProduct } = useMemo(() => {
     try {
@@ -189,7 +191,7 @@ export function PlanPickerComponent(
 
                       const planId = plan.id;
                       const selected = field.value === planId;
-                      const pageCount = props.getFormValue('pageCount') as number;
+                      const pageCount = memoedProps.getFormValue?.('pageCount') as number;
 
                       const primaryLineItem = getPrimaryLineItem(
                         props.config,
@@ -204,7 +206,7 @@ export function PlanPickerComponent(
 
                       // If the product is 'pro', add the page count feature
                       if (product.id === 'pro' && modifiedLineItem) {
-                        if (primaryLineItem && primaryLineItem.tiers) {
+                        if (primaryLineItem?.tiers) {
                           const tiers = primaryLineItem.tiers;
 
                           modifiedLineItem.cost = calculateTieredCost(pageCount, tiers)

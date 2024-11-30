@@ -4,8 +4,7 @@ import React, { forwardRef, useRef } from "react";
 
 import { cn } from "../lib";
 import { AnimatedBeam } from "./animated-beam";
-import { IconPDF, IconDOCX, IconPPTX, IconCSV, IconHTML, PolydocIcon, PolydocFirstLetterIcon } from "../custom/icons";
-import { Plus } from "lucide-react";
+import { IconPDF, IconDOCX, IconPPTX, IconCSV, PolydocFirstLetterIcon } from "../custom/icons";
 
 const Circle = forwardRef<
   HTMLDivElement,

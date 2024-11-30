@@ -1,8 +1,5 @@
 'use client';
 
-import { useEffect } from "react";
-import { useState } from "react";
-import { useRef } from "react";
 import { cn } from "../lib";
 import { BorderBeam } from './border-beam';
 import { ShineBorder } from './shine-border';

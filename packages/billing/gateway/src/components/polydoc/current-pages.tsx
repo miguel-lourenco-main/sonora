@@ -63,7 +63,7 @@ export default function CurrentPages({ size = 'normal', collapsed = false }: Cur
       setMonthlyTokens(data?.[0]?.monthly_credits ?? 1);
     }
 
-    setupCredits();
+    void setupCredits();
   }, []);
 
   useEffect(() => {
@@ -83,7 +83,7 @@ export default function CurrentPages({ size = 'normal', collapsed = false }: Cur
 
       // Return cleanup function
       return () => {
-        channel.unsubscribe();
+        void channel.unsubscribe();
       };
     };
 
@@ -91,7 +91,7 @@ export default function CurrentPages({ size = 'normal', collapsed = false }: Cur
     
     // Cleanup on unmount
     return () => {
-      subscription.then(cleanup => cleanup?.());
+      void subscription.then(cleanup => cleanup?.());
     };
   }, []);
 

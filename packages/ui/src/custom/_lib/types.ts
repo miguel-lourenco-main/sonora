@@ -8,7 +8,7 @@ export type FormData = z.infer<typeof formSchema>;
 
 export type DirectionOptions = "rtl" | "ltr" | undefined;
 
-export type CustomFileUploaderProps = {
+export type FilesDragNDropProps = {
   files: TrackableFile[];
   addFiles: (files: TrackableFile[]) => void;
   removeFiles: (files: TrackableFile[]) => void;

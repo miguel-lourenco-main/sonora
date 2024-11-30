@@ -3,10 +3,10 @@
 import { Input } from "../shadcn/input";
 import { cn } from "../lib";
 import { forwardRef, useCallback, useEffect, useState } from "react";
-import { FileRejection, DropEvent, useDropzone } from "react-dropzone";
+import { FileRejection, useDropzone } from "react-dropzone";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
-import { CustomFileUploaderProps, DirectionOptions } from "./_lib/types";
+import { DirectionOptions, FilesDragNDropProps } from "./_lib/types";
 import { FileSvgDraw } from "./file-svg-draw";
 import FilesGrid from "./files-grid";
 import { TrackableFile } from "@kit/shared/types";
@@ -26,7 +26,7 @@ const DEFAULT_ACCEPT = {
 
 export const FilesDragNDrop = forwardRef<
   HTMLDivElement,
-  CustomFileUploaderProps & React.HTMLAttributes<HTMLDivElement>
+  FilesDragNDropProps & React.HTMLAttributes<HTMLDivElement>
 >(
   (
     {
@@ -55,7 +55,7 @@ export const FilesDragNDrop = forwardRef<
       }
       
       // Use setFiles as an add operation
-      addFiles(acceptedFiles);
+      addFiles(acceptedFiles.map(file => ({ fileObject: file })));
 
       if (rejectedFiles.length > 0) {
         for (const rejectedFile of rejectedFiles) {

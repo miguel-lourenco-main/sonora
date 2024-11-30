@@ -11,6 +11,7 @@ import {
 import { PlanPickerComponent } from './plan-picker-component';
 import { PlanDetails } from './plan-details';
 import { getPlanPickerSchema } from './plan-picker-schema';
+import { useTranslation } from 'react-i18next';
 
 type PlanPickerFormData = {
   planId: string;
@@ -27,12 +28,14 @@ export function PlanPicker(
   }>,
 ) {
 
+  const { t } = useTranslation(`billing`);
+
   const intervals = useMemo(
     () => getPlanIntervals(props.config),
     [props.config],
   ) as string[];
 
-  const planPickerSchema = getPlanPickerSchema(props.config)
+  const planPickerSchema = getPlanPickerSchema(props.config, t('noPlanChosen'))
 
   const form = useForm<PlanPickerFormData>({
     reValidateMode: 'onChange',
@@ -61,7 +64,7 @@ export function PlanPicker(
     shouldValidate: boolean;
     shouldDirty: boolean;
     shouldTouch: boolean;
-  }> | undefined) => {
+  }>) => {
 
     form.setValue(key as keyof PlanPickerFormData, value, partial);
   };
@@ -77,7 +80,7 @@ export function PlanPicker(
         className={'flex space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0'}
         onSubmit={onSubmitForm}
       >
-        <PlanPickerComponent isFormValid={form.formState.isValid} setFormValue={setFormValue} getFormValue={getFormValue} onSubmitForm={onSubmitForm} intervals={intervals} {...props} />
+        <PlanPickerComponent isFormValid={form.formState.isValid} setFormValue={setFormValue} getFormValue={getFormValue} intervals={intervals} {...props} />
         {selectedPlanId && selectedInterval && selectedProductId ? (
           <PlanDetails
             selectedInterval={selectedInterval}
