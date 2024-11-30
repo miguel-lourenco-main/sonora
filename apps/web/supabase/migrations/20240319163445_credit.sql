@@ -30,29 +30,3 @@ SELECT rls_configure(
   create_update => false,
   create_delete => false
 );
-
--- Function to decrement credits when a run's credits field is updated or inserted
-create or replace function public.credit_decrement_on_run_update()
-returns trigger 
-set search_path = ''  -- Security best practice: set empty search path
-as $$
-begin
-    -- For UPDATE: proceed if credits field is being updated from null to non-null
-    -- For INSERT: proceed if credits field is not null
-    if (TG_OP = 'UPDATE' and NEW.credits is not null and OLD.credits is null) or
-       (TG_OP = 'INSERT' and NEW.credits is not null) then
-        -- Decrement credits from the credit table
-        update public.credit
-        set credits = credits - NEW.credits
-        where account_id = NEW.account_id;
-    end if;
-    return NEW;
-end;
-$$ language plpgsql;
-
--- Create new trigger to run the function on both insert and update of runs table
-create or replace trigger credit_decrement_on_run_update_trigger
-    after insert or update of credits
-    on public.run
-    for each row
-    execute function public.credit_decrement_on_run_update();
