@@ -133,10 +133,10 @@ create type public.billing_provider as ENUM('stripe', 'lemon-squeezy', 'paddle')
 /*
 * Subscription Item Type
 - We create the subscription item type for the Supabase MakerKit. These types are used to manage the type of the subscription items
-- The types are 'flat', 'per_seat', and 'metered'.
+- The types are 'flat', 'per_seat', 'metered', and 'tiered'.
 - You can add more types as needed.
 */
-create type public.subscription_item_type as ENUM('flat', 'per_seat', 'metered');
+create type public.subscription_item_type as ENUM('flat', 'per_seat', 'metered', 'tiered');
 
 /*
 * Invitation Type
@@ -152,6 +152,7 @@ create type public.invitation as (email text, role varchar(50));
  */
 create table if not exists
   public.config (
+    id serial primary key,
     enable_team_accounts boolean default true not null,
     enable_account_billing boolean default true not null,
     enable_team_account_billing boolean default true not null,
@@ -1141,6 +1142,87 @@ create policy role_permissions_read on public.role_permissions for
 select
   to authenticated using (true);
 
+-- Function "rls_configure"
+-- This function is used to configure vanilla Row Level Security (RLS) policies for a given table.
+create or replace function rls_configure(
+    table_name text,
+    create_select boolean default false,
+    create_insert boolean default false,
+    create_update boolean default false,
+    create_delete boolean default false
+)
+returns void as $$
+begin
+    -- Enable RLS on the specified table
+    execute format('alter table %I enable row level security', table_name);
+
+    -- Revoke all permissions from authenticated and service_role
+    execute format('revoke all on %I from authenticated, service_role', table_name);
+
+    -- Grant all permissions to service_role
+    execute format('grant all on %I to service_role', table_name);
+
+    -- Grant permissions to authenticated based on function arguments
+    if create_select then
+        execute format('grant select on %I to authenticated', table_name);
+    end if;
+    if create_insert then
+        execute format('grant insert on %I to authenticated', table_name);
+    end if;
+    if create_update then
+        execute format('grant update on %I to authenticated', table_name);
+    end if;
+    if create_delete then
+        execute format('grant delete on %I to authenticated', table_name);
+    end if;
+    
+    -- SELECT policy
+    if create_select then
+        raise notice 'Creating SELECT policy for table %', table_name;
+        execute format('
+            create policy %I_read_self on %I
+            for select to authenticated
+            using (account_id = auth.uid() or has_role_on_account(account_id))
+        ', table_name, table_name);
+    end if;
+
+    -- INSERT policy
+    if create_insert then
+        raise notice 'Creating INSERT policy for table %', table_name;
+        execute format('
+            create policy %I_insert_self on %I
+            for insert to authenticated
+            with check (account_id = auth.uid() or has_role_on_account(account_id))
+        ', table_name, table_name);
+    end if;
+
+    -- UPDATE policy
+    if create_update then
+        raise notice 'Creating UPDATE policy for table %', table_name;
+        execute format('
+            create policy %I_update_self on %I
+            for update to authenticated
+            using (account_id = auth.uid() or has_role_on_account(account_id))
+        ', table_name, table_name);
+    end if;
+
+    -- DELETE policy
+    if create_delete then
+        raise notice 'Creating DELETE policy for table %', table_name;
+        execute format('
+            create policy %I_delete_self on %I
+            for delete to authenticated
+            using (account_id = auth.uid() or has_role_on_account(account_id))
+        ', table_name, table_name);
+    end if;
+
+    raise notice 'RLS configuration completed for table %', table_name;
+end;
+$$ language plpgsql;
+
+-- Grant execute permission on the function
+grant execute on function rls_configure(text, boolean, boolean, boolean, boolean) to postgres;
+
 /*
  * -------------------------------------------------------
  * Section: Invitations
@@ -1453,7 +1535,8 @@ create table if not exists
     period_starts_at timestamptz not null,
     period_ends_at timestamptz not null,
     trial_starts_at timestamptz,
-    trial_ends_at timestamptz
+    trial_ends_at timestamptz,
+    schedule text
   );
 
 comment on table public.subscriptions is 'The subscriptions for an account';
@@ -1462,11 +1545,9 @@ comment on column public.subscriptions.account_id is 'The account the subscripti
 
 comment on column public.subscriptions.billing_provider is 'The provider of the subscription';
 
-comment on column public.subscriptions.cancel_at_period_end is 'Whether the subscription will be canceled at the end of the period';
-
-comment on column public.subscriptions.currency is 'The currency for the subscription';
-
 comment on column public.subscriptions.status is 'The status of the subscription';
+
+comment on column public.subscriptions.schedule is 'The schedule of the subscription';
 
 comment on column public.subscriptions.period_starts_at is 'The start of the current period for the subscription';
 
@@ -1479,6 +1560,9 @@ comment on column public.subscriptions.trial_ends_at is 'The end of the trial pe
 comment on column public.subscriptions.active is 'Whether the subscription is active';
 
 comment on column public.subscriptions.billing_customer_id is 'The billing customer ID for the subscription';
+
+alter publication supabase_realtime
+add table public.subscriptions;
 
 -- Revoke all on subscriptions table from authenticated and service_role
 revoke all on public.subscriptions
@@ -1539,7 +1623,8 @@ or replace function public.upsert_subscription (
   period_ends_at timestamptz,
   line_items jsonb,
   trial_starts_at timestamptz default null,
-  trial_ends_at timestamptz default null
+  trial_ends_at timestamptz default null,
+  schedule text default null
 ) returns public.subscriptions
 set
   search_path = '' as $$
@@ -1576,7 +1661,9 @@ on conflict (
         period_starts_at,
         period_ends_at,
         trial_starts_at,
-        trial_ends_at)
+        trial_ends_at,
+        schedule
+      )
     values (
         target_account_id,
         new_billing_customer_id,
@@ -1589,7 +1676,9 @@ on conflict (
         period_starts_at,
         period_ends_at,
         trial_starts_at,
-        trial_ends_at)
+        trial_ends_at,
+        schedule
+      )
 on conflict (
     id)
     do update set
@@ -1600,7 +1689,8 @@ on conflict (
         period_starts_at = excluded.period_starts_at,
         period_ends_at = excluded.period_ends_at,
         trial_starts_at = excluded.trial_starts_at,
-        trial_ends_at = excluded.trial_ends_at
+        trial_ends_at = excluded.trial_ends_at,
+        schedule = excluded.schedule
     returning
         * into new_subscription;
 
@@ -1681,7 +1771,8 @@ execute on function public.upsert_subscription (
   timestamptz,
   jsonb,
   timestamptz,
-  timestamptz
+  timestamptz,
+  text
 ) to service_role;
 
 /* -------------------------------------------------------
@@ -2757,3 +2848,10 @@ with check (
     )
   )
 );
+
+-- Storage
+-- File. Inserting into storage schema, buckets table
+insert into
+  storage.buckets (id, name, PUBLIC)
+values
+  ('file', 'file', false);
