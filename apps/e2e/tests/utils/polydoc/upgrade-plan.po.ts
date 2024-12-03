@@ -37,7 +37,11 @@ export class PolydocUpgradePlanPageObject {
   /** Actions */
 
   async proceedToCheckout() {
-    await this.checkoutSubmitButton().click();
+    const button = this.checkoutSubmitButton();
+    await button.waitFor({ state: 'visible' });
+    await button.scrollIntoViewIfNeeded();
+    await new Promise(resolve => setTimeout(resolve, 100));
+    await button.click();
   }
 
   async returnToManageBilling() {

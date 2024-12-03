@@ -49,6 +49,7 @@ export class StripeCustomerPortalPageObject {
 
     async goToPlanSelection() {
       await this.updatePlanButton().click();
+      await this.page.setViewportSize({ width: 1920, height: 1600 });
     }
 
     async cancelIfChangeAlreadyPlanned() {
@@ -114,13 +115,18 @@ export class StripeCustomerPortalPageObject {
     async payAndSubscribe() {
       const payAndSubscribeButton = this.payAndSubscribeButton();
   
-      //await expect(payAndSubscribeButton).toBeVisible({timeout: CURRENT_TIMEOUTS.element});
+      await payAndSubscribeButton.waitFor({ state: 'visible' });
+      await payAndSubscribeButton.scrollIntoViewIfNeeded();
+  
+      // Add small delay for stability
+      await new Promise(resolve => setTimeout(resolve, 100));
   
       await payAndSubscribeButton.click({ timeout: CURRENT_TIMEOUTS.element });
     }
   
     async returnToApp() {
       await this.returnToAppButton().click();
+      await this.page.setViewportSize({ width: 1920, height: 1080 });
     }
   }
   

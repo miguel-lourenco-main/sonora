@@ -87,6 +87,17 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+
+    // Add viewport settings
+    viewport: {
+      width: 1920,
+      height: 1080,
+    },
+
+    // Add initial zoom level
+    launchOptions: {
+      args: ['--force-device-scale-factor=0.75']
+    }
   },
 
   timeout: config.testTimeout,

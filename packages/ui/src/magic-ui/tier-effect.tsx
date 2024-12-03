@@ -34,12 +34,12 @@ export function TierEffect({
   const containerClassName = "h-[34px] min-w-[120px] flex shadow-xl items-center justify-center text-sm";
 
   const outsideClassName = "h-[28px] min-w-[120px]";
-  const insideClassName = "flex size-full items-center justify-center text-sm bg-transparent text-foreground font-semibold";  
+  const insideClassName = "flex size-full items-center justify-center text-sm bg-transparent font-semibold";  
 
   switch (effectType) {
     case 'beam':
       return (
-        <div className="relative inline-block">
+        <div className="relative inline-block text-foreground">
           <div className={cn(
             containerClassName,
             "relative border rounded-xl",
@@ -59,7 +59,7 @@ export function TierEffect({
     
     case 'shine':
       return (
-        <div className="relative inline-block">
+        <div className="relative inline-block text-foreground">
           <ShineBorder
             className={cn("border", containerClassName, className)}
             borderRadius={borderRadius}
@@ -73,7 +73,7 @@ export function TierEffect({
     
     case 'neon':
       return (
-        <div className="relative inline-block">
+        <div className="relative inline-block text-white">
           <NeonGradientCard
             className={cn(
                 outsideClassName,

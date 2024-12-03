@@ -23,6 +23,10 @@ export class StripeCheckoutSessionPageObject {
     return this.getStripeCheckoutIframe().locator('[data-testid="product-summary-view-details"]')
   }
 
+  hideDetail(){
+    return this.getStripeCheckoutIframe().locator('[data-testid="order-details-hide-details"]')
+  }
+
   cardNumber() {
     return this.getStripeCheckoutIframe().locator('#cardNumber');
   }
@@ -47,9 +51,12 @@ export class StripeCheckoutSessionPageObject {
   /** Actions */
 
   async waitForForm() {
-    return expect(async () => {
+    await expect(async () => {
       await expect(this.billingCountry()).toBeVisible();
     }).toPass();
+
+    // Increase viewport height for Stripe form
+    await this.page.setViewportSize({ width: 1920, height: 1600 });
   }
 
   async fillForm(params: {
@@ -88,5 +95,8 @@ export class StripeCheckoutSessionPageObject {
     
     await submitButton.waitFor({ state: 'visible' });
     await submitButton.click();
+
+    // Reset viewport size after submission
+    await this.page.setViewportSize({ width: 1920, height: 1080 });
   }
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import {
@@ -64,8 +64,6 @@ export function PolydocPlanPicker(
 
   const { interval: selectedInterval, planId: selectedPlanId, productId, pageCount } = form.watch();
 
-  const [currentTier, setCurrentTier] = useState<string>('');
-
   useEffect(() => {
     const planName = props.config.products.find(p => p.id === productId)?.name;
 
@@ -93,17 +91,12 @@ export function PolydocPlanPicker(
   // Update form values when currentPlan changes
   useEffect(() => {
 
-    const {product, plan, tier} = getBillingInfoForPageCount(props.config.products, pageCount, selectedInterval);
+    const {product, plan} = getBillingInfoForPageCount(props.config.products, pageCount, selectedInterval);
 
     if (product && plan) {
       form.setValue('planId', plan.id, { shouldValidate: true });
       form.setValue('productId', product.id, { shouldValidate: true });
     }
-
-    if(tier && plan){
-      const tierText = getTierText(tier, plan.lineItems[0]?.unit);
-      setCurrentTier(tierText);
-    };
 
   }, [pageCount]);
 
