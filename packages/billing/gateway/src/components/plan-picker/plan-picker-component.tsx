@@ -11,7 +11,6 @@ import {
   LineItemSchema,
 } from '@kit/billing';
 import { formatCurrency } from '@kit/shared/utils';
-import { formatCurrency } from '@kit/shared/utils';
 import { Button } from '@kit/ui/button';
 import {
   FormControl,

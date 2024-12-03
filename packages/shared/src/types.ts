@@ -1,6 +1,7 @@
 import { JSX } from "react";
 
-export type TrackableFile = File & {
+export type TrackableFile = {
+    fileObject: File;
     id?: string;
     uploadingStatus?: "uploading" | "uploaded" | "client" | "error";
 };
