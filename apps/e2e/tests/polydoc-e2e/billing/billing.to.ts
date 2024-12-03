@@ -88,13 +88,17 @@ export class PolydocUserBillingTestObject {
     await this.upgradePlan.proceedToCheckout();
   
     await this.stripeCheckoutSession.waitForForm();
-    await this.stripeCheckoutSession.fillForm();
 
-    await this.stripeCheckoutSession.viewDetail().click()
-    
+    await this.stripeCheckoutSession.fillForm({ billingCountry: 'PT' });
+
     if(checkVAT) {
+
+      await this.stripeCheckoutSession.viewDetail().click()
+
       await this.checkVATRate('PT', true);
       await this.checkVATRate('BO', false);
+
+      await this.stripeCheckoutSession.hideDetail().click()
     }
 
     await this.stripeCheckoutSession.submitForm();

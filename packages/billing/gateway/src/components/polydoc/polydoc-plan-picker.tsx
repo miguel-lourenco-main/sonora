@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import {
@@ -95,6 +96,7 @@ export function PolydocPlanPicker(
   // Update form values when currentPlan changes
   useEffect(() => {
 
+    const {product, plan} = getBillingInfoForPageCount(props.config.products, pageCount, selectedInterval);
     const {product, plan} = getBillingInfoForPageCount(props.config.products, pageCount, selectedInterval);
 
     if (product && plan) {

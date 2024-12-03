@@ -8,22 +8,30 @@ export type Json =
 
 export type Database = {
   graphql_public: {
-    Tables: Record<never, never>;
-    Views: Record<never, never>;
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
     Functions: {
       graphql: {
         Args: {
-          operationName?: string;
-          query?: string;
-          variables?: Json;
-          extensions?: Json;
-        };
-        Returns: Json;
-      };
-    };
-    Enums: Record<never, never>;
-    CompositeTypes: Record<never, never>;
-  };
+          operationName?: string
+          query?: string
+          variables?: Json
+          extensions?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
   public: {
     Tables: {
       accounts: {
@@ -182,118 +190,20 @@ export type Database = {
           enable_account_billing: boolean
           enable_team_account_billing: boolean
           enable_team_accounts: boolean
-          id: number
         }
         Insert: {
           billing_provider?: Database["public"]["Enums"]["billing_provider"]
           enable_account_billing?: boolean
           enable_team_account_billing?: boolean
           enable_team_accounts?: boolean
-          id?: number
         }
         Update: {
           billing_provider?: Database["public"]["Enums"]["billing_provider"]
           enable_account_billing?: boolean
           enable_team_account_billing?: boolean
           enable_team_accounts?: boolean
-          id?: number
         }
         Relationships: []
-      }
-      credit: {
-        Row: {
-          account_id: string
-          credits: number
-          monthly_credits: number
-        }
-        Insert: {
-          account_id?: string
-          credits?: number
-          monthly_credits?: number
-        }
-        Update: {
-          account_id?: string
-          credits?: number
-          monthly_credits?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "credit_account_id_fkey"
-            columns: ["account_id"]
-            isOneToOne: true
-            referencedRelation: "accounts"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "credit_account_id_fkey"
-            columns: ["account_id"]
-            isOneToOne: true
-            referencedRelation: "user_account_workspace"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "credit_account_id_fkey"
-            columns: ["account_id"]
-            isOneToOne: true
-            referencedRelation: "user_accounts"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      file: {
-        Row: {
-          account_id: string
-          created_at: string
-          expires_at: string
-          filename: string
-          id: string
-          num_pages: number
-          size: number
-          url: string
-        }
-        Insert: {
-          account_id?: string
-          created_at?: string
-          expires_at?: string
-          filename: string
-          id?: string
-          num_pages: number
-          size: number
-          url: string
-        }
-        Update: {
-          account_id?: string
-          created_at?: string
-          expires_at?: string
-          filename?: string
-          id?: string
-          num_pages?: number
-          size?: number
-          url?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "file_account_id_fkey"
-            columns: ["account_id"]
-            isOneToOne: false
-            referencedRelation: "accounts"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "file_account_id_fkey"
-            columns: ["account_id"]
-            isOneToOne: false
-            referencedRelation: "user_account_workspace"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "file_account_id_fkey"
-            columns: ["account_id"]
-            isOneToOne: false
-            referencedRelation: "user_accounts"
-            referencedColumns: ["id"]
-          },
-        ]
       }
       invitations: {
         Row: {
@@ -357,62 +267,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "roles"
             referencedColumns: ["name"]
-          },
-        ]
-      }
-      message: {
-        Row: {
-          account_id: string
-          content: string
-          created_at: string
-          id: string
-          role: Database["public"]["Enums"]["message_role"]
-          thread_id: string
-        }
-        Insert: {
-          account_id?: string
-          content: string
-          created_at?: string
-          id?: string
-          role: Database["public"]["Enums"]["message_role"]
-          thread_id: string
-        }
-        Update: {
-          account_id?: string
-          content?: string
-          created_at?: string
-          id?: string
-          role?: Database["public"]["Enums"]["message_role"]
-          thread_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "message_account_id_fkey"
-            columns: ["account_id"]
-            isOneToOne: false
-            referencedRelation: "accounts"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "message_account_id_fkey"
-            columns: ["account_id"]
-            isOneToOne: false
-            referencedRelation: "user_account_workspace"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "message_account_id_fkey"
-            columns: ["account_id"]
-            isOneToOne: false
-            referencedRelation: "user_accounts"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "message_thread_id_fkey"
-            columns: ["thread_id"]
-            isOneToOne: false
-            referencedRelation: "thread"
-            referencedColumns: ["id"]
           },
         ]
       }
@@ -621,84 +475,6 @@ export type Database = {
         }
         Relationships: []
       }
-      run: {
-        Row: {
-          account_id: string
-          created_at: string
-          credits: number | null
-          finished_at: string | null
-          id: string
-          input_file_id: string
-          input_tokens: number | null
-          output_file_id: string | null
-          output_tokens: number | null
-          status: Database["public"]["Enums"]["run_status"]
-          target_language: string
-        }
-        Insert: {
-          account_id?: string
-          created_at?: string
-          credits?: number | null
-          finished_at?: string | null
-          id?: string
-          input_file_id: string
-          input_tokens?: number | null
-          output_file_id?: string | null
-          output_tokens?: number | null
-          status?: Database["public"]["Enums"]["run_status"]
-          target_language: string
-        }
-        Update: {
-          account_id?: string
-          created_at?: string
-          credits?: number | null
-          finished_at?: string | null
-          id?: string
-          input_file_id?: string
-          input_tokens?: number | null
-          output_file_id?: string | null
-          output_tokens?: number | null
-          status?: Database["public"]["Enums"]["run_status"]
-          target_language?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "run_account_id_fkey"
-            columns: ["account_id"]
-            isOneToOne: false
-            referencedRelation: "accounts"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "run_account_id_fkey"
-            columns: ["account_id"]
-            isOneToOne: false
-            referencedRelation: "user_account_workspace"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "run_account_id_fkey"
-            columns: ["account_id"]
-            isOneToOne: false
-            referencedRelation: "user_accounts"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "run_input_file_id_fkey"
-            columns: ["input_file_id"]
-            isOneToOne: false
-            referencedRelation: "file"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "run_output_file_id_fkey"
-            columns: ["output_file_id"]
-            isOneToOne: false
-            referencedRelation: "file"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       subscription_items: {
         Row: {
           created_at: string
@@ -761,7 +537,6 @@ export type Database = {
           id: string
           period_ends_at: string
           period_starts_at: string
-          schedule: string | null
           status: Database["public"]["Enums"]["subscription_status"]
           trial_ends_at: string | null
           trial_starts_at: string | null
@@ -778,7 +553,6 @@ export type Database = {
           id: string
           period_ends_at: string
           period_starts_at: string
-          schedule?: string | null
           status: Database["public"]["Enums"]["subscription_status"]
           trial_ends_at?: string | null
           trial_starts_at?: string | null
@@ -795,7 +569,6 @@ export type Database = {
           id?: string
           period_ends_at?: string
           period_starts_at?: string
-          schedule?: string | null
           status?: Database["public"]["Enums"]["subscription_status"]
           trial_ends_at?: string | null
           trial_starts_at?: string | null
@@ -828,49 +601,6 @@ export type Database = {
             columns: ["billing_customer_id"]
             isOneToOne: false
             referencedRelation: "billing_customers"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      thread: {
-        Row: {
-          account_id: string
-          created_at: string
-          id: string
-          title: string | null
-        }
-        Insert: {
-          account_id?: string
-          created_at?: string
-          id?: string
-          title?: string | null
-        }
-        Update: {
-          account_id?: string
-          created_at?: string
-          id?: string
-          title?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "thread_account_id_fkey"
-            columns: ["account_id"]
-            isOneToOne: false
-            referencedRelation: "accounts"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "thread_account_id_fkey"
-            columns: ["account_id"]
-            isOneToOne: false
-            referencedRelation: "user_account_workspace"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "thread_account_id_fkey"
-            columns: ["account_id"]
-            isOneToOne: false
-            referencedRelation: "user_accounts"
             referencedColumns: ["id"]
           },
         ]
@@ -1071,16 +801,6 @@ export type Database = {
         }
         Returns: boolean
       }
-      rls_configure: {
-        Args: {
-          table_name: string
-          create_select?: boolean
-          create_insert?: boolean
-          create_update?: boolean
-          create_delete?: boolean
-        }
-        Returns: undefined
-      }
       team_account_workspace: {
         Args: {
           account_slug: string
@@ -1142,7 +862,6 @@ export type Database = {
           line_items: Json
           trial_starts_at?: string
           trial_ends_at?: string
-          schedule?: string
         }
         Returns: {
           account_id: string
@@ -1155,7 +874,6 @@ export type Database = {
           id: string
           period_ends_at: string
           period_starts_at: string
-          schedule: string | null
           status: Database["public"]["Enums"]["subscription_status"]
           trial_ends_at: string | null
           trial_starts_at: string | null
@@ -1171,12 +889,10 @@ export type Database = {
         | "members.manage"
         | "invites.manage"
       billing_provider: "stripe" | "lemon-squeezy" | "paddle"
-      message_role: "human" | "assistant"
       notification_channel: "in_app" | "email"
       notification_type: "info" | "warning" | "error"
       payment_status: "pending" | "succeeded" | "failed"
-      run_status: "running" | "succeeded" | "failed"
-      subscription_item_type: "flat" | "per_seat" | "metered" | "tiered"
+      subscription_item_type: "flat" | "per_seat" | "metered"
       subscription_status:
         | "active"
         | "trialing"
@@ -1405,10 +1121,12 @@ export type Database = {
             referencedRelation: "s3_multipart_uploads"
             referencedColumns: ["id"]
           },
-        ];
-      };
-    };
-    Views: Record<never, never>;
+        ]
+      }
+    }
+    Views: {
+      [_ in never]: never
+    }
     Functions: {
       can_insert_object: {
         Args: {
@@ -1491,19 +1209,23 @@ export type Database = {
           sortorder?: string
         }
         Returns: {
-          name: string;
-          id: string;
-          updated_at: string;
-          created_at: string;
-          last_accessed_at: string;
-          metadata: Json;
-        }[];
-      };
-    };
-    Enums: Record<never, never>;
-    CompositeTypes: Record<never, never>;
-  };
-};
+          name: string
+          id: string
+          updated_at: string
+          created_at: string
+          last_accessed_at: string
+          metadata: Json
+        }[]
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
+}
 
 type PublicSchema = Database[Extract<keyof Database, "public">]
 

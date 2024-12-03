@@ -36,7 +36,7 @@ export function TierEffect({
   switch (effectType) {
     case 'beam':
       return (
-        <div className="relative inline-block">
+        <div className="relative inline-block text-foreground">
           <div className={cn(
             containerClassName,
             "relative border rounded-xl text-foreground ",
@@ -56,7 +56,7 @@ export function TierEffect({
     
     case 'shine':
       return (
-        <div className="relative inline-block">
+        <div className="relative inline-block text-foreground">
           <ShineBorder
             className={cn("border text-foreground ", containerClassName, className)}
             borderRadius={borderRadius}
@@ -70,7 +70,7 @@ export function TierEffect({
     
     case 'neon':
       return (
-        <div className="relative inline-block">
+        <div className="relative inline-block text-white">
           <NeonGradientCard
             className={cn(
                 outsideClassName,
