@@ -190,7 +190,6 @@
     "./general-loading": "./src/custom/general-loading.tsx",
     "./file-upload-simple": "./src/custom/file-upload-simple.tsx",
     "./data-table-row-actions": "./src/custom/data-table-components/data-table-row-actions.tsx",
-    "./resolvers-polyfill": "./src/utils/resolvers-polyfill.tsx",
     "./shine-border": "./src/magic-ui/shine-border.tsx",
     "./neon-gradient-card": "./src/magic-ui/neon-gradient-card.tsx",
     "./border-beam": "./src/magic-ui/border-beam.tsx",

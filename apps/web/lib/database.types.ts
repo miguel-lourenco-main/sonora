@@ -537,6 +537,7 @@ export type Database = {
           id: string
           period_ends_at: string
           period_starts_at: string
+          schedule: string | null
           status: Database["public"]["Enums"]["subscription_status"]
           trial_ends_at: string | null
           trial_starts_at: string | null
@@ -553,6 +554,7 @@ export type Database = {
           id: string
           period_ends_at: string
           period_starts_at: string
+          schedule?: string | null
           status: Database["public"]["Enums"]["subscription_status"]
           trial_ends_at?: string | null
           trial_starts_at?: string | null
@@ -569,6 +571,7 @@ export type Database = {
           id?: string
           period_ends_at?: string
           period_starts_at?: string
+          schedule?: string | null
           status?: Database["public"]["Enums"]["subscription_status"]
           trial_ends_at?: string | null
           trial_starts_at?: string | null
@@ -862,6 +865,7 @@ export type Database = {
           line_items: Json
           trial_starts_at?: string
           trial_ends_at?: string
+          schedule?: string
         }
         Returns: {
           account_id: string
@@ -874,6 +878,7 @@ export type Database = {
           id: string
           period_ends_at: string
           period_starts_at: string
+          schedule: string | null
           status: Database["public"]["Enums"]["subscription_status"]
           trial_ends_at: string | null
           trial_starts_at: string | null
@@ -892,7 +897,7 @@ export type Database = {
       notification_channel: "in_app" | "email"
       notification_type: "info" | "warning" | "error"
       payment_status: "pending" | "succeeded" | "failed"
-      subscription_item_type: "flat" | "per_seat" | "metered"
+      subscription_item_type: "flat" | "per_seat" | "metered" | "tiered"
       subscription_status:
         | "active"
         | "trialing"

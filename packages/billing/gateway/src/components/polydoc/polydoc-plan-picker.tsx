@@ -79,7 +79,7 @@ export function PolydocPlanPicker(
         break;
       case 'Pro':
         if(form.getValues('pageCount') <= 5){
-          form.setValue('pageCount', 6)
+          form.setValue('pageCount', 50)
         }else if(form.getValues('pageCount') === MAX_PAGES_SUBSCRIPTION){
           form.setValue('pageCount', MAX_PAGES_SUBSCRIPTION - 1)
         }

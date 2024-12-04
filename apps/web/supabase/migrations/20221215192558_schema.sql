@@ -136,7 +136,7 @@ create type public.billing_provider as ENUM('stripe', 'lemon-squeezy', 'paddle')
 - The types are 'flat', 'per_seat', and 'metered'.
 - You can add more types as needed.
 */
-create type public.subscription_item_type as ENUM('flat', 'per_seat', 'metered');
+create type public.subscription_item_type as ENUM('flat', 'per_seat', 'metered', 'tiered');
 
 /*
 * Invitation Type
@@ -1453,7 +1453,8 @@ create table if not exists
     period_starts_at timestamptz not null,
     period_ends_at timestamptz not null,
     trial_starts_at timestamptz,
-    trial_ends_at timestamptz
+    trial_ends_at timestamptz,
+    schedule text
   );
 
 comment on table public.subscriptions is 'The subscriptions for an account';
@@ -1467,6 +1468,8 @@ comment on column public.subscriptions.cancel_at_period_end is 'Whether the subs
 comment on column public.subscriptions.currency is 'The currency for the subscription';
 
 comment on column public.subscriptions.status is 'The status of the subscription';
+
+comment on column public.subscriptions.schedule is 'The schedule of the subscription';
 
 comment on column public.subscriptions.period_starts_at is 'The start of the current period for the subscription';
 
@@ -1523,8 +1526,6 @@ select
     )
   );
 
--- Function "public.upsert_subscription"
--- Insert or Update a subscription and its items in the database when receiving a webhook from the billing provider
 create
 or replace function public.upsert_subscription (
   target_account_id uuid,
@@ -1539,7 +1540,8 @@ or replace function public.upsert_subscription (
   period_ends_at timestamptz,
   line_items jsonb,
   trial_starts_at timestamptz default null,
-  trial_ends_at timestamptz default null
+  trial_ends_at timestamptz default null,
+  schedule text default null
 ) returns public.subscriptions
 set
   search_path = '' as $$
@@ -1576,7 +1578,9 @@ on conflict (
         period_starts_at,
         period_ends_at,
         trial_starts_at,
-        trial_ends_at)
+        trial_ends_at,
+        schedule
+      )
     values (
         target_account_id,
         new_billing_customer_id,
@@ -1589,7 +1593,9 @@ on conflict (
         period_starts_at,
         period_ends_at,
         trial_starts_at,
-        trial_ends_at)
+        trial_ends_at,
+        schedule
+      )
 on conflict (
     id)
     do update set
@@ -1600,7 +1606,8 @@ on conflict (
         period_starts_at = excluded.period_starts_at,
         period_ends_at = excluded.period_ends_at,
         trial_starts_at = excluded.trial_starts_at,
-        trial_ends_at = excluded.trial_ends_at
+        trial_ends_at = excluded.trial_ends_at,
+        schedule = excluded.schedule
     returning
         * into new_subscription;
 
@@ -1681,7 +1688,8 @@ execute on function public.upsert_subscription (
   timestamptz,
   jsonb,
   timestamptz,
-  timestamptz
+  timestamptz,
+  text
 ) to service_role;
 
 /* -------------------------------------------------------

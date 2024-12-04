@@ -38,8 +38,8 @@ interface DataTableProps<TData, TValue> {
   data: TData[],
   tableLabel: string
   filters: Filter[]
-  onRowClick: (id: string) => void
   createToolbarButtons: (rowSelection?: RowSelectionState, setRowSelection?: React.Dispatch<React.SetStateAction<RowSelectionState>>, hasSelected?: boolean) => React.JSX.Element
+  onRowClick?: (id: string) => void
   identifier?: string
   initialSorting?: SortingState
 }
@@ -177,7 +177,7 @@ export function CustomDataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  onClick={() => onRowClick(row.getValue("id"))}
+                  onClick={() => onRowClick?.(row.getValue("id"))}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} >

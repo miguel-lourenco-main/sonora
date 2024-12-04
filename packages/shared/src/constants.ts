@@ -10,22 +10,14 @@ export const FILE_SUPPORTED_TYPES = {
 }
 
 export const FILE_FORMAT_GROUPS = [
-    {
-        name: "MS Office",
-        formats: ["Docx", "Pptx"]
-    },
-    {
-        name: "Adobe",
-        formats: ["Pdf"]
-    },
-    {
-        name: "Code",
-        formats: ["Json", "Html", "Xml", "Go", "Php"]
-    },
-    {
-        name: "Other",
-        formats: ["Txt", "Csv"]
-    }
+  {
+      name: "MS Office",
+      formats: ["Docx", "Pptx"]
+  },
+  {
+      name: "Adobe",
+      formats: ["Pdf"]
+  },
 ];
 
 export const FILE_SUPPORTED_TYPES_KEYS = Object.keys(FILE_SUPPORTED_TYPES)

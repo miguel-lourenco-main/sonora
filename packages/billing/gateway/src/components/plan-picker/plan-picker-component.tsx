@@ -76,7 +76,7 @@ export function PlanPickerComponent(
 
   const locale = useTranslation().i18n.language;
 
-  let [isCurrentPlanSelected, setIsCurrentPlanSelected] = useState(false);
+  const [isCurrentPlanSelected, setIsCurrentPlanSelected] = useState(false);
 
   useEffect(() => {
 
@@ -349,7 +349,7 @@ export function PlanPickerComponent(
       ):(
         <Button
           data-test="checkout-submit-button"
-          disabled={isCurrentPlanSelected || props.pending || !props.isFormValid}
+          disabled={isCurrentPlanSelected || (props.pending ?? !props.isFormValid)}
         >
           {props.pending ? (
               t('redirectingToPayment')
