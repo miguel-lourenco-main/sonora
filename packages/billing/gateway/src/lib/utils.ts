@@ -1,7 +1,7 @@
 import { getCurrentTier } from "@kit/shared/utils";
 import { MAX_PAGES_SUBSCRIPTION } from '@kit/shared/constants';
 import { z } from "zod";
-import { LineItemSchema, PlanSchema, ProductSchema, TierSchema } from "@kit/billing";
+import { LineItemSchema, ProductSchema, TierSchema } from "@kit/billing";
 
 export const validatePageCount = (value: number, lastValidValue: number) => {
   // If we're in the forbidden range (5-50)
@@ -30,11 +30,11 @@ export function calculateTieredCost(pageCountValue: number, tiers: {
     const tiersUpTo = tiers.map((tier) => tier.upTo)
 
     // Convert pageCount to a number, defaulting to 0 if it's not a valid number
-    const pageCount = Number(pageCountValue) || 0;
+    const pageCount = Number(pageCountValue) ?? 0;
 
-    let index = getCurrentTier(pageCount, tiersUpTo);
+    const index = getCurrentTier(pageCount, tiersUpTo);
     
-    let cost = tiers[index]?.cost ?? 0; 
+    const cost = tiers[index]?.cost ?? 0; 
 
     // Apply the cost of the applicable tier to all pages
     const costPerPage = Number(cost);

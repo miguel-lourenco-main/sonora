@@ -42,7 +42,7 @@ export default function PDFViewerDrawer({
                 <ScrollArea className='h-screen px-10'>
                     {!loaded && <LoadingDocument />}
                     <div className={cn(loaded ? "flex" : "hidden")}>
-                        <PDFViewer pdf={file} setLoaded={setLoaded} />
+                        <PDFViewer pdf={file} setIsRendered={setLoaded} />
                     </div>
                 </ScrollArea>
             </DrawerContent>

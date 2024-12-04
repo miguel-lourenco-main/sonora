@@ -1,4 +1,4 @@
-import { Check, CheckCircle, Loader2, X, XCircle } from "lucide-react";
+import { CheckCircle, Loader2, XCircle } from "lucide-react";
 import { cn } from "../lib";
 
 interface StatusIndicatorProps {

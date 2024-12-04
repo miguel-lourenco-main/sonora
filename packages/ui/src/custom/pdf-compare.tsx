@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, UIEvent, useState, useCallback } from 'react';
+import { useEffect, useRef, UIEvent, useState, useCallback, useMemo } from 'react';
 import LoadingDocument from "@kit/ui/loading-pdf";
 import { useTranslation } from 'react-i18next';
 import { FileIcon } from 'lucide-react';
@@ -11,7 +11,16 @@ import { TabData } from '@kit/shared/types';
 
 const PDFViewer = dynamic(() => import('@kit/ui/pdf-viewer'), { ssr: false });
 
-export function renderPDFView(
+export function PDFView({
+    file,
+    isLoading,
+    isRendered,
+    index,
+    type,
+    setIsRendered,
+    handleScroll,
+    scrollRefs,
+}: {
     file: File | null, 
     isLoading: boolean,
     isRendered: boolean, 
@@ -20,10 +29,10 @@ export function renderPDFView(
     setIsRendered?: (b: boolean) => void,
     handleScroll?: (index: number) => (e: UIEvent<HTMLDivElement>) => void, 
     scrollRefs?: React.RefObject<HTMLDivElement>[]
-) {
+}) {
     const { t } = useTranslation("custom");
     const onScroll = handleScroll ? handleScroll(index) : undefined;
-    const ref = scrollRefs && scrollRefs[index] ? scrollRefs[index] : undefined;
+    const ref = scrollRefs?.[index] ? scrollRefs[index] : undefined;
 
     return (
         <div 
@@ -43,7 +52,6 @@ export function renderPDFView(
                         setIsRendered={setIsRendered}
                         onScroll={onScroll} 
                         scrollRef={ref} 
-                        filter={undefined}
                         type={type}
                     />
                 </div>
@@ -82,7 +90,10 @@ export default function PDFCompare({
     });
     const [inputFileRendered, setInputFileRendered] = useState(false);
     const [outputFileRendered, setOutputFileRendered] = useState(false);
-    const scrollRefs = [useRef<HTMLDivElement>(null), useRef<HTMLDivElement>(null)];
+
+    const scrollRef1 = useRef<HTMLDivElement>(null);
+    const scrollRef2 = useRef<HTMLDivElement>(null);
+    const scrollRefs = useMemo(() => [scrollRef1, scrollRef2], []);
     
     useEffect(() => {
         setInputFileState({
@@ -97,10 +108,11 @@ export default function PDFCompare({
 
     const handleScroll = useCallback((index: number) => (e: UIEvent<HTMLDivElement>) => {
         const otherIndex = 1 - index;
-        if (scrollRefs[otherIndex]?.current) {
-            scrollRefs[otherIndex]!.current!.scrollTop = e.currentTarget.scrollTop;
+        const otherRef = scrollRefs[otherIndex]?.current;
+        if (otherRef) {
+            otherRef.scrollTop = e.currentTarget.scrollTop;
         }
-    }, []);
+    }, [scrollRefs]);
 
     return (
         <div className="flex flex-col size-full overflow-hidden">
@@ -111,16 +123,16 @@ export default function PDFCompare({
                         <span>{currentTab?.exampleFiles?.original?.name ?? currentTab?.file}</span>
                     </div>
                     <div className={cn("size-full min-h-0 rounded-lg border bg-zinc-50 dark:bg-zinc-900 flex items-center justify-center", !inputFileRendered && "flex-1")}>
-                        {renderPDFView(
-                            inputFileState.file,
-                            inputFileState.status === 'loading',
-                            inputFileRendered,
-                            0,
-                            type,
-                            setInputFileRendered,
-                            handleScroll,
-                            scrollRefs as React.RefObject<HTMLDivElement>[]
-                        )}
+                        <PDFView
+                            file={inputFileState.file}
+                            isLoading={inputFileState.status === 'loading'}
+                            isRendered={inputFileRendered}
+                            index={0}
+                            type={type}
+                            setIsRendered={setInputFileRendered}
+                            handleScroll={handleScroll}
+                            scrollRefs={scrollRefs as React.RefObject<HTMLDivElement>[]}
+                        />
                     </div>
                 </Card>
                 <Card className="flex flex-col min-h-0 p-4">
@@ -129,16 +141,16 @@ export default function PDFCompare({
                         <span>{currentTab?.exampleFiles?.translated?.name ?? currentTab?.file}</span>
                     </div>
                     <div className={cn("size-full min-h-0 rounded-lg border bg-zinc-50 dark:bg-zinc-900 flex items-center justify-center", !outputFileRendered && "flex-1")}>
-                        {renderPDFView(
-                            outputFileState.file,
-                            outputFileState.status === 'loading',
-                            outputFileRendered,
-                            1,
-                            type,
-                            setOutputFileRendered,
-                            handleScroll,
-                            scrollRefs as React.RefObject<HTMLDivElement>[]
-                        )}
+                        <PDFView
+                            file={outputFileState.file}
+                            isLoading={outputFileState.status === 'loading'}
+                            isRendered={outputFileRendered}
+                            index={1}
+                            type={type}
+                            setIsRendered={setOutputFileRendered}
+                            handleScroll={handleScroll}
+                            scrollRefs={scrollRefs as React.RefObject<HTMLDivElement>[]}
+                        />
                     </div>
                 </Card>
             </div>

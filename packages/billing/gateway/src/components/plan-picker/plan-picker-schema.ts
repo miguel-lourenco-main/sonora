@@ -1,10 +1,7 @@
 import { BillingConfig, getProductPlanPair } from "@kit/billing";
-import { useTranslation } from "react-i18next";
 import { z } from "zod";
 
-export const getPlanPickerSchema = (config: BillingConfig) => {
-
-    const { t } = useTranslation(`billing`);
+export const getPlanPickerSchema = (config: BillingConfig, refinedMessage?: string) => {
 
     return(
         z.object({
@@ -25,7 +22,7 @@ export const getPlanPickerSchema = (config: BillingConfig) => {
                     return false;
                 }
             },
-            { message: t('noPlanChosen'), path: ['planId'] }
+            { message: refinedMessage ?? 'No Plan Chosen', path: ['planId'] }
         )
     )
 }

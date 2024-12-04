@@ -1,7 +1,6 @@
 "use client"
 
 import { DotsHorizontalIcon } from "@radix-ui/react-icons"
-import { Row } from "@tanstack/react-table"
 
 import { Button } from "../../shadcn/button"
 import {
@@ -14,8 +13,7 @@ import {
 import { v4 as uuidv4 } from "uuid"
 import { useTranslation } from "react-i18next"
 
-interface DataTableRowActionsProps<TData> {     
-  row: Row<TData>
+interface DataTableRowActionsProps {     
   actions: DataTableActions[]
 }
 
@@ -25,10 +23,9 @@ interface DataTableActions {
   customItem: (() => JSX.Element) | null
 }
 
-export function DataTableRowActions<TData>({
-  row,
+export function DataTableRowActions({
   actions,
-}: DataTableRowActionsProps<TData>) {
+}: DataTableRowActionsProps) {
 
   const {t} = useTranslation("ui")
 

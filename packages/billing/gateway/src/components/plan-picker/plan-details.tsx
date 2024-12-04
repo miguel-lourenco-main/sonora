@@ -1,6 +1,5 @@
 import { Separator } from "@kit/ui/separator";
 import { Trans } from "@kit/ui/trans";
-import { CheckCircle, Link } from "lucide-react";
 import { LineItemDetails } from "../line-item-details";
 import { LineItemSchema } from "@kit/billing";
 import { If } from '@kit/ui/if';

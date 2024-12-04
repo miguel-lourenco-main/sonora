@@ -14,7 +14,9 @@ import {
   SelectTrigger,
   SelectValue,  
 } from "../../shadcn/select" 
-import { I18nComponent } from "@kit/i18n"
+import I18nComponent from "@kit/ui/i18n-component"
+
+
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>

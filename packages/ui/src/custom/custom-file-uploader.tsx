@@ -10,7 +10,7 @@ import FilesDragNDrop from "@kit/ui/files-drag-n-drop";
 import FilesGrid from "@kit/ui/files-grid";
 import { TrackableFile } from "@kit/shared/types";
 
-interface FileUploadProps {
+interface CustomFileUploadProps {
     files?: TrackableFile[];
     setFiles?: Dispatch<SetStateAction<TrackableFile[]>>;
     disabled?: boolean;
@@ -20,8 +20,8 @@ interface FileUploadProps {
 
 interface FileHandlers {
     handleDeleteAll: () => void;
-    handleAddFiles: (newFiles: File[]) => void;
-    handleFileRemove: (filteredFiles: File[]) => void;
+    handleAddFiles: (newFiles: TrackableFile[]) => void;
+    handleFileRemove: (filteredFiles: TrackableFile[]) => void;
 }
 
 const FileActionsBar = ({ 
@@ -68,7 +68,7 @@ const FileActionsBar = ({
                         </Button>
                     )}
                     acceptsTypes={FILE_SUPPORTED_TYPES_VALUES_STRING}
-                    addDroppedFiles={handlers.handleAddFiles}
+                    addDroppedFiles={(files: File[]) => handlers.handleAddFiles(files.map(file => ({fileObject: file})))}
                 />
             </div>
             <span className="whitespace-nowrap text-sm text-muted-foreground">
@@ -78,13 +78,13 @@ const FileActionsBar = ({
     );
 };
 
-export function FileUploader({
+export function CustomFileUploader({
     files: externalFiles,
     setFiles: externalSetFiles,
     disabled,
     onAddFiles,
     onRemoveFiles
-}: FileUploadProps) {
+}: CustomFileUploadProps) {
 
     const [internalFiles, setInternalFiles] = useState<TrackableFile[]>([]);
     const files = externalFiles ?? internalFiles;

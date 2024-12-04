@@ -3,7 +3,7 @@
 import { DragHandleDots2Icon } from "@radix-ui/react-icons"
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels"
 
-import { cn } from "../utils/cn"
+import { cn } from "../lib/cn"
 
 export type { ImperativePanelGroupHandle, ImperativePanelHandle } from "react-resizable-panels"
 

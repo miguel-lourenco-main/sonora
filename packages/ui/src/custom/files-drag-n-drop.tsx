@@ -3,10 +3,10 @@
 import { Input } from "../shadcn/input";
 import { cn } from "../lib";
 import { forwardRef, useCallback, useEffect, useState } from "react";
-import { FileRejection, DropEvent, useDropzone } from "react-dropzone";
+import { FileRejection, useDropzone } from "react-dropzone";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
-import { CustomFileUploaderProps, DirectionOptions } from "./_lib/types";
+import { DirectionOptions, FilesDragNDropProps } from "./_lib/types";
 import { FileSvgDraw } from "./file-svg-draw";
 import FilesGrid from "./files-grid";
 import { TrackableFile } from "@kit/shared/types";
@@ -26,7 +26,7 @@ const DEFAULT_ACCEPT = {
 
 export const FilesDragNDrop = forwardRef<
   HTMLDivElement,
-  CustomFileUploaderProps & React.HTMLAttributes<HTMLDivElement>
+  FilesDragNDropProps & React.HTMLAttributes<HTMLDivElement>
 >(
   (
     {
@@ -48,23 +48,23 @@ export const FilesDragNDrop = forwardRef<
     const maxSize = 256 * 1024 * 1024; // 256MB
     const direction: DirectionOptions = "ltr";
 
-    const onDrop = useCallback((acceptedFiles: File[], rejectedFiles: FileRejection[], event: DropEvent) => {
+    const onDrop = useCallback((acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
       if (!acceptedFiles?.length) {
         toast.error("file error, probably too big");
         return;
       }
       
       // Use setFiles as an add operation
-      addFiles(acceptedFiles);
+      addFiles(acceptedFiles.map(file => ({ fileObject: file })));
 
       if (rejectedFiles.length > 0) {
-        for (let i = 0; i < rejectedFiles.length; i++) {
-          if (maxSize && rejectedFiles[i]?.errors[0]?.code === "file-too-large") {
+        for (const rejectedFile of rejectedFiles) {
+          if (maxSize && rejectedFile?.errors[0]?.code === "file-too-large") {
             toast.error(`${t("fileTooLarge")} ${maxSize / 1024 / 1024}MB`);
             break;
           }
-          if (rejectedFiles[i]?.errors[0]?.message) {
-            toast.error(rejectedFiles[i]?.errors[0]?.message);
+          if (rejectedFile?.errors[0]?.message) {
+            toast.error(rejectedFile?.errors[0]?.message);
             break;
           }
         }
@@ -133,7 +133,7 @@ export const FilesDragNDrop = forwardRef<
           setActiveIndex(-1);
         }
       },
-      [files, activeIndex, removeFiles, orientation, direction]
+      [files, activeIndex, removeFiles, orientation, direction, dropzone.inputRef]
     );
 
     useEffect(() => {

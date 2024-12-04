@@ -27,8 +27,11 @@ import {
 import { DataTablePagination } from "./data-table-components/data-table-pagination"
 import { DataTableToolbar } from "./data-table-components/data-table-toolbar"
 import { Filter } from "./_lib/interface"
-import CustomFileUploader from "./files-drag-n-drop"
-import { I18nComponent } from "@kit/i18n"
+import FilesDragNDrop from "./files-drag-n-drop"
+import I18nComponent from "@kit/ui/i18n-component"
+
+
+import { TrackableFile } from "@kit/shared/types"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -37,8 +40,10 @@ interface DataTableProps<TData, TValue> {
   rowOnClick: (id: string) => void
   filters: Filter[]
   toolBarButtons: (rowSelection?: RowSelectionState, setRowSelection?: React.Dispatch<React.SetStateAction<RowSelectionState>>, hasSelected?: boolean) => React.JSX.Element
-  files: File[]
-  setFiles: React.Dispatch<React.SetStateAction<File[]>>
+  files?: TrackableFile[]
+  setFiles?: React.Dispatch<React.SetStateAction<TrackableFile[]>>
+  removeFiles?: (files: TrackableFile[]) => void
+  addFiles?: (files: TrackableFile[]) => void
   identifier?: string
 }
 
@@ -53,6 +58,8 @@ export function DragNDropTable<TData, TValue>({
   toolBarButtons,
   files,
   setFiles,
+  addFiles,
+  removeFiles,
   identifier = "name"
 }: DataTableProps<TData, TValue>) {
 
@@ -90,16 +97,33 @@ export function DragNDropTable<TData, TValue>({
 
     return toolBarButtons(rowSelection, setRowSelection, table.getIsSomeRowsSelected() || table.getIsAllRowsSelected())
 
-  }, [setRowSelection, rowSelection])
+  }, [setRowSelection, rowSelection, table, toolBarButtons])
+
+  const handleAddFiles = (files: TrackableFile[]) => {
+    if(addFiles) {
+      addFiles(files)
+    }else if(setFiles) {
+      setFiles(prevFiles => [...prevFiles, ...files])
+    }
+  }
+
+  const handleRemoveFiles = (files: TrackableFile[]) => {
+    if(removeFiles) {
+      removeFiles(files)
+    }else if(setFiles) {
+      setFiles(prevFiles => prevFiles.filter(file => !files.includes(file)))
+    }
+  }
 
   return (
     <div className="flex flex-col justify-center space-y-4 h-full">
-      {files.length > 0 && (
+      {files && files.length > 0 && (
         <DataTableToolbar identifier={identifier} table={table} tableLabel={tableLabel} filters={filters} toolBarButtonsProcessed={toolBarButtonsProcessed}/>
       )}
-      <CustomFileUploader
-        files={files}
-        setFiles={(files) => (files ? setFiles(files) : {})}
+      <FilesDragNDrop
+        files={files ?? []}
+        addFiles={handleAddFiles}
+        removeFiles={handleRemoveFiles}
       >
         <div className="rounded-md border h-full">
           <UITable>
@@ -127,7 +151,7 @@ export function DragNDropTable<TData, TValue>({
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
-                    onClick={() => rowOnClick(row.getValue("id") as string)}
+                    onClick={() => rowOnClick(row.getValue("id"))}
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id} >
@@ -152,8 +176,8 @@ export function DragNDropTable<TData, TValue>({
             </TableBody>
           </UITable>
         </div>
-      </CustomFileUploader>
-      {files.length > 0 && <DataTablePagination table={table} />}
+      </FilesDragNDrop>
+      {files && files.length > 0 && <DataTablePagination table={table} />}
     </div>
   )
 }

@@ -40,7 +40,7 @@ export function DataTableToolbar<TData>({
           }
           className="h-8 w-[150px] lg:w-[250px]"
         />
-        <FacetedFilters table={table} filters={filters}/>
+        <FacetedFilters<TData> table={table} filters={filters}/>
         {isFiltered && (
           <Button
             variant="ghost"
@@ -52,7 +52,7 @@ export function DataTableToolbar<TData>({
           </Button>
         )}
       </div>
-      {toolBarButtonsProcessed && toolBarButtonsProcessed()}
+      {toolBarButtonsProcessed?.()}
     </div>
   )
 }

@@ -14,6 +14,8 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
+  PaginationState,
+  Updater
 } from "@tanstack/react-table"
 import {
   Table as UITable,
@@ -26,7 +28,9 @@ import {
 import { DataTablePagination } from "./data-table-components/data-table-pagination"
 import { DataTableToolbar } from "./data-table-components/data-table-toolbar"
 import { Filter } from "./_lib/interface"
-import { I18nComponent } from "@kit/i18n"
+import I18nComponent from "@kit/ui/i18n-component"
+
+
 import { useCallback, useEffect, useState, useRef } from "react"
 
 interface DataTableProps<TData, TValue> {
@@ -34,8 +38,8 @@ interface DataTableProps<TData, TValue> {
   data: TData[],
   tableLabel: string
   filters: Filter[]
-  onRowClick: (id: string) => void
   createToolbarButtons: (rowSelection?: RowSelectionState, setRowSelection?: React.Dispatch<React.SetStateAction<RowSelectionState>>, hasSelected?: boolean) => React.JSX.Element
+  onRowClick?: (id: string) => void
   identifier?: string
   initialSorting?: SortingState
 }
@@ -73,7 +77,7 @@ export function CustomDataTable<TData, TValue>({
    *        can be problematic. If possible come up witha better solution
    */
 
-  const handlePaginationChange = useCallback((updater: any) => {
+  const handlePaginationChange = useCallback((updater: Updater<PaginationState>) => {
     firstTryRef.current = false
 
     if (isDataChangingRef.current) {
@@ -136,7 +140,7 @@ export function CustomDataTable<TData, TValue>({
 
     return createToolbarButtons(rowSelection, setRowSelection, table.getIsSomeRowsSelected() || table.getIsAllRowsSelected())
 
-  }, [createToolbarButtons, setRowSelection, rowSelection])
+  }, [createToolbarButtons, setRowSelection, rowSelection, table])
 
   return (
     <div className="flex flex-col h-full space-y-4">
@@ -173,7 +177,7 @@ export function CustomDataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  onClick={() => onRowClick(row.getValue("id") as string)}
+                  onClick={() => onRowClick?.(row.getValue("id"))}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} >

@@ -31,7 +31,7 @@ interface MultiSelectorProps
 
 interface MultiSelectContextProps {
   value: string[];
-  onValueChange: (value: any) => void;
+  onValueChange: (value: string) => void;
   open: boolean;
   setOpen: (value: boolean) => void;
   inputValue: string;
@@ -71,7 +71,7 @@ const MultiSelector = ({
   const [inputValue, setInputValue] = useState("");
   const [open, setOpen] = useState<boolean>(initialOpen);
   const [activeIndex, setActiveIndex] = useState<number>(-1);
-  const inputRef = React.useRef<HTMLInputElement>(null);
+  const inputRef = React.useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>;
   const [isValueSelected, setIsValueSelected] = React.useState(false);
   const [selectedValue, setSelectedValue] = React.useState("");
 
@@ -273,6 +273,8 @@ const MultiSelectorTrigger = forwardRef<
   );
 });
 
+MultiSelectorTrigger.displayName = "MultiSelectorTrigger";
+
 const MultiSelectorOpenTrigger = forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
@@ -338,7 +340,7 @@ MultiSelectorOpenTrigger.displayName = "MultiSelectorOpenTrigger";
 const MultiSelectorInput = forwardRef<
   React.ElementRef<typeof CommandPrimitive.Input>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>
->(({ className, ...props }, ref) => {
+>(({ className, ...props }) => {
   const {
     setOpen,
     inputValue,

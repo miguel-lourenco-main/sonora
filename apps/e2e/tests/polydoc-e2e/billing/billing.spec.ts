@@ -25,6 +25,8 @@ test.describe('Polydoc User Billing Tests', () => {
 
     speedTest = process.env.SPEED_TEST === 'true';
 
+    await page.setViewportSize({ width: 1920, height: 1600 });
+
     await retryOperation(async () => {
       try {
         // Add additional waiting and logging for navigation

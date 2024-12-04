@@ -13,16 +13,14 @@ import { StatusIndicator } from "./file-status-indicator";
 
 interface FilesGridProps {
   files: TrackableFile[];
-  onFileRemove?: (filteredFiles: File[]) => void;
+  onFileRemove?: (filteredFiles: TrackableFile[]) => void;
   disabled?: boolean;
-  loadingFiles?: Set<number>;
 }
 
 export default function FilesGrid({ 
   files, 
   onFileRemove, 
   disabled,
-  loadingFiles = new Set() 
 }: FilesGridProps) {
     const gridRef = useRef<HTMLDivElement>(null);
     const { t } = useTranslation('ui');
@@ -98,8 +96,8 @@ export default function FilesGrid({
                         status={file.uploadingStatus}
                     />
                     <div className="flex flex-col size-full items-center p-2 justify-center space-y-2 object-cover group-hover:opacity-20 transition-opacity">
-                        {getFileIcon(file)}
-                        <p className="w-full px-2 text-sm text-center truncate">{file.name}</p>
+                        {getFileIcon(file.fileObject)}
+                        <p className="w-full px-2 text-sm text-center truncate">{file.fileObject.name}</p>
                     </div>
                     {!disabled && (
                         <div className="absolute flex size-full items-center justify-center opacity-0 z-20 group-hover:opacity-100 transition-opacity">

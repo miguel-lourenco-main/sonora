@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import {
@@ -18,6 +18,7 @@ import { PlanDetails } from '../plan-picker/plan-details';
 import { getPolydocPlanPickerSchema } from './polydoc-plan-picker-schema';
 import { getBillingInfoForPageCount, getTierText } from '../../lib/utils';
 import { CurrentBillingInfo } from '../../lib/interfaces';
+import { useTranslation } from 'react-i18next';
 
 
 type PolydocPlanPickerFormData = {
@@ -35,7 +36,10 @@ export function PolydocPlanPicker(
     pending?: boolean;
     currentSubscriptionVariantId?: string;
   }>,
-) {    
+) {
+
+  const { t } = useTranslation(`billing`);
+
   const intervals = useMemo(
     () => getPlanIntervals(props.config),
     [props.config],
@@ -44,7 +48,7 @@ export function PolydocPlanPicker(
   const form = useForm<PolydocPlanPickerFormData>({
     reValidateMode: 'onChange',
     mode: 'onChange',
-    resolver: zodResolver(getPolydocPlanPickerSchema(props.config)),
+    resolver: zodResolver(getPolydocPlanPickerSchema(props.config, t('noPlanChosen'))),
     defaultValues: {
       interval: 'month',
       pageCount: 50,
@@ -64,8 +68,6 @@ export function PolydocPlanPicker(
 
   const { interval: selectedInterval, planId: selectedPlanId, productId, pageCount } = form.watch();
 
-  const [currentTier, setCurrentTier] = useState<string>('');
-
   useEffect(() => {
     const planName = props.config.products.find(p => p.id === productId)?.name;
 
@@ -77,7 +79,7 @@ export function PolydocPlanPicker(
         break;
       case 'Pro':
         if(form.getValues('pageCount') <= 5){
-          form.setValue('pageCount', 6)
+          form.setValue('pageCount', 50)
         }else if(form.getValues('pageCount') === MAX_PAGES_SUBSCRIPTION){
           form.setValue('pageCount', MAX_PAGES_SUBSCRIPTION - 1)
         }
@@ -88,24 +90,19 @@ export function PolydocPlanPicker(
         }
         break;
     }
-  }, [selectedPlanId]);
+  }, [selectedPlanId, form, props.config.products, productId]);
 
   // Update form values when currentPlan changes
   useEffect(() => {
 
-    const {product, plan, tier} = getBillingInfoForPageCount(props.config.products, pageCount, selectedInterval);
+    const {product, plan} = getBillingInfoForPageCount(props.config.products, pageCount, selectedInterval);
 
     if (product && plan) {
       form.setValue('planId', plan.id, { shouldValidate: true });
       form.setValue('productId', product.id, { shouldValidate: true });
     }
 
-    if(tier && plan){
-      const tierText = getTierText(tier, plan.lineItems[0]?.unit);
-      setCurrentTier(tierText);
-    };
-
-  }, [pageCount]);
+  }, [pageCount, form, props.config.products, selectedInterval]);
 
   // Update the getFormValue function
   const getFormValue = (key: string) => {
@@ -122,7 +119,7 @@ export function PolydocPlanPicker(
       shouldValidate: boolean;
       shouldDirty: boolean;
       shouldTouch: boolean;
-    }> | undefined
+    }>
   ) => {
     form.setValue(key as keyof PolydocPlanPickerFormData, value, partial);
   };
@@ -132,7 +129,7 @@ export function PolydocPlanPicker(
     selectedPlanId,
   );
 
-    const [currentBillingInfo, setCurrentBillingInfo] = useState<CurrentBillingInfo>({
+  const [currentBillingInfo, setCurrentBillingInfo] = useState<CurrentBillingInfo>({
     productName: 'Pro',
     tierText: '$0.25 / page',
     tierIndex: 0
@@ -148,7 +145,7 @@ export function PolydocPlanPicker(
         tierIndex: index
       });
     }
-  }, [pageCount]);
+  }, [pageCount, props.config.products, selectedInterval]);
 
   return (
     <Form {...form}>

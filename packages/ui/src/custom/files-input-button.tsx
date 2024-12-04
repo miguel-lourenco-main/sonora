@@ -1,7 +1,6 @@
 'use client'
 
 import { ChangeEvent, useRef } from "react";
-import { toast } from "sonner";
 
 export function FileInputButton({
   addDroppedFiles,
@@ -27,7 +26,7 @@ export function FileInputButton({
     const rejectedFiles: File[] = [];
 
     fileArray.forEach((file: File) => {
-      if (acceptedTypes.some(type => file.type.match(type) || file.name.endsWith(type.replace('*', '')))) {
+      if (acceptedTypes.some(type => file.type.match(type) ?? file.name.endsWith(type.replace('*', '')))) {
         acceptedFiles.push(file);
       } else {
         rejectedFiles.push(file);

@@ -1,20 +1,15 @@
 import type { PropsWithChildren } from 'react';
 
 import { cn } from '../lib';
-import { Spinner } from './spinner';
-import { Loader } from 'lucide-react';
 import GeneralLoading from '../custom/general-loading';
 
 export function LoadingOverlay({
   children,
   className,
   fullPage = true,
-  spinnerClassName,
 }: PropsWithChildren<{
   className?: string;
-  spinnerClassName?: string;
   fullPage?: boolean;
-  displayLogo?: boolean;
 }>) {
   return (
     <div

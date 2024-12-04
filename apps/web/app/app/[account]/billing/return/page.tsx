@@ -10,8 +10,6 @@ import { requireUserInServerComponent } from '~/lib/server/require-user-in-serve
 
 import { EmbeddedCheckoutForm } from '../_components/embedded-checkout-form';
 import { Database } from '~/lib/database.types';
-import pathsConfig from '~/config/paths.config';
-import { revalidatePath } from 'next/cache';
 
 
 interface SessionPageProps {
@@ -88,21 +86,4 @@ async function loadCheckoutSession(sessionId: string) {
     customerEmail: session.customer.email,
     checkoutToken,
   };
-}
-
-/**
- * Revalidates the layout to update cached pages
- * and redirects back to the home page.
- */
-// eslint-disable-next-line @typescript-eslint/require-await
-async function onRedirect() {
-  'use server';
-
-  // revalidate the home page to update cached pages
-  // which may have changed due to the billing session
-  revalidatePath(pathsConfig.app.app, 'layout');
-
-  // redirect back to billing page by constructing relative path
-  const relativePath = '../' + pathsConfig.app.personalAccountBilling.replace(pathsConfig.app.app + '/', '');
-  redirect(relativePath);
 }

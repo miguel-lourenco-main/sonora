@@ -497,7 +497,7 @@ function IconChevronUpDown({
   );
 }
 
-function IconCloudDownload({ className, ...props }: React.ComponentProps<'svg'>) {
+function IconCloudDownload({ className }: React.ComponentProps<'svg'>) {
   return (
     <svg
       className={cn('size-4', className)}
@@ -907,7 +907,6 @@ function PolydocFirstLetterIcon({
   className?: string;
   width?: number;
 }) {
-  const fill = "fill-[var(--logo-letter)]"
   return (
     <svg
       width={width}

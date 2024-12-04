@@ -2,18 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-
 import { ArrowRight, CheckCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
-
 import { MAX_PAGES_SUBSCRIPTION } from '@kit/shared/constants';
-
 import {
   BillingConfig,
   type LineItemSchema,
-  TierSchema,
-  ProductSchema,
   getPlanIntervals,
   getPrimaryLineItem,
 } from '@kit/billing';
@@ -76,7 +71,7 @@ export function PolydocPricingTable({
         tierIndex: index
       });
     }
-  }, [pageCount]);
+  }, [pageCount,config.products, interval]);
 
   return (
     <div className={'flex flex-col space-y-8 xl:space-y-12'}>
@@ -117,7 +112,7 @@ export function PolydocPricingTable({
           const modifiedLineItem = {...primaryLineItem} as z.infer<typeof LineItemSchema>;
 
           if (product.id === 'pro' && modifiedLineItem) {
-            if (primaryLineItem && primaryLineItem.tiers) {
+            if (primaryLineItem?.tiers) {
               const tiers = primaryLineItem.tiers;
               modifiedLineItem.cost = calculateTieredCost(pageCount, tiers);
             }

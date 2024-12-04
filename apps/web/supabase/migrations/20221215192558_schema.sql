@@ -1607,8 +1607,6 @@ select
     )
   );
 
--- Function "public.upsert_subscription"
--- Insert or Update a subscription and its items in the database when receiving a webhook from the billing provider
 create
 or replace function public.upsert_subscription (
   target_account_id uuid,

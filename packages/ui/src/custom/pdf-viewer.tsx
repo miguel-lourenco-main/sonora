@@ -8,8 +8,6 @@ import { pdfjs, Document, Page } from "react-pdf";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import "react-pdf/dist/esm/Page/TextLayer.css";
 
-import { LinearBlur } from "progressive-blur";
-
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 const options = {};
@@ -17,9 +15,9 @@ const resizeObserverOptions = {};
 const maxWidth = 800;
 
 export default function PDFViewer(
-  { pdf, setIsRendered, type, onScroll, scrollRef, filter }
+  { pdf, setIsRendered, type, onScroll, scrollRef }
   : 
-  { pdf: PDFFile; setIsRendered?: (b: boolean) => void; type?: string; onScroll?: UIEventHandler<HTMLDivElement> | undefined; scrollRef?: React.RefObject<HTMLDivElement>; filter?: React.ReactNode}
+  { pdf: PDFFile; setIsRendered?: (b: boolean) => void; type?: string; onScroll?: UIEventHandler<HTMLDivElement> | undefined; scrollRef?: React.RefObject<HTMLDivElement>}
 ) {
 
   const [file, setFile] = useState<PDFFile>(pdf);
@@ -27,7 +25,7 @@ export default function PDFViewer(
   const [pageWidth, setPageWidth] = useState<number>(maxWidth);
   const [pageHeight, setPageHeight] = useState<number>(0);
   const [visiblePages, setVisiblePages] = useState<number[]>([]);
-  const [hasEnoughCredits, setHasEnoughCredits] = useState<boolean>(false);
+  //const [hasEnoughCredits, setHasEnoughCredits] = useState<boolean>(false);
 
   const pdfDocumentRef = useRef<pdfjs.PDFDocumentProxy | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -36,7 +34,7 @@ export default function PDFViewer(
   const genericRef = useRef<HTMLDivElement | null>(null);
   const firstPageRef = useRef<HTMLCanvasElement | null>(null);
 
-  const containerRef = scrollRef || genericRef;
+  const containerRef = scrollRef ?? genericRef;
 
   const onResize = useCallback<ResizeObserverCallback>((entries) => {
     const [entry] = entries;
@@ -54,7 +52,7 @@ export default function PDFViewer(
       let fileWidth = 210; // mm
       let fileHeight = 297; // mm
 
-      if ((file instanceof File && file.name.endsWith('.pptx')) || type === 'pptx') {
+      if ((file instanceof File && file.name.endsWith('.pptx')) ?? type === 'pptx') {
         fileWidth = 254;  // 10 inches in mm
         fileHeight = 190.5;
       }
@@ -65,16 +63,19 @@ export default function PDFViewer(
 
       setPageHeight(expectedHeight);
     }
-  }, [pageWidth]);
+  }, [pageWidth, file, type]);
 
   const cleanupPDF = useCallback(() => {
+
     if (pdfDocumentRef.current) {
-      pdfDocumentRef.current.destroy();
+      void pdfDocumentRef.current.destroy();
       pdfDocumentRef.current = null;
     }
+
     setNumPages(0);
     setVisiblePages([]);
     if (setIsRendered) setIsRendered(false);
+
   }, [setIsRendered]);
 
   useEffect(() => {
@@ -138,7 +139,7 @@ export default function PDFViewer(
 
     observerRef.current = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
-        const pageNumber = parseInt(entry.target.getAttribute("data-page-number") || "0", 10);
+        const pageNumber = parseInt(entry.target.getAttribute("data-page-number") ?? "0", 10);
         if (entry.isIntersecting) {
           setVisiblePages((prev) => [...prev, pageNumber]);
         } else {
@@ -196,15 +197,15 @@ export default function PDFViewer(
                 loading={null} // Prevent default loading indicator
               />
             )}
-            {!hasEnoughCredits && filter && index > 0 && (
+            {/*!hasEnoughCredits && filter && index > 0 && (
               <>
                 <div className="absolute bottom-0 left-0 z-20 size-full backdrop-blur-sm pointer-events-none"/>
                 <div className="absolute bottom-0 left-0 z-30 size-full flex items-center justify-center">
                   {filter}
                 </div>
               </>                
-            )}
-            {!hasEnoughCredits && filter && index === 0 && (
+            )*/}
+            {/*!hasEnoughCredits && filter && index === 0 && (
               <>
                 <LinearBlur
                   side="bottom"
@@ -226,7 +227,7 @@ export default function PDFViewer(
                   {filter}
                 </div>
               </>
-            )}
+            )*/}
           </div>
         ))}
       </Document>

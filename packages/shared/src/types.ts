@@ -1,17 +1,18 @@
 import { JSX } from "react";
 
-export type TrackableFile = File & {
+export type TrackableFile = {
+    fileObject: File;
     id?: string;
     uploadingStatus?: "uploading" | "uploaded" | "client" | "error";
 };
 
-export type FileSet = {
-  original: File | null;
-  translated: File | null;
-};
+export type ModifiedFileSet = {
+    original: File | null;
+    translated: File | null;
+  };
 
 export type TabData = {
-  icon: JSX.Element;
-  file: string;
-  exampleFiles: FileSet;
-};
+    icon: JSX.Element;
+    file: string;
+    exampleFiles: ModifiedFileSet;
+  };

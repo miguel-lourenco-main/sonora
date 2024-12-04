@@ -2,8 +2,7 @@
 
 import { getLogger } from "@kit/shared/logger";
 import { createStripeClient } from "../services/stripe-sdk";
-import { getSupabaseServerAdminClient } from "@kit/supabase/server-admin-client";
-import { Database } from "@kit/supabase/database";
+
 
 export async function subscribeToFreePlan(name: string, email: string, accountId: string, priceId: string) {
 
@@ -80,8 +79,8 @@ export async function clearAllSubscriptionsFromStripe() {
       limit: 100,
   })
 
-  subscriptions.data.forEach(async (subscription) => {
-      await stripe.subscriptions.cancel(subscription.id)
+  subscriptions.data.forEach((subscription) => {
+    void stripe.subscriptions.cancel(subscription.id)
   })
 }
 
@@ -92,7 +91,7 @@ export async function triggerSubscriptionSchedule(scheduleId: string) {
   try {
     const schedule = await stripe.subscriptionSchedules.retrieve(scheduleId);
 
-    if (!schedule.phases[1] || !schedule.phases[1].items) {
+    if (!schedule.phases[1]?.items) {
       throw new Error('No items found in the second phase');
     }
 
@@ -191,7 +190,7 @@ export async function createScheduleTestClock(scheduleId: string, accountId: str
       customer: schedule.customer as string,
       items: schedule.phases[1]?.items.map(item => ({
         price: item.price as string,
-        quantity: item.quantity || 1
+        quantity: item.quantity ?? 1
       })),
       default_payment_method: paymentMethods.data[0]?.id,
       metadata: {

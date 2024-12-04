@@ -3,8 +3,7 @@
 
 'use client'
 
-import { FC, memo } from 'react'
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import React, { FC, memo } from 'react'
 import { coldarkDark } from 'react-syntax-highlighter/dist/cjs/styles/prism'
 
 import { useCopyToClipboard } from '@kit/shared/hooks'
@@ -12,14 +11,16 @@ import { IconCheck, IconCopy, IconDownload } from './icons'
 import { Button } from '../shadcn/button'
 import { useTranslation } from 'react-i18next'
 
+import {Prism, SyntaxHighlighterProps} from 'react-syntax-highlighter';
+
+const SyntaxHighlighter = Prism as typeof React.Component<SyntaxHighlighterProps>;
+
 interface Props {
   language: string
   value: string
 }
 
-interface languageMap {
-  [key: string]: string | undefined
-}
+type languageMap = Record<string, string | undefined>;
 
 export const programmingLanguages: languageMap = {
   javascript: '.js',
@@ -65,7 +66,7 @@ const CodeBlock: FC<Props> = memo(({ language, value }) => {
     if (typeof window === 'undefined') {
       return
     }
-    const fileExtension = programmingLanguages[language] || '.file'
+    const fileExtension = programmingLanguages[language] ?? '.file'
     const suggestedFileName = `file-${generateRandomString(
       3,
       true

@@ -96,5 +96,5 @@ export function getCountryFlag(country: string): string {
     'SL': '🇸🇮'
   };
 
-  return countryMap[input] || '🏳️'; // Returns white flag if country not found
+  return countryMap[input] ?? '🏳️'; // Returns white flag if country not found
 }

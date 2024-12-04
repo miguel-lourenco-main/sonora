@@ -1,9 +1,7 @@
 import { z } from 'zod';
 import { BillingConfig, getProductPlanPair } from '@kit/billing';
-import { useTranslation } from 'react-i18next';
 
-export const getPolydocPlanPickerSchema = (config: BillingConfig) => {
-  const { t } = useTranslation(`billing`);
+export const getPolydocPlanPickerSchema = (config: BillingConfig, refinedMessage?: string) => {
 
   return (
     z.object({
@@ -25,7 +23,7 @@ export const getPolydocPlanPickerSchema = (config: BillingConfig) => {
           return false;
         }
       },
-      { message: t('noPlanChosen'), path: ['planId'] },
+      { message: refinedMessage ?? 'No Plan Chosen', path: ['planId'] },
     )
   )
 }

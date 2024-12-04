@@ -6,6 +6,7 @@ import { UnderscoreInput } from './underscore-input';
 import { MAX_PAGES_SUBSCRIPTION } from '@kit/shared/constants';
 import { CurrentBillingInfo } from '../lib/interfaces';
 import { TierEffect } from '@kit/ui/tier-effect';
+import { cn } from '@kit/ui/utils';
 
 interface PageAmountInputProps {
   onPageCountChange: (pageCount: number) => void;
@@ -28,7 +29,7 @@ export function PageAmountInput({ value, onPageCountChange, billingInfo, classNa
     if (value.toString().length > MAX_DIGITS) {
       newValue = lastValidValue;
     }
-    // If we're in the forbidden range (5-50)
+    // If we're in the forbidden range (>5 and <50)
     else if (value > 5 && value < 50) {
       // Stick to the last valid value
       newValue = lastValidValue;
@@ -43,11 +44,33 @@ export function PageAmountInput({ value, onPageCountChange, billingInfo, classNa
   };
 
   const valueToSliderPosition = (value: number) => {
-    return Math.log(value / 5) / Math.log(MAX_PAGES_SUBSCRIPTION / 5);
+    // Special handling for the dead zone (5-50)
+    if (value <= 5) {
+      return 0;
+    } else if (value > 50) {
+      // Normalize the range above 50 to use most of the slider
+      const normalizedValue = (value - 50);
+      const normalizedMax = MAX_PAGES_SUBSCRIPTION - 50;
+      // Use 95% of the slider for the actual valid range
+      // Using Math.pow with 0.5 creates a square root curve
+      return 0.05 + (0.95 * Math.pow(normalizedValue / normalizedMax, 0.5));
+    }
+    // Return the minimum valid position for any value in dead zone
+    return 0.025;
   };
 
   const sliderPositionToValue = (position: number) => {
-    return Math.round(5 * Math.pow(MAX_PAGES_SUBSCRIPTION / 5, position));
+    // Handle the compressed dead zone (0-5% of the slider)
+    if (position <= 0.025) {
+      return 5;
+    } else if (position <= 0.05) {
+      return 50;
+    }
+    // Handle the rest of the range (5-100% of the slider)
+    const normalizedPosition = (position - 0.05) / 0.95;
+    const normalizedMax = MAX_PAGES_SUBSCRIPTION - 50;
+    // Using Math.pow with 2 creates a quadratic curve (inverse of square root)
+    return Math.round(50 + normalizedMax * Math.pow(normalizedPosition, 2));
   };
 
   useEffect(() => {
@@ -98,7 +121,7 @@ export function PageAmountInput({ value, onPageCountChange, billingInfo, classNa
   };
 
   return (
-    <div className={`text-center py-2 ${className}`}>
+    <div className={cn('text-center py-2', className)}>
       <div className='flex flex-col items-center gap-y-4'>
         <h2 className="text-4xl font-bold">Pages</h2>
         
@@ -133,28 +156,28 @@ export function PageAmountInput({ value, onPageCountChange, billingInfo, classNa
             <button
               onClick={() => handleMarkerClick(5)}
               className="absolute text-sm text-gray-500 hover:text-gray-700 transition-colors cursor-pointer"
-              style={{ left: 'calc(0% + 9.5px)', transform: 'translateX(-50%)' }}
+              style={{ left: `calc(${valueToSliderPosition(5) * 100}% + 8px)`, transform: 'translateX(-50%)' }}
             >
               5
             </button>
             <button 
               onClick={() => handleMarkerClick(50)}
               className="absolute text-sm text-gray-500 hover:text-gray-700 transition-colors cursor-pointer"
-              style={{ left: `calc(${valueToSliderPosition(50) * 100}% + 4px)`, transform: 'translateX(-50%)' }}
+              style={{ left: `calc(${valueToSliderPosition(50) * 100}% + 8px)`, transform: 'translateX(-50%)' }}
             >
               50
             </button>
             <button 
               onClick={() => handleMarkerClick(100)}
               className="absolute text-sm text-gray-500 hover:text-gray-700 transition-colors cursor-pointer"
-              style={{ left: `calc(${valueToSliderPosition(100) * 100}% + 2.5px)`, transform: 'translateX(-50%)' }}
+              style={{ left: `calc(${valueToSliderPosition(100) * 100}% + 8px)`, transform: 'translateX(-50%)' }}
             >
               100
             </button>
             <button 
               onClick={() => handleMarkerClick(2000)}
               className="absolute text-sm text-gray-500 hover:text-gray-700 transition-colors cursor-pointer"
-              style={{ left: `calc(${valueToSliderPosition(2000) * 100}% - 5.5px)`, transform: 'translateX(-50%)' }}
+              style={{ left: `calc(${valueToSliderPosition(2000) * 100}%)`, transform: 'translateX(-50%)' }}
             >
               2000
             </button>

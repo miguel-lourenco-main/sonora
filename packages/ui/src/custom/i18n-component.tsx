@@ -1,8 +1,8 @@
 'use client'
 
-import { Trans } from 'react-i18next'
+import { Trans } from '../makerkit/trans'
 
-export function I18nComponent({
+export default function I18nComponent({
     i18nKey,
     className
 }: {

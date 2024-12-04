@@ -13,8 +13,6 @@ import {
 
 // TODO: Add the ability to add custom icons
 
-interface TreeViewComponentProps extends React.HTMLAttributes<HTMLDivElement> {}
-
 type TreeViewProps = {
   initialSelectedId?: string;
   elements: TreeViewElement[];
@@ -25,37 +23,33 @@ type TreeViewProps = {
 } & (
   | {
       initialExpendedItems?: string[];
-      expandAll?: false;
     }
   | {
       initialExpendedItems?: undefined;
-      expandAll: true;
     }
-) &
-  TreeViewComponentProps;
+) & React.HTMLAttributes<HTMLDivElement>;
 
 export const TreeView = ({
   elements,
   className,
   initialSelectedId,
   initialExpendedItems,
-  expandAll,
   onFileClick,
+  setOpenFirst,
   indicator = false,
   openFirst = false,
-  setOpenFirst = () => {},
 }: TreeViewProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const { getVirtualItems, getTotalSize } = useVirtualizer({
     count: elements.length,
-    getScrollElement: () => containerRef.current,
+    getScrollElement: () => {return containerRef.current},
     estimateSize: useCallback(() => 40, []),
     overscan: 5,
   });
 
   const { height = getTotalSize(), width } = useResizeObserver({
-    ref: containerRef,
+    ref: containerRef as React.RefObject<HTMLDivElement>,
   });
   
   return (
@@ -110,9 +104,8 @@ export const TreeItem = forwardRef<
 >(({ className, elements, indicator, index, ...props }, ref) => {
 
   return (
-    <ul ref={ref} className="w-full space-y-2 text-foreground" {...props}>
-      {elements &&
-        elements.map((element, i) => (
+    <ul ref={ref} className={cn("w-full space-y-2 text-foreground", className)} {...props}>
+      {elements?.map((element) => (
           <li key={element.id} className="w-full">
             {element.children && element.children?.length > 0 ? (
               <Folder
