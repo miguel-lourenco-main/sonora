@@ -394,6 +394,10 @@ export class LemonSqueezyBillingStrategyService
     const intervalCount = subscription.billing_anchor;
     const interval = intervalCount === 1 ? 'month' : 'year';
 
+    // It seems that lemon squeezy does not have a schedule, but for now,
+    // we'll set it to null, to avoid error
+    const schedule = null;
+
     const subscriptionItemId =
       data.data.attributes.first_subscription_item?.id.toString() as string;
 
@@ -424,6 +428,7 @@ export class LemonSqueezyBillingStrategyService
       cancelAtPeriodEnd: subscription.cancelled,
       trialStartsAt: trialEndsAt ? new Date(createdAt).getTime() : null,
       trialEndsAt: trialEndsAt ? new Date(trialEndsAt).getTime() : null,
+      schedule,
     });
   }
 

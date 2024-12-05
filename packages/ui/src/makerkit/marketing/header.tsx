@@ -18,15 +18,12 @@ export const Header = forwardRef<HTMLDivElement, HeaderProps>(
 
     const isVisible = useScrollHeader();
 
-    const smoothScroll = useSmoothScroll?.();
-    const isLocked = smoothScroll?.isLocked ?? false;
-
     return (
       <div
         ref={ref}
         className={cn(
           'site-header fixed top-0 z-50 w-full bg-background/80 py-2 backdrop-blur-md dark:bg-background/50 transition-transform duration-300',
-          isVisible && !isLocked ? 'translate-y-0' : '-translate-y-full',
+          isVisible ? 'translate-y-0' : '-translate-y-full',
           className,
         )}
         {...props}
