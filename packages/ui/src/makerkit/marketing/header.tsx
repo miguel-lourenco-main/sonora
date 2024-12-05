@@ -2,7 +2,7 @@
 
 import { forwardRef } from 'react';
 import { cn } from '../../lib';
-import { useScrollHeader, useSmoothScroll } from '@kit/shared/hooks';
+import { useScrollHeader } from '@kit/shared/hooks';
 
 interface HeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   logo?: React.ReactNode;
