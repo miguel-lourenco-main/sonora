@@ -43,6 +43,7 @@ interface Attributes {
   created_at: string;
   updated_at: string;
   test_mode: boolean;
+  schedule: string | null;
 
   first_subscription_item: {
     id: number;

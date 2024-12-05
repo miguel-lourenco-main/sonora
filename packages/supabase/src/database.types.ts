@@ -190,20 +190,63 @@ export type Database = {
           enable_account_billing: boolean
           enable_team_account_billing: boolean
           enable_team_accounts: boolean
+          id: number
         }
         Insert: {
           billing_provider?: Database["public"]["Enums"]["billing_provider"]
           enable_account_billing?: boolean
           enable_team_account_billing?: boolean
           enable_team_accounts?: boolean
+          id?: number
         }
         Update: {
           billing_provider?: Database["public"]["Enums"]["billing_provider"]
           enable_account_billing?: boolean
           enable_team_account_billing?: boolean
           enable_team_accounts?: boolean
+          id?: number
         }
         Relationships: []
+      }
+      credit: {
+        Row: {
+          account_id: string
+          credits: number
+          monthly_credits: number
+        }
+        Insert: {
+          account_id?: string
+          credits?: number
+          monthly_credits?: number
+        }
+        Update: {
+          account_id?: string
+          credits?: number
+          monthly_credits?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "credit_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: true
+            referencedRelation: "accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "credit_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: true
+            referencedRelation: "user_account_workspace"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "credit_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: true
+            referencedRelation: "user_accounts"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       invitations: {
         Row: {
@@ -803,6 +846,16 @@ export type Database = {
           user_id: string
         }
         Returns: boolean
+      }
+      rls_configure: {
+        Args: {
+          table_name: string
+          create_select?: boolean
+          create_insert?: boolean
+          create_update?: boolean
+          create_delete?: boolean
+        }
+        Returns: undefined
       }
       team_account_workspace: {
         Args: {

@@ -8,6 +8,8 @@ import { cn } from '@kit/ui/utils';
 import dynamic from 'next/dynamic';
 import { Card } from '@kit/ui/card';
 import { TabData } from '@kit/shared/types';
+import { ErrorBoundary } from 'react-error-boundary';
+import { PDFErrorFallback } from './pdf-error-fallback';
 
 const PDFViewer = dynamic(() => import('@kit/ui/pdf-viewer'), { ssr: false });
 
@@ -34,6 +36,13 @@ export function PDFView({
     const onScroll = handleScroll ? handleScroll(index) : undefined;
     const ref = scrollRefs?.[index] ? scrollRefs[index] : undefined;
 
+    const handleReset = () => {
+        // Reset the rendered state when retrying
+        if (setIsRendered) {
+            setIsRendered(false);
+        }
+    };
+
     return (
         <div 
             key={index}
@@ -47,13 +56,18 @@ export function PDFView({
             {(isLoading || (!isRendered && file)) && <LoadingDocument />}
             {file && (
                 <div className={cn("h-full w-full", isRendered ? "flex" : "hidden")}>
-                    <PDFViewer 
-                        pdf={file}
-                        setIsRendered={setIsRendered}
-                        onScroll={onScroll} 
-                        scrollRef={ref} 
-                        type={type}
-                    />
+                    <ErrorBoundary
+                        FallbackComponent={PDFErrorFallback}
+                        onReset={handleReset}
+                    >
+                        <PDFViewer 
+                            pdf={file}
+                            setIsRendered={setIsRendered}
+                            onScroll={onScroll} 
+                            scrollRef={ref} 
+                            type={type}
+                        />
+                    </ErrorBoundary>
                 </div>
             )}
         </div>

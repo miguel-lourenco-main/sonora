@@ -36,7 +36,7 @@ interface LineItem {
   price_amount: number | null | undefined;
   interval: string;
   interval_count: number;
-  type: 'flat' | 'metered' | 'per_seat' | undefined;
+  type: 'flat' | 'metered' | 'per_seat' | 'tiered' | undefined;
 }
 
 type OrderStatus = 'pending' | 'failed' | 'paid' | 'refunded';
@@ -239,6 +239,7 @@ export class LemonSqueezyWebhookHandlerService
     const endsAt = subscription.ends_at;
     const renewsAt = subscription.renews_at;
     const trialEndsAt = subscription.trial_ends_at;
+    const schedule = subscription.schedule;
 
     const { data: order, error } = await getOrder(orderId);
 
@@ -290,6 +291,7 @@ export class LemonSqueezyWebhookHandlerService
       cancelAtPeriodEnd: subscription.cancelled,
       trialStartsAt: trialEndsAt ? new Date(createdAt).getTime() : null,
       trialEndsAt: trialEndsAt ? new Date(trialEndsAt).getTime() : null,
+      schedule: schedule,
     });
 
     return onSubscriptionCreatedEvent(payload);
@@ -385,6 +387,7 @@ export class LemonSqueezyWebhookHandlerService
       cancelAtPeriodEnd: subscription.cancelled,
       trialStartsAt: trialEndsAt ? new Date(createdAt).getTime() : null,
       trialEndsAt: trialEndsAt ? new Date(trialEndsAt).getTime() : null,
+      schedule: null,
     });
 
     return onInvoicePaidCallback(payload);

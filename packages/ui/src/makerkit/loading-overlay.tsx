@@ -1,15 +1,18 @@
 import type { PropsWithChildren } from 'react';
 
 import { cn } from '../lib';
-import GeneralLoading from '../custom/general-loading';
+import { Spinner } from './spinner';
 
 export function LoadingOverlay({
   children,
   className,
   fullPage = true,
+  spinnerClassName,
 }: PropsWithChildren<{
   className?: string;
+  spinnerClassName?: string;
   fullPage?: boolean;
+  displayLogo?: boolean;
 }>) {
   return (
     <div
@@ -22,7 +25,7 @@ export function LoadingOverlay({
         },
       )}
     >
-      <GeneralLoading />
+      <Spinner className={spinnerClassName} />
 
       <div className={'text-sm text-muted-foreground'}>{children}</div>
     </div>

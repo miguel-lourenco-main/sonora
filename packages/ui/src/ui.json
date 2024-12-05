@@ -67,5 +67,7 @@
     "file": "file",
     "files": "files",
     "retry": "Retry",
-    "popular": "Popular"
+    "popular": "Popular",
+    "errorLoadingPDF": "Error Loading PDF",
+    "errorLoadingPDFDescription": "There was an error loading the PDF. This could be due to a corrupted file or network issues. Please try again."
 }
