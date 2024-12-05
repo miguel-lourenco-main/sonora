@@ -9,8 +9,6 @@ import dynamic from "next/dynamic";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import "react-pdf/dist/esm/Page/TextLayer.css";
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
-
 const Page = dynamic(() => import("react-pdf").then((mod) => mod.Page), { ssr: false });
 
 const options = {};
@@ -156,6 +154,10 @@ export default function PDFViewer(
         observerRef.current.disconnect();
       }
     };
+  }, []);
+
+  useEffect(() => {
+    pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
   }, []);
 
   return (
