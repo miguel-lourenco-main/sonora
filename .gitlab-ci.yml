@@ -15,12 +15,21 @@ before_script:
   - pnpm i --frozen-lockfile
 
 stages:
+  - lint
   - test
   - build
   - deploy
 
-# Polydoc App Jobs
-polydoc-test:
+lint:
+  stage: lint
+  tags:
+    - cm3588
+  image: 'node:22.11'
+  script:
+    - pnpm typecheck
+    - pnpm lint
+
+test:
   stage: test
   tags:
     - cm3588
