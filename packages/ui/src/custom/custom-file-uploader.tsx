@@ -5,7 +5,7 @@ import { useCallback, useState } from "react";
 import { Dispatch, SetStateAction } from "react";
 import { useTranslation } from "react-i18next";
 import TooltipComponent from "@kit/ui/tooltip-component";
-import { FILE_SUPPORTED_TYPES, FILE_SUPPORTED_TYPES_VALUES_STRING } from "@kit/shared/constants";
+import { FILE_SUPPORTED_TYPES, FILE_SUPPORTED_TYPES_VALUES_STRING, MAX_FILE_SIZE_STRING } from "@kit/shared/constants";
 import FilesDragNDrop from "@kit/ui/files-drag-n-drop";
 import FilesGrid from "@kit/ui/files-grid";
 import { TrackableFile } from "@kit/shared/types";
@@ -71,6 +71,9 @@ const FileActionsBar = ({
                     addDroppedFiles={(files: File[]) => handlers.handleAddFiles(files.map(file => ({fileObject: file})))}
                 />
             </div>
+            <span className="whitespace-nowrap text-sm text-muted-foreground">
+                {`Max file size: ${MAX_FILE_SIZE_STRING}`}
+            </span>
             <span className="whitespace-nowrap text-sm text-muted-foreground">
                 {`${files.length} ${files.length === 1 ? t('file') : t('files')} ${t('added')}`}
             </span>
