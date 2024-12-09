@@ -4,12 +4,15 @@ import React, { UIEventHandler, useCallback, useEffect, useRef, useState } from 
 import { useResizeObserver } from "@wojtekmaj/react-hooks";
 import { PDFFile } from "./_lib/types";
 
-import { pdfjs, Document } from "react-pdf";
+import { pdfjs } from "react-pdf";
 import dynamic from "next/dynamic";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import "react-pdf/dist/esm/Page/TextLayer.css";
 
 const Page = dynamic(() => import("react-pdf").then((mod) => mod.Page), { ssr: false });
+const Document = dynamic(() => import("react-pdf").then((mod) => mod.Document), { ssr: false });
+
+pdfjs.GlobalWorkerOptions.workerSrc = "./pdf.worker.mjs";
 
 const options = {};
 const resizeObserverOptions = {};
@@ -154,10 +157,6 @@ export default function PDFViewer(
         observerRef.current.disconnect();
       }
     };
-  }, []);
-
-  useEffect(() => {
-    pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
   }, []);
 
   return (

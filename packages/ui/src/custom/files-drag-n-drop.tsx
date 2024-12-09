@@ -10,6 +10,7 @@ import { DirectionOptions, FilesDragNDropProps } from "./_lib/types";
 import { FileSvgDraw } from "./file-svg-draw";
 import FilesGrid from "./files-grid";
 import { TrackableFile } from "@kit/shared/types";
+import { MAX_FILE_SIZE_MB, MAX_FILE_SIZE_STRING } from "@kit/shared/constants";
 
 const DEFAULT_ACCEPT = {
   "application/pdf": [".pdf"],
@@ -45,7 +46,6 @@ export const FilesDragNDrop = forwardRef<
     const [activeIndex, setActiveIndex] = useState(-1);
     const [showCover, setShowCover] = useState(true);
     const { t } = useTranslation('ui');
-    const maxSize = 256 * 1024 * 1024; // 256MB
     const direction: DirectionOptions = "ltr";
 
     const onDrop = useCallback((acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
@@ -59,8 +59,8 @@ export const FilesDragNDrop = forwardRef<
 
       if (rejectedFiles.length > 0) {
         for (const rejectedFile of rejectedFiles) {
-          if (maxSize && rejectedFile?.errors[0]?.code === "file-too-large") {
-            toast.error(`${t("fileTooLarge")} ${maxSize / 1024 / 1024}MB`);
+          if (rejectedFile?.errors[0]?.code === "file-too-large") {
+            toast.error(`${t("fileTooLarge")} ${MAX_FILE_SIZE_STRING}`);
             break;
           }
           if (rejectedFile?.errors[0]?.message) {
@@ -69,7 +69,7 @@ export const FilesDragNDrop = forwardRef<
           }
         }
       }
-    }, [addFiles, maxSize, t]);
+    }, [addFiles, MAX_FILE_SIZE_MB, t]);
 
     const handleRemoveFile = useCallback((filteredFiles: TrackableFile[]) => {
       removeFiles(filteredFiles);
@@ -78,7 +78,7 @@ export const FilesDragNDrop = forwardRef<
     const dropzone = useDropzone({
       accept: acceptFiles,
       maxFiles: 1000,
-      maxSize,
+      maxSize: MAX_FILE_SIZE_MB,
       multiple: true,
       onDragEnter: () => setShowCover(true),
       onDragLeave: () => setShowCover(false),

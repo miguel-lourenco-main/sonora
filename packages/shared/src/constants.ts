@@ -172,3 +172,7 @@ export const DEFAULT_TARGET_LANGUAGE = POPULAR_LANGUAGES[0]?.value ?? 'en'
 export const LANGUAGES = Object.values(LANGUAGES_BY_REGION).flat();
 
 export const MAX_PAGES_SUBSCRIPTION  = 10000;
+
+export const MAX_FILE_SIZE_MB = 256 * 1024 * 1024; // 256MB
+
+export const MAX_FILE_SIZE_STRING = `${MAX_FILE_SIZE_MB / 1024 / 1024}MB`;
