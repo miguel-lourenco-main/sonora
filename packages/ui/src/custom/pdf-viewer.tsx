@@ -157,7 +157,7 @@ export default function PDFViewer(
   }, []);
 
   useEffect(() => {
-    pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+    pdfjs.GlobalWorkerOptions.workerSrc = "./pdf.worker.mjs";
   }, []);
 
   return (
