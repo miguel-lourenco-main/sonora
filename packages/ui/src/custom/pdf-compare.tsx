@@ -4,14 +4,14 @@ import { useEffect, useRef, UIEvent, useState, useCallback, useMemo } from 'reac
 import LoadingDocument from "@kit/ui/loading-pdf";
 import { useTranslation } from 'react-i18next';
 import { FileIcon } from 'lucide-react';
-import { cn } from '@kit/ui/utils';
+import { cn } from '../lib';
 import dynamic from 'next/dynamic';
-import { Card } from '@kit/ui/card';
+import { Card } from '../shadcn/card';
 import { TabData } from '@kit/shared/types';
 import { ErrorBoundary } from 'react-error-boundary';
 import { PDFErrorFallback } from './pdf-error-fallback';
 
-const PDFViewer = dynamic(() => import('@kit/ui/pdf-viewer'), { ssr: false });
+const PDFViewer = dynamic(() => import('./pdf-viewer'), { ssr: false });
 
 export function PDFView({
     file,

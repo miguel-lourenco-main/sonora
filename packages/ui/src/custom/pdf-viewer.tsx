@@ -12,7 +12,9 @@ import "react-pdf/dist/esm/Page/TextLayer.css";
 const Page = dynamic(() => import("react-pdf").then((mod) => mod.Page), { ssr: false });
 const Document = dynamic(() => import("react-pdf").then((mod) => mod.Document), { ssr: false });
 
-pdfjs.GlobalWorkerOptions.workerSrc = "./pdf.worker.mjs";
+if(typeof window !== 'undefined' && !pdfjs.GlobalWorkerOptions.workerSrc){
+  pdfjs.GlobalWorkerOptions.workerSrc = "./pdf.worker.mjs";
+}
 
 const options = {};
 const resizeObserverOptions = {};

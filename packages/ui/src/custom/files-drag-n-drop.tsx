@@ -69,7 +69,7 @@ export const FilesDragNDrop = forwardRef<
           }
         }
       }
-    }, [addFiles, MAX_FILE_SIZE_MB, t]);
+    }, [addFiles, t]);
 
     const handleRemoveFile = useCallback((filteredFiles: TrackableFile[]) => {
       removeFiles(filteredFiles);
