@@ -15,7 +15,7 @@ interface DataTableToolbarProps<TData> {
   table: Table<TData>
   tableLabel: string
   filters: Filter[]
-  toolBarButtonsProcessed?: () => JSX.Element
+  toolBarButtonsProcessed?: () => React.ReactNode
 }
 
 export function DataTableToolbar<TData>({

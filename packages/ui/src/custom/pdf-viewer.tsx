@@ -58,7 +58,7 @@ export default function PDFViewer(
       let fileWidth = 210; // mm
       let fileHeight = 297; // mm
 
-      if ((file instanceof File && file.name.endsWith('.pptx')) ?? type === 'pptx') {
+      if (type === 'pptx' || (file instanceof File && file.name.endsWith('.pptx'))) {
         fileWidth = 254;  // 10 inches in mm
         fileHeight = 190.5;
       }

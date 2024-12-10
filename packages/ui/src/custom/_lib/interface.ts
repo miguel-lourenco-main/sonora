@@ -19,5 +19,5 @@ export interface Filter {
 export interface DataTableActions {
   name:string
   exec: () => void
-  customItem: (() => JSX.Element) | null
+  customItem: (() => React.ReactNode) | null
 }

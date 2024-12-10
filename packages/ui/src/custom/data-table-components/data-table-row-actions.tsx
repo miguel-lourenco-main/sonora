@@ -20,7 +20,7 @@ interface DataTableRowActionsProps {
 interface DataTableActions {
   name: string
   exec: () => void
-  customItem: (() => JSX.Element) | null
+  customItem: (() => React.ReactNode) | null
 }
 
 export function DataTableRowActions({
