@@ -11,9 +11,7 @@ import { Database } from '~/lib/database.types';
 
 interface Props {
   searchParams: Promise<{
-  searchParams: Promise<{
     next?: string;
-  }>;
   }>;
 }
 

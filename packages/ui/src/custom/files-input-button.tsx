@@ -9,7 +9,7 @@ export function FileInputButton({
 }:{
   addDroppedFiles: (files: File[]) => void
   acceptsTypes: string
-  content: (handleFileUpload: () => void) => JSX.Element
+  content: (handleFileUpload: () => void) => React.ReactNode
 }){
   const fileInputRef = useRef<HTMLInputElement>(null);
 

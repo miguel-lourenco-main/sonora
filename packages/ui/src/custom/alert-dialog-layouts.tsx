@@ -21,7 +21,7 @@ export function AlertDialogContentLayout({
   title,
   description,
 }: {
-  footer: () => JSX.Element;
+  footer: () => React.ReactNode;
   children?: React.ReactNode;
   title?: string;
   description?: string;
@@ -54,13 +54,13 @@ export function AlertDialogWTriggerLayout({
   reset,
   trigger = () => {return <div></div>},
 }: {
-  footer: () => JSX.Element;
+  footer: () => React.ReactNode;
   children?: React.ReactNode;
   title?: string;
   description?: string;
   tooltip?: string;
   reset?: () => void;
-  trigger?: () => JSX.Element;
+  trigger?: () => React.ReactNode;
 }) {
 
   return (
@@ -102,7 +102,7 @@ export function AlertDialogWSetOpenLayout({
   reset,
   setOpen,
 }: {
-  footer: () => JSX.Element;
+  footer: () => React.ReactNode;
   children?: React.ReactNode;
   title?: string;
   description?: string;
@@ -140,7 +140,7 @@ export function DeleteDialogLayout({
   setOpen,
   trigger,
 }: {
-  footer: () => JSX.Element;
+  footer: () => React.ReactNode;
   children?: React.ReactNode;
   title?: string;
   description?: string;
@@ -148,7 +148,7 @@ export function DeleteDialogLayout({
   tooltip?: string;
   reset?: () => void;
   setOpen?: (open: boolean) => void;
-  trigger?: () => JSX.Element;
+  trigger?: () => React.ReactNode;
 }) {
   const descript = description ??
     `This action cannot be undone. This will permanently delete ${label ? `the ${label} that were selected` : 'the selected items'} and remove the data from the server.`;
