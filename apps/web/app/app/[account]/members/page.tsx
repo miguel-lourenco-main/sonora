@@ -46,6 +46,7 @@ async function TeamAccountMembersPage({ params }: TeamAccountMembersPageProps) {
 
   const [members, invitations, canAddMember, { user, account }] =
     await loadMembersPageData(client, slug);
+    await loadMembersPageData(client, slug);
 
   const canManageRoles = account.permissions.includes('roles.manage');
   const canManageInvitations = account.permissions.includes('invites.manage');
