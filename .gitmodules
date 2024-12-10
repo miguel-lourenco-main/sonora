@@ -1,3 +1,6 @@
 [submodule "apps/polydoc"]
 	path = apps/polydoc
 	url = git@gitlab.com:edgenai/frontend/polydoc-app.git
+[submodule "apps/sonora"]
+	path = apps/sonora
+	url = git@gitlab.com:edgenai/frontend/sonora-app.git

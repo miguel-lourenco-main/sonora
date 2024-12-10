@@ -295,6 +295,196 @@ importers:
         specifier: ^3.84.0
         version: 3.94.0
 
+  apps/sonora:
+    dependencies:
+      '@edge-csrf/nextjs':
+        specifier: ^2.5.2
+        version: 2.5.2(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.49.1)(babel-plugin-react-compiler@19.0.0-beta-a7bf2bd-20241110)(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021))
+      '@hookform/resolvers':
+        specifier: ^3.9.1
+        version: 3.9.1(react-hook-form@7.54.0(react@19.0.0-rc-45804af1-20241021))
+      '@keystatic/next':
+        specifier: ^5.0.1
+        version: 5.0.1(@keystatic/core@0.5.39(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.49.1)(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021))(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021))(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.49.1)(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021))(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
+      '@kit/accounts':
+        specifier: workspace:*
+        version: link:../../packages/features/accounts
+      '@kit/admin':
+        specifier: workspace:*
+        version: link:../../packages/features/admin
+      '@kit/analytics':
+        specifier: workspace:*
+        version: link:../../packages/analytics
+      '@kit/auth':
+        specifier: workspace:*
+        version: link:../../packages/features/auth
+      '@kit/billing':
+        specifier: workspace:*
+        version: link:../../packages/billing/core
+      '@kit/billing-gateway':
+        specifier: workspace:*
+        version: link:../../packages/billing/gateway
+      '@kit/cms':
+        specifier: workspace:*
+        version: link:../../packages/cms/core
+      '@kit/database-webhooks':
+        specifier: workspace:*
+        version: link:../../packages/database-webhooks
+      '@kit/email-templates':
+        specifier: workspace:*
+        version: link:../../packages/email-templates
+      '@kit/i18n':
+        specifier: workspace:*
+        version: link:../../packages/i18n
+      '@kit/keystatic':
+        specifier: workspace:*
+        version: link:../../packages/cms/keystatic
+      '@kit/mailers':
+        specifier: workspace:*
+        version: link:../../packages/mailers/core
+      '@kit/monitoring':
+        specifier: workspace:*
+        version: link:../../packages/monitoring/api
+      '@kit/next':
+        specifier: workspace:*
+        version: link:../../packages/next
+      '@kit/notifications':
+        specifier: workspace:*
+        version: link:../../packages/features/notifications
+      '@kit/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
+      '@kit/supabase':
+        specifier: workspace:*
+        version: link:../../packages/supabase
+      '@kit/team-accounts':
+        specifier: workspace:*
+        version: link:../../packages/features/team-accounts
+      '@kit/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
+      '@makerkit/data-loader-supabase-core':
+        specifier: ^0.0.8
+        version: 0.0.8(@supabase/postgrest-js@1.16.3)(@supabase/supabase-js@2.47.3)
+      '@makerkit/data-loader-supabase-nextjs':
+        specifier: ^1.2.3
+        version: 1.2.3(@supabase/postgrest-js@1.16.3)(@supabase/supabase-js@2.47.3)(@tanstack/react-query@5.60.2(react@19.0.0-rc-45804af1-20241021))(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.49.1)(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
+      '@marsidev/react-turnstile':
+        specifier: ^1.0.2
+        version: 1.1.0(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
+      '@radix-ui/react-icons':
+        specifier: ^1.3.2
+        version: 1.3.2(react@19.0.0-rc-45804af1-20241021)
+      '@supabase/supabase-js':
+        specifier: ^2.46.1
+        version: 2.47.3
+      '@tanstack/react-query':
+        specifier: 5.60.2
+        version: 5.60.2(react@19.0.0-rc-45804af1-20241021)
+      '@tanstack/react-table':
+        specifier: ^8.20.5
+        version: 8.20.5(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
+      date-fns:
+        specifier: ^4.1.0
+        version: 4.1.0
+      lucide-react:
+        specifier: ^0.456.0
+        version: 0.456.0(react@19.0.0-rc-45804af1-20241021)
+      next:
+        specifier: 15.0.3
+        version: 15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.49.1)(babel-plugin-react-compiler@19.0.0-beta-a7bf2bd-20241110)(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
+      next-sitemap:
+        specifier: ^4.2.3
+        version: 4.2.3(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.49.1)(babel-plugin-react-compiler@19.0.0-beta-a7bf2bd-20241110)(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021))
+      next-themes:
+        specifier: 0.4.3
+        version: 0.4.3(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
+      react:
+        specifier: 19.0.0-rc-45804af1-20241021
+        version: 19.0.0-rc-45804af1-20241021
+      react-dom:
+        specifier: 19.0.0-rc-45804af1-20241021
+        version: 19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021)
+      react-hook-form:
+        specifier: ^7.53.2
+        version: 7.54.0(react@19.0.0-rc-45804af1-20241021)
+      react-i18next:
+        specifier: ^15.1.1
+        version: 15.1.4(i18next@23.16.5)(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
+      recharts:
+        specifier: 2.13.3
+        version: 2.13.3(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
+      sonner:
+        specifier: ^1.7.0
+        version: 1.7.1(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
+      tailwind-merge:
+        specifier: ^2.5.4
+        version: 2.5.5
+      zod:
+        specifier: ^3.23.8
+        version: 3.24.0
+    devDependencies:
+      '@kit/eslint-config':
+        specifier: workspace:*
+        version: link:../../tooling/eslint
+      '@kit/prettier-config':
+        specifier: workspace:*
+        version: link:../../tooling/prettier
+      '@kit/tailwind-config':
+        specifier: workspace:*
+        version: link:../../tooling/tailwind
+      '@kit/tsconfig':
+        specifier: workspace:*
+        version: link:../../tooling/typescript
+      '@next/bundle-analyzer':
+        specifier: 15.0.3
+        version: 15.0.3
+      '@types/mdx':
+        specifier: ^2.0.13
+        version: 2.0.13
+      '@types/node':
+        specifier: ^22.8.7
+        version: 22.10.1
+      '@types/react':
+        specifier: npm:types-react@19.0.0-rc.1
+        version: types-react@19.0.0-rc.1
+      '@types/react-dom':
+        specifier: npm:types-react-dom@19.0.0-rc.1
+        version: types-react-dom@19.0.0-rc.1
+      autoprefixer:
+        specifier: ^10.4.20
+        version: 10.4.20(postcss@8.4.49)
+      babel-plugin-react-compiler:
+        specifier: 19.0.0-beta-a7bf2bd-20241110
+        version: 19.0.0-beta-a7bf2bd-20241110
+      dotenv-cli:
+        specifier: ^7.4.2
+        version: 7.4.4
+      eslint:
+        specifier: ^8.57.0
+        version: 8.57.1
+      import-in-the-middle:
+        specifier: 1.11.2
+        version: 1.11.2
+      pino-pretty:
+        specifier: ^13.0.0
+        version: 13.0.0
+      prettier:
+        specifier: ^3.3.3
+        version: 3.4.2
+      require-in-the-middle:
+        specifier: 7.4.0
+        version: 7.4.0
+      supabase:
+        specifier: ^1.223.7
+        version: 1.226.4
+      tailwindcss:
+        specifier: 3.4.15
+        version: 3.4.15(ts-node@10.9.2(@types/node@22.10.1)(typescript@5.7.2))
+      typescript:
+        specifier: ^5.6.3
+        version: 5.7.2
+
   apps/web:
     dependencies:
       '@edge-csrf/nextjs':

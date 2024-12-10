@@ -35,15 +35,19 @@ test:
     - cm3588
   image: 'node:22.11'
   script:
-    - echo "polydoc app test"
+    - echo "app test"
 
-polydoc-build:
+build:
   stage: build
   tags:
     - cm3588
   image: 'node:22.11'
   script:
+    - cd apps/web
+    - pnpm cloudflare:build
     - cd apps/polydoc
+    - pnpm cloudflare:build
+    - cd apps/sonora
     - pnpm cloudflare:build
   artifacts:
     paths:
