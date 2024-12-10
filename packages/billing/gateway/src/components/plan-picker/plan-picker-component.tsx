@@ -73,7 +73,6 @@ export function PlanPickerComponent(
   // display the period picker if the selected plan is recurring or if no plan is selected
   const isRecurringPlan =
     selectedPlan?.paymentType === 'recurring' || !selectedPlan;
-
   const locale = useTranslation().i18n.language;
 
   const [isCurrentPlanSelected, setIsCurrentPlanSelected] = useState(false);
@@ -150,7 +149,6 @@ export function PlanPickerComponent(
                                   }
                                 }}
                               />
-
                               <span
                                 className={cn('text-sm', {
                                   ['cursor-pointer']: !selected,
@@ -227,7 +225,6 @@ export function PlanPickerComponent(
                   }
 
                   const isCurrentPlan = props.currentSubscriptionVariantId !== undefined && plan.lineItems[0]?.id === props.currentSubscriptionVariantId
-
                   return (
                     <RadioGroupItemLabel
                       selected={selected}
@@ -260,7 +257,6 @@ export function PlanPickerComponent(
                           }}
                         />
                       )}
-
                       <div
                         className={
                           'flex w-full flex-col content-center space-y-2 lg:flex-row lg:items-center lg:justify-between lg:space-y-0'

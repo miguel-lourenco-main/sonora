@@ -60,7 +60,6 @@ export function PlanDetails({
           </span>
         </p>
       </div>
-
       <If condition={selectedPlan.lineItems.length > 0}>
         <Separator />
 

@@ -94,15 +94,27 @@ export function PolydocPlanPicker(
 
   // Update form values when currentPlan changes
   useEffect(() => {
-
-    const {product, plan} = getBillingInfoForPageCount(props.config.products, pageCount, selectedInterval);
-
+    const { product, plan, tier, index } = getBillingInfoForPageCount(
+      props.config.products,
+      pageCount,
+      selectedInterval
+    );
+    
     if (product && plan) {
+      // Update form values
       form.setValue('planId', plan.id, { shouldValidate: true });
       form.setValue('productId', product.id, { shouldValidate: true });
+      
+      // Update billing info if we have all required data
+      if (tier) {
+        setCurrentBillingInfo({
+          productName: product.name,
+          tierText: getTierText(tier, plan.lineItems[0]?.unit),
+          tierIndex: index
+        });
+      }
     }
-
-  }, [pageCount, form, props.config.products, selectedInterval]);
+  }, [pageCount, props.config.products, selectedInterval]);
 
   // Update the getFormValue function
   const getFormValue = (key: string) => {

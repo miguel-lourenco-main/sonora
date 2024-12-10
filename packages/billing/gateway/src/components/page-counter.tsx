@@ -156,14 +156,14 @@ export function PageAmountInput({ value, onPageCountChange, billingInfo, classNa
             <button
               onClick={() => handleMarkerClick(5)}
               className="absolute text-sm text-gray-500 hover:text-gray-700 transition-colors cursor-pointer"
-              style={{ left: `calc(${valueToSliderPosition(5) * 100}% + 8px)`, transform: 'translateX(-50%)' }}
+              style={{ left: `calc(${valueToSliderPosition(5) * 100}% + 10px)`, transform: 'translateX(-50%)' }}
             >
               5
             </button>
             <button 
               onClick={() => handleMarkerClick(50)}
               className="absolute text-sm text-gray-500 hover:text-gray-700 transition-colors cursor-pointer"
-              style={{ left: `calc(${valueToSliderPosition(50) * 100}% + 8px)`, transform: 'translateX(-50%)' }}
+              style={{ left: `calc(${valueToSliderPosition(50) * 100}% + 10px)`, transform: 'translateX(-50%)' }}
             >
               50
             </button>
