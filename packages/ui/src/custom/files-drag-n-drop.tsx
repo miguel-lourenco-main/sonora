@@ -50,7 +50,7 @@ export const FilesDragNDrop = forwardRef<
 
     const onDrop = useCallback((acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
       if (!acceptedFiles?.length) {
-        toast.error("file error, probably too big");
+        toast.error("File error: file is too big");
         return;
       }
       
