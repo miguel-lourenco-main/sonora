@@ -77,4 +77,6 @@ git push origin
 ```
 
 # Create a new app
-Remove `pnpm run supabase:typegen:packages` from `package.json`
+- Change `name` in `package.json` to the new app name
+- Change `project_id` in `supabase/config.toml` to the new app name
+- In `package.json`, remove `pnpm run supabase:typegen:packages && ` from `"supabase:typegen"`. Only web can generate types for packages.
