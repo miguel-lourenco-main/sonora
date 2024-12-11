@@ -60,7 +60,7 @@ polydoc-deploy:
     - cm3588
   image: 'node:22.11'
   dependencies:
-    - polydoc-build
+    - build
   script:
     - cd apps/polydoc
     - pnpm cloudflare:deploy
