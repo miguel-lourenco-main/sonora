@@ -27,7 +27,7 @@ import {
   RadioGroupItemLabel,
 } from '@kit/ui/radio-group';
 import { Trans } from '@kit/ui/trans';
-import { cn } from '@kit/ui/utils';
+import { cn } from '@kit/ui/lib';
 import { z } from 'zod';
 import { toast } from 'sonner';
 import { calculateTieredCost } from '../../lib/utils';

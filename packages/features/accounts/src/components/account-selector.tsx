@@ -20,7 +20,7 @@ import { If } from '@kit/ui/if';
 import { Popover, PopoverContent, PopoverTrigger } from '@kit/ui/popover';
 import { Separator } from '@kit/ui/separator';
 import { Trans } from '@kit/ui/trans';
-import { cn } from '@kit/ui/utils';
+import { cn } from '@kit/ui/lib';
 
 import { CreateTeamAccountDialog } from '../../../team-accounts/src/components/create-team-account-dialog';
 import { usePersonalAccountData } from '../hooks/use-personal-account-data';

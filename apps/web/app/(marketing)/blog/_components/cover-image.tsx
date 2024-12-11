@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import { cn } from '@kit/ui/utils';
+import { cn } from '@kit/ui/lib';
 
 type Props = {
   title: string;

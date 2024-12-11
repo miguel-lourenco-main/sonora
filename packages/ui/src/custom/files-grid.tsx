@@ -8,7 +8,7 @@ import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { FILE_SUPPORTED_TYPES } from "@kit/shared/constants";
 import { cn } from "../lib";
-import { TrackableFile } from "@kit/shared/types";
+import { TrackableFile } from "../lib/interfaces";
 import { StatusIndicator } from "./file-status-indicator";
 
 interface FilesGridProps {

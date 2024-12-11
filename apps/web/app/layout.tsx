@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers';
 
 import { Toaster } from '@kit/ui/sonner';
-import { cn } from '@kit/ui/utils';
+import { cn } from '@kit/ui/lib';
 
 import { RootProviders } from '~/components/root-providers';
 import { heading, sans } from '~/lib/fonts';

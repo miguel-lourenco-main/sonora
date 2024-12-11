@@ -7,7 +7,7 @@ import { FileIcon } from 'lucide-react';
 import { cn } from '../lib';
 import dynamic from 'next/dynamic';
 import { Card } from '../shadcn/card';
-import { TabData } from '@kit/shared/types';
+import { TabData } from '../lib/interfaces';
 import { ErrorBoundary } from 'react-error-boundary';
 import { PDFErrorFallback } from './pdf-error-fallback';
 

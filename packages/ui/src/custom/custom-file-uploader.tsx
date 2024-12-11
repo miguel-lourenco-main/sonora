@@ -8,7 +8,7 @@ import TooltipComponent from "@kit/ui/tooltip-component";
 import { FILE_SUPPORTED_TYPES, FILE_SUPPORTED_TYPES_VALUES_STRING } from "@kit/shared/constants";
 import FilesDragNDrop from "@kit/ui/files-drag-n-drop";
 import FilesGrid from "@kit/ui/files-grid";
-import { TrackableFile } from "@kit/shared/types";
+import { TrackableFile } from "../lib/interfaces";
 
 interface CustomFileUploadProps {
     files?: TrackableFile[];

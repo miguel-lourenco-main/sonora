@@ -26,9 +26,13 @@ import { If } from '@kit/ui/if';
 import { SubMenuModeToggle } from '@kit/ui/mode-toggle';
 import { ProfileAvatar } from '@kit/ui/profile-avatar';
 import { Trans } from '@kit/ui/trans';
-import { cn } from '@kit/ui/utils';
+import { cn } from '@kit/ui/lib';
 
 import { usePersonalAccountData } from '../hooks/use-personal-account-data';
+
+/**
+ * Improve this component so that it can be used in both the web and polydoc apps, with different paths/routes.
+ */
 
 export function PersonalAccountDropdown({
   className,

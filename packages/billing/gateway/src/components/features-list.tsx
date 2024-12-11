@@ -1,7 +1,7 @@
 import { Interval } from "../lib/interfaces";
 
 import { Trans } from "@kit/ui/trans";
-import { cn } from "@kit/ui/utils";
+import { cn } from '@kit/ui/lib';
 
 import { CheckCircle } from "lucide-react";
 import Link from "next/link";

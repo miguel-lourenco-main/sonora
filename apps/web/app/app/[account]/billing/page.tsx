@@ -10,7 +10,7 @@ import { AppBreadcrumbs } from '@kit/ui/app-breadcrumbs';
 import { If } from '@kit/ui/if';
 import { PageBody } from '@kit/ui/page';
 import { Trans } from '@kit/ui/trans';
-import { cn } from '@kit/ui/utils';
+import { cn } from '@kit/ui/lib';
 
 import billingConfig from '~/config/billing.config';
 import { createI18nServerInstance } from '~/lib/i18n/i18n.server';

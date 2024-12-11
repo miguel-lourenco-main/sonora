@@ -8,7 +8,7 @@ import type { LineItemSchema } from '@kit/billing';
 import { formatCurrency, getCurrentTier } from '@kit/shared/utils';
 import { If } from '@kit/ui/if';
 import { Trans } from '@kit/ui/trans';
-import { cn } from '@kit/ui/utils';
+import { cn } from '@kit/ui/lib';
 import { isActiveTier } from '../lib/utils';
 
 const className = 'flex text-secondary-foreground items-center text-sm';

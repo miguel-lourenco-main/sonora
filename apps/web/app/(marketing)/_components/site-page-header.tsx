@@ -1,4 +1,4 @@
-import { cn } from '@kit/ui/utils';
+import { cn } from '@kit/ui/lib';
 
 export function SitePageHeader({
   title,

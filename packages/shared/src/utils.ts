@@ -1,5 +1,5 @@
 import { FILE_SUPPORTED_TYPES } from "./constants";
-import { PlainFileObject } from "./interfaces";
+import { PlainFileObject } from "./types";
 import { UseFormReturn } from "react-hook-form";
 
 /**

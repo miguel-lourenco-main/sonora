@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 import { DirectionOptions, FilesDragNDropProps } from "./_lib/types";
 import { FileSvgDraw } from "./file-svg-draw";
 import FilesGrid from "./files-grid";
-import { TrackableFile } from "@kit/shared/types";
+import { TrackableFile } from "../lib/interfaces";
 import { MAX_FILE_SIZE_MB, MAX_FILE_SIZE_STRING } from "@kit/shared/constants";
 
 const DEFAULT_ACCEPT = {

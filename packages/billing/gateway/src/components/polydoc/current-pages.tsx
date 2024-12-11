@@ -3,7 +3,7 @@
 import { getSupabaseBrowserClient } from "@kit/supabase/browser-client";
 import { Database } from "@kit/supabase/database";
 import { Progress } from "@kit/ui/progress";
-import { cn } from "@kit/ui/utils";
+import { cn } from '@kit/ui/lib';
 import { useEffect, useState } from "react";
 
 type UserTokens = {

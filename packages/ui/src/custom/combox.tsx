@@ -8,7 +8,7 @@ import { useState, useRef, useEffect } from "react"
 import TooltipComponent from "./tooltip-component"
 import { useTranslation } from "react-i18next"
 import { POPULAR_LANGUAGES } from "@kit/shared/constants"
-import { Language } from "@kit/shared/interfaces"
+import { Language } from "@kit/shared/types"
 
 function CustomCombox({
   list,

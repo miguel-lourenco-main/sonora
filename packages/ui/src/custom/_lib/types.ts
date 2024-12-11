@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { formSchema } from "./schemas/translate-files";
-import { TrackableFile } from "@kit/shared/types";
+import { TrackableFile } from "../../lib/interfaces";
 
 export type PDFFile = string | File | null;
 

@@ -31,7 +31,7 @@ import FilesDragNDrop from "./files-drag-n-drop"
 import I18nComponent from "@kit/ui/i18n-component"
 
 
-import { TrackableFile } from "@kit/shared/types"
+import { TrackableFile } from "../lib/interfaces";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]

@@ -10,7 +10,7 @@ import { VariantProps, cva } from 'class-variance-authority';
 import { ChevronDown, PanelLeft } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
-import { useIsMobile } from '../hooks/use-mobile';
+import { useIsMobile } from '../lib/hooks/use-mobile';
 import { cn, isRouteActive } from '../lib';
 import { If } from '../makerkit/if';
 import type { SidebarConfig } from '../makerkit/sidebar';

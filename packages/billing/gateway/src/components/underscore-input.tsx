@@ -1,7 +1,7 @@
 'use client';
 
 import { MAX_PAGES_SUBSCRIPTION } from "@kit/shared/constants";
-import { cn } from "@kit/ui/utils";
+import { cn } from '@kit/ui/lib';
 import { forwardRef, useEffect, useRef, useState } from "react";
 
 interface Props {
