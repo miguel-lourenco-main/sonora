@@ -45,9 +45,9 @@ build:
   script:
     - cd apps/web
     - pnpm cloudflare:build
-    - cd apps/polydoc
+    - cd ../apps/polydoc
     - pnpm cloudflare:build
-    - cd apps/sonora
+    - cd ../apps/sonora
     - pnpm cloudflare:build
   artifacts:
     paths:
