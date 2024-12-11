@@ -45,6 +45,7 @@ build:
   script:
     - cd apps/web
     - pnpm cloudflare:build
+    - ls
     - cd ../apps/polydoc
     - pnpm cloudflare:build
     - cd ../apps/sonora
