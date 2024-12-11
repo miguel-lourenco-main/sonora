@@ -24,3 +24,5 @@ export const POST = enhanceRouteHandler(
     auth: false,
   },
 );
+
+export const runtime = 'edge'
