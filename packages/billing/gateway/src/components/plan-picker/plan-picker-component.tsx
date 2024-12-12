@@ -29,8 +29,8 @@ import {
 import { Trans } from '@kit/ui/trans';
 import { cn } from '@kit/ui/lib';
 import { z } from 'zod';
-import { toast } from 'sonner';
 import { calculateTieredCost } from '../../lib/utils';
+import Link from 'next/link';
 
 
 
@@ -48,6 +48,7 @@ export function PlanPickerComponent(
     canStartTrial?: boolean;
     pending?: boolean;
     currentSubscriptionVariantId?: string;
+    contactUsURL?: string;
   }>,
 ) {
   const { t } = useTranslation(`billing`);
@@ -336,11 +337,14 @@ export function PlanPickerComponent(
       {selectedProduct?.id === 'business' ? (
         <Button
           type={'button'}
-          onClick={() => {
-              toast.success('This is a business account, please contact sales@polydoc.ai for pricing')
-          }}
         >
-          {commonT(`contactUs`)}
+          {props.contactUsURL ? (
+            <Link href={props.contactUsURL}>
+              {commonT(`contactUs`)}
+            </Link>
+          ) : (
+            commonT(`contactUs`)
+          )}
         </Button>
       ):(
         <Button

@@ -25,6 +25,7 @@ export function PlanPicker(
     onSubmit: (data: { planId: string; productId: string }) => void;
     canStartTrial?: boolean;
     pending?: boolean;
+    contactUsURL?: string;
   }>,
 ) {
 
@@ -80,7 +81,14 @@ export function PlanPicker(
         className={'flex space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0'}
         onSubmit={onSubmitForm}
       >
-        <PlanPickerComponent isFormValid={form.formState.isValid} setFormValue={setFormValue} getFormValue={getFormValue} intervals={intervals} {...props} />
+        <PlanPickerComponent 
+          isFormValid={form.formState.isValid} 
+          setFormValue={setFormValue} 
+          getFormValue={getFormValue} 
+          intervals={intervals} 
+          {...props} 
+          contactUsURL={props.contactUsURL}
+        />
         {selectedPlanId && selectedInterval && selectedProductId ? (
           <PlanDetails
             selectedInterval={selectedInterval}

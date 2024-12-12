@@ -168,8 +168,15 @@ export const POPULAR_LANGUAGES = [
 
 export const DEFAULT_TARGET_LANGUAGE = POPULAR_LANGUAGES[0]?.value ?? 'en'
 
-// For backwards compatibility
-export const LANGUAGES = Object.values(LANGUAGES_BY_REGION).flat();
+
+export const LANGUAGES: Language[] = Object.values(LANGUAGES_BY_REGION)
+  .flat()
+  .sort((a, b) => {
+    // Extract the text part of the label (after the flag emoji and space)
+    const nameA = a.label.split(' ').slice(1).join(' ').toLowerCase();
+    const nameB = b.label.split(' ').slice(1).join(' ').toLowerCase();
+    return nameA.localeCompare(nameB);
+  });
 
 export const MAX_PAGES_SUBSCRIPTION  = 10000;
 

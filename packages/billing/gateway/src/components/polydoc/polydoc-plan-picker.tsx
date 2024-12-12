@@ -172,6 +172,7 @@ export function PolydocPlanPicker(
           getFormValue={getFormValue} 
           intervals={intervals} 
           currentSubscriptionVariantId={props.currentSubscriptionVariantId}
+          contactUsURL={'mailto:sales@polydoc.ai'}
           {...props} 
         />
         <PlanDetails
