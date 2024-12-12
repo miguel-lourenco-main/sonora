@@ -29,6 +29,8 @@ type TreeViewProps = {
     }
 ) & React.HTMLAttributes<HTMLDivElement>;
 
+export const DEFAULT_FILE_TREE = {name: "root_generated", children: [], id: "root_generated", isSelectable: true}
+
 export const TreeView = ({
   elements,
   className,
