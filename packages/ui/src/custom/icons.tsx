@@ -4,6 +4,12 @@ import * as React from 'react';
 
 import { cn } from "../lib"
 
+/**
+ * Collection of custom icon components used throughout the application
+ * Each icon is a React component that renders an SVG with consistent sizing
+ * and optional className support
+ */
+
 function IconNextChat({
   className,
   inverted,
@@ -87,6 +93,11 @@ function IconNextChat({
     </svg>
   );
 }
+
+/**
+ * Browser/Platform Icons
+ * Standard icons for various platforms and browsers
+ */
 
 function IconEdgen({ className, ...props }: React.ComponentProps<'svg'>) {
   return (
@@ -176,6 +187,11 @@ function IconSeparator({ className, ...props }: React.ComponentProps<'svg'>) {
     </svg>
   );
 }
+
+/**
+ * UI Action Icons
+ * Icons representing common UI actions (arrows, trash, refresh, etc.)
+ */
 
 function IconArrowDown({ className, ...props }: React.ComponentProps<'svg'>) {
   return (
@@ -517,9 +533,12 @@ function IconCloudDownload({ className }: React.ComponentProps<'svg'>) {
   )
 }
 
-/////////////////////////////////////// File Icons ///////////////////////////////////////
-
-// SOURCE: https://www.figma.com/design/5KFanBN5bIg8KMPCi99LL9/40-File-type-%2F-File-extension-icon-(Community)?node-id=2-2843&node-type=CANVAS&t=GTi08O4B7vMu24vR-0
+/**
+ * Document Type Icons
+ * Icons representing different document formats
+ * 
+ * SOURCE: https://www.figma.com/design/5KFanBN5bIg8KMPCi99LL9/40-File-type-%2F-File-extension-icon-(Community)?node-id=2-2843&node-type=CANVAS&t=GTi08O4B7vMu24vR-0
+ */
 
 function IconPDF({ className, ...props }: React.ComponentProps<'svg'>) {
   return (
@@ -930,7 +949,7 @@ function PolydocFirstLetterIcon({
   );
 }
 
-
+// Export all icons
 export {
   IconEdit,
   IconNextChat,

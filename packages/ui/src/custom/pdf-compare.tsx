@@ -11,8 +11,13 @@ import { TabData } from '../lib/interfaces';
 import { ErrorBoundary } from 'react-error-boundary';
 import { PDFErrorFallback } from './pdf-error-fallback';
 
+// Dynamically import PDFViewer to avoid SSR issues
 const PDFViewer = dynamic(() => import('./pdf-viewer'), { ssr: false });
 
+/**
+ * PDFView Component
+ * Renders a single PDF viewer with loading and error states
+ */
 export function PDFView({
     file,
     isLoading,
@@ -23,37 +28,38 @@ export function PDFView({
     handleScroll,
     scrollRefs,
 }: {
-    file: File | null, 
-    isLoading: boolean,
-    isRendered: boolean, 
-    index: number, 
-    type?: string,
-    setIsRendered?: (b: boolean) => void,
-    handleScroll?: (index: number) => (e: UIEvent<HTMLDivElement>) => void, 
-    scrollRefs?: React.RefObject<HTMLDivElement>[]
+    file: File | null,           // PDF file to display
+    isLoading: boolean,          // Loading state
+    isRendered: boolean,         // Whether PDF is fully rendered
+    index: number,               // Index for sync scrolling
+    type?: string,               // PDF type identifier
+    setIsRendered?: (b: boolean) => void,  // Callback when rendering completes
+    handleScroll?: (index: number) => (e: UIEvent<HTMLDivElement>) => void,  // Sync scroll handler
+    scrollRefs?: React.RefObject<HTMLDivElement>[]  // Refs for sync scrolling
 }) {
     const { t } = useTranslation("custom");
+
     const onScroll = handleScroll ? handleScroll(index) : undefined;
     const ref = scrollRefs?.[index] ? scrollRefs[index] : undefined;
 
     const handleReset = () => {
-        // Reset the rendered state when retrying
+        // Reset rendered state when retrying after error
         if (setIsRendered) {
             setIsRendered(false);
         }
     };
 
     return (
-        <div 
-            key={index}
-            className="size-full justify-center items-center overflow-hidden border-muted border rounded-md"
-        >
+        <div className="size-full justify-center items-center overflow-hidden border-muted border rounded-md">
+            {/* Show message when no file is available */}
             {!file && !isLoading && (
                 <div className="size-full flex items-center justify-center">
                     {t('noFileCurrentlyAvailable')}
                 </div>
             )}
+            {/* Show loading state */}
             {(isLoading || (!isRendered && file)) && <LoadingDocument />}
+            {/* Render PDF viewer when file is available */}
             {file && (
                 <div className={cn("h-full w-full", isRendered ? "flex" : "hidden")}>
                     <ErrorBoundary
@@ -74,11 +80,18 @@ export function PDFView({
     );
 }
 
+/**
+ * File state interface for tracking loading and file status
+ */
 type FileState = {
   status: 'idle' | 'loading' | 'success' | 'error';
   file: File | null;
 };
 
+/**
+ * PDFCompare Component
+ * Displays two PDF viewers side by side with synchronized scrolling
+ */
 export default function PDFCompare({
     inputFile,
     outputFile,
@@ -87,13 +100,14 @@ export default function PDFCompare({
     currentTab,
     type,
 }: {
-    inputFile: File | null;
-    outputFile: File | null;
-    isInputFileLoading: boolean;
-    isOutputFileLoading: boolean;
-    currentTab?: TabData;
-    type?: string;
+    inputFile: File | null;          // Original PDF file
+    outputFile: File | null;         // Comparison PDF file
+    isInputFileLoading: boolean;     // Loading state for input file
+    isOutputFileLoading: boolean;    // Loading state for output file
+    currentTab?: TabData;            // Current tab information
+    type?: string;                   // PDF type identifier
 }) {
+    // State management for file loading and rendering
     const [inputFileState, setInputFileState] = useState<FileState>({ 
         status: isInputFileLoading ? 'loading' : 'idle', 
         file: inputFile 
@@ -105,10 +119,12 @@ export default function PDFCompare({
     const [inputFileRendered, setInputFileRendered] = useState(false);
     const [outputFileRendered, setOutputFileRendered] = useState(false);
 
+    // Refs for synchronized scrolling
     const scrollRef1 = useRef<HTMLDivElement>(null);
     const scrollRef2 = useRef<HTMLDivElement>(null);
     const scrollRefs = useMemo(() => [scrollRef1, scrollRef2], []);
     
+    // Update file states when props change
     useEffect(() => {
         setInputFileState({
             status: isInputFileLoading ? 'loading' : inputFile ? 'success' : 'idle',
@@ -120,6 +136,7 @@ export default function PDFCompare({
         });
     }, [inputFile, outputFile, isInputFileLoading, isOutputFileLoading]);
 
+    // Synchronized scrolling handler
     const handleScroll = useCallback((index: number) => (e: UIEvent<HTMLDivElement>) => {
         const otherIndex = 1 - index;
         const otherRef = scrollRefs[otherIndex]?.current;
@@ -131,12 +148,14 @@ export default function PDFCompare({
     return (
         <div className="flex flex-col size-full overflow-hidden">
             <div className="grid md:grid-cols-2 gap-4 h-full min-h-0">
+                {/* Left PDF viewer */}
                 <Card className="flex flex-col min-h-0 p-4">
                     <div className="flex items-center gap-2 mb-4 text-sm text-muted-foreground">
                         {currentTab?.icon ?? <FileIcon className="size-4" />}
                         <span>{currentTab?.exampleFiles?.original?.name ?? currentTab?.file}</span>
                     </div>
-                    <div className={cn("size-full min-h-0 rounded-lg border bg-zinc-50 dark:bg-zinc-900 flex items-center justify-center", !inputFileRendered && "flex-1")}>
+                    <div className={cn("size-full min-h-0 rounded-lg border bg-zinc-50 dark:bg-zinc-900 flex items-center justify-center", 
+                        !inputFileRendered && "flex-1")}>
                         <PDFView
                             file={inputFileState.file}
                             isLoading={inputFileState.status === 'loading'}
@@ -149,12 +168,14 @@ export default function PDFCompare({
                         />
                     </div>
                 </Card>
+                {/* Right PDF viewer */}
                 <Card className="flex flex-col min-h-0 p-4">
                     <div className="flex items-center gap-2 mb-4 text-sm text-muted-foreground">
                         {currentTab?.icon ?? <FileIcon className="size-4" />}
                         <span>{currentTab?.exampleFiles?.translated?.name ?? currentTab?.file}</span>
                     </div>
-                    <div className={cn("size-full min-h-0 rounded-lg border bg-zinc-50 dark:bg-zinc-900 flex items-center justify-center", !outputFileRendered && "flex-1")}>
+                    <div className={cn("size-full min-h-0 rounded-lg border bg-zinc-50 dark:bg-zinc-900 flex items-center justify-center", 
+                        !outputFileRendered && "flex-1")}>
                         <PDFView
                             file={outputFileState.file}
                             isLoading={outputFileState.status === 'loading'}

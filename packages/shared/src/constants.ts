@@ -1,36 +1,29 @@
-<<<<<<< HEAD
-import { z } from 'zod';
+/**
+ * Global constants and configuration values used throughout the application.
+ * Contains definitions for:
+ * - Supported file types and their extensions
+ * - Language configurations and regional mappings
+ * - System limits and constraints
+ */
+
 import { Language } from './types';
-=======
-import { Language } from './interfaces';
->>>>>>> main
 
-export const EDGEN_BACKEND_URL = process.env.EDGEN_BACKEND_URL ?? "http://127.0.0.1:30000";
-
+// Mapping of MIME types to their corresponding file extensions for supported file formats
 export const FILE_SUPPORTED_TYPES = {
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"],
   "application/pdf": [".pdf"],
   "application/vnd.openxmlformats-officedocument.presentationml.presentation": [".pptx"],
 }
 
-export const FILE_FORMAT_GROUPS = [
-  {
-      name: "MS Office",
-      formats: ["Docx", "Pptx"]
-  },
-  {
-      name: "Adobe",
-      formats: ["Pdf"]
-  },
-];
-
+// Array of supported MIME types
 export const FILE_SUPPORTED_TYPES_KEYS = Object.keys(FILE_SUPPORTED_TYPES)
+// Array of supported file extensions (flattened)
 export const FILE_SUPPORTED_TYPES_VALUES = Object.values(FILE_SUPPORTED_TYPES).flat()
 
+// Comma-separated string of supported file extensions
 export const FILE_SUPPORTED_TYPES_VALUES_STRING = Object.values(FILE_SUPPORTED_TYPES).flat().join(",")
 
-export const CONNECTOR_DRAG_N_DROP_HEIGHT = "25rem"
-
+// Mapping of geographical regions to their supported languages with metadata
 export const LANGUAGES_BY_REGION: Record<string, Language[]> = {
   "Asia": [
     { longValue: "arabic", value: "ar", label: "🇸🇦 Arabic" },
@@ -48,7 +41,7 @@ export const LANGUAGES_BY_REGION: Record<string, Language[]> = {
     { longValue: "korean", value: "ko", label: "🇰🇷 Korean" },
     { longValue: "kazakh", value: "kk", label: "🇰🇿 Kazakh" },
     { longValue: "khmer", value: "km", label: "🇰🇭 Khmer" },
-    { longValue: "kannada", value: "kn", label: "🇮🇳 Kannada" },
+    { longValue: "kannada", value: "kn", label: "🇳 Kannada" },
     { longValue: "lao", value: "lo", label: "🇱🇦 Lao" },
     { longValue: "malay", value: "ms", label: "🇲🇾 Malay" },
     { longValue: "mongolian", value: "mn", label: "🇲🇳 Mongolian (Cyrillic)" },
@@ -129,6 +122,7 @@ export const LANGUAGES_BY_REGION: Record<string, Language[]> = {
   ],
 };
 
+// Commonly used languages for quick access
 export const POPULAR_LANGUAGES = [
   { longValue: "english", value: "en", label: "🇺🇸 English" },
   { longValue: "spanish", value: "es", label: "🇪🇸 Spanish" },
@@ -136,9 +130,10 @@ export const POPULAR_LANGUAGES = [
   { longValue: "chinese_simplified", value: "zh-CN", label: "🇨🇳 Simplified Chinese" },
 ];
 
+// Default target language code (falls back to 'en' if POPULAR_LANGUAGES is empty)
 export const DEFAULT_TARGET_LANGUAGE = POPULAR_LANGUAGES[0]?.value ?? 'en'
 
-
+// Alphabetically sorted array of all supported languages
 export const LANGUAGES: Language[] = Object.values(LANGUAGES_BY_REGION)
   .flat()
   .sort((a, b) => {
@@ -148,8 +143,11 @@ export const LANGUAGES: Language[] = Object.values(LANGUAGES_BY_REGION)
     return nameA.localeCompare(nameB);
   });
 
-export const MAX_PAGES_SUBSCRIPTION  = 10000;
+// Maximum number of pages allowed for subscription tier
+export const MAX_PAGES_SUBSCRIPTION = 10000;
 
-export const MAX_FILE_SIZE_MB = 256 * 1024 * 1024; // 256MB
+// Maximum file size limit in bytes (256MB)
+export const MAX_FILE_SIZE_MB = 256 * 1024 * 1024;
 
+// Human-readable string representation of the maximum file size
 export const MAX_FILE_SIZE_STRING = `${MAX_FILE_SIZE_MB / 1024 / 1024}MB`;

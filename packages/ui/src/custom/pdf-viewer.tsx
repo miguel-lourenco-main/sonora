@@ -3,15 +3,16 @@
 import React, { UIEventHandler, useCallback, useEffect, useRef, useState } from "react";
 import { useResizeObserver } from "@wojtekmaj/react-hooks";
 import { PDFFile } from "./_lib/types";
-
 import { pdfjs } from "react-pdf";
 import dynamic from "next/dynamic";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import "react-pdf/dist/esm/Page/TextLayer.css";
 
+// Dynamically import PDF components to avoid SSR issues
 const Page = dynamic(() => import("react-pdf").then((mod) => mod.Page), { ssr: false });
 const Document = dynamic(() => import("react-pdf").then((mod) => mod.Document), { ssr: false });
 
+// Initialize PDF.js worker
 if(typeof window !== 'undefined' && !pdfjs.GlobalWorkerOptions.workerSrc){
   pdfjs.GlobalWorkerOptions.workerSrc = "./pdf.worker.mjs";
 }
@@ -20,19 +21,33 @@ const options = {};
 const resizeObserverOptions = {};
 const maxWidth = 800;
 
+/**
+ * PDFViewer Component
+ * A responsive PDF viewer with dynamic page loading and scroll synchronization
+ */
 export default function PDFViewer(
-  { pdf, setIsRendered, type, onScroll, scrollRef }
-  : 
-  { pdf: PDFFile; setIsRendered?: (b: boolean) => void; type?: string; onScroll?: UIEventHandler<HTMLDivElement> | undefined; scrollRef?: React.RefObject<HTMLDivElement>}
+  { 
+    pdf,                // PDF file to display
+    setIsRendered,     // Callback when PDF is fully rendered
+    type,              // PDF type (e.g., 'pptx' for special handling)
+    onScroll,          // Scroll synchronization callback
+    scrollRef          // Ref for scroll synchronization
+  }: { 
+    pdf: PDFFile; 
+    setIsRendered?: (b: boolean) => void; 
+    type?: string; 
+    onScroll?: UIEventHandler<HTMLDivElement>; 
+    scrollRef?: React.RefObject<HTMLDivElement>;
+  }
 ) {
-
+  // State management
   const [file, setFile] = useState<PDFFile>(pdf);
   const [numPages, setNumPages] = useState<number>(0);
   const [pageWidth, setPageWidth] = useState<number>(maxWidth);
   const [pageHeight, setPageHeight] = useState<number>(0);
   const [visiblePages, setVisiblePages] = useState<number[]>([]);
-  //const [hasEnoughCredits, setHasEnoughCredits] = useState<boolean>(false);
 
+  // Refs for cleanup and observation
   const pdfDocumentRef = useRef<pdfjs.PDFDocumentProxy | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const mountedRef = useRef(true);
@@ -40,8 +55,12 @@ export default function PDFViewer(
   const genericRef = useRef<HTMLDivElement | null>(null);
   const firstPageRef = useRef<HTMLCanvasElement | null>(null);
 
+  // Use provided scroll ref or fallback to generic ref
   const containerRef = scrollRef ?? genericRef;
 
+  /**
+   * Handle container resize
+   */
   const onResize = useCallback<ResizeObserverCallback>((entries) => {
     const [entry] = entries;
     if (entry) {
@@ -52,46 +71,49 @@ export default function PDFViewer(
 
   useResizeObserver(containerRef.current, resizeObserverOptions, onResize);
 
+  /**
+   * Calculate and update page height based on file type and dimensions
+   */
   const updatePageHeight = useCallback(() => {
     if (firstPageRef.current) {
+      let fileWidth = 210;  // Default A4 width in mm
+      let fileHeight = 297; // Default A4 height in mm
 
-      let fileWidth = 210; // mm
-      let fileHeight = 297; // mm
-
+      // Adjust dimensions for PowerPoint files
       if (type === 'pptx' || (file instanceof File && file.name.endsWith('.pptx'))) {
-        fileWidth = 254;  // 10 inches in mm
+        fileWidth = 254;   // 10 inches in mm
         fileHeight = 190.5;
       }
 
       const scale = fileHeight / fileWidth;
-
       const expectedHeight = pageWidth * scale;
-
       setPageHeight(expectedHeight);
     }
   }, [pageWidth, file, type]);
 
+  /**
+   * Cleanup PDF resources and reset state
+   */
   const cleanupPDF = useCallback(() => {
-
     if (pdfDocumentRef.current) {
       void pdfDocumentRef.current.destroy();
       pdfDocumentRef.current = null;
     }
-
     setNumPages(0);
     setVisiblePages([]);
     if (setIsRendered) setIsRendered(false);
-
   }, [setIsRendered]);
 
+  // Update file when prop changes
   useEffect(() => {
     setFile(pdf);
     cleanupPDF();
     if (setIsRendered) {
-      setIsRendered(false); // Reset loaded state when PDF changes
+      setIsRendered(false);
     }
   }, [pdf, cleanupPDF, setIsRendered]);
 
+  // Cleanup on unmount
   useEffect(() => {
     mountedRef.current = true;
     return () => {
@@ -100,6 +122,9 @@ export default function PDFViewer(
     };
   }, [cleanupPDF]);
 
+  /**
+   * Handle successful PDF document load
+   */
   function onDocumentLoadSuccess(pdfDoc: pdfjs.PDFDocumentProxy): void {
     if (!mountedRef.current) return;
     
@@ -107,7 +132,7 @@ export default function PDFViewer(
     setNumPages(pdfDoc.numPages);
     updatePageHeight();
     
-    // Add a small delay before setting loaded to true
+    // Delay setting rendered state to ensure smooth transition
     timerRef.current = setTimeout(() => {
       if (mountedRef.current && setIsRendered) {
         setIsRendered(true);
@@ -115,27 +140,7 @@ export default function PDFViewer(
     }, 500);
   }
 
-  useEffect(() => {
-    return () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
-      mountedRef.current = false;
-      cleanupPDF();
-    };
-  }, [cleanupPDF]);
-
-  useEffect(() => {
-    const currentTimer = mountedRef.current;
-    return () => {
-      if (typeof currentTimer === 'number') {
-        clearTimeout(currentTimer);
-      }
-      mountedRef.current = false;
-      cleanupPDF();
-    };
-  }, [cleanupPDF]);
-
+  // Setup intersection observer for page visibility
   useEffect(() => {
     const options = {
       root: null,
@@ -176,6 +181,7 @@ export default function PDFViewer(
         className="flex flex-col space-y-4 w-full"
         loading={null}
       >
+        {/* Render pages */}
         {Array.from(new Array(numPages), (el, index) => (
           <div
             key={`page_${index + 1}`}
@@ -192,6 +198,7 @@ export default function PDFViewer(
               }
             }}
           >
+            {/* Only render pages that are visible */}
             {visiblePages.includes(index + 1) && (
               <Page
                 canvasRef={index === 0 ? firstPageRef : undefined}
@@ -200,40 +207,9 @@ export default function PDFViewer(
                 renderAnnotationLayer={false}
                 renderTextLayer={false}
                 onLoadSuccess={index === 0 ? updatePageHeight : undefined}
-                loading={null} // Prevent default loading indicator
+                loading={null}
               />
             )}
-            {/*!hasEnoughCredits && filter && index > 0 && (
-              <>
-                <div className="absolute bottom-0 left-0 z-20 size-full backdrop-blur-sm pointer-events-none"/>
-                <div className="absolute bottom-0 left-0 z-30 size-full flex items-center justify-center">
-                  {filter}
-                </div>
-              </>                
-            )*/}
-            {/*!hasEnoughCredits && filter && index === 0 && (
-              <>
-                <LinearBlur
-                  side="bottom"
-                  steps={10}
-                  strength={20}
-                  falloffPercentage={60}
-                  tint="rgba(0, 0, 0, 0.1)"
-                  style={{
-                    position: "absolute",
-                    right: "0px",
-                    bottom: "0px",
-                    left: "0px",
-                    zIndex: 20,
-                    pointerEvents: "none",
-                    height: "75%"
-                  }}
-                />
-                <div className="absolute bottom-0 left-0 z-30 flex w-full h-[75%] items-center justify-center bg-transparent">
-                  {filter}
-                </div>
-              </>
-            )*/}
           </div>
         ))}
       </Document>

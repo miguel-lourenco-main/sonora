@@ -11,12 +11,19 @@ import { cn } from "../lib";
 import { TrackableFile } from "../lib/interfaces";
 import { StatusIndicator } from "./file-status-indicator";
 
+/**
+ * Props interface for the FilesGrid component
+ */
 interface FilesGridProps {
-  files: TrackableFile[];
-  onFileRemove?: (filteredFiles: TrackableFile[]) => void;
-  disabled?: boolean;
+  files: TrackableFile[];                                // Array of files to display
+  onFileRemove?: (filteredFiles: TrackableFile[]) => void;  // Optional callback for file removal
+  disabled?: boolean;                                    // Optional disabled state
 }
 
+/**
+ * FilesGrid Component
+ * Displays a responsive grid of files with icons, names, and status indicators
+ */
 export default function FilesGrid({ 
   files, 
   onFileRemove, 
@@ -25,28 +32,39 @@ export default function FilesGrid({
     const gridRef = useRef<HTMLDivElement>(null);
     const { t } = useTranslation('ui');
 
+    /**
+     * Updates grid layout based on container size
+     * Calculates optimal number of columns and rows for the available space
+     */
     useEffect(() => {
         const updateGridLayout = () => {
             const grid = gridRef.current;
             if (grid) {
                 const width = grid.offsetWidth;
                 const height = grid.offsetHeight;
-                const itemSize = 130;
-                const gap = 16;
+                const itemSize = 130;  // Fixed size for each grid item
+                const gap = 16;        // Gap between grid items
 
+                // Calculate optimal grid dimensions
                 const columnCount = Math.floor((width - gap) / (itemSize + gap));
                 const rowCount = Math.floor((height - gap) / (itemSize + gap));
 
+                // Update CSS custom properties for grid layout
                 grid.style.setProperty('--grid-column-count', `${columnCount}`);
                 grid.style.setProperty('--grid-row-count', `${rowCount}`);
             }
         };
 
+        // Initial layout update and resize listener
         updateGridLayout();
         window.addEventListener('resize', updateGridLayout);
         return () => window.removeEventListener('resize', updateGridLayout);
     }, []);
 
+    /**
+     * Handles file removal when delete button is clicked
+     * @param index - Index of the file to remove
+     */
     const handleRemoveFile = (index: number) => {
         if (!disabled && onFileRemove) {
             const file = files[index];
@@ -56,6 +74,11 @@ export default function FilesGrid({
         }
     };
 
+    /**
+     * Determines the appropriate icon for a file based on its type
+     * @param file - File object to get icon for
+     * @returns React component for the file icon
+     */
     const getFileIcon = (file: File) => {
         const extensions = FILE_SUPPORTED_TYPES[file.type as keyof typeof FILE_SUPPORTED_TYPES];
         
@@ -91,14 +114,17 @@ export default function FilesGrid({
                         disabled && "pointer-events-none"
                     )}
                 >
+                    {/* Status indicator for file upload state */}
                     <StatusIndicator 
                         id={file.id} 
                         status={file.uploadingStatus}
                     />
+                    {/* File icon and name */}
                     <div className="flex flex-col size-full items-center p-2 justify-center space-y-2 object-cover group-hover:opacity-20 transition-opacity">
                         {getFileIcon(file.fileObject)}
                         <p className="w-full px-2 text-sm text-center truncate">{file.fileObject.name}</p>
                     </div>
+                    {/* Delete button (shown on hover) */}
                     {!disabled && (
                         <div className="absolute flex size-full items-center justify-center opacity-0 z-20 group-hover:opacity-100 transition-opacity">
                             <Button 

@@ -1,55 +1,66 @@
 import { FILE_SUPPORTED_TYPES } from "./constants";
 import { PlainFileObject } from "./types";
 import { UseFormReturn } from "react-hook-form";
+import { 
+  CurrencyFormatParams,
+  FileExtensionInfo,
+  InsertOrUpdateOptions,
+  DeleteOptions
+} from "./utils.types";
 
 /**
  * Check if the code is running in a browser environment.
+ * @returns {boolean} True if running in browser, false otherwise
  */
-export function isBrowser() {
+export function isBrowser(): boolean {
   return typeof window !== 'undefined';
 }
 
 /**
- * Format the currency based on the currency code
+ * Format a number as currency with the specified locale and currency code
+ * @param {CurrencyFormatParams} params - The formatting parameters
+ * @returns {string} The formatted currency string
  */
-export function formatCurrency(params: {
-  currencyCode: string;
-  locale: string;
-  value: string | number;
-}) {
-  return new Intl.NumberFormat(params.locale, {
+export function formatCurrency({currencyCode, locale, value}: CurrencyFormatParams): string {
+  return new Intl.NumberFormat(locale, {
     style: 'currency',
-    currency: params.currencyCode,
-  }).format(Number(params.value));
+    currency: currencyCode,
+  }).format(Number(value));
 }
 
-export function filterParagraphs(input: string): string {
-  const paragraphs = input.split('\n');
-  const filteredParagraphs = paragraphs.filter(paragraph => !paragraph.trim().startsWith('Sources: /'));
-  return filteredParagraphs.join('\n');
-}
-
+/**
+ * Updates an existing item in an array or adds a new one if it doesn't exist
+ * @template T - Type extending object with an id property
+ * @param {InsertOrUpdateOptions<T>} options - The options for inserting or updating
+ */
 export const handleInsertOrUpdate = <T extends { id: string }>(
-  setter: React.Dispatch<React.SetStateAction<T[]>>,
-  newItem: T
+  options: InsertOrUpdateOptions<T>
 ) => {
-  setter((prev) => {
-    const index = prev.findIndex(item => item.id === newItem.id);
+  options.setter((prev) => {
+    const index = prev.findIndex(item => item.id === options.newItem.id);
     if (index !== -1) {
-      return [...prev.slice(0, index), newItem, ...prev.slice(index + 1)];
+      return [...prev.slice(0, index), options.newItem, ...prev.slice(index + 1)];
     }
-    return [...prev, newItem];
+    return [...prev, options.newItem];
   });
 };
 
+/**
+ * Removes an item from an array by its ID
+ * @template T - Type extending object with an id property
+ * @param {DeleteOptions<T>} options - The options for deleting
+ */
 export const handleDelete = <T extends { id: string }>(
-  setter: React.Dispatch<React.SetStateAction<T[]>>,
-  deletedItemId: string
+  options: DeleteOptions<T>
 ) => {
-  setter((prev) => prev.filter(item => item.id !== deletedItemId));
+  options.setter((prev) => prev.filter(item => item.id !== options.deletedItemId));
 };
 
-// TODO: switch other instances of this function thrghout the repo 
+/**
+ * Converts a File object to a plain JavaScript object for serialization
+ * @param {File} file - The File object to convert
+ * @returns {Promise<PlainFileObject>} A promise that resolves to a plain object representation of the file
+ */
 export function fileToPlainObject(file: File): Promise<PlainFileObject> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -73,6 +84,12 @@ export function fileToPlainObject(file: File): Promise<PlainFileObject> {
   });
 }
 
+/**
+ * Converts a plain object back to a File object
+ * @param {PlainFileObject} plainObject - The plain object representation of a file
+ * @returns {File} A new File object
+ * @throws {Error} If the content format is invalid
+ */
 export function objectToFile(plainObject: PlainFileObject): File {
   const { name, type, content, lastModified } = plainObject;
 
@@ -80,7 +97,7 @@ export function objectToFile(plainObject: PlainFileObject): File {
     throw new Error('Invalid content format');
   }
 
-  const byteString = atob(content.split(',')[1] ?? ""); // Decode base64
+  const byteString = atob(content.split(',')[1] ?? "");
   const arrayBuffer = new ArrayBuffer(byteString.length);
   const uint8Array = new Uint8Array(arrayBuffer);
 
@@ -94,28 +111,41 @@ export function objectToFile(plainObject: PlainFileObject): File {
   return file;
 }
 
+/**
+ * Determines the current tier based on a page count and tier thresholds
+ * @param {number} pageCount - The current number of pages
+ * @param {(number | 'unlimited')[]} tiers - Array of tier thresholds
+ * @returns {number} The index of the current tier
+ */
 export function getCurrentTier(pageCount: number, tiers: (number | 'unlimited')[] ){
-  
-  let index = 0
-
+  let index = 0;
   for (const tier of tiers) {
     const tierUpTo = tier === 'unlimited' ? Infinity : Number(tier);
-    
     if (pageCount > tierUpTo) {
       index=index+1
     }else{
       break
     }
   }
-
-  return index
+  return index;
 }
 
+/**
+ * Gets the keys of a react-hook-form form's values
+ * @template T - Type of the form values
+ * @param {UseFormReturn<T>} form - The form instance from react-hook-form
+ * @returns {(keyof T)[]} Array of form value keys
+ */
 export function getFormKeys<T extends Record<string, unknown>>(form: UseFormReturn<T>) {
   return Object.keys(form.getValues()) as (keyof T)[];
 }
 
-export function getFileExtensionType(filename: string): {extension: string, mimeType: string} {
+/**
+ * Gets the file extension and corresponding MIME type for a filename
+ * @param {string} filename - The filename to analyze
+ * @returns {FileExtensionInfo} Object containing the extension and MIME type
+ */
+export function getFileExtensionType(filename: string): FileExtensionInfo {
   const extension = filename.split('.').pop()?.toLowerCase();
   if (!extension) return {extension: '', mimeType: ''};
 
@@ -128,4 +158,8 @@ export function getFileExtensionType(filename: string): {extension: string, mime
   return {extension, mimeType: ''};
 }
 
+/**
+ * Generates a random 5-digit number as a string for use as a fallback ID
+ * @returns {string} A random 5-digit number as a string
+ */
 export const generateFallbackId = () => Math.floor(10000 + Math.random() * 90000).toString();
