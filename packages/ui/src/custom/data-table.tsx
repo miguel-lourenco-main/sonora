@@ -33,19 +33,30 @@ import I18nComponent from "@kit/ui/i18n-component"
 
 import { useCallback, useEffect, useState, useRef } from "react"
 
+/**
+ * Props interface for the CustomDataTable component
+ */
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[],
-  tableLabel: string
-  filters: Filter[]
-  createToolbarButtons: (rowSelection?: RowSelectionState, setRowSelection?: React.Dispatch<React.SetStateAction<RowSelectionState>>, hasSelected?: boolean) => React.JSX.Element
-  onRowClick?: (id: string) => void
-  identifier?: string
-  initialSorting?: SortingState
+  columns: ColumnDef<TData, TValue>[]     // Column definitions
+  data: TData[]                           // Table data
+  tableLabel: string                      // Label for the table
+  filters: Filter[]                       // Array of filter configurations
+  createToolbarButtons: (                 // Function to create toolbar buttons
+    rowSelection?: RowSelectionState, 
+    setRowSelection?: React.Dispatch<React.SetStateAction<RowSelectionState>>, 
+    hasSelected?: boolean
+  ) => React.JSX.Element
+  onRowClick?: (id: string) => void      // Optional row click handler
+  identifier?: string                     // Optional identifier field
+  initialSorting?: SortingState          // Optional initial sorting state
 }
 
 // TODO: standardize table column sizes, right now, they vary depending on it's child size
 
+/**
+ * CustomDataTable Component
+ * A reusable data table component with sorting, filtering, and pagination capabilities
+ */
 export function CustomDataTable<TData, TValue>({
   columns,
   data,
@@ -57,26 +68,25 @@ export function CustomDataTable<TData, TValue>({
   initialSorting = []
 }: DataTableProps<TData, TValue>) {
 
+  // State management for table features
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
-  const [columnVisibility, setColumnVisibility] =
-    useState<VisibilityState>({})
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
-    []
-  )
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [sorting, setSorting] = useState<SortingState>(initialSorting)
 
+  // Pagination state
   const [pageIndex, setPageIndex] = useState(0)
   const [pageSize, setPageSize] = useState(20)
+  
+  // Refs for pagination handling
   const lastValidPageIndexRef = useRef(0)
   const isDataChangingRef = useRef(false)
-
   const firstTryRef = useRef(true)
 
   /**
-   * TODO: current solution to deal with pagination not resetting when data changes is to reset the page index to 0
-   *        can be problematic. If possible come up witha better solution
+   * Handles pagination state changes
+   * Manages edge cases when data changes and pagination needs to be reset
    */
-
   const handlePaginationChange = useCallback((updater: Updater<PaginationState>) => {
     firstTryRef.current = false
 
@@ -86,23 +96,18 @@ export function CustomDataTable<TData, TValue>({
     }
 
     if (typeof updater === 'function') {
-
       const newState = updater({ pageIndex, pageSize })
-
       setPageSize(newState.pageSize)
       setPageIndex(newState.pageIndex)
-
       lastValidPageIndexRef.current = newState.pageIndex
-
     } else {
-      
       setPageSize(updater.pageSize)
       setPageIndex(updater.pageIndex)
-
       lastValidPageIndexRef.current = updater.pageIndex
     }
   }, [pageIndex, pageSize])
 
+  // Initialize table instance with all features
   const table = useReactTable({
     data,
     columns,
@@ -119,6 +124,7 @@ export function CustomDataTable<TData, TValue>({
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
+    // Feature getters
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -127,23 +133,26 @@ export function CustomDataTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   })
 
+  // Reset pagination when data changes
   useEffect(() => {
     if(!firstTryRef.current) {
       isDataChangingRef.current = true
     }
-
     setPageIndex(lastValidPageIndexRef.current)
-
   }, [data])
 
+  // Memoized toolbar buttons creation
   const toolBarButtonsProcessed = useCallback(() => {
-
-    return createToolbarButtons(rowSelection, setRowSelection, table.getIsSomeRowsSelected() || table.getIsAllRowsSelected())
-
+    return createToolbarButtons(
+      rowSelection, 
+      setRowSelection, 
+      table.getIsSomeRowsSelected() || table.getIsAllRowsSelected()
+    )
   }, [createToolbarButtons, setRowSelection, rowSelection, table])
 
   return (
     <div className="flex flex-col h-full space-y-4">
+      {/* Toolbar with filters and custom buttons */}
       <DataTableToolbar 
         identifier={identifier} 
         table={table} 
@@ -151,8 +160,10 @@ export function CustomDataTable<TData, TValue>({
         filters={filters} 
         toolBarButtonsProcessed={toolBarButtonsProcessed}
       />
+      {/* Main table container */}
       <div className="relative flex-grow overflow-auto border rounded-md">
         <UITable>
+          {/* Table header */}
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -171,6 +182,7 @@ export function CustomDataTable<TData, TValue>({
               </TableRow>
             ))}
           </TableHeader>
+          {/* Table body */}
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
@@ -190,6 +202,7 @@ export function CustomDataTable<TData, TValue>({
                 </TableRow>
               ))
             ) : (
+              // No results message
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
@@ -202,6 +215,7 @@ export function CustomDataTable<TData, TValue>({
           </TableBody>
         </UITable>
       </div>
+      {/* Pagination controls */}
       <DataTablePagination table={table} />
     </div>
   )

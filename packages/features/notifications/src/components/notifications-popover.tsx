@@ -10,7 +10,7 @@ import { Button } from '@kit/ui/button';
 import { Divider } from '@kit/ui/divider';
 import { If } from '@kit/ui/if';
 import { Popover, PopoverContent, PopoverTrigger } from '@kit/ui/popover';
-import { cn } from '@kit/ui/utils';
+import { cn } from '@kit/ui/lib';
 
 import { useDismissNotification, useFetchNotifications } from '../hooks';
 

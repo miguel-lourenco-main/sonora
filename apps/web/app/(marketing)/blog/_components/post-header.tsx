@@ -1,6 +1,6 @@
 import { Cms } from '@kit/cms';
 import { If } from '@kit/ui/if';
-import { cn } from '@kit/ui/utils';
+import { cn } from '@kit/ui/lib';
 
 import { CoverImage } from './cover-image';
 import { DateFormatter } from './date-formatter';

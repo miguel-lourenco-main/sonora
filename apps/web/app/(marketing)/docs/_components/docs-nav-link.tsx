@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import { SidebarMenuButton, SidebarMenuItem } from '@kit/ui/shadcn-sidebar';
-import { cn, isRouteActive } from '@kit/ui/utils';
+import { cn, isRouteActive } from '@kit/ui/lib';
 
 export function DocsNavLink({ label, url }: { label: string; url: string }) {
   const currentPath = usePathname();

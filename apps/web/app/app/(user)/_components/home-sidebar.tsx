@@ -7,7 +7,7 @@ import {
   SidebarNavigation,
   SidebarProvider,
 } from '@kit/ui/shadcn-sidebar';
-import { cn } from '@kit/ui/utils';
+import { cn } from '@kit/ui/lib';
 
 import { AppLogo } from '~/components/app-logo';
 import { ProfileAccountDropdownContainer } from '~/components/personal-account-dropdown-container';

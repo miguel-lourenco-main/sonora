@@ -6,7 +6,7 @@ import { UnderscoreInput } from './underscore-input';
 import { MAX_PAGES_SUBSCRIPTION } from '@kit/shared/constants';
 import { CurrentBillingInfo } from '../lib/interfaces';
 import { TierEffect } from '@kit/ui/tier-effect';
-import { cn } from '@kit/ui/utils';
+import { cn } from '@kit/ui/lib';
 
 interface PageAmountInputProps {
   onPageCountChange: (pageCount: number) => void;

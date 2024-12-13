@@ -4,10 +4,9 @@
     "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json",
     "paths": {
       "~/components": ["./src/shadcn/*"],
-      "~/utils": ["./src/lib/utils"],
       "~/lib/*": ["./src/lib/*"],
-      "~/hooks": ["./src/hooks"],
-      "~/ui": ["./src/shadcn/*"],
+      "~/utils": ["./src/lib/utils"],
+      "~/hooks": ["./src/lib/hooks"],
       "~/ui/*": ["./src/shadcn/*"]
     }
   },

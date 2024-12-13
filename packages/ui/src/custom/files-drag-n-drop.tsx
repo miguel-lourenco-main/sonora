@@ -9,9 +9,12 @@ import { useTranslation } from "react-i18next";
 import { DirectionOptions, FilesDragNDropProps } from "./_lib/types";
 import { FileSvgDraw } from "./file-svg-draw";
 import FilesGrid from "./files-grid";
-import { TrackableFile } from "@kit/shared/types";
+import { TrackableFile } from "../lib/interfaces";
 import { MAX_FILE_SIZE_MB, MAX_FILE_SIZE_STRING } from "@kit/shared/constants";
 
+/**
+ * Default accepted file types with their corresponding extensions
+ */
 const DEFAULT_ACCEPT = {
   "application/pdf": [".pdf"],
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"],
@@ -25,6 +28,10 @@ const DEFAULT_ACCEPT = {
   "image/png": [".png"],
 };
 
+/**
+ * FilesDragNDrop Component
+ * A reusable drag and drop component for file uploads with keyboard navigation support
+ */
 export const FilesDragNDrop = forwardRef<
   HTMLDivElement,
   FilesDragNDropProps & React.HTMLAttributes<HTMLDivElement>
@@ -42,21 +49,27 @@ export const FilesDragNDrop = forwardRef<
     },
     ref
   ) => {
+    // Component state
     const [isFileTooBig, setIsFileTooBig] = useState(false);
     const [activeIndex, setActiveIndex] = useState(-1);
     const [showCover, setShowCover] = useState(true);
     const { t } = useTranslation('ui');
     const direction: DirectionOptions = "ltr";
 
+    /**
+     * Handles file drop events
+     * Processes both accepted and rejected files
+     */
     const onDrop = useCallback((acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
       if (!acceptedFiles?.length) {
         toast.error("File error: file is too big");
         return;
       }
       
-      // Use setFiles as an add operation
+      // Convert files to TrackableFile format and add them
       addFiles(acceptedFiles.map(file => ({ fileObject: file })));
 
+      // Handle rejected files with appropriate error messages
       if (rejectedFiles.length > 0) {
         for (const rejectedFile of rejectedFiles) {
           if (rejectedFile?.errors[0]?.code === "file-too-large") {
@@ -71,10 +84,16 @@ export const FilesDragNDrop = forwardRef<
       }
     }, [addFiles, t]);
 
+    /**
+     * Handler for file removal
+     */
     const handleRemoveFile = useCallback((filteredFiles: TrackableFile[]) => {
       removeFiles(filteredFiles);
     }, [removeFiles]);
 
+    /**
+     * Configure dropzone with options and event handlers
+     */
     const dropzone = useDropzone({
       accept: acceptFiles,
       maxFiles: 1000,
@@ -87,6 +106,11 @@ export const FilesDragNDrop = forwardRef<
       onDropAccepted: () => setIsFileTooBig(false),
     });
 
+    /**
+     * Keyboard navigation handler
+     * Supports arrow keys for navigation, Enter/Space for selection,
+     * Delete/Backspace for removal, and Escape to clear selection
+     */
     const handleKeyDown = useCallback(
       (e: React.KeyboardEvent<HTMLDivElement>) => {
         e.preventDefault();
@@ -94,6 +118,7 @@ export const FilesDragNDrop = forwardRef<
 
         if (!files) return;
 
+        // Navigation helper functions
         const moveNext = () => {
           const nextIndex = activeIndex + 1;
           setActiveIndex(nextIndex > files.length - 1 ? 0 : nextIndex);
@@ -104,6 +129,7 @@ export const FilesDragNDrop = forwardRef<
           setActiveIndex(nextIndex < 0 ? files.length - 1 : nextIndex);
         };
 
+        // Determine navigation keys based on orientation and direction
         const prevKey = orientation === "horizontal"
           ? direction === "ltr" ? "ArrowLeft" : "ArrowRight"
           : "ArrowUp";
@@ -112,6 +138,7 @@ export const FilesDragNDrop = forwardRef<
           ? direction === "ltr" ? "ArrowRight" : "ArrowLeft"
           : "ArrowDown";
 
+        // Handle different key presses
         if (e.key === nextKey) {
           moveNext();
         } else if (e.key === prevKey) {
@@ -136,6 +163,7 @@ export const FilesDragNDrop = forwardRef<
       [files, activeIndex, removeFiles, orientation, direction, dropzone.inputRef]
     );
 
+    // Show cover when no files are present
     useEffect(() => {
       setShowCover(files.length === 0);
     }, [files]);

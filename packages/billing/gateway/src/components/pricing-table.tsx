@@ -20,7 +20,7 @@ import { Button } from '@kit/ui/button';
 import { If } from '@kit/ui/if';
 import { Separator } from '@kit/ui/separator';
 import { Trans } from '@kit/ui/trans';
-import { cn } from '@kit/ui/utils';
+import { cn } from '@kit/ui/lib';
 
 import { LineItemDetails } from './line-item-details';
 

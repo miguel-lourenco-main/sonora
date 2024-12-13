@@ -10,7 +10,7 @@ import {
   SidebarProvider,
   useSidebar,
 } from '@kit/ui/shadcn-sidebar';
-import { cn } from '@kit/ui/utils';
+import { cn } from '@kit/ui/lib';
 
 import { ProfileAccountDropdownContainer } from '~/components//personal-account-dropdown-container';
 import { getTeamAccountSidebarConfig } from '~/config/team-account-navigation.config';

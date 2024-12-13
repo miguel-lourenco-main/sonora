@@ -8,7 +8,7 @@ import { useState, useRef, useEffect } from "react"
 import TooltipComponent from "./tooltip-component"
 import { useTranslation } from "react-i18next"
 import { POPULAR_LANGUAGES } from "@kit/shared/constants"
-import { Language } from "@kit/shared/interfaces"
+import { Language } from "@kit/shared/types"
 
 function CustomCombox({
   list,
@@ -19,26 +19,28 @@ function CustomCombox({
   popularLanguages = POPULAR_LANGUAGES,
   disabled
 }: {
-  list: Language[],
-  tooltip: string,
-  onChange?: (value: string | undefined) => void,
-  initialValue?: string,
-  placeholder?: string,
-  popularLanguages?: Language[],
-  disabled?: boolean
+  // Props interface for the combobox component
+  list: Language[], // Full list of language options
+  tooltip: string, // Tooltip text to display
+  onChange?: (value: string | undefined) => void, // Callback when selection changes
+  initialValue?: string, // Pre-selected value
+  placeholder?: string, // Custom placeholder text
+  popularLanguages?: Language[], // List of commonly used languages to show first
+  disabled?: boolean // Whether the combobox is interactive
 }) {
-  
-  const [open, setOpen] = useState(false)
-  const [value, setValue] = useState(initialValue)
-  const scrollAttempts = useRef(0)
-  const lastScrollTime = useRef(0)
+  // State management
+  const [open, setOpen] = useState(false) // Controls popover visibility
+  const [value, setValue] = useState(initialValue) // Currently selected value
+  const scrollAttempts = useRef(0) // Tracks consecutive scroll attempts
+  const lastScrollTime = useRef(0) // Timestamp of last scroll attempt
 
+  // Complex scroll handling logic
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
       let target = e.target as HTMLElement;
       let scrollableTarget: HTMLElement | null = null;
       
-      // Find the first scrollable parent
+      // Find the nearest scrollable parent element
       while (target && target !== document.body) {
         const { overflowY } = window.getComputedStyle(target);
         if (overflowY === 'auto' || overflowY === 'scroll') {
@@ -103,6 +105,7 @@ function CustomCombox({
     setValue(initialValue);
   }, [initialValue]);
 
+  // Helper function to render command items (language options)
   const renderCommandItems = (items: typeof list) => (
     items.map((item) => (
       <CommandItem
@@ -116,6 +119,7 @@ function CustomCombox({
         className="flex justify-between"
       >
         <p>{item.label}</p>
+        {/* Checkmark icon that shows for selected item */}
         <Check
           className={cn(
             "mr-2 h-4 w-4",
@@ -130,6 +134,7 @@ function CustomCombox({
     <TooltipComponent className="w-full" trigger={
       <div className="flex w-full justify-center">
         <Popover open={open} onOpenChange={disabled ? undefined : setOpen}>
+          {/* Trigger button shows selected value or placeholder */}
           <PopoverTrigger asChild>
             <Button
               variant="outline"
@@ -147,6 +152,7 @@ function CustomCombox({
           </PopoverTrigger>
           <PopoverContent className="w-full p-0">
             <Command
+              // Custom filter function to match against label, value, and longValue
               filter={(value, search) => {
                 const matches = value.toLowerCase().includes(search.toLowerCase()) ||
                   list.some(item => 
@@ -158,12 +164,14 @@ function CustomCombox({
                 return matches ? 1 : 0;
               }}
             >
+              {/* Search input field */}
               <CommandInput 
                 placeholder={placeholder ?? t('selectLanguagePlaceholder')}
                 disabled={disabled}
               />
               <CommandList>
-              {popularLanguages.length > 0 && (
+                {/* Popular languages section (if provided) */}
+                {popularLanguages.length > 0 && (
                   <>
                     <CommandGroup heading={t('popular')}>
                       {renderCommandItems(popularLanguages)}
@@ -171,7 +179,9 @@ function CustomCombox({
                     <Separator className="my-2" />
                   </>
                 )}
+                {/* "No results" message */}
                 <CommandEmpty>{t('noItemsFound')}</CommandEmpty>
+                {/* Full list of languages */}
                 <CommandGroup>
                   {renderCommandItems(list)}
                 </CommandGroup>
