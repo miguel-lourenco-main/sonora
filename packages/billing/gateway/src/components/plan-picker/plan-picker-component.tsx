@@ -339,7 +339,7 @@ export function PlanPickerComponent(
           type={'button'}
         >
           {props.contactUsURL ? (
-            <Link href={props.contactUsURL}>
+            <Link href={props.contactUsURL} target='_blank'>
               {commonT(`contactUs`)}
             </Link>
           ) : (
