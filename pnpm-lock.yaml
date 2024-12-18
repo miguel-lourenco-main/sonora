@@ -390,6 +390,9 @@ importers:
       framer-motion:
         specifier: 12.0.0-alpha.1
         version: 12.0.0-alpha.1(@emotion/is-prop-valid@0.8.8)(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
+      js-yaml:
+        specifier: ^4.1.0
+        version: 4.1.0
       lucide-react:
         specifier: ^0.456.0
         version: 0.456.0(react@19.0.0-rc-45804af1-20241021)
@@ -423,6 +426,9 @@ importers:
       tailwind-merge:
         specifier: ^2.5.4
         version: 2.5.5
+      yaml:
+        specifier: ^2.6.1
+        version: 2.6.1
       zod:
         specifier: ^3.23.8
         version: 3.24.0
@@ -442,6 +448,9 @@ importers:
       '@next/bundle-analyzer':
         specifier: 15.0.3
         version: 15.0.3
+      '@types/js-yaml':
+        specifier: ^4.0.9
+        version: 4.0.9
       '@types/mdx':
         specifier: ^2.0.13
         version: 2.0.13
@@ -4993,6 +5002,9 @@ packages:
 
   '@types/is-hotkey@0.1.10':
     resolution: {integrity: sha512-RvC8KMw5BCac1NvRRyaHgMMEtBaZ6wh0pyPTBu7izn4Sj/AX9Y4aXU5c7rX8PnM/knsuUpC1IeoBkANtxBypsQ==}
+
+  '@types/js-yaml@4.0.9':
+    resolution: {integrity: sha512-k4MGaQl5TGo/iipqb2UDG2UwjXziSWkh0uysQelTlJpX1qGlpUZYm8PnO4DxG1qBomtJUdYJ6qR6xdIah10JLg==}
 
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
@@ -13738,6 +13750,8 @@ snapshots:
       rxjs: 6.6.7
 
   '@types/is-hotkey@0.1.10': {}
+
+  '@types/js-yaml@4.0.9': {}
 
   '@types/json-schema@7.0.15': {}
 
