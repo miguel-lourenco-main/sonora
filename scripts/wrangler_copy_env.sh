@@ -15,11 +15,14 @@ fi
 # Create/clear wrangler.toml with initial content
 cat > wrangler.toml << EOL
 name = "$CLOUDFLARE_PROJECT_NAME"
+pages_build_output_dir = ".vercel/output/static"
+compatibility_date = "2024-12-12"
+compatibility_flags = ["nodejs_compat"]
 
-[vars]
+[env.production.vars]
 EOL
 
-# Add variables from .env to [vars] section if it exists
+# Add variables from .env to [env.production.vars] section if it exists
 if [ -f ".env" ]; then
     grep -v '^#' ".env" | grep -v '^$' | while read -r line; do
         key=$(echo "$line" | cut -d= -f1 | xargs)
@@ -30,9 +33,6 @@ if [ -f ".env" ]; then
     done
     echo "Added development variables from .env"
 fi
-
-# Add production variables section
-printf "\n[env.production.vars]\n" >> wrangler.toml
 
 # Add variables from .env.production if it exists
 if [ -f ".env.production" ]; then
