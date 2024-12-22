@@ -32,8 +32,8 @@
     "postinstall": "pnpm copy:ui-json",
     "copy:ui-json": "cp ../../packages/ui/src/ui.json ./public/locales/en/ui.json",
     "cloudflare:build": "pnpm dlx @cloudflare/next-on-pages",
-    "cloudflare:preview": "pnpm dlx wrangler pages dev .vercel/output/static --compatibility-flag=nodejs_compat",
-    "cloudflare:deploy": "pnpm dlx wrangler pages deploy .vercel/output/static --project-name dont_forget_to_set_this"
+    "cloudflare:preview": "CLOUDFLARE_PROJECT_NAME=please_set_this sh ../../scripts/wrangler_copy_env.sh && pnpm dlx wrangler pages dev",
+    "cloudflare:deploy": "CLOUDFLARE_PROJECT_NAME=please_set_this sh ../../scripts/wrangler_copy_env.sh && pnpm dlx wrangler pages deploy --branch main"
   },
   "dependencies": {
     "@edge-csrf/nextjs": "^2.5.2",
