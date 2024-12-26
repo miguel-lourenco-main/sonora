@@ -17,7 +17,8 @@ import { TrackableFile } from "../lib/interfaces";
 interface CustomFileUploadProps {
     files?: TrackableFile[];              // External files array for controlled usage
     setFiles?: Dispatch<SetStateAction<TrackableFile[]>>;  // External setState for controlled usage
-    disabled?: boolean;                    // Flag to disable the uploader
+    disabled?: boolean;      // Flag to disable the uploader
+    disableFileNumber?: boolean;          // Flag to disable the file number display
     onAddFiles?: (files: TrackableFile[]) => void;         // Callback when files are added
     onRemoveFiles?: (files: TrackableFile[]) => void;      // Callback when files are removed
 }
@@ -100,6 +101,7 @@ export function CustomFileUploader({
     files: externalFiles,
     setFiles: externalSetFiles,
     disabled,
+    disableFileNumber,
     onAddFiles,
     onRemoveFiles
 }: CustomFileUploadProps) {
