@@ -74,5 +74,6 @@
     "startRecording": "Start Recording",
     "stopRecording": "Stop Recording",
     "microphoneAccessError": "Unable to access microphone",
-    "audioRecorder": "Audio Recorder"
+    "audioRecorder": "Audio Recorder",
+    "pleaseEnterVoiceName": "Please enter a voice name before recording"
 }

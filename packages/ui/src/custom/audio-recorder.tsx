@@ -4,12 +4,12 @@ import { Input } from "@kit/ui/input";
 import { Mic, Square, Loader2, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { TrackableFile } from "@kit/ui/interfaces";
+import { useTranslation } from 'react-i18next';
 
 interface AudioRecorderProps {
   files: TrackableFile[];
   setFiles?: (files: TrackableFile[]) => void;
   onAddFiles?: (files: TrackableFile[]) => void;
-  onRemoveFiles?: (files: TrackableFile[]) => void;
   isSubmitting?: boolean;
   placeholder?: string;
   buttonStartLabel?: string;
@@ -21,7 +21,6 @@ export default function AudioRecorder({
   files = [],
   setFiles,
   onAddFiles,
-  onRemoveFiles,
   isSubmitting,
   placeholder = "Enter name",
   buttonStartLabel = "Start Recording",
@@ -30,23 +29,29 @@ export default function AudioRecorder({
 }: AudioRecorderProps) {
   const [isRecording, setIsRecording] = useState(false);
   const [label, setLabel] = useState('');
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | undefined>(undefined);
   const recorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
+  const { t } = useTranslation();
 
   const startRecording = async () => {
+    if (!label.trim()) {
+      toast.warning(t('pleaseEnterVoiceName'));
+      return;
+    }
+  
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const mediaRecorder = new MediaRecorder(stream);
       recorderRef.current = mediaRecorder;
       audioChunksRef.current = [];
-
+  
       mediaRecorder.ondataavailable = (e) => {
         if (e.data.size > 0) {
           audioChunksRef.current.push(e.data);
         }
       };
-
+  
       mediaRecorder.onstop = () => {
         const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
         const url = URL.createObjectURL(audioBlob);
@@ -57,9 +62,8 @@ export default function AudioRecorder({
           const newFile = {
             id: undefined,
             fileObject: file,
-            uploadingStatus: 'client' as const
           };
-
+  
           if (setFiles) {
             setFiles([...files, newFile]);
           }
@@ -67,15 +71,14 @@ export default function AudioRecorder({
           if (onAddFiles) {
             onAddFiles([newFile]);
           }
-
+  
           setLabel('');
-          setPreviewUrl(null);
         }
-
+  
         // Clean up the stream
         stream.getTracks().forEach(track => track.stop());
       };
-
+  
       mediaRecorder.start();
       setIsRecording(true);
     } catch (error) {
@@ -88,15 +91,6 @@ export default function AudioRecorder({
     if (recorderRef.current && isRecording) {
       recorderRef.current.stop();
       setIsRecording(false);
-    }
-  };
-
-  const handleRemoveFile = (file: TrackableFile) => {
-    if (onRemoveFiles) {
-      onRemoveFiles([file]);
-    }
-    if (setFiles) {
-      setFiles(files.filter(f => f !== file));
     }
   };
 
@@ -115,7 +109,7 @@ export default function AudioRecorder({
             type="button"
             variant={isRecording ? "destructive" : "default"}
             onClick={isRecording ? stopRecording : startRecording}
-            disabled={!label.trim() || isSubmitting}
+            disabled={isSubmitting}
           >
             {isRecording ? (
               <>
@@ -135,9 +129,7 @@ export default function AudioRecorder({
           )}
         </div>
 
-        {previewUrl && (
-          <audio controls src={previewUrl} className="w-full" />
-        )}
+        <audio controls src={previewUrl} className="w-72" />
       </div>
   );
 } 

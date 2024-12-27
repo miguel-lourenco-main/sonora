@@ -143,6 +143,7 @@
     "./tree-view-api": "./src/magic-ui/tree-view-api.tsx",
     "./tree-view": "./src/magic-ui/tree-view.tsx",
     "./typing-animation": "./src/magic-ui/typing-animation.tsx",
+    "./blur-fade": "./src/magic-ui/blur-fade.tsx",
     "./shadcn-file-upload": "./src/shadcn-extension/file-upload.tsx",
     "./file-upload-example": "./src/shadcn-extension/file-upload-example.tsx",
     "./multi-select": "./src/shadcn-extension/multi-select.tsx",

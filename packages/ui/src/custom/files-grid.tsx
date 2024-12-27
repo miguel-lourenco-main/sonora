@@ -115,10 +115,12 @@ export default function FilesGrid({
                     )}
                 >
                     {/* Status indicator for file upload state */}
-                    <StatusIndicator 
-                        id={file.id} 
-                        status={file.uploadingStatus}
-                    />
+                    {file.uploadingStatus && (
+                        <StatusIndicator 
+                            id={file.id} 
+                            status={file.uploadingStatus}
+                        />
+                    )}
                     {/* File icon and name */}
                     <div className="flex flex-col size-full items-center p-2 justify-center space-y-2 object-cover group-hover:opacity-20 transition-opacity">
                         {getFileIcon(file.fileObject)}
