@@ -67,7 +67,7 @@ export function BlurFade({
     }
   };
   
-  const combinedVariants = variant || defaultVariants;
+  const combinedVariants = variant ?? defaultVariants;
 
   const motionProps = {
     ref,
