@@ -8,9 +8,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '../shadcn/dialog';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../shadcn/tooltip';
-import { cn } from "../lib"
+} from '../../shadcn/dialog';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../../shadcn/tooltip';
+import { cn } from "../../lib"
 
 /**
  * DialogLayout Component

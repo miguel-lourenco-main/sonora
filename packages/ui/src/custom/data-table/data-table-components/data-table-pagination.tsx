@@ -6,14 +6,14 @@ import {
 } from "@radix-ui/react-icons"
 import { Table } from "@tanstack/react-table"
 
-import { Button } from "../../shadcn/button"
+import { Button } from "../../../shadcn/button"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,  
-} from "../../shadcn/select" 
+} from "../../../shadcn/select" 
 import I18nComponent from "@kit/ui/i18n-component"
 
 

@@ -36,3 +36,12 @@ export interface TabData {
         translated: File | null;
     };
 }
+
+/**
+ * Interface defining the core file operation handlers
+ */
+export interface FileHandlers {
+    handleDeleteAll: () => void;
+    handleAddFiles: (newFiles: TrackableFile[]) => void;
+    handleFileRemove: (filteredFiles: TrackableFile[]) => void;
+}

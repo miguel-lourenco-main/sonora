@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { Button } from "@kit/ui/button";
 import { Input } from "@kit/ui/input";
-import { Mic, Square, Loader2, Trash2 } from "lucide-react";
+import { Mic, Square, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { TrackableFile } from "@kit/ui/interfaces";
 import { useTranslation } from 'react-i18next';
@@ -32,7 +32,7 @@ export default function AudioRecorder({
   const [previewUrl, setPreviewUrl] = useState<string | undefined>(undefined);
   const recorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
-  const { t } = useTranslation();
+  const { t } = useTranslation('ui');
 
   const startRecording = async () => {
     if (!label.trim()) {
@@ -95,14 +95,20 @@ export default function AudioRecorder({
   };
 
   return (
-    <div className="flex flex-col items-center gap-4">
-        <Input
-          className="w-72"
-          placeholder={placeholder}
-          value={label}
-          onChange={(e) => setLabel(e.target.value)}
-          disabled={isRecording || isSubmitting}
-        />
+    <div className="flex flex-col gap-4 py-4">
+      <div className="flex items-center gap-4">
+        <div className="flex items-center gap-x-2">
+          <label className="text-sm font-medium text-foreground">
+            {t('name')}
+          </label>
+          <Input
+            className="w-72"
+            placeholder={placeholder}
+            value={label}
+            onChange={(e) => setLabel(e.target.value)}
+            disabled={isRecording || isSubmitting}
+          />
+        </div>
         
         <div className="flex items-center gap-4">
           <Button
@@ -128,8 +134,8 @@ export default function AudioRecorder({
             <Loader2 className="h-4 w-4 animate-spin" />
           )}
         </div>
-
-        <audio controls src={previewUrl} className="w-72" />
       </div>
+      <audio controls src={previewUrl} className="w-72" />
+    </div>
   );
 } 

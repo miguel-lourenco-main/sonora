@@ -1,15 +1,13 @@
 'use client';
 
 import { File, Trash2 } from "lucide-react";
-import { Button } from "../shadcn/button";
-import TooltipComponent from "./tooltip-component";
-import { IconDOC, IconDOCX, IconPDF, IconPPTX } from "./icons";
+import { Button } from "../../shadcn/button";
+import TooltipComponent from "../tooltip-component";
 import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { FILE_SUPPORTED_TYPES } from "@kit/shared/constants";
-import { cn } from "../lib";
-import { TrackableFile } from "../lib/interfaces";
-import { StatusIndicator } from "./file-status-indicator";
+import { cn } from "../../lib";
+import { TrackableFile } from "../../lib/interfaces";
+import { FileStatusIndicator } from "../file-status-indicator";
 
 /**
  * Props interface for the FilesGrid component
@@ -72,25 +70,7 @@ export default function FilesGrid({
                 onFileRemove([file]);
             }
         }
-    };
-
-    /**
-     * Determines the appropriate icon for a file based on its type
-     * @param file - File object to get icon for
-     * @returns React component for the file icon
-     */
-    const getFileIcon = (file: File) => {
-        const extensions = FILE_SUPPORTED_TYPES[file.type as keyof typeof FILE_SUPPORTED_TYPES];
-        
-        if (!extensions?.length) return <File className="size-12" />;
-        
-        if (extensions.includes(".pdf")) return <IconPDF className="size-12" />;
-        if (extensions.includes(".docx")) return <IconDOCX className="size-12" />;
-        if (extensions.includes(".doc")) return <IconDOC className="size-12" />;
-        if (extensions.includes(".pptx")) return <IconPPTX className="size-12" />;
-        
-        return <File className="size-12" />;
-    };
+    }
 
     return (
         <div 
@@ -116,14 +96,14 @@ export default function FilesGrid({
                 >
                     {/* Status indicator for file upload state */}
                     {file.uploadingStatus && (
-                        <StatusIndicator 
+                        <FileStatusIndicator 
                             id={file.id} 
                             status={file.uploadingStatus}
                         />
                     )}
                     {/* File icon and name */}
                     <div className="flex flex-col size-full items-center p-2 justify-center space-y-2 object-cover group-hover:opacity-20 transition-opacity">
-                        {getFileIcon(file.fileObject)}
+                        <File className="size-12" />
                         <p className="w-full px-2 text-sm text-center truncate">{file.fileObject.name}</p>
                     </div>
                     {/* Delete button (shown on hover) */}

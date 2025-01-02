@@ -1,15 +1,15 @@
 "use client";
 
-import { Input } from "../shadcn/input";
-import { cn } from "../lib";
+import { Input } from "../../shadcn/input";
+import { cn } from "../../lib";
 import { forwardRef, useCallback, useEffect, useState } from "react";
 import { FileRejection, useDropzone } from "react-dropzone";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
-import { DirectionOptions, FilesDragNDropProps } from "./_lib/types";
-import { FileSvgDraw } from "./file-svg-draw";
+import { DirectionOptions, FilesDragNDropProps } from "../_lib/types";
+import { FileUploadGuide } from "./file-upload-guide";
 import FilesGrid from "./files-grid";
-import { TrackableFile } from "../lib/interfaces";
+import { TrackableFile } from "../../lib/interfaces";
 import { MAX_FILE_SIZE_MB, MAX_FILE_SIZE_STRING } from "@kit/shared/constants";
 
 /**
@@ -52,7 +52,6 @@ export const FilesDragNDrop = forwardRef<
     // Component state
     const [isFileTooBig, setIsFileTooBig] = useState(false);
     const [activeIndex, setActiveIndex] = useState(-1);
-    const [showCover, setShowCover] = useState(true);
     const { t } = useTranslation('ui');
     const direction: DirectionOptions = "ltr";
 
@@ -85,13 +84,6 @@ export const FilesDragNDrop = forwardRef<
     }, [addFiles, t]);
 
     /**
-     * Handler for file removal
-     */
-    const handleRemoveFile = useCallback((filteredFiles: TrackableFile[]) => {
-      removeFiles(filteredFiles);
-    }, [removeFiles]);
-
-    /**
      * Configure dropzone with options and event handlers
      */
     const dropzone = useDropzone({
@@ -99,8 +91,6 @@ export const FilesDragNDrop = forwardRef<
       maxFiles: 1000,
       maxSize: MAX_FILE_SIZE_MB,
       multiple: true,
-      onDragEnter: () => setShowCover(true),
-      onDragLeave: () => setShowCover(false),
       onDrop,
       onDropRejected: () => setIsFileTooBig(true),
       onDropAccepted: () => setIsFileTooBig(false),
@@ -163,11 +153,6 @@ export const FilesDragNDrop = forwardRef<
       [files, activeIndex, removeFiles, orientation, direction, dropzone.inputRef]
     );
 
-    // Show cover when no files are present
-    useEffect(() => {
-      setShowCover(files.length === 0);
-    }, [files]);
-
     return (
       <div
         ref={ref}
@@ -185,7 +170,7 @@ export const FilesDragNDrop = forwardRef<
           },
         })}
       >
-        <div className={cn("absolute top-0 left-0 z-10 items-center justify-center w-full h-full p-2 bg-background/80", showCover || files.length === 0 ? "flex" : "hidden")}>
+        <div className={cn("flex absolute top-0 left-0 z-10 items-center justify-center w-full h-full p-2 bg-background/80")}>
           <div
             className={cn(
               "flex flex-col items-center justify-center size-full rounded-lg duration-300 ease-in-out outline-dashed outline-1 outline-foreground cursor-pointer",
@@ -193,7 +178,7 @@ export const FilesDragNDrop = forwardRef<
               dropzone.isDragReject || isFileTooBig ? "border-red-500" : "border-gray-300"
             )}
           >
-            <FileSvgDraw acceptedFileTypes={acceptFiles} />
+            {children}
           </div>
           <Input
             ref={dropzone.inputRef}
@@ -201,11 +186,6 @@ export const FilesDragNDrop = forwardRef<
             {...dropzone.getInputProps()}
           />
         </div>
-        {files.length > 0 && (
-          <div className={cn("absolute top-0 left-0 w-full h-full overflow-hidden", showCover ? "disabled" : "")}>
-            {children ?? <FilesGrid files={files} onFileRemove={handleRemoveFile} disabled={disabled} />}
-          </div>
-        )}
       </div>
     );
   }
@@ -214,3 +194,4 @@ export const FilesDragNDrop = forwardRef<
 FilesDragNDrop.displayName = "FilesDragNDrop";
 
 export default FilesDragNDrop;
+

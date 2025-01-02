@@ -23,14 +23,14 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../shadcn/table"
-import { DataTablePagination } from "./data-table-components/data-table-pagination"
-import { DataTableToolbar } from "./data-table-components/data-table-toolbar"
-import { Filter } from "./_lib/interface"
+} from "../../shadcn/table"
+import { DataTablePagination } from "../data-table/data-table-components/data-table-pagination"
+import { DataTableToolbar } from "../data-table/data-table-components/data-table-toolbar"
+import { Filter } from "../_lib/interface"
 import FilesDragNDrop from "./files-drag-n-drop"
 import I18nComponent from "@kit/ui/i18n-component"
 
-import { TrackableFile } from "../lib/interfaces";
+import { TrackableFile } from "../../lib/interfaces";
 
 /**
  * Props interface for the DragNDropTable component

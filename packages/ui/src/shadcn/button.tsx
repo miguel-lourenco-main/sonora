@@ -33,9 +33,8 @@ const buttonVariants = cva(
         sm: 'h-8 rounded-md px-3 text-xs',
         lg: 'h-10 rounded-md px-8',
         icon: 'h-9 w-9 p-1',
-
+        icon_sm: 'size-8 p-0.5',
         // Custom
-        chatFiles: 'h-8 w-8 p-1',
         fit: 'size-fit',
       },
       shape: {
