@@ -54,7 +54,7 @@ export default function DialogLayout({
                         </DialogHeader>}
                     </div>
                 )}
-                <div className="flex-1 overflow-y-auto scrollbar-hide pb-4">
+                <div className="flex-1 overflow-y-auto scrollbar-hide pb-4 p-1">
                     {children}
                 </div>
                 <div className="flex-shrink-0 pt-4 border-t">

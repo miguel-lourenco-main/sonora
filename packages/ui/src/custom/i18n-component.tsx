@@ -22,5 +22,6 @@ export default function I18nComponent({
     className?: string   // Optional CSS classes for styling
 }) {
   // Render the translated text using the Trans component
+  
   return <Trans i18nKey={i18nKey} className={className}/>
 }
