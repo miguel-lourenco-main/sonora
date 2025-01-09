@@ -2,14 +2,11 @@
 
 import { Input } from "../../shadcn/input";
 import { cn } from "../../lib";
-import { forwardRef, useCallback, useEffect, useState } from "react";
+import { forwardRef, useCallback, useState } from "react";
 import { FileRejection, useDropzone } from "react-dropzone";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { DirectionOptions, FilesDragNDropProps } from "../_lib/types";
-import { FileUploadGuide } from "./file-upload-guide";
-import FilesGrid from "./files-grid";
-import { TrackableFile } from "../../lib/interfaces";
 import { MAX_FILE_SIZE_MB, MAX_FILE_SIZE_STRING } from "@kit/shared/constants";
 
 /**

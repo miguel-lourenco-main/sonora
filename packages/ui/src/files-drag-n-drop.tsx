@@ -15,9 +15,7 @@ interface FilesDragNDropProps {
 
 export default function FilesDragNDrop({
     acceptFiles,
-    files,
     addFiles,
-    removeFiles,
     disabled,
     children,
     className

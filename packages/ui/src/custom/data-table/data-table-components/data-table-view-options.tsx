@@ -5,7 +5,7 @@ import React from "react"
 import { MixerHorizontalIcon } from "@radix-ui/react-icons"
 import { Table } from "@tanstack/react-table"
 
-import { Button } from "../../shadcn/button"
+import { Button } from "../../../shadcn/button"
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -13,7 +13,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../../shadcn/dropdown-menu"
+} from "../../../shadcn/dropdown-menu"
 import { useTranslation } from "react-i18next"
 
 interface DataTableViewOptionsProps<TData> {
@@ -53,7 +53,7 @@ export default function DataTableViewOptions<TData>({
                 key={column.id}
                 className="capitalize"
                 checked={column.getIsVisible()}
-                onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                onCheckedChange={(value: boolean) => column.toggleVisibility(!!value)}
               >
                 {column.id}
               </DropdownMenuCheckboxItem>
