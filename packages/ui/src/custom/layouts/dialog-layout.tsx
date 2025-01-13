@@ -91,9 +91,6 @@ export default function DialogLayout({
                 <div className="flex-1 overflow-y-auto scrollbar-hide pb-4 p-1">
                     {children}
                 </div>
-                <div className="flex-shrink-0 pt-4 border-t">
-                    <slot name="footer" />
-                </div>
             </DialogContent>
         </Dialog>
     );
