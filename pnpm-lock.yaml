@@ -305,7 +305,7 @@ importers:
         version: 3.9.1(react-hook-form@7.54.2(react@19.0.0-rc-45804af1-20241021))
       '@keystatic/next':
         specifier: ^5.0.1
-        version: 5.0.1(@keystatic/core@0.5.39(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.49.1)(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021))(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021))(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.49.1)(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021))(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
+        version: 5.0.1(@keystatic/core@0.5.39(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.49.1)(babel-plugin-react-compiler@19.0.0-beta-a7bf2bd-20241110)(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021))(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021))(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.49.1)(babel-plugin-react-compiler@19.0.0-beta-a7bf2bd-20241110)(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021))(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
       '@kit/accounts':
         specifier: workspace:*
         version: link:../../packages/features/accounts
@@ -368,7 +368,7 @@ importers:
         version: 0.0.8(@supabase/postgrest-js@1.17.7)(@supabase/supabase-js@2.47.10)
       '@makerkit/data-loader-supabase-nextjs':
         specifier: ^1.2.3
-        version: 1.2.3(@supabase/postgrest-js@1.17.7)(@supabase/supabase-js@2.47.10)(@tanstack/react-query@5.60.2(react@19.0.0-rc-45804af1-20241021))(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.49.1)(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
+        version: 1.2.3(@supabase/postgrest-js@1.17.7)(@supabase/supabase-js@2.47.10)(@tanstack/react-query@5.60.2(react@19.0.0-rc-45804af1-20241021))(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.49.1)(babel-plugin-react-compiler@19.0.0-beta-a7bf2bd-20241110)(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
       '@marsidev/react-turnstile':
         specifier: ^1.0.2
         version: 1.1.0(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
@@ -390,6 +390,9 @@ importers:
       dotenv:
         specifier: ^16.4.5
         version: 16.4.7
+      elevenlabs:
+        specifier: ^1.50.2
+        version: 1.50.2
       framer-motion:
         specifier: 12.0.0-alpha.1
         version: 12.0.0-alpha.1(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
@@ -438,6 +441,9 @@ importers:
       tailwind-merge:
         specifier: ^2.5.4
         version: 2.5.5
+      tailwind-scrollbar-hide:
+        specifier: ^2.0.0
+        version: 2.0.0(tailwindcss@3.4.15(ts-node@10.9.2(@types/node@22.10.2)(typescript@5.7.2)))
       undici:
         specifier: ^7.1.1
         version: 7.2.0
@@ -5929,6 +5935,9 @@ packages:
   buffer@5.7.1:
     resolution: {integrity: sha512-EHcyIPBQ4BSGlvjB16k5KgAJ27CIsHY/2JBmCRReo48y9rQ3MaUzWX3KVlBa4U7MyX02HdVj0K7C3WaB3ju7FQ==}
 
+  buffer@6.0.3:
+    resolution: {integrity: sha512-FTiCpNxtwiZZHEZbcbTIcZjERVICn9yq/pDFkTl95/AxzD1naBctN7YO68riM/gLSDY7sdrMby8hofADYuuqOA==}
+
   busboy@1.6.0:
     resolution: {integrity: sha512-8SFQbg/0hQ9xy3UNTB0YEnsNBbWfhf7RtnzpL7TkBiTBRfrQ9Fxcnz7VJsleJpyp6rVLvXiuORqjlHi5q+PYuA==}
     engines: {node: '>=10.16.0'}
@@ -6141,6 +6150,9 @@ packages:
 
   comma-separated-tokens@1.0.8:
     resolution: {integrity: sha512-GHuDRO12Sypu2cV70d1dkA2EUmXHgntrzbpvOB+Qy+49ypNfGgFQIC2fhhXbnyrJRynDCAARsT7Ou0M6hirpfw==}
+
+  command-exists@1.2.9:
+    resolution: {integrity: sha512-LTQ/SGc+s0Xc0Fu5WaKnR0YiygZkm9eKFvyS+fRsU7/ZWFF8ykFM6Pc9aCVf1+xasOOZpO3BAVgVrKvsqKHV7w==}
 
   commander@10.0.1:
     resolution: {integrity: sha512-y4Mg2tXshplEbSGzx7amzPwKKOCGuoSRP/CjEdwwk0FOGlUbq6lKuoyDZTNZkmxHdJtp54hdfY/JUrdL7Xfdug==}
@@ -6537,6 +6549,9 @@ packages:
 
   electron-to-chromium@1.5.75:
     resolution: {integrity: sha512-Lf3++DumRE/QmweGjU+ZcKqQ+3bKkU/qjaKYhIJKEOhgIO9Xs6IiAQFkfFoj+RhgDk4LUeNsLo6plExHqSyu6Q==}
+
+  elevenlabs@1.50.2:
+    resolution: {integrity: sha512-Zq5fFACjctRB1Ix1k5dLnx+GLPy3Z3fKrilmXGDAdEA7WOT6GL4SA6aH7/v13Tw5CSKu/z/XzBz/7T3JeyK8LA==}
 
   emery@1.4.3:
     resolution: {integrity: sha512-DrP24dscOZx5BJpOo32X1CjaWgbFojS4sAXKtlmTQmCJ01Vv2brjeWKIS6cQ4Rblt/hZIN+6pdV2L7Y9Rsh8EA==}
@@ -7186,6 +7201,10 @@ packages:
   form-data-encoder@1.7.2:
     resolution: {integrity: sha512-qfqtYan3rxrnCk1VYaA4H+Ms9xdpPqvLZa6xmMgFvhO32x7/3J/ExcTd6qpxM0vH2GdMI+poehyBZvqfMTto8A==}
 
+  form-data-encoder@4.0.2:
+    resolution: {integrity: sha512-KQVhvhK8ZkWzxKxOr56CPulAhH3dobtuQ4+hNQ+HekH/Wp5gSOafqRAeTphQUJAIk0GBvHZgJ2ZGRWd5kphMuw==}
+    engines: {node: '>= 18'}
+
   form-data@4.0.1:
     resolution: {integrity: sha512-tzN8e4TX8+kkxGPK8D5u0FNmjPUjw3lwC9lSLxxoB/+GtsJG91CO8bSWy73APlgAZzZbXEYZJuxjkHH2w+Ezhw==}
     engines: {node: '>= 6'}
@@ -7197,6 +7216,10 @@ packages:
   formdata-node@4.4.1:
     resolution: {integrity: sha512-0iirZp3uVDjVGt9p49aTaqjk84TrglENEDuqfdlZQ1roC9CWlPk6Avf8EEnZNcAqPonwkG35x4n3ww/1THYAeQ==}
     engines: {node: '>= 12.20'}
+
+  formdata-node@6.0.3:
+    resolution: {integrity: sha512-8e1++BCiTzUno9v5IZ2J6bv4RU+3UKDmqWUQD0MIMVCd9AdhWkO1gw57oo1mNEX1dMq2EGI+FbWz4B92pscSQg==}
+    engines: {node: '>= 18'}
 
   formdata-polyfill@4.0.10:
     resolution: {integrity: sha512-buewHzMvYL29jdeQTVILecSaZKnt/RJWjoZCF5OW60Z67/GmSLBkOFM7qh1PI3zFNtJbaZL5eQu1vLfazOwj4g==}
@@ -9056,6 +9079,10 @@ packages:
   process-warning@4.0.0:
     resolution: {integrity: sha512-/MyYDxttz7DfGMMHiysAsFE4qF+pQYAA8ziO/3NcRVrQ5fSk+Mns4QZA/oRPFzvcqNoVJXQNWNAsdwBXLUkQKw==}
 
+  process@0.11.10:
+    resolution: {integrity: sha512-cdGef/drWFoydD1JsMzuFf8100nZl+GT+yacc2bEced5f9Rjk4z+WtFUTBu9PhOi9j/jfmBPu0mMEY4wIdAF8A==}
+    engines: {node: '>= 0.6.0'}
+
   progress@2.0.3:
     resolution: {integrity: sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==}
     engines: {node: '>=0.4.0'}
@@ -9119,6 +9146,10 @@ packages:
   punycode@2.3.1:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
     engines: {node: '>=6'}
+
+  qs@6.11.2:
+    resolution: {integrity: sha512-tDNIz22aBzCDxLtVH++VnTfzxlfeK5CbqohpSqpJgj1Wg/cQbStNAz3NuqCs5vV+pjBsK4x4pN9HlVh7rcYRiA==}
+    engines: {node: '>=0.6'}
 
   qs@6.13.1:
     resolution: {integrity: sha512-EJPeIn0CYrGu+hli1xilKAPXODtJ12T0sP63Ijx2/khC2JtuaN3JyNIpvmnkmaEtha9ocbG4A4cMcr+TvqvwQg==}
@@ -9277,6 +9308,10 @@ packages:
   readable-stream@3.6.2:
     resolution: {integrity: sha512-9u/sniCrY3D5WdsERHzHE4G2YCXqoG5FTHUiCC4SIbr6XcLZBY05ya9EKjYek9O5xOAwjGq+1JdGBAS7Q9ScoA==}
     engines: {node: '>= 6'}
+
+  readable-stream@4.6.0:
+    resolution: {integrity: sha512-cbAdYt0VcnpN2Bekq7PU+k363ZRsPwJoEEJOEtSJQlJXzwaxt3FIo/uL+KeDSGIjJqtkwyge4KQgD2S2kd+CQw==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
 
   readdirp@3.6.0:
     resolution: {integrity: sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==}
@@ -9828,6 +9863,11 @@ packages:
   tailwind-merge@2.5.5:
     resolution: {integrity: sha512-0LXunzzAZzo0tEPxV3I297ffKZPlKDrjj7NXphC8V5ak9yHC5zRmxnOe2m/Rd/7ivsOMJe3JZ2JVocoDdQTRBA==}
 
+  tailwind-scrollbar-hide@2.0.0:
+    resolution: {integrity: sha512-lqiIutHliEiODwBRHy4G2+Tcayo2U7+3+4frBmoMETD72qtah+XhOk5XcPzC1nJvXhXUdfl2ajlMhUc2qC6CIg==}
+    peerDependencies:
+      tailwindcss: '>=3.0.0 || >= 4.0.0 || >= 4.0.0-beta.8 || >= 4.0.0-alpha.20'
+
   tailwindcss-animate@1.0.7:
     resolution: {integrity: sha512-bl6mpH3T7I3UFxuvDEXLxy/VuFxBk5bbzplh7tXI68mwMokNYd1t9qPBHlnyTwfa4JGC4zP516I1hYYtQ/vspA==}
     peerDependencies:
@@ -10192,6 +10232,9 @@ packages:
 
   uri-js@4.4.1:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
+
+  url-join@4.0.1:
+    resolution: {integrity: sha512-jk1+QP6ZJqyOiuEI9AEWQfju/nB2Pw466kbA0LEZljHwKeMgd9WrAEgEGxjPDD2+TNbbb37rTyhEfrCXfuKXnA==}
 
   urql@4.2.1:
     resolution: {integrity: sha512-Y/cVi1rsR96kbF3VX6YgfHw1V3kJ287nR1TqpjGzVPyAmXuwRvBvABI+sHY2WOquWCNh+kvFapM/LLYeiC3wig==}
@@ -11299,6 +11342,103 @@ snapshots:
 
   '@juggle/resize-observer@3.4.0': {}
 
+  '@keystar/ui@0.7.14(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.49.1)(babel-plugin-react-compiler@19.0.0-beta-a7bf2bd-20241110)(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021))(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)':
+    dependencies:
+      '@babel/runtime': 7.26.0
+      '@emotion/css': 11.13.5
+      '@floating-ui/react': 0.24.8(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
+      '@internationalized/date': 3.6.0
+      '@internationalized/string': 3.2.5
+      '@react-aria/actiongroup': 3.7.11(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/breadcrumbs': 3.5.19(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/button': 3.11.0(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/calendar': 3.6.0(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/checkbox': 3.15.0(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/combobox': 3.11.0(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/datepicker': 3.12.0(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/dialog': 3.5.20(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/dnd': 3.8.0(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/focus': 3.19.0(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/gridlist': 3.10.0(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/i18n': 3.12.4(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/interactions': 3.22.5(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/label': 3.7.13(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/link': 3.7.7(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/listbox': 3.13.6(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/live-announcer': 3.4.1
+      '@react-aria/menu': 3.16.0(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/meter': 3.4.18(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/numberfield': 3.11.9(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/overlays': 3.24.0(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/progress': 3.4.18(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/radio': 3.10.10(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/searchfield': 3.7.11(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/select': 3.15.0(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/selection': 3.21.0(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/separator': 3.4.4(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/ssr': 3.9.7(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/switch': 3.6.10(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/table': 3.16.0(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/tabs': 3.9.8(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/tag': 3.4.8(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/textfield': 3.15.0(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/toast': 3.0.0-beta.15(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/tooltip': 3.7.10(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/utils': 3.26.0(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/virtualizer': 4.1.0(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/visually-hidden': 3.8.18(react@19.0.0-rc-45804af1-20241021)
+      '@react-stately/calendar': 3.6.0(react@19.0.0-rc-45804af1-20241021)
+      '@react-stately/checkbox': 3.6.10(react@19.0.0-rc-45804af1-20241021)
+      '@react-stately/collections': 3.12.0(react@19.0.0-rc-45804af1-20241021)
+      '@react-stately/combobox': 3.10.1(react@19.0.0-rc-45804af1-20241021)
+      '@react-stately/data': 3.12.0(react@19.0.0-rc-45804af1-20241021)
+      '@react-stately/datepicker': 3.11.0(react@19.0.0-rc-45804af1-20241021)
+      '@react-stately/dnd': 3.5.0(react@19.0.0-rc-45804af1-20241021)
+      '@react-stately/form': 3.1.0(react@19.0.0-rc-45804af1-20241021)
+      '@react-stately/layout': 4.1.0(react@19.0.0-rc-45804af1-20241021)
+      '@react-stately/list': 3.11.1(react@19.0.0-rc-45804af1-20241021)
+      '@react-stately/menu': 3.9.0(react@19.0.0-rc-45804af1-20241021)
+      '@react-stately/numberfield': 3.9.8(react@19.0.0-rc-45804af1-20241021)
+      '@react-stately/overlays': 3.6.12(react@19.0.0-rc-45804af1-20241021)
+      '@react-stately/radio': 3.10.9(react@19.0.0-rc-45804af1-20241021)
+      '@react-stately/searchfield': 3.5.8(react@19.0.0-rc-45804af1-20241021)
+      '@react-stately/select': 3.6.9(react@19.0.0-rc-45804af1-20241021)
+      '@react-stately/selection': 3.18.0(react@19.0.0-rc-45804af1-20241021)
+      '@react-stately/table': 3.13.0(react@19.0.0-rc-45804af1-20241021)
+      '@react-stately/tabs': 3.7.0(react@19.0.0-rc-45804af1-20241021)
+      '@react-stately/toast': 3.0.0-beta.5(react@19.0.0-rc-45804af1-20241021)
+      '@react-stately/toggle': 3.8.0(react@19.0.0-rc-45804af1-20241021)
+      '@react-stately/tooltip': 3.5.0(react@19.0.0-rc-45804af1-20241021)
+      '@react-stately/tree': 3.8.6(react@19.0.0-rc-45804af1-20241021)
+      '@react-stately/utils': 3.10.5(react@19.0.0-rc-45804af1-20241021)
+      '@react-stately/virtualizer': 4.2.0(react@19.0.0-rc-45804af1-20241021)
+      '@react-types/actionbar': 3.1.11(react@19.0.0-rc-45804af1-20241021)
+      '@react-types/actiongroup': 3.4.13(react@19.0.0-rc-45804af1-20241021)
+      '@react-types/breadcrumbs': 3.7.9(react@19.0.0-rc-45804af1-20241021)
+      '@react-types/button': 3.10.1(react@19.0.0-rc-45804af1-20241021)
+      '@react-types/calendar': 3.5.0(react@19.0.0-rc-45804af1-20241021)
+      '@react-types/combobox': 3.13.1(react@19.0.0-rc-45804af1-20241021)
+      '@react-types/datepicker': 3.9.0(react@19.0.0-rc-45804af1-20241021)
+      '@react-types/grid': 3.2.10(react@19.0.0-rc-45804af1-20241021)
+      '@react-types/menu': 3.9.13(react@19.0.0-rc-45804af1-20241021)
+      '@react-types/numberfield': 3.8.7(react@19.0.0-rc-45804af1-20241021)
+      '@react-types/overlays': 3.8.11(react@19.0.0-rc-45804af1-20241021)
+      '@react-types/radio': 3.8.5(react@19.0.0-rc-45804af1-20241021)
+      '@react-types/select': 3.9.8(react@19.0.0-rc-45804af1-20241021)
+      '@react-types/shared': 3.26.0(react@19.0.0-rc-45804af1-20241021)
+      '@react-types/switch': 3.5.7(react@19.0.0-rc-45804af1-20241021)
+      '@react-types/table': 3.10.3(react@19.0.0-rc-45804af1-20241021)
+      '@react-types/tabs': 3.3.11(react@19.0.0-rc-45804af1-20241021)
+      '@types/react': types-react@19.0.0-rc.1
+      emery: 1.4.3
+      facepaint: 1.2.1
+      react: 19.0.0-rc-45804af1-20241021
+      react-dom: 19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021)
+    optionalDependencies:
+      next: 15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.49.1)(babel-plugin-react-compiler@19.0.0-beta-a7bf2bd-20241110)(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
+    transitivePeerDependencies:
+      - supports-color
+
   '@keystar/ui@0.7.14(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.49.1)(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021))(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)':
     dependencies:
       '@babel/runtime': 7.26.0
@@ -11396,6 +11536,85 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@keystatic/core@0.5.39(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.49.1)(babel-plugin-react-compiler@19.0.0-beta-a7bf2bd-20241110)(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021))(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)':
+    dependencies:
+      '@babel/runtime': 7.26.0
+      '@braintree/sanitize-url': 6.0.4
+      '@emotion/css': 11.13.5
+      '@emotion/weak-memoize': 0.3.1
+      '@floating-ui/react': 0.24.8(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
+      '@internationalized/string': 3.2.5
+      '@keystar/ui': 0.7.14(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.49.1)(babel-plugin-react-compiler@19.0.0-beta-a7bf2bd-20241110)(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021))(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
+      '@markdoc/markdoc': 0.4.0(react@19.0.0-rc-45804af1-20241021)(types-react@19.0.0-rc.1)
+      '@react-aria/focus': 3.19.0(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/i18n': 3.12.4(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/interactions': 3.22.5(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/label': 3.7.13(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/overlays': 3.24.0(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/selection': 3.21.0(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/utils': 3.26.0(react@19.0.0-rc-45804af1-20241021)
+      '@react-aria/visually-hidden': 3.8.18(react@19.0.0-rc-45804af1-20241021)
+      '@react-stately/collections': 3.12.0(react@19.0.0-rc-45804af1-20241021)
+      '@react-stately/list': 3.11.1(react@19.0.0-rc-45804af1-20241021)
+      '@react-stately/overlays': 3.6.12(react@19.0.0-rc-45804af1-20241021)
+      '@react-stately/utils': 3.10.5(react@19.0.0-rc-45804af1-20241021)
+      '@react-types/shared': 3.26.0(react@19.0.0-rc-45804af1-20241021)
+      '@sindresorhus/slugify': 1.1.2
+      '@toeverything/y-indexeddb': 0.10.0-canary.9(yjs@13.6.21)
+      '@ts-gql/tag': 0.7.3(graphql@16.10.0)
+      '@types/react': types-react@19.0.0-rc.1
+      '@urql/core': 5.1.0(graphql@16.10.0)
+      '@urql/exchange-auth': 2.2.0(@urql/core@5.1.0(graphql@16.10.0))
+      '@urql/exchange-graphcache': 7.2.1(@urql/core@5.1.0(graphql@16.10.0))(graphql@16.10.0)
+      '@urql/exchange-persisted': 4.3.0(@urql/core@5.1.0(graphql@16.10.0))
+      cookie: 1.0.2
+      emery: 1.4.3
+      escape-string-regexp: 4.0.0
+      fast-deep-equal: 3.1.3
+      graphql: 16.10.0
+      idb-keyval: 6.2.1
+      ignore: 5.3.2
+      is-hotkey: 0.2.0
+      js-yaml: 4.1.0
+      lib0: 0.2.99
+      lru-cache: 10.4.3
+      match-sorter: 6.3.4
+      mdast-util-from-markdown: 2.0.2
+      mdast-util-gfm-autolink-literal: 2.0.1
+      mdast-util-gfm-strikethrough: 2.0.0
+      mdast-util-gfm-table: 2.0.0
+      mdast-util-mdx: 3.0.0
+      mdast-util-to-markdown: 2.1.2
+      micromark-extension-gfm-autolink-literal: 2.1.0
+      micromark-extension-gfm-strikethrough: 2.1.0
+      micromark-extension-gfm-table: 2.1.0
+      micromark-extension-mdxjs: 3.0.0
+      minimatch: 9.0.5
+      partysocket: 0.0.22
+      prosemirror-commands: 1.6.2
+      prosemirror-history: 1.4.1
+      prosemirror-keymap: 1.2.2
+      prosemirror-model: 1.24.1
+      prosemirror-state: 1.4.3
+      prosemirror-tables: 1.6.1
+      prosemirror-transform: 1.10.2
+      prosemirror-view: 1.37.1
+      react: 19.0.0-rc-45804af1-20241021
+      react-dom: 19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021)
+      scroll-into-view-if-needed: 3.1.0
+      slate: 0.91.4
+      slate-history: 0.86.0(slate@0.91.4)
+      slate-react: 0.91.11(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)(slate@0.91.4)
+      superstruct: 1.0.4
+      unist-util-visit: 5.0.0
+      urql: 4.2.1(@urql/core@5.1.0(graphql@16.10.0))(react@19.0.0-rc-45804af1-20241021)
+      y-prosemirror: 1.2.15(prosemirror-model@1.24.1)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(yjs@13.6.21))(yjs@13.6.21)
+      y-protocols: 1.0.6(yjs@13.6.21)
+      yjs: 13.6.21
+    transitivePeerDependencies:
+      - next
+      - supports-color
+
   '@keystatic/core@0.5.39(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.49.1)(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021))(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)':
     dependencies:
       '@babel/runtime': 7.26.0
@@ -11475,6 +11694,17 @@ snapshots:
       - next
       - supports-color
 
+  '@keystatic/next@5.0.1(@keystatic/core@0.5.39(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.49.1)(babel-plugin-react-compiler@19.0.0-beta-a7bf2bd-20241110)(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021))(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021))(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.49.1)(babel-plugin-react-compiler@19.0.0-beta-a7bf2bd-20241110)(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021))(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)':
+    dependencies:
+      '@babel/runtime': 7.26.0
+      '@keystatic/core': 0.5.39(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.49.1)(babel-plugin-react-compiler@19.0.0-beta-a7bf2bd-20241110)(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021))(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
+      '@types/react': types-react@19.0.0-rc.1
+      chokidar: 3.6.0
+      next: 15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.49.1)(babel-plugin-react-compiler@19.0.0-beta-a7bf2bd-20241110)(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
+      react: 19.0.0-rc-45804af1-20241021
+      react-dom: 19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021)
+      server-only: 0.0.1
+
   '@keystatic/next@5.0.1(@keystatic/core@0.5.39(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.49.1)(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021))(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021))(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.49.1)(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021))(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)':
     dependencies:
       '@babel/runtime': 7.26.0
@@ -11493,6 +11723,16 @@ snapshots:
       '@supabase/postgrest-js': 1.17.7
       '@supabase/supabase-js': 2.47.10
       ts-case-convert: 2.1.0
+
+  '@makerkit/data-loader-supabase-nextjs@1.2.3(@supabase/postgrest-js@1.17.7)(@supabase/supabase-js@2.47.10)(@tanstack/react-query@5.60.2(react@19.0.0-rc-45804af1-20241021))(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.49.1)(babel-plugin-react-compiler@19.0.0-beta-a7bf2bd-20241110)(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)':
+    dependencies:
+      '@makerkit/data-loader-supabase-core': 0.0.8(@supabase/postgrest-js@1.17.7)(@supabase/supabase-js@2.47.10)
+      '@supabase/supabase-js': 2.47.10
+      '@tanstack/react-query': 5.60.2(react@19.0.0-rc-45804af1-20241021)
+      next: 15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.49.1)(babel-plugin-react-compiler@19.0.0-beta-a7bf2bd-20241110)(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)
+      react: 19.0.0-rc-45804af1-20241021
+    transitivePeerDependencies:
+      - '@supabase/postgrest-js'
 
   '@makerkit/data-loader-supabase-nextjs@1.2.3(@supabase/postgrest-js@1.17.7)(@supabase/supabase-js@2.47.10)(@tanstack/react-query@5.60.2(react@19.0.0-rc-45804af1-20241021))(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.49.1)(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021)':
     dependencies:
@@ -15156,6 +15396,11 @@ snapshots:
       base64-js: 1.5.1
       ieee754: 1.2.1
 
+  buffer@6.0.3:
+    dependencies:
+      base64-js: 1.5.1
+      ieee754: 1.2.1
+
   busboy@1.6.0:
     dependencies:
       streamsearch: 1.1.0
@@ -15390,6 +15635,8 @@ snapshots:
       delayed-stream: 1.0.0
 
   comma-separated-tokens@1.0.8: {}
+
+  command-exists@1.2.9: {}
 
   commander@10.0.1: {}
 
@@ -15739,6 +15986,20 @@ snapshots:
       semver: 7.6.3
 
   electron-to-chromium@1.5.75: {}
+
+  elevenlabs@1.50.2:
+    dependencies:
+      command-exists: 1.2.9
+      execa: 5.1.1
+      form-data: 4.0.1
+      form-data-encoder: 4.0.2
+      formdata-node: 6.0.3
+      node-fetch: 2.7.0
+      qs: 6.11.2
+      readable-stream: 4.6.0
+      url-join: 4.0.1
+    transitivePeerDependencies:
+      - encoding
 
   emery@1.4.3: {}
 
@@ -16452,6 +16713,8 @@ snapshots:
 
   form-data-encoder@1.7.2: {}
 
+  form-data-encoder@4.0.2: {}
+
   form-data@4.0.1:
     dependencies:
       asynckit: 0.4.0
@@ -16464,6 +16727,8 @@ snapshots:
     dependencies:
       node-domexception: 1.0.0
       web-streams-polyfill: 4.0.0-beta.3
+
+  formdata-node@6.0.3: {}
 
   formdata-polyfill@4.0.10:
     dependencies:
@@ -18205,7 +18470,7 @@ snapshots:
       postcss: 8.4.31
       react: 19.0.0-rc-45804af1-20241021
       react-dom: 19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021)
-      styled-jsx: 5.1.6(@babel/core@7.26.0)(react@19.0.0-rc-45804af1-20241021)
+      styled-jsx: 5.1.6(react@19.0.0-rc-45804af1-20241021)
     optionalDependencies:
       '@next/swc-darwin-arm64': 15.0.3
       '@next/swc-darwin-x64': 15.0.3
@@ -18738,6 +19003,8 @@ snapshots:
 
   process-warning@4.0.0: {}
 
+  process@0.11.10: {}
+
   progress@2.0.3: {}
 
   progressive-blur@1.0.0(react-dom@19.0.0-rc-45804af1-20241021(react@19.0.0-rc-45804af1-20241021))(react@19.0.0-rc-45804af1-20241021):
@@ -18841,6 +19108,10 @@ snapshots:
       once: 1.4.0
 
   punycode@2.3.1: {}
+
+  qs@6.11.2:
+    dependencies:
+      side-channel: 1.1.0
 
   qs@6.13.1:
     dependencies:
@@ -19018,6 +19289,14 @@ snapshots:
       inherits: 2.0.4
       string_decoder: 1.3.0
       util-deprecate: 1.0.2
+
+  readable-stream@4.6.0:
+    dependencies:
+      abort-controller: 3.0.0
+      buffer: 6.0.3
+      events: 3.3.0
+      process: 0.11.10
+      string_decoder: 1.3.0
 
   readdirp@3.6.0:
     dependencies:
@@ -19609,6 +19888,11 @@ snapshots:
     optionalDependencies:
       '@babel/core': 7.26.0
 
+  styled-jsx@5.1.6(react@19.0.0-rc-45804af1-20241021):
+    dependencies:
+      client-only: 0.0.1
+      react: 19.0.0-rc-45804af1-20241021
+
   stylis@4.2.0: {}
 
   sucrase@3.35.0:
@@ -19657,6 +19941,10 @@ snapshots:
   tabbable@6.2.0: {}
 
   tailwind-merge@2.5.5: {}
+
+  tailwind-scrollbar-hide@2.0.0(tailwindcss@3.4.15(ts-node@10.9.2(@types/node@22.10.2)(typescript@5.7.2))):
+    dependencies:
+      tailwindcss: 3.4.15(ts-node@10.9.2(@types/node@22.10.2)(typescript@5.7.2))
 
   tailwindcss-animate@1.0.7(tailwindcss@3.4.15(ts-node@10.9.2(@types/node@22.10.2)(typescript@5.7.2))):
     dependencies:
@@ -20088,6 +20376,8 @@ snapshots:
   uri-js@4.4.1:
     dependencies:
       punycode: 2.3.1
+
+  url-join@4.0.1: {}
 
   urql@4.2.1(@urql/core@5.1.0(graphql@16.10.0))(react@19.0.0-rc-45804af1-20241021):
     dependencies:

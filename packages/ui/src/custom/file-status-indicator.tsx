@@ -27,7 +27,7 @@ const size = "size-full";
  * @param status - Current status of the file
  * @param className - Optional CSS classes for styling
  */
-export function StatusIndicator({ id, status, className }: StatusIndicatorProps) {
+export function FileStatusIndicator({ id, status, className }: StatusIndicatorProps) {
   return (
     <div className={cn(
       // Base styles for the indicator container

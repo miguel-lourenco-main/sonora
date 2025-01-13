@@ -24,10 +24,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../shadcn/table"
+} from "../../shadcn/table"
 import { DataTablePagination } from "./data-table-components/data-table-pagination"
 import { DataTableToolbar } from "./data-table-components/data-table-toolbar"
-import { Filter } from "./_lib/interface"
+import { Filter } from "../_lib/interface"
 import I18nComponent from "@kit/ui/i18n-component"
 
 

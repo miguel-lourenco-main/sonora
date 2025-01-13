@@ -6,15 +6,15 @@ import {
 } from "@radix-ui/react-icons"
 import { Column } from "@tanstack/react-table"
 
-import { cn } from "../../lib"
-import { Button } from "../../shadcn/button"
+import { cn } from "../../../lib"
+import { Button } from "../../../shadcn/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../../shadcn/dropdown-menu"
+} from "../../../shadcn/dropdown-menu"
 import I18nComponent from "@kit/ui/i18n-component"
 
 

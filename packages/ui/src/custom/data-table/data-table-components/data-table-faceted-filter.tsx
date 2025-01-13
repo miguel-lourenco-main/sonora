@@ -2,8 +2,8 @@ import * as React from "react"
 import { CheckIcon, PlusCircledIcon } from "@radix-ui/react-icons"
 import { Column } from "@tanstack/react-table"
 
-import { Badge } from "../../shadcn/badge"
-import { Button } from "../../shadcn/button"
+import { Badge } from "../../../shadcn/badge"
+import { Button } from "../../../shadcn/button"
 import {
   Command,
   CommandEmpty,
@@ -12,14 +12,14 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from "../../shadcn/command"
+} from "../../../shadcn/command"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "../../shadcn/popover"
-import { Separator } from "../../shadcn/separator"
-import { cn } from "../../lib"
+} from "../../../shadcn/popover"
+import { Separator } from "../../../shadcn/separator"
+import { cn } from "../../../lib"
 import I18nComponent from "@kit/ui/i18n-component"
 
 

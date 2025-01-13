@@ -3,15 +3,16 @@ import { FileUp } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 /**
- * Props interface for the FileSvgDraw component
+ * Props interface for the FileUploadGuide component
  */
-interface FileSvgDrawProps {
+interface FileUploadGuideProps {
   acceptedFileTypes: Record<string, string[]>;  // Map of MIME types to file extensions
+  maxFileSize?: string;
 }
 
 /**
- * FileSvgDraw Component
- * Renders a visual representation for file upload areas with supported file types
+ * FileUploadGuide Component
+ * Renders guidance information for file upload areas, including supported file types
  * and maximum file size information
  * 
  * Features:
@@ -22,7 +23,7 @@ interface FileSvgDrawProps {
  * 
  * @param acceptedFileTypes - Object mapping MIME types to their file extensions
  */
-export function FileSvgDraw({ acceptedFileTypes }: FileSvgDrawProps) {
+export function FileUploadGuide({ acceptedFileTypes, maxFileSize = MAX_FILE_SIZE_STRING }: FileUploadGuideProps) {
   const { t } = useTranslation("ui");
 
   /**
@@ -54,9 +55,11 @@ export function FileSvgDraw({ acceptedFileTypes }: FileSvgDrawProps) {
       <p className="text-xs">{getSupportedFileTypes()}</p>
       
       {/* Maximum file size limit */}
-      <span className="whitespace-nowrap text-sm text-muted-foreground">
-        {`Max file size: ${MAX_FILE_SIZE_STRING}`}
-      </span>
+      {maxFileSize && (
+        <span className="whitespace-nowrap text-sm text-muted-foreground">
+          {`Max file size: ${maxFileSize}`}
+        </span>
+      )}
     </div>
   );
 } 
