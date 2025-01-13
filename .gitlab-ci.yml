@@ -53,6 +53,7 @@ build:
   artifacts:
     paths:
       - apps/polydoc/.vercel/output/static/
+      - apps/sonora/.vercel/output/static/
     expire_in: 1 hour
 
 polydoc-deploy:
