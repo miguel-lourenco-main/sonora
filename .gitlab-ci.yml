@@ -67,3 +67,17 @@ polydoc-deploy:
     - pnpm cloudflare:deploy
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
+
+sonora-deploy:
+  stage: deploy
+  tags:
+    - cm3588
+  image: 'node:22.11'
+  dependencies:
+    - build
+  script:
+    - cd apps/sonora
+    - pnpm cloudflare:deploy
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+
