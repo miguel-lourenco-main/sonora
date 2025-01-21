@@ -19,11 +19,10 @@ pages_build_output_dir = ".vercel/output/static"
 compatibility_date = "2024-12-12"
 compatibility_flags = ["nodejs_compat"]
 
-# Root level vars for development/preview
-[vars]
+[env.production.vars]
 EOL
 
-# Add variables from both .env and .env.production to root [vars] section
+# Add variables from .env to [env.production.vars] section if it exists
 if [ -f ".env" ]; then
     grep -v '^#' ".env" | grep -v '^$' | while read -r line; do
         key=$(echo "$line" | cut -d= -f1 | xargs)
@@ -32,9 +31,10 @@ if [ -f ".env" ]; then
             echo "$key = \"$value\"" >> wrangler.toml
         fi
     done
-    echo "Added development variables from .env to root vars"
+    echo "Added development variables from .env"
 fi
 
+# Add variables from .env.production if it exists
 if [ -f ".env.production" ]; then
     grep -v '^#' ".env.production" | grep -v '^$' | while read -r line; do
         key=$(echo "$line" | cut -d= -f1 | xargs)
@@ -43,22 +43,7 @@ if [ -f ".env.production" ]; then
             echo "$key = \"$value\"" >> wrangler.toml
         fi
     done
-    echo "Added production variables from .env.production to root vars"
-fi
-
-# Add production section header
-printf "\n# Production environment vars\n[env.production.vars]\n" >> wrangler.toml
-
-# Add variables from .env.production to production section
-if [ -f ".env.production" ]; then
-    grep -v '^#' ".env.production" | grep -v '^$' | while read -r line; do
-        key=$(echo "$line" | cut -d= -f1 | xargs)
-        value=$(echo "$line" | cut -d= -f2- | xargs)
-        if [ -n "$key" ]; then
-            echo "$key = \"$value\"" >> wrangler.toml
-        fi
-    done
-    echo "Added production variables from .env.production to production vars"
+    echo "Added production variables from .env.production"
 fi
 
 echo "Successfully created wrangler.toml"
