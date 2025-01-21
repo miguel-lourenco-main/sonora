@@ -1,6 +1,5 @@
 "use client";
 
-import { Input } from "../../shadcn/input";
 import { cn } from "../../lib";
 import { forwardRef, useCallback, useState } from "react";
 import { FileRejection, useDropzone } from "react-dropzone";
@@ -91,6 +90,7 @@ export const FilesDragNDrop = forwardRef<
       onDrop,
       onDropRejected: () => setIsFileTooBig(true),
       onDropAccepted: () => setIsFileTooBig(false),
+      noClick: true, // Disable automatic click handling
     });
 
     /**
@@ -150,6 +150,14 @@ export const FilesDragNDrop = forwardRef<
       [files, activeIndex, removeFiles, orientation, direction, dropzone.inputRef]
     );
 
+    const handleClick = useCallback((e: React.MouseEvent) => {
+      // Check if we're clicking a file or its controls
+      const isFileClick = (e.target as HTMLElement).closest('[data-delete-file-item]');
+      if (!isFileClick && !disabled) {
+        dropzone.inputRef.current?.click();
+      }
+    }, [dropzone.inputRef, disabled]);
+
     return (
       <div
         ref={ref}
@@ -157,31 +165,21 @@ export const FilesDragNDrop = forwardRef<
         onKeyDownCapture={handleKeyDown}
         className={cn("relative flex w-full h-full gap-4 p-2 focus:outline-none overflow-hidden", className)}
         dir={direction}
-        {...dropzone.getRootProps({
-          onClick: (e) => {
-            // Check if we're clicking a file or its controls
-            const isFileClick = (e.target as HTMLElement).closest('[data-delete-file-item]');
-            if (!isFileClick) {
-              dropzone.open();
-            }
-          },
-        })}
+        {...dropzone.getRootProps()}
+        onClick={handleClick}
       >
         <div className={cn("flex absolute top-0 left-0 z-10 items-center justify-center w-full h-full p-2 bg-background/80")}>
           <div
             className={cn(
               "flex flex-col items-center justify-center size-full rounded-lg duration-300 ease-in-out outline-dashed outline-1 outline-foreground cursor-pointer",
               dropzone.isDragAccept ? "border-green-500" : 
-              dropzone.isDragReject || isFileTooBig ? "border-red-500" : "border-gray-300"
+              dropzone.isDragReject || isFileTooBig ? "border-red-500" : "border-gray-300",
+              disabled && "cursor-not-allowed"
             )}
           >
             {children}
           </div>
-          <Input
-            ref={dropzone.inputRef}
-            disabled={disabled}
-            {...dropzone.getInputProps()}
-          />
+          <input {...dropzone.getInputProps()} />
         </div>
       </div>
     );
