@@ -93,6 +93,8 @@ export class StripeWebhookHandlerService
       onEvent?(event: Stripe.Event): Promise<unknown>;
     },
   ) {
+
+    console.debug('event', event)
     switch (event.type) {
       case 'checkout.session.completed': {
         return this.handleCheckoutSessionCompleted(
