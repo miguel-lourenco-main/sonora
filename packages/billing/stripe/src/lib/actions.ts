@@ -8,7 +8,12 @@ export async function subscribeToFreePlan(name: string, email: string, accountId
   console.log('subscribeToFreePlan', name, email, accountId, priceId)
 
   try {
+
+    console.log('creating stripe client')
+    
     const stripe = await createStripeClient();
+
+    console.log('creating customer')
 
     const customer = await stripe.customers.create({
       name: name,
