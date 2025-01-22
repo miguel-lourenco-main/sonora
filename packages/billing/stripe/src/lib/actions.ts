@@ -6,12 +6,16 @@ import { createStripeClient } from "../services/stripe-sdk";
 
 export async function subscribeToFreePlan(name: string, email: string, accountId: string, priceId: string) {
 
+  console.log('subscribeToFreePlan', name, email, accountId, priceId)
+
   const stripe = await createStripeClient();
 
   const customer = await stripe.customers.create({
     name: name,
     email: email,
   });
+
+  console.log('created customer:', customer)
 
   return await stripe.subscriptions.create({
     customer: customer.id,
