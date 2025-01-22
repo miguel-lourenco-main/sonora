@@ -50,47 +50,92 @@ export default function CurrentPages({ size = 'normal', collapsed = false }: Cur
     setMonthlyTokens(userTokens.monthly_credits);
   }
 
-  useEffect(() => {
-
-    const setupCredits = async () => {
-      const client = getSupabaseBrowserClient<Database>();
-
-      const { data: { session } } = await client.auth.getSession();
-      const accountId = session?.user.id;
-      const { data } = await client.from('credit').select('*').filter('account_id', 'eq', accountId);
-
-      setTokens(data?.[0]?.credits ?? 0);
-      setMonthlyTokens(data?.[0]?.monthly_credits ?? 1);
-    }
-
-    void setupCredits();
-  }, []);
-
-  useEffect(() => {
-    const subscribeChanges = async () => {
+  // Function to fetch credits
+  const fetchCredits = async (mounted: boolean) => {
+    try {
       const client = getSupabaseBrowserClient<Database>();
       const { data: { session } } = await client.auth.getSession();
       const accountId = session?.user.id;
       
-      const channelName = `credit-${Math.random().toString(36).slice(2, 9)}`;
-      const channel = client.channel(channelName)
-        .on(
-          'postgres_changes',
-          { event: '*', schema: 'public', table: 'credit', filter: `account_id=eq.${accountId}` },
-          (payload) => handleCreditsChange(payload.new as UserTokens)
-        )
-        .subscribe()
+      if (!accountId || !mounted) return;
 
-      // Return cleanup function
-      return () => {
-        void channel.unsubscribe();
-      };
+      const { data } = await client.from('credit')
+        .select('*')
+        .filter('account_id', 'eq', accountId)
+        .single();
+
+      if (mounted) {
+        setTokens(data?.credits ?? 0);
+        setMonthlyTokens(data?.monthly_credits ?? 1);
+      }
+    } catch (error) {
+      console.error('Error fetching credits:', error);
+    }
+  };
+
+  useEffect(() => {
+    let mounted = true;
+    void fetchCredits(mounted);
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    let mounted = true;
+
+    const subscribeChanges = async () => {
+      try {
+        const client = getSupabaseBrowserClient<Database>();
+        const { data: { session } } = await client.auth.getSession();
+        const accountId = session?.user.id;
+        
+        if (!accountId || !mounted) return;
+
+        // Use a stable channel name based on user ID to prevent duplicate subscriptions
+        const channelName = `credit-${accountId}`;
+        
+        // Unsubscribe from any existing subscription first
+        const existingChannel = client.getChannels().find(ch => ch.topic === channelName);
+        if (existingChannel) {
+          await existingChannel.unsubscribe();
+        }
+
+        const channel = client.channel(channelName)
+          .on(
+            'postgres_changes',
+            { 
+              event: '*', 
+              schema: 'public', 
+              table: 'credit', 
+              filter: `account_id=eq.${accountId}` 
+            },
+            (payload) => {
+              if (mounted) {
+                const newData = payload.new as UserTokens;
+                handleCreditsChange(newData);
+                
+                // Force a fresh fetch to ensure consistency
+                void fetchCredits(mounted);
+              }
+            }
+          )
+          .subscribe((status) => {
+            console.debug('Credit subscription status:', status);
+          });
+
+        return () => {
+          void channel.unsubscribe();
+        };
+      } catch (error) {
+        console.error('Error setting up credit subscription:', error);
+      }
     };
 
     const subscription = subscribeChanges();
-    
-    // Cleanup on unmount
+
     return () => {
+      mounted = false;
       void subscription.then(cleanup => cleanup?.());
     };
   }, []);
