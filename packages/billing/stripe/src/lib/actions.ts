@@ -7,66 +7,72 @@ import { createStripeClient } from "../services/stripe-sdk";
 const timeout = 30000;
 export async function subscribeToFreePlan(name: string, email: string, accountId: string, priceId: string) {
   const logger = await getLogger();
-  console.log('subscribeToFreePlan', name, email, accountId, priceId)
+  logger.info({ name, email, accountId, priceId }, 'Starting subscribeToFreePlan');
 
   try {
-    console.log('creating stripe client')
+    logger.info('Initializing Stripe client');
     const stripe = await createStripeClient();
+    
+    logger.info({ name, email }, 'Attempting to create Stripe customer');
+    const customerPromise = stripe.customers.create({
+      name: name,
+      email: email,
+    });
 
-    console.log('creating customer')
-    // Wrap the customer creation in a timeout promise
+    // Add logging for promise state
+    customerPromise.then(
+      () => logger.info('Customer promise resolved'),
+      (error) => logger.error({ error }, 'Customer promise rejected')
+    );
+
     const customer = await Promise.race([
-      stripe.customers.create({
-        name: name,
-        email: email,
-      }).catch((error: Error) => {
-        console.error('Customer creation promise rejected:', error);
-        throw error;
-      }),
+      customerPromise,
       new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('Customer creation timed out after 10s')), timeout)
+        setTimeout(() => {
+          logger.error('Customer creation timed out');
+          reject(new Error('Customer creation timed out after 30s'));
+        }, timeout)
       )
     ]) as Stripe.Response<Stripe.Customer>;
     
-    console.log('created customer:', customer)
+    logger.info({ customerId: customer.id }, 'Successfully created customer');
 
-    console.log('creating subscription')
-    // Wrap the subscription creation in a timeout promise
+    logger.info({ customerId: customer.id, priceId }, 'Attempting to create subscription');
+    const subscriptionPromise = stripe.subscriptions.create({
+      customer: customer.id,
+      items: [{ price: priceId, quantity: 5 }],
+      metadata: { accountId },
+    });
+
+    // Add logging for promise state
+    subscriptionPromise.then(
+      () => logger.info('Subscription promise resolved'),
+      (error) => logger.error({ error }, 'Subscription promise rejected')
+    );
+
     const subscription = await Promise.race([
-      stripe.subscriptions.create({
-        customer: customer.id,
-        items: [
-          {
-            price: priceId,
-            quantity: 5,
-          },
-        ],
-        metadata: {
-          accountId,
-        },
-      }).catch((error: Error) => {
-        console.error('Subscription creation promise rejected:', error);
-        throw error;
-      }),
+      subscriptionPromise,
       new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('Subscription creation timed out after 10s')), timeout)
+        setTimeout(() => {
+          logger.error('Subscription creation timed out');
+          reject(new Error('Subscription creation timed out after 30s'));
+        }, timeout)
       )
     ]) as Stripe.Response<Stripe.Subscription>;
 
-    console.log('created subscription:', subscription)
+    logger.info({ subscriptionId: subscription.id }, 'Successfully created subscription');
     return subscription;
   } catch (error) {
-    console.error('Error in subscribeToFreePlan:', error);
     logger.error({ 
-      error, 
+      error,
       errorName: error instanceof Error ? error.name : 'Unknown',
       errorMessage: error instanceof Error ? error.message : String(error),
       errorStack: error instanceof Error ? error.stack : undefined,
-      name, 
-      email, 
-      accountId, 
+      name,
+      email,
+      accountId,
       priceId 
-    }, 'Fatal error in subscribeToFreePlan');
+    }, 'Error in subscribeToFreePlan');
     throw error;
   }
 }
