@@ -5,30 +5,34 @@ import { createStripeClient } from "../services/stripe-sdk";
 
 
 export async function subscribeToFreePlan(name: string, email: string, accountId: string, priceId: string) {
-
   console.log('subscribeToFreePlan', name, email, accountId, priceId)
 
-  const stripe = await createStripeClient();
+  try {
+    const stripe = await createStripeClient();
 
-  const customer = await stripe.customers.create({
-    name: name,
-    email: email,
-  });
+    const customer = await stripe.customers.create({
+      name: name,
+      email: email,
+    });
 
-  console.log('created customer:', customer)
+    console.log('created customer:', customer)
 
-  return await stripe.subscriptions.create({
-    customer: customer.id,
-    items: [
-      {
-        price: priceId,
-        quantity: 5,
+    return await stripe.subscriptions.create({
+      customer: customer.id,
+      items: [
+        {
+          price: priceId,
+          quantity: 5,
+        },
+      ],
+      metadata: {
+        accountId,
       },
-    ],
-    metadata: {
-      accountId,
-    },
-  });
+    });
+  } catch (error) {
+    console.error('Error in subscribeToFreePlan:', error);
+    throw error;
+  }
 }
 
 
