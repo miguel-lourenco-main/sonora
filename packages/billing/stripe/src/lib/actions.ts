@@ -2,6 +2,7 @@
 
 import { getLogger } from "@kit/shared/logger";
 import { createStripeClient } from "../services/stripe-sdk";
+import type Stripe from 'stripe';
 
 export async function subscribeToFreePlan(name: string, email: string, accountId: string, priceId: string) {
   const logger = await getLogger();
@@ -12,13 +13,19 @@ export async function subscribeToFreePlan(name: string, email: string, accountId
     const stripe = await createStripeClient();
     logger.info('Stripe client created successfully');
 
-    // Create customer
+    // Create customer with timeout
     logger.info({ name, email }, 'Creating customer');
-    const customer = await stripe.customers.create({
+    const customerPromise = stripe.customers.create({
       name,
       email,
       metadata: { accountId }
     });
+
+    const timeoutPromise = new Promise<Stripe.Customer>((_, reject) => {
+      setTimeout(() => reject(new Error('Customer creation timed out after 30s')), 30000);
+    });
+
+    const customer = await Promise.race([customerPromise, timeoutPromise]);
     logger.info({ customerId: customer.id }, 'Customer created successfully');
 
     // Create subscription with initial page quantity
@@ -37,16 +44,14 @@ export async function subscribeToFreePlan(name: string, email: string, accountId
     return subscription;
 
   } catch (error) {
-    const errorContext = {
+    logger.error({ 
       error: error instanceof Error ? error.message : String(error),
-      stack: error instanceof Error ? error.stack : undefined,
+      errorType: typeof error,
+      errorObject: error instanceof Error ? Object.keys(error) : undefined,
       name,
       email,
-      accountId,
-      priceId
-    };
-
-    logger.error(errorContext, 'Error in subscribeToFreePlan');
+      accountId
+    }, 'Error creating customer or subscription');
     throw error;
   }
 }
