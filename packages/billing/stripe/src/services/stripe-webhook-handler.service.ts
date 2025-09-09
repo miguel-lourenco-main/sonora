@@ -94,7 +94,6 @@ export class StripeWebhookHandlerService
     },
   ) {
 
-    console.debug('event', event)
     switch (event.type) {
       case 'checkout.session.completed': {
         return this.handleCheckoutSessionCompleted(

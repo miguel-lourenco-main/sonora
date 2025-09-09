@@ -67,10 +67,6 @@ class DatabaseWebhookHandlerService {
 
     const service = createDatabaseWebhookRouterService(adminClient);
 
-    console.debug('service', service)
-    console.debug('json', json)
-    console.debug('params', params)
-
     try {
       // handle the webhook event based on the table
       await service.handleWebhook(json);
