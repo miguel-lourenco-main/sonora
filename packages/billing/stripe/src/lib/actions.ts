@@ -5,49 +5,82 @@ import { createStripeClient } from "../services/stripe-sdk";
 
 export async function subscribeToFreePlan(name: string, email: string, accountId: string, priceId: string) {
   const logger = await getLogger();
-  logger.info({ name, email, accountId, priceId }, 'Starting subscribeToFreePlan');
+  logger.info({ name, email, accountId }, 'Starting subscribeToFreePlan');
+
+  // Global timeout for the entire operation
+  const timeoutId = setTimeout(() => {
+    logger.error('Global timeout reached - operation took too long');
+    throw new Error('Operation timed out after 30s');
+  }, 30000);
 
   try {
-    logger.info('Creating Stripe client');
     const stripe = await createStripeClient();
-    logger.info('Stripe client created successfully');
 
-    // Create customer
-    logger.info({ name, email }, 'Creating customer');
-    const customer = await stripe.customers.create({
+    // Create customer with timeout protection
+    logger.info({ name, email }, 'Starting customer creation');
+    const customerPromise = stripe.customers.create({
       name,
       email,
       metadata: { accountId }
     });
+
+    const customer = await Promise.race([
+      customerPromise,
+      new Promise<never>((_, reject) => 
+        setTimeout(() => reject(new Error('Customer creation API call timed out')), 20000)
+      )
+    ]);
+    
     logger.info({ customerId: customer.id }, 'Customer created successfully');
 
-    // Create subscription with initial page quantity
-    logger.info({ customerId: customer.id, priceId }, 'Creating subscription');
-    const subscription = await stripe.subscriptions.create({
+    // Create subscription with timeout protection
+    logger.info({ customerId: customer.id, priceId }, 'Starting subscription creation');
+    const subscriptionPromise = stripe.subscriptions.create({
       customer: customer.id,
-      items: [{ price: priceId, quantity: 5 }], // Start with 5 pages
+      items: [{ price: priceId, quantity: 5 }],
       metadata: { accountId },
     });
+
+    const subscription = await Promise.race([
+      subscriptionPromise,
+      new Promise<never>((_, reject) => 
+        setTimeout(() => reject(new Error('Subscription creation API call timed out')), 20000)
+      )
+    ]);
+
     logger.info({ 
       subscriptionId: subscription.id,
-      customerId: customer.id,
-      quantity: subscription.items.data?.[0]?.quantity ?? 5
+      customerId: customer.id 
     }, 'Subscription created successfully');
 
     return subscription;
 
   } catch (error) {
-    const errorContext = {
-      error: error instanceof Error ? error.message : String(error),
-      stack: error instanceof Error ? error.stack : undefined,
-      name,
-      email,
-      accountId,
-      priceId
-    };
+    if (error instanceof Error) {
+      const errorContext = {
+        error,
+        errorName: error.name,
+        errorMessage: error.message,
+        name,
+        email,
+        accountId
+      };
 
-    logger.error(errorContext, 'Error in subscribeToFreePlan');
+      if (error.message.includes('timed out')) {
+        logger.error(errorContext, 'Operation timed out');
+      } else if (error.message.includes('ECONNREFUSED')) {
+        logger.error(errorContext, 'Connection to Stripe API failed');
+      } else if (error.message.includes('ETIMEDOUT')) {
+        logger.error(errorContext, 'Network connection timed out');
+      } else if (error.message.includes('ENOTFOUND')) {
+        logger.error(errorContext, 'DNS lookup failed');
+      } else {
+        logger.error(errorContext, 'Error in subscribeToFreePlan');
+      }
+    }
     throw error;
+  } finally {
+    clearTimeout(timeoutId);
   }
 }
 
