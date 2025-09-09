@@ -53,47 +53,73 @@ export async function createStripeClient() {
   const logger = await getLogger();
   
   try {
+
+    logger.info('createStripeClient')
+
+    const env = await getEnvVars();
+    logger.info({ env })
+    
     // Return existing instance if available
     if (stripeClientInstance) {
+      logger.info('Using existing Stripe client instance');
       return stripeClientInstance;
     }
 
     // If there's an ongoing initialization, return its promise
     if (initializationPromise) {
+      logger.info('Using existing Stripe client initialization promise');
       return initializationPromise;
     }
 
     // Create new initialization promise
     initializationPromise = (async () => {
       try {
-        const env = await getEnvVars();
+        logger.info('Starting new Stripe client initialization');
 
         // Verify environment variables
         if (!env.STRIPE_SECRET_KEY) {
-          throw new Error('Stripe secret key is not configured');
+          const error = new Error('Stripe secret key is not configured');
+          logger.error({ error: error.message }, 'Missing STRIPE_SECRET_KEY environment variable');
+          throw error;
         }
 
         if (!env.STRIPE_SECRET_KEY.startsWith('sk_')) {
-          throw new Error('Invalid Stripe secret key format');
+          const error = new Error('Invalid Stripe secret key format');
+          logger.error({ error: error.message }, 'Invalid STRIPE_SECRET_KEY format');
+          throw error;
         }
 
-        // Import Stripe
-        const stripeModule = await import('stripe');
-        const StripeConstructor = stripeModule.default;
+        // Import Stripe with logging
+        logger.info('Importing Stripe package');
+        let StripeConstructor;
+        try {
+          const stripeModule = await import('stripe');
+          StripeConstructor = stripeModule.default;
+          logger.info('Stripe package imported successfully');
+        } catch (importError) {
+          logger.error({ 
+            error: getErrorMessage(importError),
+            stack: getErrorStack(importError)
+          }, 'Failed to import Stripe package');
+          throw importError;
+        }
 
         // Validate environment variables
+        logger.info('Validating environment variables');
         const stripeServerEnv = StripeServerEnvSchema.parse({
           secretKey: env.STRIPE_SECRET_KEY,
           webhooksSecret: env.STRIPE_WEBHOOK_SECRET,
         });
 
-        // Create and test Stripe instance
-        logger.info('Creating and testing Stripe connection');
+        // Create Stripe instance
+        logger.info('Creating Stripe instance');
         const stripe = new StripeConstructor(stripeServerEnv.secretKey, {
           apiVersion: STRIPE_API_VERSION,
           telemetry: false
         });
 
+        // Test the connection
+        logger.info('Testing Stripe connection');
         try {
           await stripe.customers.list({ limit: 1 });
           logger.info('Stripe connection test successful');
@@ -107,15 +133,16 @@ export async function createStripeClient() {
 
         // Store the instance
         stripeClientInstance = stripe;
-        logger.info('Stripe client initialized successfully');
+        logger.info('Stripe client initialization completed successfully');
         return stripe;
 
       } catch (error) {
         logger.error({ 
-          error: getErrorMessage(error),
-          stack: getErrorStack(error)
+          errorMessage: getErrorMessage(error),
+          errorStack: getErrorStack(error),
         }, 'Failed to initialize Stripe client');
         
+        // Clear both the promise and instance on failure
         initializationPromise = null;
         stripeClientInstance = null;
         throw error;
@@ -124,12 +151,13 @@ export async function createStripeClient() {
 
     return initializationPromise;
   } catch (error) {
+    // Clear both the promise and instance on any error
     initializationPromise = null;
     stripeClientInstance = null;
     
     logger.error({ 
-      error: getErrorMessage(error),
-      stack: getErrorStack(error)
+      errorMessage: getErrorMessage(error),
+      errorStack: getErrorStack(error),
     }, 'Fatal error in createStripeClient');
     
     throw error;
