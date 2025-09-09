@@ -1,8 +1,10 @@
 'use server'
 
+import type Stripe from 'stripe';
 import { getLogger } from "@kit/shared/logger";
 import { createStripeClient } from "../services/stripe-sdk";
 
+const timeout = 30000;
 export async function subscribeToFreePlan(name: string, email: string, accountId: string, priceId: string) {
   const logger = await getLogger();
   logger.info({ name, email, accountId }, 'Starting subscribeToFreePlan');
