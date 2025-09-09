@@ -7,82 +7,73 @@ import { createStripeClient } from "../services/stripe-sdk";
 const timeout = 30000;
 export async function subscribeToFreePlan(name: string, email: string, accountId: string, priceId: string) {
   const logger = await getLogger();
-  logger.info({ name, email, accountId }, 'Starting subscribeToFreePlan');
-
-  // Global timeout for the entire operation
-  const timeoutId = setTimeout(() => {
-    logger.error('Global timeout reached - operation took too long');
-    throw new Error('Operation timed out after 30s');
-  }, 30000);
+  logger.info({ name, email, accountId, priceId }, 'Starting subscribeToFreePlan');
 
   try {
+    logger.info('Initializing Stripe client');
     const stripe = await createStripeClient();
-
-    // Create customer with timeout protection
-    logger.info({ name, email }, 'Starting customer creation');
+    
+    logger.info({ name, email }, 'Attempting to create Stripe customer');
     const customerPromise = stripe.customers.create({
-      name,
-      email,
-      metadata: { accountId }
+      name: name,
+      email: email,
     });
+
+    // Add logging for promise state
+    customerPromise.then(
+      () => logger.info('Customer promise resolved'),
+      (error) => logger.error({ error }, 'Customer promise rejected')
+    );
 
     const customer = await Promise.race([
       customerPromise,
-      new Promise<never>((_, reject) => 
-        setTimeout(() => reject(new Error('Customer creation API call timed out')), 20000)
+      new Promise((_, reject) => 
+        setTimeout(() => {
+          logger.error('Customer creation timed out');
+          reject(new Error('Customer creation timed out after 30s'));
+        }, timeout)
       )
-    ]);
+    ]) as Stripe.Response<Stripe.Customer>;
     
-    logger.info({ customerId: customer.id }, 'Customer created successfully');
+    logger.info({ customerId: customer.id }, 'Successfully created customer');
 
-    // Create subscription with timeout protection
-    logger.info({ customerId: customer.id, priceId }, 'Starting subscription creation');
+    logger.info({ customerId: customer.id, priceId }, 'Attempting to create subscription');
     const subscriptionPromise = stripe.subscriptions.create({
       customer: customer.id,
       items: [{ price: priceId, quantity: 5 }],
       metadata: { accountId },
     });
 
+    // Add logging for promise state
+    subscriptionPromise.then(
+      () => logger.info('Subscription promise resolved'),
+      (error) => logger.error({ error }, 'Subscription promise rejected')
+    );
+
     const subscription = await Promise.race([
       subscriptionPromise,
-      new Promise<never>((_, reject) => 
-        setTimeout(() => reject(new Error('Subscription creation API call timed out')), 20000)
+      new Promise((_, reject) => 
+        setTimeout(() => {
+          logger.error('Subscription creation timed out');
+          reject(new Error('Subscription creation timed out after 30s'));
+        }, timeout)
       )
-    ]);
+    ]) as Stripe.Response<Stripe.Subscription>;
 
-    logger.info({ 
-      subscriptionId: subscription.id,
-      customerId: customer.id 
-    }, 'Subscription created successfully');
-
+    logger.info({ subscriptionId: subscription.id }, 'Successfully created subscription');
     return subscription;
-
   } catch (error) {
-    if (error instanceof Error) {
-      const errorContext = {
-        error,
-        errorName: error.name,
-        errorMessage: error.message,
-        name,
-        email,
-        accountId
-      };
-
-      if (error.message.includes('timed out')) {
-        logger.error(errorContext, 'Operation timed out');
-      } else if (error.message.includes('ECONNREFUSED')) {
-        logger.error(errorContext, 'Connection to Stripe API failed');
-      } else if (error.message.includes('ETIMEDOUT')) {
-        logger.error(errorContext, 'Network connection timed out');
-      } else if (error.message.includes('ENOTFOUND')) {
-        logger.error(errorContext, 'DNS lookup failed');
-      } else {
-        logger.error(errorContext, 'Error in subscribeToFreePlan');
-      }
-    }
+    logger.error({ 
+      error,
+      errorName: error instanceof Error ? error.name : 'Unknown',
+      errorMessage: error instanceof Error ? error.message : String(error),
+      errorStack: error instanceof Error ? error.stack : undefined,
+      name,
+      email,
+      accountId,
+      priceId 
+    }, 'Error in subscribeToFreePlan');
     throw error;
-  } finally {
-    clearTimeout(timeoutId);
   }
 }
 
