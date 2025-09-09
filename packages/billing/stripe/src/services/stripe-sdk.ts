@@ -5,10 +5,23 @@ import { getLogger } from '@kit/shared/logger';
 import type Stripe from 'stripe';
 
 const STRIPE_API_VERSION = '2024-12-18.acacia';
-const INITIALIZATION_TIMEOUT = 10000;
 
 let stripeClientInstance: Stripe | null = null;
 let initializationPromise: Promise<Stripe> | null = null;
+
+function getErrorMessage(error: unknown): string {
+  if (error instanceof Error) {
+    return error.message;
+  }
+  return String(error);
+}
+
+function getErrorStack(error: unknown): string | undefined {
+  if (error instanceof Error) {
+    return error.stack;
+  }
+  return undefined;
+}
 
 /**
  * @description returns a Stripe instance
@@ -71,8 +84,8 @@ export async function createStripeClient() {
 
     } catch (error) {
       logger.error({ 
-        error: error instanceof Error ? error.message : String(error),
-        stack: error instanceof Error ? error.stack : undefined,
+        errorMessage: getErrorMessage(error),
+        errorStack: getErrorStack(error),
         hasSecretKey: !!process.env.STRIPE_SECRET_KEY,
         hasWebhookSecret: !!process.env.STRIPE_WEBHOOK_SECRET,
       }, 'Failed to initialize Stripe client');
