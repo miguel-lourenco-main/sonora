@@ -9,8 +9,6 @@ import { Button } from '@kit/ui/button';
 import { Heading } from '@kit/ui/heading';
 import { Trans } from '@kit/ui/trans';
 
-import { SiteHeader } from '~/(marketing)/_components/site-header';
-
 const GlobalErrorPage = ({
   error,
   reset,
@@ -24,7 +22,6 @@ const GlobalErrorPage = ({
     <html>
       <body>
         <div className={'flex h-screen flex-1 flex-col'}>
-          <SiteHeader />
 
           <div
             className={

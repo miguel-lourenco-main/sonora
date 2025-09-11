@@ -147,15 +147,15 @@ async function getElevenLabsClient() {
 }
 
 export async function createVoice({
-    name,
-    description,
-    files,
-    isPublic = false
+  name,
+  description,
+  files,
+  isPublic = false
 }: {
-    name: string;
-    description?: string;
-    files: File[];
-    isPublic?: boolean;
+  name: string;
+  description?: string;
+  files: File[];
+  isPublic?: boolean;
 }) {
     try {
         const client = await getElevenLabsClient();
@@ -206,34 +206,12 @@ export async function updateVoiceVisibility(voiceId: string, isPublic: boolean) 
 }
 
 export async function getVoices() {
-    const supabase = getSupabaseServerClient<Database>();
 
-    const { data: voices, error } = await supabase
-        .from('voice')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-    if (error) throw error;
-
-    console.log('Fetched voices:', voices);
-
-    return voices;
-}
-
-export async function getPublicVoices() {
-    const supabase = getSupabaseServerClient<Database>();
-
-    const { data: voices, error } = await supabase
-        .from('voice')
-        .select('*')
-        .eq('is_public', true)
-        .order('created_at', { ascending: false });
-
-    if (error) throw error;
-
-    console.log('Fetched public voices:', voices);
-
-    return voices;
+    return [{
+      voice_id: 'default',
+      name: 'Sonora',
+      is_public: true
+    }];
 }
 
 export async function deleteVoice(voiceId: string) {
@@ -241,23 +219,12 @@ export async function deleteVoice(voiceId: string) {
     // Delete from ElevenLabs
     const client = await getElevenLabsClient();
     await client.voices.delete(voiceId);
-
-    const supabase = getSupabaseServerClient<Database>();
-
-    // Delete from Supabase
-    const { error } = await supabase
-      .from('voice')
-      .delete()
-      .eq('voice_id', voiceId);
-
-    if (error) throw error;
-
-    console.log('Deleting voice with ID:', voiceId);
   } catch (error) {
     console.error('Failed to delete voice:', error);
     throw error;
   }
 }
+
 
 export async function renameVoice(voiceId: string, newName: string) {
   try {
@@ -499,105 +466,4 @@ export async function generateSpeech({ text, voiceId }: { text: string; voiceId:
     console.error('Failed to generate speech:', error);
     throw error;
   }
-}
-
-// Define the type for node data
-type NodeData = {
-  duration: number;
-  chunks: Array<{
-    start: number;
-    end: number;
-    text: string;
-  }>;
-};
-
-export async function generateSpeechSimulated({ text, nodeId }: { text: string; nodeId: string }) {
-  'use server';
-
-  console.log('Simulating speech generation for text:', text, 'nodeId:', nodeId);
-
-  // Simulate API delay (random between 1-3 seconds)
-  const delay = Math.floor(Math.random() * 3000) + 4000;
-  await new Promise(resolve => setTimeout(resolve, delay));
-
-  // Map node IDs to audio files for the enchanted forest story
-  const audioMap: Record<string, string> = {
-    'start': '/samples/enchanted-forest-start.mp3',
-    'path-split': '/samples/enchanted-forest-path-split.mp3',
-    'shadow-path': '/samples/enchanted-forest-shadow-path.mp3',
-    'sun-path': '/samples/enchanted-forest-sun-path.mp3',
-    'end-chapter': '/samples/enchanted-forest-end-chapter.mp3'
-  };
-
-  // Map node IDs to their actual durations and chunk timings from the YAML
-  const nodeTimings: Record<string, NodeData> = {
-    'start': {
-      duration: 23.688,
-      chunks: [
-        { start: 0, end: 6.877, text: "Deep within the realm of ancient magic lies the Enchanted Forest, a place where every choice shapes destiny." },
-        { start: 6.877, end: 13.372, text: "As you step through the ethereal mist that marks its borders, you feel the forest's consciousness stirring." },
-        { start: 13.372, end: 20.631, text: "The very air seems alive with whispers of untold stories, and the path before you pulses with magical energy." },
-        { start: 20.631, end: 23.688, text: "Your journey into these mystical woods begins now." }
-      ]
-    },
-    'path-split': {
-      duration: 10.368,
-      chunks: [
-        { start: 0, end: 5.76, text: "The forest path divides before you. To your left, shadows dance invitingly beneath ancient boughs." },
-        { start: 5.76, end: 10.368, text: "To your right, golden sunlight streams through a canopy of emerald leaves." }
-      ]
-    },
-    'shadow-path': {
-      duration: 37.2,
-      chunks: [
-        { start: 0, end: 6, text: "You venture down the shadowy path, where ancient moss-covered trees loom overhead like silent guardians." },
-        { start: 6, end: 13.6, text: "The air grows thick with mystery as you navigate through twisted roots and hear distant echoes of forgotten magic." },
-        { start: 13.6, end: 20, text: "Strange glowing mushrooms illuminate your way, casting an otherworldly blue light that dances across your path." },
-        { start: 20, end: 26.8, text: "The whispers of the forest grow stronger here, speaking of secrets long buried in these dark depths." },
-        { start: 26.8, end: 37.2, text: "As you press forward, you can't shake the feeling that unseen eyes are watching your every move, judging your worthiness to witness the forest's deepest mysteries." }
-      ]
-    },
-    'sun-path': {
-      duration: 37.248,
-      chunks: [
-        { start: 0, end: 6.772, text: "The sunlit path welcomes you with a warm embrace as golden rays filter through the swaying branches above." },
-        { start: 6.772, end: 13.921, text: "Butterflies with wings like stained glass dance around wildflowers that carpet the forest floor in a riot of colors." },
-        { start: 13.921, end: 25.961, text: "As you walk, you discover small clearings where magical creatures go about their daily lives - pixies tending to luminous flowers, and small forest spirits playing among the roots of ancient trees." },
-        { start: 25.961, end: 37.248, text: "The air here is sweet with the scent of blooming magic, though beneath this cheerful facade, you sense powerful forces at work, weaving spells as old as the forest itself." }
-      ]
-    },
-    'end-chapter': {
-      duration: 8.448,
-      chunks: [
-        { start: 0, end: 4.928, text: "Your choice has set in motion events that will echo through the Enchanted Forest." },
-        { start: 4.928, end: 8.448, text: "But this is just the beginning of your magical journey." }
-      ]
-    }
-  };
-
-  // Get the audio file and timing data for the node
-  const sampleAudioUrl = audioMap[nodeId] ?? '/samples/enchanted-forest-start.mp3';
-  const defaultNode = nodeTimings.start!; // We know this exists
-  const nodeData: NodeData = nodeTimings[nodeId] ?? defaultNode;
-
-  // Generate word timings based on the chunks
-  const wordTimings: Array<{ word: string; start: number; end: number }> = [];
-  
-  nodeData.chunks.forEach(chunk => {
-    const words = chunk.text.split(' ');
-    const timePerWord = (chunk.end - chunk.start) / words.length;
-    
-    words.forEach((word, index) => {
-      const start = chunk.start + (index * timePerWord);
-      const end = start + timePerWord - 0.05; // Small gap between words
-      wordTimings.push({ word, start, end });
-    });
-  });
-
-  console.log('Simulated speech generation completed with file:', sampleAudioUrl, 'duration:', nodeData.duration);
-  
-  return {
-    audioUrl: sampleAudioUrl,
-    wordTimings
-  };
 }
