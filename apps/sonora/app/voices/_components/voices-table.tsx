@@ -6,11 +6,14 @@ import { useTranslation } from 'react-i18next';
 import { Voice } from '~/lib/hooks/use-voice-manager';
 import { useVoicesColumns } from './voices-columns';
 import { CreateVoicesButton } from './create-voices-button';
-import { deleteVoice, renameVoice } from '~/lib/actions';
-import { getSupabaseBrowserClient } from '@kit/supabase/browser-client';
+import { deleteVoice as deleteVoiceApi, renameVoice as renameVoiceApi } from '~/lib/client/elevenlabs';
 import { toast } from 'sonner';
 import { Database } from '~/lib/database.types';
 import { handleInsertOrUpdate, handleDelete } from '@kit/shared/utils';
+import { listVoices } from '~/lib/client/elevenlabs';
+import { clearCachedVoices, setCachedVoices, getCachedVoices } from '~/lib/local/storage';
+import { Button } from '@kit/ui/button';
+import { useVoices as useAutoVoices } from '~/lib/hooks/use-voices';
 
 interface VoicesTableProps {
   initialVoices: Voice[];
@@ -21,50 +24,16 @@ export default function VoicesTable({
 }: VoicesTableProps) {
   const { t, ready } = useTranslation('custom');
   const [voices, setVoices] = useState<Voice[]>(initialVoices);
+  const { voices: autoVoices, isLoading: isAutoLoading } = useAutoVoices();
   const [newFilesDialogOpen, setNewFilesDialogOpen] = useState(false);
 
-  // Setup realtime subscription
-  useEffect(() => {
-    const supabase = getSupabaseBrowserClient<Database>();
-
-    const channel = supabase
-      .channel('voices-channel')
-      .on(
-        'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'voice' },
-        (payload) => {
-          console.log('Voice INSERT received:', payload.new);
-          handleInsertOrUpdate({ setter: setVoices, newItem: payload.new as Voice })
-        }
-      )
-      .on(
-        'postgres_changes',
-        { event: 'UPDATE', schema: 'public', table: 'voice' },
-        (payload) => {
-          console.log('Voice UPDATE received:', payload.new);
-          handleInsertOrUpdate({ setter: setVoices, newItem: payload.new as Voice })
-        }
-      )
-      .on(
-        'postgres_changes',
-        { event: 'DELETE', schema: 'public', table: 'voice' },
-        (payload) => {
-          console.log('Voice DELETE received:', payload.old);
-          handleDelete({ setter: setVoices, deletedItemId: payload.old.id})
-        }
-      )
-      .subscribe();
-
-    return () => {
-      void supabase.removeChannel(channel);
-    };
-  }, []);
+  // No realtime subscription; updates occur via refresh or optimistic UI
 
   const handleDeleteVoice = useCallback(async (id: string) => {
     try {
       const voice = voices.find(voice => voice.id === id);
       if (!voice) throw new Error('Voice not found');
-      await deleteVoice(voice.voice_id);
+      await deleteVoiceApi(voice.voice_id);
       toast.success(t('voices.delete.success'));
     } catch (error) {
       toast.error(t('voices.delete.error'));
@@ -74,7 +43,7 @@ export default function VoicesTable({
 
   const handleRenameVoice = useCallback(async (id: string, name: string) => {
     try {
-      await renameVoice(id, name);
+      await renameVoiceApi(id, name);
       toast.success(t('voices.rename.success'));
     } catch (error) {
       toast.error(t('voices.rename.error'));
@@ -89,6 +58,31 @@ export default function VoicesTable({
           open={newFilesDialogOpen} 
           setOpen={setNewFilesDialogOpen} 
         />
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={async () => {
+            try {
+              clearCachedVoices();
+              const apiVoices = await listVoices();
+              const ui = apiVoices.map(v => ({
+                id: v.voice_id,
+                voice_id: v.voice_id,
+                name: v.name,
+                is_default: false,
+                account_id: 'local',
+                created_at: new Date((v.date_unix ?? Date.now()) * 1000).toISOString(),
+              } as unknown as Voice));
+              setVoices(ui);
+              setCachedVoices(ui, 6 * 60 * 60 * 1000);
+              toast.success(t('voices.refresh.success'))
+            } catch (e) {
+              toast.error(t('voices.refresh.error'))
+            }
+          }}
+        >
+          {t('voices.refresh.button')}
+        </Button>
       </div>
     );
   }, [newFilesDialogOpen]);
@@ -97,15 +91,43 @@ export default function VoicesTable({
 
   if (process.env.NODE_ENV === 'development' && !ready) return null;
 
+  // Sync voices with the hook - adopt fetched voices or clear when no API key
+  useEffect(() => {
+    if ((autoVoices?.length ?? 0) > 0) {
+      // Adopt fetched voices
+      setVoices(autoVoices as unknown as Voice[]);
+    } else if (!isAutoLoading && (autoVoices?.length ?? 0) === 0) {
+      // Clear voices when no API key (hook returns empty array and not loading)
+      setVoices([]);
+    }
+  }, [autoVoices, isAutoLoading]);
+
+  // Empty state shown only when not loading and still empty
+  const showEmptyState = !isAutoLoading && ((voices?.length ?? 0) === 0);
+
   return (
-    <CustomDataTable
-      data={voices}
-      columns={columns}
-      tableLabel={t('voices.lowercase')}
-      filters={[]}
-      createToolbarButtons={createToolbarButtons}
-      identifier="name"
-      initialSorting={[{ id: 'created_at', desc: true }]}
-    />
+    <div className="flex flex-col gap-4 w-full mt-8 lg:mt-20">
+      {showEmptyState && (
+        <div className="flex items-center justify-between rounded-md border p-4">
+          <div>
+            <div className="font-medium">{t('voices.empty.title') ?? 'No voices yet'}</div>
+            <div className="text-sm text-muted-foreground">{t('voices.empty.description') ?? 'Add your ElevenLabs key in Settings and create or refresh voices.'}</div>
+          </div>
+          <Button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+            Go to API Keys
+          </Button>
+        </div>
+      )}
+      <CustomDataTable
+        defaultPageSize={10}
+        data={voices}
+        columns={columns}
+        tableLabel={t('voices.lowercase')}
+        filters={[]}
+        createToolbarButtons={createToolbarButtons}
+        identifier="name"
+        initialSorting={[{ id: 'created_at', desc: true }]}
+      />
+    </div>
   );
 }

@@ -84,7 +84,7 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
     }
   });
 
-  const [selectedVoice, setSelectedVoice] = useState<string>(initialVoiceId ?? '');
+  const [selectedVoice, setSelectedVoice] = useState<string>(initialVoiceId ?? 'default');
   const [selectedChoice, setSelectedChoice] = useState<number | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isGeneratingSpeech, setIsGeneratingSpeech] = useState(
@@ -135,6 +135,30 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
       setIsGeneratingSpeech(true);
       generatingNodes.current.add(id);
       
+      // Use pre-recorded default audio if selected
+      if (selectedVoice === 'default') {
+        const sampleUrl = `/samples/${story.label}-${id}.mp3`;
+        try {
+          const head = await fetch(sampleUrl, { method: 'HEAD' });
+          if (!head.ok) throw new Error('Sample not found');
+          const updatedNode: ContentNode = {
+            ...node,
+            audioUrl: sampleUrl,
+            voiceId: 'default',
+          };
+          if (id === currentNode.id) {
+            setCurrentNode(updatedNode);
+          }
+          setStoryNodes(prev => ({
+            ...prev,
+            [id]: updatedNode
+          }));
+          return;
+        } catch (e) {
+          console.warn('No pre-recorded sample found for', sampleUrl, e);
+        }
+      }
+
       const result = await generateSpeech({
         text: node.text,
         voiceId: selectedVoice,
@@ -197,7 +221,7 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
       generatingNodes.current.delete(id);
       setIsGeneratingSpeech(false);
     }
-  }, [selectedVoice, setCurrentNode, currentNode.id, storyNodes]);
+  }, [selectedVoice, setCurrentNode, currentNode.id, storyNodes, story.label]);
 
   // Generate speech for the initial node
   useEffect(() => {
@@ -336,6 +360,9 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
               <SelectValue placeholder="Select a voice" />
             </SelectTrigger>
             <SelectContent>
+              <SelectItem key={'default'} value={'default'}>
+                Default voice
+              </SelectItem>
               {(voices ?? []).map((voice) => (
                 <SelectItem key={voice.voice_id} value={voice.voice_id}>
                   {voice.name}

@@ -4,11 +4,16 @@ import { Toaster } from '@kit/ui/sonner';
 import { cn } from '@kit/ui/lib';
 
 import { RootProviders } from '~/components/root-providers';
+import { SidebarProvider, Sidebar, SidebarInset, SidebarContent, SidebarHeader, SidebarFooter } from '@kit/ui/shadcn-sidebar';
+import { SidebarNavigation } from '@kit/ui/shadcn-sidebar';
+import { personalAccountNavigationConfig } from '~/config/personal-account-navigation.config';
+import { AppLogo } from '~/components/app-logo';
 import { heading, sans } from '~/lib/fonts';
 import { createI18nServerInstance } from '~/lib/i18n/i18n.server';
 import { generateRootMetadata } from '~/lib/root-metdata';
 
 import '../styles/globals.css';
+import { ModeToggle } from '@kit/ui/mode-toggle';
 
 export default async function RootLayout({
   children,
@@ -23,7 +28,20 @@ export default async function RootLayout({
     <html lang={language} className={className}>
       <body>
         <RootProviders theme={theme} lang={language}>
-          {children}
+          <SidebarProvider>
+            <Sidebar>
+              <SidebarHeader className={'flex flex-row h-16 justify-between items-center'}>
+                <AppLogo width={56} height={56} />
+                <ModeToggle />
+              </SidebarHeader>
+              <SidebarContent>
+                <SidebarNavigation config={personalAccountNavigationConfig} />
+              </SidebarContent>
+            </Sidebar>
+            <SidebarInset>
+              {children}
+            </SidebarInset>
+          </SidebarProvider>
         </RootProviders>
 
         <Toaster richColors={true} theme={theme} position="top-center" />

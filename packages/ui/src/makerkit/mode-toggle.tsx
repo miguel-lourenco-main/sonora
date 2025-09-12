@@ -4,9 +4,10 @@ import { useMemo } from 'react';
 
 import { Computer, Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
+import type { VariantProps } from 'class-variance-authority';
 
 import { cn } from '../lib';
-import { Button } from '../shadcn/button';
+import { Button, buttonVariants } from '../shadcn/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,8 +22,25 @@ import { Trans } from './trans';
 
 const MODES = ['light', 'dark', 'system'];
 
-export function ModeToggle(props: { className?: string }) {
+type ButtonVariantProps = VariantProps<typeof buttonVariants>;
+
+export type ModeToggleProps = {
+  className?: string;
+  variant?: ButtonVariantProps['variant'];
+  size?: ButtonVariantProps['size'];
+  shape?: ButtonVariantProps['shape'];
+  srLabel?: string;
+};
+
+export function ModeToggle(props: ModeToggleProps) {
   const { setTheme, theme } = useTheme();
+  const {
+    className,
+    variant = 'ghost',
+    size = 'icon',
+    shape,
+    srLabel = 'Toggle theme',
+  } = props;
 
   const Items = useMemo(() => {
     return MODES.map((mode) => {
@@ -36,7 +54,7 @@ export function ModeToggle(props: { className?: string }) {
           key={mode}
           onClick={() => {
             setTheme(mode);
-            setCookeTheme(mode);
+            setCookieTheme(mode);
           }}
         >
           <Icon theme={mode} />
@@ -52,10 +70,10 @@ export function ModeToggle(props: { className?: string }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className={props.className}>
+        <Button variant={variant} size={size} shape={shape} className={className} aria-label={srLabel}>
           <Sun className="h-[0.9rem] w-[0.9rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
           <Moon className="absolute h-[0.9rem] w-[0.9rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-          <span className="sr-only">Toggle theme</span>
+          <span className="sr-only">{srLabel}</span>
         </Button>
       </DropdownMenuTrigger>
 
@@ -80,7 +98,7 @@ export function SubMenuModeToggle() {
             key={mode}
             onClick={() => {
               setTheme(mode);
-              setCookeTheme(mode);
+              setCookieTheme(mode);
             }}
           >
             <Icon theme={mode} />
@@ -125,7 +143,7 @@ export function SubMenuModeToggle() {
   );
 }
 
-function setCookeTheme(theme: string) {
+function setCookieTheme(theme: string) {
   document.cookie = `theme=${theme}; path=/; max-age=31536000`;
 }
 

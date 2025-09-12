@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Voice } from '~/lib/types';
-import { getVoices } from '~/lib/actions';
+import { listVoices } from '../client/elevenlabs';
+import { getCachedVoices, setCachedVoices, getElevenLabsApiKey } from '../local/storage';
 
 export function useVoices() {
   const [voices, setVoices] = useState<Voice[]>([]);
@@ -10,17 +11,27 @@ export function useVoices() {
   useEffect(() => {
     async function fetchVoices() {
       try {
-        console.log('Fetching voices...');
-        const fetchedVoices = await getVoices();
-        console.log('Fetched voices:', fetchedVoices);
-        
-        if (fetchedVoices) {
-          const processedVoices = fetchedVoices.map(voice => ({
-            ...voice,
-            is_default: false
-          }));
-          console.log('Processed voices:', processedVoices);
-          setVoices(processedVoices);
+        const key = getElevenLabsApiKey();
+        if (!key) {
+          setVoices([]);
+          return;
+        }
+        const cached = getCachedVoices<Voice[]>();
+        if (cached && cached.length) {
+          setVoices(cached);
+        } else {
+          const apiVoices = await listVoices();
+          const uiVoices: Voice[] = apiVoices.map(v => ({
+            id: v.voice_id,
+            voice_id: v.voice_id,
+            name: v.name,
+            is_default: false,
+            account_id: 'local',
+            created_at: new Date((v.date_unix ?? Date.now()) * 1000).toISOString(),
+          } as unknown as Voice));
+          setVoices(uiVoices);
+          // cache for 6 hours
+          setCachedVoices(uiVoices, 6 * 60 * 60 * 1000);
         }
       } catch (err) {
         console.error('Error fetching voices:', err);

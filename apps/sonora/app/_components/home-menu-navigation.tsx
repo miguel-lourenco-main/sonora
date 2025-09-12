@@ -2,20 +2,13 @@ import {
   BorderedNavigationMenu,
   BorderedNavigationMenuItem,
 } from '@kit/ui/bordered-navigation-menu';
-import { If } from '@kit/ui/if';
 
 import { AppLogo } from '~/components/app-logo';
-import { ProfileAccountDropdownContainer } from '~/components/personal-account-dropdown-container';
-import featuresFlagConfig from '~/config/feature-flags.config';
 import { personalAccountNavigationConfig } from '~/config/personal-account-navigation.config';
 
-// home imports
-import { HomeAccountSelector } from './home-account-selector';
-import { UserNotifications } from './user-notifications';
-import { type UserWorkspace } from '../app/(user)/_lib/server/load-user-workspace';
+import { ModeToggle } from '@kit/ui/mode-toggle';
 
-export function HomeMenuNavigation(props: { workspace: UserWorkspace }) {
-  const { workspace, user, accounts } = props.workspace;
+export function HomeMenuNavigation() {
 
   const routes = personalAccountNavigationConfig.routes.reduce<
     Array<{
@@ -49,13 +42,7 @@ export function HomeMenuNavigation(props: { workspace: UserWorkspace }) {
       </div>
 
       <div className={'flex justify-end space-x-2.5'}>
-        <If condition={featuresFlagConfig.enableTeamAccounts}>
-          <HomeAccountSelector userId={user.id} accounts={accounts} />
-        </If>
-
-        <UserNotifications userId={user.id} />
-
-        <ProfileAccountDropdownContainer user={user} account={workspace} />
+        <ModeToggle />
       </div>
     </div>
   );

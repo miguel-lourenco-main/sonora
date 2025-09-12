@@ -1,5 +1,5 @@
 import { useReducer, useCallback } from 'react'
-import { createVoice as createVoiceAction } from "~/lib/actions";
+import { createVoice as createVoiceApi } from "../client/elevenlabs";
 import { Tables } from "~/lib/database.types";
 
 export type Voice = Tables<'voice'> & {
@@ -67,7 +67,7 @@ export const useVoiceManager = (initialVoices: Voice[] = []) => {
   }) => {
     console.log('Hook: createVoice started', { name, description, filesCount: files.length });
     try {
-        await createVoiceAction({
+        await createVoiceApi({
             name,
             description,
             files

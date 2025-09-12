@@ -2,7 +2,7 @@ import { createI18nServerInstance } from '~/lib/i18n/i18n.server';
 import { withI18n } from '~/lib/i18n/with-i18n';
 import { StoryPlayer } from '../../_components/custom/book-player';
 import { bookData } from '~/lib/data/sample-story';
-import { getVoices } from '~/lib/actions';
+import { listVoices } from '~/lib/client/elevenlabs';
 
 export const generateMetadata = async () => {
   const i18n = await createI18nServerInstance();
@@ -24,13 +24,12 @@ async function PlayerPage({ params }: { params: { id: string } }) {
     return <div>Book not found</div>;
   }
 
-  // Get the first available voice as default (optional)
-  const voices = await getVoices();
+  // No SSR voice fetch; the client will handle voices
 
   return (
     <StoryPlayer 
       story={selectedBook} 
-      initialVoiceId={voices[0]?.voice_id}
+      initialVoiceId={undefined}
     />
   );
 }

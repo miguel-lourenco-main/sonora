@@ -30,6 +30,15 @@
         },
         "preview": "Voice preview",
         "loading": "Loading...",
+        "refresh": {
+            "success": "Voices refreshed successfully",
+            "error": "Failed to refresh voices",
+            "button": "Refresh"
+        },
+        "empty": {
+            "title": "No voices yet",
+            "description": "Add your ElevenLabs key in Settings and create or refresh voices."
+        },
         "table": {
             "name": "Voice name",
             "createdAt": "Created at",

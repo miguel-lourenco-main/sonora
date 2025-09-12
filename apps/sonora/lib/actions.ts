@@ -1,7 +1,7 @@
 'use server'
 
 import { ElevenLabsClient } from "elevenlabs";
-import { Choice, ElevenLabsTextToSpeechResponse } from './types';
+import { Choice, ElevenLabsTextToSpeechResponse, Voice } from './types';
 import { Database } from "~/lib/database.types";
 import { getSupabaseServerClient } from "@kit/supabase/server-client";
 import OpenAI from 'openai';
@@ -205,13 +205,17 @@ export async function updateVoiceVisibility(voiceId: string, isPublic: boolean) 
     }
 }
 
-export async function getVoices() {
+export async function getVoices(): Promise<Voice[]> {
 
-    return [{
-      voice_id: 'default',
-      name: 'Sonora',
-      is_public: true
-    }];
+  return [{
+    voice_id: 'default',
+    name: 'Sonora',
+    is_public: true,
+    account_id: 'default',
+    created_at: 'default',
+    id: 'default',
+    is_default: false
+  }];
 }
 
 export async function deleteVoice(voiceId: string) {

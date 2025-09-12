@@ -1,5 +1,5 @@
 import { AudioFilesUploader } from "./audio-files-uploader";
-import { useVoiceManager } from "~/lib/hooks/use-voice-manager";
+import { createVoice as createVoiceApi } from "~/lib/client/elevenlabs";
 import { Dispatch, SetStateAction } from "react";
 import { TrackableFile } from "@kit/ui/interfaces";
 
@@ -20,7 +20,6 @@ interface VoiceFileFormProps {
 }
 
 export function VoiceFileForm({ files, setFiles, onFinishSubmit, maxDuration }: VoiceFileFormProps) {
-    const { createVoice } = useVoiceManager();
 
     const handleSubmit = async (data: { 
         name: string; 
@@ -28,7 +27,7 @@ export function VoiceFileForm({ files, setFiles, onFinishSubmit, maxDuration }: 
         files: TrackableFile[]; 
     }) => {
         try {
-            await createVoice({
+            await createVoiceApi({
                 name: data.name,
                 description: data.description,
                 files: data.files.map(f => f.fileObject)

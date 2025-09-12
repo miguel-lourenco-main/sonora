@@ -5,14 +5,18 @@ export function AppLogo({
   href,
   label,
   className,
+  width = 48,
+  height = 48,
 }: {
   href?: string;
   className?: string;
   label?: string;
+  width?: number;
+  height?: number;
 }) {
   return (
     <Link aria-label={label ?? 'Home Page'} href={href ?? '/'}>
-      <Image src="/images/logo.svg" alt="Sonora Logo" width={105} height={42} className={className} />
+      <Image src="/images/icon0.svg" alt="Sonora Logo" width={width} height={height} className={className} />
     </Link>
   );
 }

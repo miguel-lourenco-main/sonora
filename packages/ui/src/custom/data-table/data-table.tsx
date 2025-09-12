@@ -38,7 +38,8 @@ import { useCallback, useEffect, useState, useRef } from "react"
  */
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]     // Column definitions
-  data: TData[]                           // Table data
+  data: TData[]
+  defaultPageSize?: number                         // Table data
   tableLabel: string                      // Label for the table
   filters: Filter[]                       // Array of filter configurations
   createToolbarButtons: (                 // Function to create toolbar buttons
@@ -62,6 +63,7 @@ export function CustomDataTable<TData, TValue>({
   data,
   tableLabel,
   filters,
+  defaultPageSize = 20,
   onRowClick,
   createToolbarButtons,
   identifier = "name",
@@ -76,7 +78,7 @@ export function CustomDataTable<TData, TValue>({
 
   // Pagination state
   const [pageIndex, setPageIndex] = useState(0)
-  const [pageSize, setPageSize] = useState(20)
+  const [pageSize, setPageSize] = useState(defaultPageSize)
   
   // Refs for pagination handling
   const lastValidPageIndexRef = useRef(0)

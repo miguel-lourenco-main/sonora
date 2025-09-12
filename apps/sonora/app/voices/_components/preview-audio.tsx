@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import { Button } from "@kit/ui/button";
 import { Loader2, Play, Check, X } from "lucide-react";
 import { cn } from "@kit/ui/lib";
-import { previewVoice } from '~/lib/actions';
+import { previewVoice } from '~/lib/client/elevenlabs';
 
 interface PreviewAudioProps {
     voiceId: string;
@@ -18,10 +18,8 @@ export function PreviewAudio({ voiceId, voiceName }: PreviewAudioProps) {
     const loadPreview = useCallback(async () => {
         try {
             setStatus('loading');
-            // Get base64 audio from server action
-            const base64URL = await previewVoice(voiceId, `My name is ${voiceName}`);
-
-            setAudioUrl(base64URL);
+            const objectURL = await previewVoice(voiceId, `My name is ${voiceName}`);
+            setAudioUrl(objectURL);
             setStatus('success');
             
             setTimeout(() => {
