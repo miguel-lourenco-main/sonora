@@ -1,8 +1,9 @@
 "use client"
 
 import Image from "next/image"
-import { Play } from 'lucide-react'
+import { Play, Volume2 } from 'lucide-react'
 import Link from "next/link"
+import { hasPreRecordedAudio } from '~/lib/utils/audio-availability'
 
 import {
   Card,
@@ -21,6 +22,7 @@ interface Audiobook {
   duration: string
   narrator: string
   category: string
+  label: string
 }
 
 interface AudiobookCardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -38,6 +40,9 @@ export function AudiobookCard({
   className,
   ...props
 }: AudiobookCardProps) {
+  // Check if this story has pre-recorded audio
+  const hasPreRecorded = hasPreRecordedAudio(audiobook.label);
+
   return (
     <Card className={cn("overflow-hidden", className)} {...props}>
       <Link href={`/player/${audiobook.id}`}>
@@ -60,6 +65,12 @@ export function AudiobookCard({
             >
               <Play className="h-5 w-5" />
             </Button>
+            {hasPreRecorded && (
+              <div className="absolute top-2 left-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1">
+                <Volume2 className="h-3 w-3" />
+                Audio Ready
+              </div>
+            )}
           </div>
         </CardHeader>
         <CardContent className="grid gap-2.5 p-4">

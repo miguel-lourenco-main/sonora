@@ -17,14 +17,16 @@ import { useVoices as useAutoVoices } from '~/lib/hooks/use-voices';
 
 interface VoicesTableProps {
   initialVoices: Voice[];
+  onRefetchReady?: (refetch: () => Promise<void>) => void;
 }
 
 export default function VoicesTable({
   initialVoices,
+  onRefetchReady,
 }: VoicesTableProps) {
   const { t, ready } = useTranslation('custom');
   const [voices, setVoices] = useState<Voice[]>(initialVoices);
-  const { voices: autoVoices, isLoading: isAutoLoading } = useAutoVoices();
+  const { voices: autoVoices, isLoading: isAutoLoading, refetch } = useAutoVoices();
   const [newFilesDialogOpen, setNewFilesDialogOpen] = useState(false);
 
   // No realtime subscription; updates occur via refresh or optimistic UI
@@ -90,6 +92,13 @@ export default function VoicesTable({
   const columns = useVoicesColumns(handleDeleteVoice, handleRenameVoice, t);
 
   if (process.env.NODE_ENV === 'development' && !ready) return null;
+
+  // Expose refetch function to parent component
+  useEffect(() => {
+    if (refetch && onRefetchReady) {
+      onRefetchReady(refetch);
+    }
+  }, [refetch, onRefetchReady]);
 
   // Sync voices with the hook - adopt fetched voices or clear when no API key
   useEffect(() => {

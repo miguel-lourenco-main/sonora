@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Button } from '@kit/ui/button'
 import { Input } from '@kit/ui/input'
 import { Label } from '@kit/ui/label'
@@ -9,7 +9,11 @@ import { getElevenLabsApiKey, setElevenLabsApiKey, clearElevenLabsApiKey, clearC
 import { validateApiKey } from '~/lib/client/elevenlabs'
 import { toast } from 'sonner'
 
-export function ApiKeysSection() {
+interface ApiKeysSectionProps {
+  onRefetchVoices?: () => Promise<void>;
+}
+
+export function ApiKeysSection({ onRefetchVoices }: ApiKeysSectionProps) {
   const [key, setKey] = useState('')
   const [isValidating, setIsValidating] = useState(false)
   const [isPersisted, setIsPersisted] = useState<boolean | null>(null)
@@ -18,6 +22,27 @@ export function ApiKeysSection() {
     const existing = getElevenLabsApiKey()
     if (existing) setKey(existing)
   }, [])
+
+  // Debounced refetch function
+  const debouncedRefetch = useCallback(() => {
+    if (onRefetchVoices) {
+      const timeoutId = setTimeout(() => {
+        onRefetchVoices().catch(console.error);
+      }, 1000); // 1 second debounce
+      
+      return () => clearTimeout(timeoutId);
+    }
+  }, [onRefetchVoices]);
+
+  // Handle key input changes with debounced refetch
+  const handleKeyChange = useCallback((newKey: string) => {
+    setKey(newKey);
+    
+    // If the key looks like a valid API key (starts with 'xi-'), trigger debounced refetch
+    if (newKey.trim().startsWith('xi-') && newKey.trim().length > 10) {
+      debouncedRefetch();
+    }
+  }, [debouncedRefetch]);
 
   async function persistStorage() {
     if (typeof navigator?.storage?.persist === 'function') {
@@ -43,6 +68,10 @@ export function ApiKeysSection() {
     // If the input is empty, clean the API key instead
     if (!key.trim()) {
       cleanApiKey()
+      // Trigger refetch to clear voices when key is cleared
+      if (onRefetchVoices) {
+        onRefetchVoices().catch(console.error);
+      }
       return
     }
 
@@ -63,6 +92,11 @@ export function ApiKeysSection() {
         toast.success('API key saved')
       }
       await persistStorage()
+      
+      // Trigger refetch after successful save
+      if (onRefetchVoices) {
+        onRefetchVoices().catch(console.error);
+      }
     } finally {
       setIsValidating(false)
     }
@@ -78,7 +112,7 @@ export function ApiKeysSection() {
         <div className="flex flex-col gap-4 max-w-xl">
           <div className="grid gap-2">
             <Label htmlFor="el-key">ElevenLabs API key</Label>
-            <Input id="el-key" type="password" value={key} onChange={(e) => setKey(e.target.value)} placeholder="xi-..." />
+            <Input id="el-key" type="password" value={key} onChange={(e) => handleKeyChange(e.target.value)} placeholder="xi-..." />
           </div>
           <div className="flex gap-2">
             <Button onClick={saveKey} disabled={isValidating}>

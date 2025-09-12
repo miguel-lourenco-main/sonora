@@ -1,8 +1,7 @@
 import { Suspense } from 'react';
-import VoicesTable from './_components/voices-table';
 import VoicesLoading from './_components/loading';
 import VoicesError from './_components/error';
-import { ApiKeysSection } from './_components/api-keys-section';
+import { VoicesContent } from './_components/voices-content';
 
 export default function VoicesPage() {
     return (
@@ -11,17 +10,6 @@ export default function VoicesPage() {
                 <VoicesContent />
             </Suspense>
         </div>
-    );
-}
-
-async function VoicesContent() {
-    return (
-        <>
-            <ApiKeysSection />
-            <VoicesTable 
-                initialVoices={[]}
-            />
-        </>
     );
 }
 
