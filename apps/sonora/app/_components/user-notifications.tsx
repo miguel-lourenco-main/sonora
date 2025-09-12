@@ -1,5 +1,3 @@
-import { NotificationsPopover } from '@kit/notifications/components';
-
 import featuresFlagConfig from '~/config/feature-flags.config';
 
 export function UserNotifications(props: { userId: string }) {
@@ -7,10 +5,5 @@ export function UserNotifications(props: { userId: string }) {
     return null;
   }
 
-  return (
-    <NotificationsPopover
-      accountIds={[props.userId]}
-      realtime={featuresFlagConfig.realtimeNotifications}
-    />
-  );
+  return null;
 }

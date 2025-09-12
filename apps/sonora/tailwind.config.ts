@@ -1,5 +1,5 @@
 import type { Config } from 'tailwindcss';
-import baseConfig from '@kit/tailwind-config';
+import baseConfig from '../../tooling/tailwind/index';
 import tailwindScrollbar from 'tailwind-scrollbar';
 import tailwindScrollbarHide from 'tailwind-scrollbar-hide';
 

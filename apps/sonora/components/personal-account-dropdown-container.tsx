@@ -2,15 +2,13 @@
 
 import type { User } from '@supabase/supabase-js';
 
-import { PersonalAccountDropdown } from '@kit/accounts/personal-account-dropdown';
-import { useSignOut } from '@kit/supabase/hooks/use-sign-out';
-import { useUser } from '@kit/supabase/hooks/use-user';
+// accounts and supabase removed
 
 import featuresFlagConfig from '~/config/feature-flags.config';
 import pathsConfig from '~/config/paths.config';
 
 const paths = {
-  app: pathsConfig.app.app,
+  app: pathsConfig.app.selectStoryPage,
 };
 
 const features = {
@@ -26,22 +24,5 @@ export function ProfileAccountDropdownContainer(props: {
     picture_url: string | null;
   };
 }) {
-  const signOut = useSignOut();
-  const user = useUser(props.user);
-  const userData = user.data;
-
-  if (!userData) {
-    return null;
-  }
-
-  return (
-    <PersonalAccountDropdown
-      className={'w-full'}
-      paths={paths}
-      features={features}
-      user={userData}
-      account={props.account}
-      signOutRequested={() => signOut.mutateAsync()}
-    />
-  );
+  return null;
 }

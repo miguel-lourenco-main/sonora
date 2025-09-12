@@ -4,7 +4,7 @@ import { useContext } from 'react';
 
 import { useRouter } from 'next/navigation';
 
-import { AccountSelector } from '@kit/accounts/account-selector';
+// accounts feature removed
 import { SidebarContext } from '@kit/ui/shadcn-sidebar';
 
 import featureFlagsConfig from '~/config/feature-flags.config';
@@ -27,19 +27,5 @@ export function HomeAccountSelector(props: {
   const router = useRouter();
   const context = useContext(SidebarContext);
 
-  return (
-    <AccountSelector
-      collapsed={context?.minimized}
-      collisionPadding={props.collisionPadding ?? 20}
-      accounts={props.accounts}
-      features={features}
-      userId={props.userId}
-      onAccountChange={(value) => {
-        if (value) {
-          const path = pathsConfig.app.accountHome.replace('[account]', value);
-          router.replace(path);
-        }
-      }}
-    />
-  );
+  return null;
 }

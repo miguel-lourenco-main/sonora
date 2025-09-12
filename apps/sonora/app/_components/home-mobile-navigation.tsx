@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 import { LogOut, Menu } from 'lucide-react';
 
-import { useSignOut } from '@kit/supabase/hooks/use-sign-out';
+// supabase removed
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,7 +25,6 @@ import { HomeAccountSelector } from './home-account-selector';
 import type { UserWorkspace } from '../app/(user)/_lib/server/load-user-workspace';
 
 export function HomeMobileNavigation(props: { workspace: UserWorkspace }) {
-  const signOut = useSignOut();
 
   const Links = personalAccountNavigationConfig.routes.map((item, index) => {
     if ('children' in item) {
@@ -71,9 +70,7 @@ export function HomeMobileNavigation(props: { workspace: UserWorkspace }) {
 
         <DropdownMenuGroup>{Links}</DropdownMenuGroup>
 
-        <DropdownMenuSeparator />
-
-        <SignOutDropdownItem onSignOut={() => signOut.mutateAsync()} />
+        {/* sign out removed */}
       </DropdownMenuContent>
     </DropdownMenu>
   );

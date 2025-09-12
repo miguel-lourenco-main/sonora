@@ -2,8 +2,8 @@
 
 import { ElevenLabsClient } from "elevenlabs";
 import { Choice, ElevenLabsTextToSpeechResponse, Voice } from './types';
-import { Database } from "~/lib/database.types";
-import { getSupabaseServerClient } from "@kit/supabase/server-client";
+// import { Database } from "~/lib/database.types";
+// import { getSupabaseServerClient } from "@kit/supabase/server-client";
 import OpenAI from 'openai';
 
 interface TranscriptionResponse {
@@ -168,18 +168,7 @@ export async function createVoice({
             timeoutInSeconds: 1800000
         });
 
-        const supabase = getSupabaseServerClient<Database>();
-
-        const { error } = await supabase
-            .from('voice')
-            .insert({
-                voice_id: response.voice_id,
-                name: name,
-                is_public: isPublic
-            });
-
-        if (error) throw error;
-
+        // removed supabase insert
         console.log('Voice creation response:', response);
     } catch (error) {
         console.error('Action: Failed to create voice:', error);
@@ -189,15 +178,7 @@ export async function createVoice({
 
 export async function updateVoiceVisibility(voiceId: string, isPublic: boolean) {
     try {
-        const supabase = getSupabaseServerClient<Database>();
-
-        const { error } = await supabase
-            .from('voice')
-            .update({ is_public: isPublic })
-            .eq('voice_id', voiceId);
-
-        if (error) throw error;
-
+        // removed supabase update
         console.log('Updated voice visibility:', { voiceId, isPublic });
     } catch (error) {
         console.error('Failed to update voice visibility:', error);
@@ -228,7 +209,6 @@ export async function deleteVoice(voiceId: string) {
     throw error;
   }
 }
-
 
 export async function renameVoice(voiceId: string, newName: string) {
   try {
@@ -268,7 +248,7 @@ export async function previewVoice(voiceId: string, text: string) {
     });
 
     // Convert stream to buffer
-    const chunks = [];
+    const chunks = [] as any[];
     for await (const chunk of response) {
         chunks.push(chunk);
     }
@@ -283,7 +263,6 @@ export async function previewVoice(voiceId: string, text: string) {
     throw error;
   }
 }
-
 
 async function validateOpenAIKey(apiKey: string): Promise<boolean> {
   try {
@@ -310,8 +289,8 @@ export async function validateAPIKeys(): Promise<{
     process.env.ELEVENLABS_API_KEY ? validateElevenLabsKey(process.env.ELEVENLABS_API_KEY) : Promise.resolve(false),
   ]);
 
-  const openai = results[0].status === 'fulfilled' ? results[0].value : false;
-  const elevenlabs = results[1].status === 'fulfilled' ? results[1].value : false;
+  const openai = results[0].status === 'fulfilled' ? (results[0] as PromiseFulfilledResult<boolean>).value : false;
+  const elevenlabs = results[1].status === 'fulfilled' ? (results[1] as PromiseFulfilledResult<boolean>).value : false;
 
   return {
     openai,
@@ -337,32 +316,24 @@ async function getOpenAIClient() {
   });
 }
 
-interface Alignment {
-  characters: string[];
-  character_start_times_seconds: number[];
-  character_end_times_seconds: number[];
-}
-
 function processWordTimings(text: string, alignment: Alignment) {
-  const wordTimings = [];
+  const wordTimings = [] as { word: string; start: number; end: number }[];
   const words = text.split(' ');
   let currentWordIndex = 0;
   let currentWord = '';
   let wordStart = 0;
   
   for (let i = 0; i < alignment.characters.length; i++) {
-    const char = alignment.characters[i];
-    const startTime = alignment.character_start_times_seconds[i] ?? 0;
-    const endTime = alignment.character_end_times_seconds[i] ?? 0;
+    const char = alignment.characters[i]!;
+    const startTime = alignment.character_start_times_seconds[i]!;
+    const endTime = alignment.character_end_times_seconds[i]!;
     
     if (char === ' ' || i === alignment.characters.length - 1) {
-      // If this is the last character, include it in the current word
       if (i === alignment.characters.length - 1 && char !== ' ') {
         currentWord += char;
       }
       
       if (currentWord) {
-        // Only add the word if it matches our expected word
         if (currentWordIndex < words.length && currentWord === words[currentWordIndex]) {
           wordTimings.push({
             word: currentWord,
@@ -383,6 +354,12 @@ function processWordTimings(text: string, alignment: Alignment) {
   
   return wordTimings;
 }
+
+type Alignment = {
+  characters: string[];
+  character_start_times_seconds: number[];
+  character_end_times_seconds: number[];
+};
 
 async function generateSpeechWithOpenAI(text: string) {
   const client = await getOpenAIClient();

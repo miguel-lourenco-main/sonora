@@ -5,20 +5,10 @@ const ENABLE_REACT_COMPILER = process.env.ENABLE_REACT_COMPILER === 'true';
 const INTERNAL_PACKAGES = [
   '@kit/ui',
   '@kit/auth',
-  '@kit/accounts',
-  '@kit/admin',
-  '@kit/team-accounts',
   '@kit/shared',
-  '@kit/supabase',
   '@kit/i18n',
-  '@kit/mailers',
-  '@kit/billing-gateway',
-  '@kit/email-templates',
-  '@kit/database-webhooks',
-  '@kit/cms',
   '@kit/monitoring',
   '@kit/next',
-  '@kit/notifications',
 ];
 
 /** @type {import('next').NextConfig} */

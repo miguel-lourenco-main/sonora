@@ -6,7 +6,14 @@
       "~/*": ["./app/*"],
       "~/config/*": ["./config/*"],
       "~/components/*": ["./components/*"],
-      "~/lib/*": ["./lib/*"]
+      "~/lib/*": ["./lib/*"],
+      "@kit/ui/*": ["./vendor/kit/ui/src/*"],
+      "@kit/shared/*": ["./vendor/kit/shared/src/*"],
+      "@kit/i18n/*": ["./vendor/kit/i18n/src/*"],
+      "@kit/monitoring/*": ["./vendor/kit/monitoring/api/*"],
+      "@kit/monitoring-core": ["./vendor/kit/monitoring/core/src/index.ts"],
+      "@kit/monitoring-core/*": ["./vendor/kit/monitoring/core/src/*"],
+      "@kit/auth/*": ["./vendor/kit/auth/*"]
     },
     "plugins": [
       {
@@ -24,6 +31,7 @@
     "./config/**/*.ts",
     "components/**/*",
     "lib/**/*.ts",
+    "vendor/**/*",
     "app",
     "scripts/**/*.ts"
   ],
