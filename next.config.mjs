@@ -15,6 +15,16 @@ const config = {
   },
   // Enable static export for GitLab Pages
   output: 'export',
+  trailingSlash: true,
+  // Skip source map generation for static export to avoid issues
+  productionBrowserSourceMaps: false,
+  // Disable source maps in development to prevent the installHook.js.map issue
+  webpack: (config, { dev }) => {
+    if (dev) {
+      config.devtool = false;
+    }
+    return config;
+  },
   logging: {
     fetches: {
       fullUrl: true,

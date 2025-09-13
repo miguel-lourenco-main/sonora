@@ -22,7 +22,24 @@ export async function listVoices(): Promise<ElevenLabsVoice[]> {
     headers: { 'xi-api-key': apiKey },
     cache: 'no-store',
   });
-  if (!res.ok) throw new Error('Failed to list voices');
+  if (!res.ok) {
+    let errorMessage = 'Failed to list voices';
+    try {
+      const errorData = await res.json();
+      if (errorData.detail?.message) {
+        errorMessage = errorData.detail.message;
+      } else if (errorData.message) {
+        errorMessage = errorData.message;
+      }
+    } catch {
+      if (res.status === 401) {
+        errorMessage = 'Invalid or missing API key';
+      } else if (res.status === 429) {
+        errorMessage = 'Quota exhausted. Please check your ElevenLabs account limits.';
+      }
+    }
+    throw new Error(errorMessage);
+  }
   const data = await res.json();
   return (data.voices ?? data) as ElevenLabsVoice[];
 }
@@ -74,7 +91,31 @@ export async function previewVoice(voiceId: string, text: string): Promise<strin
     },
     body: JSON.stringify({ text, model_id: 'eleven_multilingual_v2' }),
   });
-  if (!res.ok) throw new Error('Failed to generate preview');
+  if (!res.ok) {
+    let errorMessage = 'Failed to generate preview';
+    try {
+      const errorData = await res.json();
+      if (errorData.detail?.message) {
+        errorMessage = errorData.detail.message;
+      } else if (errorData.message) {
+        errorMessage = errorData.message;
+      } else if (errorData.error) {
+        errorMessage = errorData.error;
+      }
+    } catch {
+      // If we can't parse the error response, use a generic message based on status
+      if (res.status === 401) {
+        errorMessage = 'Invalid or missing API key';
+      } else if (res.status === 429) {
+        errorMessage = 'Quota exhausted. Please check your ElevenLabs account limits.';
+      } else if (res.status === 400) {
+        errorMessage = 'Invalid request. Please check your input.';
+      } else if (res.status >= 500) {
+        errorMessage = 'ElevenLabs service is temporarily unavailable';
+      }
+    }
+    throw new Error(errorMessage);
+  }
   const blob = await res.blob();
   return URL.createObjectURL(blob);
 }

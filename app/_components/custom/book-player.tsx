@@ -28,6 +28,7 @@ import { previewVoice } from "~/lib/client/elevenlabs"
 import { Loader2 } from "lucide-react"
 import ChoiceStatus from "./choice-status"
 import { hasPreRecordedAudio } from "~/lib/utils/audio-availability"
+import { toast } from "sonner"
 
 
 interface StoryPlayerProps {
@@ -95,6 +96,17 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
 
   // Track nodes being generated to prevent duplicate generation
   const generatingNodes = useRef(new Set<string>());
+  const unavailableNodes = useRef(new Set<string>());
+
+  // If no pre-recorded audio and we have ElevenLabs voices, default to first available voice
+  useEffect(() => {
+    if (!hasPreRecordedAudio(story.label) && selectedVoice === 'default' && !isLoadingVoices) {
+      const firstVoice = (voices ?? [])[0]?.voice_id;
+      if (firstVoice) {
+        setSelectedVoice(firstVoice);
+      }
+    }
+  }, [story.label, selectedVoice, isLoadingVoices, voices]);
 
   const handleChoiceClick = (index: number) => {
     setSelectedChoice(index);
@@ -113,6 +125,13 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
     // Skip if already generating speech for this node
     if (generatingNodes.current.has(id)) {
       console.log('Already generating speech for node:', id);
+      return;
+    }
+
+    // Skip if this node/voice combination was marked unavailable
+    const unavailableKey = `${id}:${selectedVoice}`;
+    if (unavailableNodes.current.has(unavailableKey)) {
+      console.log('Skipping generation for unavailable node/voice:', unavailableKey);
       return;
     }
 
@@ -161,8 +180,9 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
       }
 
       if (selectedVoice === 'default') {
-        // No server-side TTS available for default voice without pre-recorded assets
-        throw new Error('No pre-recorded audio available for default voice');
+        // Mark as unavailable for this node/voice and stop retrying
+        unavailableNodes.current.add(unavailableKey);
+        return;
       }
 
       // Client-side ElevenLabs preview (requires user API key set in Voices)
@@ -192,6 +212,11 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
       }));
     } catch (error) {
       console.error('Error generating speech:', error);
+      
+      // Show error message in toast
+      const errorMessage = error instanceof Error ? error.message : 'Failed to generate speech';
+      toast.error(errorMessage);
+      
       // Remove the node from generating set even if it failed
       generatingNodes.current.delete(id);
       
@@ -216,6 +241,9 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
         ...prev,
         [id]: resetNode
       }));
+
+      // Avoid retry loops for this node/voice
+      unavailableNodes.current.add(unavailableKey);
     } finally {
       generatingNodes.current.delete(id);
       setIsGeneratingSpeech(false);
@@ -287,17 +315,19 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
     node.voiceId !== 'default';
 
   // Add audio timing hook
-  const audioTimingsProps = currentNode.voiceId === 'default' 
-    ? {
-        audioUrl: currentNode.audioUrl ?? '',
-        text: currentNode.text,
-        provider: 'openai' as const
-      }
-    : {
-        audioUrl: currentNode.audioUrl ?? '',
-        provider: 'elevenlabs' as const,
-        wordTimings: isElevenLabsNode(currentNode) ? (currentNode.wordTimings ?? []) : []
-      };
+  // If ElevenLabs node lacks explicit word timings, fall back to calculated timings ("openai" mode)
+  const audioTimingsProps =
+    currentNode.voiceId === 'default' || (isElevenLabsNode(currentNode) && (!currentNode.wordTimings || currentNode.wordTimings.length === 0))
+      ? {
+          audioUrl: currentNode.audioUrl ?? '',
+          text: currentNode.text,
+          provider: 'openai' as const,
+        }
+      : {
+          audioUrl: currentNode.audioUrl ?? '',
+          provider: 'elevenlabs' as const,
+          wordTimings: (currentNode as ElevenLabsContentNode).wordTimings!,
+        };
 
   const { wordTimings, isLoading: isLoadingTimings, error: timingsError } = useAudioTimings(audioTimingsProps);
 
@@ -356,7 +386,7 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
           <Select
             value={selectedVoice}
             onValueChange={setSelectedVoice}
-            disabled={isLoadingVoices || isGeneratingSpeech || undefined}
+            disabled={isLoadingVoices || isGeneratingSpeech || isPlaying || undefined}
           >
             <SelectTrigger>
               <SelectValue placeholder="Select a voice" />

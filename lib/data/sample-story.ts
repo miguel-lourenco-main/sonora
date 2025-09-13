@@ -1,9 +1,6 @@
 import { Story } from "~/lib/types";
 import { wordTimings } from "./word-timings";
 
-console.log('wordTimings', wordTimings);
-console.log('wordTimings["shadow-path"]', wordTimings["shadow-path"]);
-
 export const bookData: Story[] = [
   {
     id: "1",

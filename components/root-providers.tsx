@@ -19,6 +19,7 @@ import { ReactQueryProvider } from './react-query-provider';
 import { I18nProvider } from '~/lib/i18n/i18n-provider';
 import { getI18nSettings } from '~/lib/i18n/i18n.settings';
 import { i18nClientResolver } from '~/lib/i18n/i18n.client-resolver';
+import { installConsoleFilter } from '~/lib/utils/console-filter';
 
 export function RootProviders({
   lang,
@@ -28,6 +29,8 @@ export function RootProviders({
   lang: string;
   theme?: string;
 }>) {
+  // Install console filter once on the client
+  installConsoleFilter();
   const i18nSettings = getI18nSettings(lang);
 
   return (
