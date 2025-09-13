@@ -6,19 +6,9 @@ import { Button } from '@kit/ui/shadcn/button';
 import { Heading } from '@kit/ui/shadcn/heading';
 import { Trans } from '@kit/ui/makerkit/trans';
 
-import { createI18nServerInstance } from '~/lib/i18n/i18n.server';
-import { withI18n } from '~/lib/i18n/with-i18n';
+export const metadata = { title: 'Not Found' };
 
-export const generateMetadata = async () => {
-  const i18n = await createI18nServerInstance();
-  const title = i18n.t('common:notFound');
-
-  return {
-    title,
-  };
-};
-
-const NotFoundPage = async () => {
+const NotFoundPage = () => {
   return (
     <div className={'flex h-screen flex-1 flex-col'}>
       <div
@@ -60,4 +50,4 @@ const NotFoundPage = async () => {
   );
 };
 
-export default withI18n(NotFoundPage);
+export default NotFoundPage;

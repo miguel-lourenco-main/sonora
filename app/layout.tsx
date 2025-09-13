@@ -1,5 +1,3 @@
-import { cookies } from 'next/headers';
-
 import { Toaster } from '@kit/ui/shadcn/sonner';
 import { cn } from '@kit/ui/lib';
 
@@ -9,19 +7,20 @@ import { SidebarNavigation } from '@kit/ui/shadcn/sidebar';
 import { personalAccountNavigationConfig } from '~/config/personal-account-navigation.config';
 import { AppLogo } from '~/components/app-logo';
 import { heading, sans } from '~/lib/fonts';
-import { createI18nServerInstance } from '~/lib/i18n/i18n.server';
-import { generateRootMetadata } from '~/lib/root-metdata';
+import type { Metadata } from 'next';
+import appConfig from '~/config/app.config';
 
 import '../styles/globals.css';
 import { ModeToggle } from '@kit/ui/makerkit/mode-toggle';
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { language } = await createI18nServerInstance();
-  const theme = await getTheme();
+  // Default language and theme are derived on client; use fallbacks for static HTML
+  const language = 'en';
+  const theme: 'light' | 'dark' | 'system' = 'light';
   const className = getClassName(theme);
 
   return (
@@ -69,11 +68,21 @@ function getClassName(theme?: string) {
   });
 }
 
-async function getTheme() {
-  const cookiesStore = await cookies();
-  return cookiesStore.get('theme')?.value as 'light' | 'dark' | 'system';
-}
+export const metadata: Metadata = {
+  title: appConfig.title,
+  description: appConfig.description,
+  metadataBase: new URL(appConfig.url),
+  applicationName: appConfig.name,
+  openGraph: {
+    url: appConfig.url,
+    siteName: appConfig.name,
+    title: appConfig.title,
+    description: appConfig.description,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: appConfig.title,
+    description: appConfig.description,
+  },
+};
 
-export const generateMetadata = generateRootMetadata;
-
-export const runtime = 'edge';

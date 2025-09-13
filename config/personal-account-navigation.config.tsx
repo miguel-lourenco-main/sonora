@@ -6,7 +6,7 @@ const routes = [
   {
     label: 'Navigation',
     children: [
-      { label: 'Home', path: '/', Icon: <Home /> },
+      { label: 'Stories', path: '/', Icon: <Home /> },
       { label: 'Voices', path: '/voices', Icon: <Volume2 /> },
     ],
   },

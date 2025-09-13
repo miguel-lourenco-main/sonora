@@ -10,7 +10,11 @@ const config = {
     remotePatterns: getRemotePatterns(),
     dangerouslyAllowSVG: true,
     // domains is deprecated; use remotePatterns instead
+    // When using static export, Next/Image optimization is disabled
+    unoptimized: true,
   },
+  // Enable static export for GitLab Pages
+  output: 'export',
   logging: {
     fetches: {
       fullUrl: true,
@@ -21,7 +25,6 @@ const config = {
   outputFileTracingIncludes: {
     '/*': ['./content/**/*'],
   },
-  redirects: getRedirects,
   experimental: {
     mdxRs: true,
     reactCompiler: ENABLE_REACT_COMPILER,
@@ -80,14 +83,4 @@ function getRemotePatterns() {
           hostname: 'localhost',
         },
       ];
-}
-
-async function getRedirects() {
-  return [
-    {
-      source: '/server-sitemap.xml',
-      destination: '/sitemap.xml',
-      permanent: true,
-    },
-  ];
 }
