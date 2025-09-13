@@ -13,7 +13,7 @@ import { AppLogo } from '~/components/app-logo';
 import { ProfileAccountDropdownContainer } from '~/components/personal-account-dropdown-container';
 import featuresFlagConfig from '~/config/feature-flags.config';
 import { personalAccountNavigationConfig } from '~/config/personal-account-navigation.config';
-import { UserNotifications } from '~/_components/user-notifications';
+import { UserNotifications } from '~/app/_components/user-notifications';
 
 // home imports
 import { HomeAccountSelector } from './home-account-selector';

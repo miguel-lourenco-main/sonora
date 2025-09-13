@@ -22,7 +22,7 @@ import { personalAccountNavigationConfig } from '~/config/personal-account-navig
 
 // home imports
 import { HomeAccountSelector } from './home-account-selector';
-import type { UserWorkspace } from '../app/(user)/_lib/server/load-user-workspace';
+import type { UserWorkspace } from '../(user)/_lib/server/load-user-workspace';
 
 export function HomeMobileNavigation(props: { workspace: UserWorkspace }) {
 
@@ -60,7 +60,11 @@ export function HomeMobileNavigation(props: { workspace: UserWorkspace }) {
 
             <HomeAccountSelector
               userId={props.workspace.user.id}
-              accounts={props.workspace.accounts}
+              accounts={props.workspace.accounts.map(account => ({
+                label: account.name,
+                value: account.id,
+                image: account.avatar || null,
+              }))}
               collisionPadding={0}
             />
           </DropdownMenuGroup>

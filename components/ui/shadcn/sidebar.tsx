@@ -851,7 +851,7 @@ export function SidebarNavigation({
 
   return (
     <>
-      {config.routes.map((item, index) => {
+      {config.routes.map((item: any, index: number) => {
         const isLast = index === config.routes.length - 1;
 
         if ('divider' in item) {
@@ -913,7 +913,7 @@ export function SidebarNavigation({
                 <SidebarGroupContent>
                   <SidebarMenu>
                     <ContentContainer>
-                      {item.children.map((child, childIndex) => {
+                      {item.children.map((child: any, childIndex: number) => {
                         if (child.renderAction) {
                           return (
                             <SidebarMenuSubItem key={child.path}>
@@ -1044,7 +1044,7 @@ export function SidebarNavigation({
                                         'mx-0 px-1.5': minimized,
                                       })}
                                     >
-                                      {children.map((child) => {
+                                      {children.map((child: any) => {
                                         if (child.renderAction) {
                                           return (
                                             <SidebarMenuSubItem

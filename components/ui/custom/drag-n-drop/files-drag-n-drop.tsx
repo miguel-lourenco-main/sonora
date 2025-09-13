@@ -5,7 +5,7 @@ import { forwardRef, useCallback, useState } from "react";
 import { FileRejection, useDropzone } from "react-dropzone";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
-import { DirectionOptions, FilesDragNDropProps } from "../_lib/types";
+import { DirectionOptions, FilesDragNDropProps } from "./_lib/types";
 import { MAX_FILE_SIZE_MB, MAX_FILE_SIZE_STRING } from "@kit/shared/constants";
 
 /**
@@ -136,7 +136,7 @@ export const FilesDragNDrop = forwardRef<
           }
         } else if (e.key === "Delete" || e.key === "Backspace") {
           if (activeIndex !== -1) {
-            removeFiles(files.filter((_, index) => index !== activeIndex));
+            removeFiles(files.filter((_: any, index: number) => index !== activeIndex));
             if (files.length - 1 === 0) {
               setActiveIndex(-1);
               return;

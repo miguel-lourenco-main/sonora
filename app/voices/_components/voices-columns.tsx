@@ -82,6 +82,8 @@ export function useVoicesColumns(
   t: TFunction<"custom", undefined>
 ): ColumnDef<Voice>[] {
   const state = useVoiceColumnState(onRename, t);
+
+  console.log(state)
   
   return [
     {

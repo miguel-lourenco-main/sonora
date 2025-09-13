@@ -1,5 +1,5 @@
 import { Button } from "@kit/ui/shadcn/button";
-import { TrackableFile } from "@kit/ui/interfaces";
+import { TrackableFile } from "@kit/ui/lib/interfaces";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";

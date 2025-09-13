@@ -57,21 +57,25 @@ export function ApiKeysSection({ onRefetchVoices }: ApiKeysSectionProps) {
     }
   }
 
-  function cleanApiKey() {
+  async function cleanApiKey() {
     clearElevenLabsApiKey()
     clearCachedVoices()
     setKey('')
     toast.success('API key and cached voices cleared from storage')
+    // Ensure voices table updates immediately after clearing
+    if (onRefetchVoices) {
+      try {
+        await onRefetchVoices()
+      } catch (e) {
+        console.error(e)
+      }
+    }
   }
 
   async function saveKey() {
-    // If the input is empty, clean the API key instead
+    // Do not transform into clear; require a non-empty key
     if (!key.trim()) {
-      cleanApiKey()
-      // Trigger refetch to clear voices when key is cleared
-      if (onRefetchVoices) {
-        onRefetchVoices().catch(console.error);
-      }
+      toast.error('Please enter an API key to save')
       return
     }
 
@@ -116,7 +120,7 @@ export function ApiKeysSection({ onRefetchVoices }: ApiKeysSectionProps) {
           </div>
           <div className="flex gap-2">
             <Button onClick={saveKey} disabled={isValidating}>
-              {isValidating ? 'Validating...' : key.trim() ? 'Save key' : 'Clear key'}
+              {isValidating ? 'Validating...' : 'Save key'}
             </Button>
             <Button variant="outline" onClick={cleanApiKey} disabled={!key.trim()}>
               Clear key

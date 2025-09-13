@@ -1,34 +1,68 @@
 {
-  "extends": "@kit/tsconfig/base.json",
+  "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "checkJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "noUncheckedIndexedAccess": true,
+    "tsBuildInfoFile": ".tsbuildinfo",
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./app/*"],
-      "~/config/*": ["./config/*"],
-      "~/components/*": ["./components/*"],
-      "~/lib/*": ["./lib/*"],
-      "@kit/ui/*": ["./components/ui/*"],
-      "@kit/shared/*": ["./lib/shared/*"],
+      "@/*": [
+        "./*"
+      ],
+      "~/*": [
+        "./*"
+      ],
+      "ui/*": [
+        "components/ui/shadcn/*"
+      ],
+      "utils/*": [
+        "components/ui/lib/*"
+      ],
+      "@kit/ui/*": [
+        "components/ui/*"
+      ],
+      "@kit/shared/*": [
+        "lib/shared/*"
+      ],
+      "@kit/shared/events": [
+        "lib/shared/events/index.tsx"
+      ],
+      "@kit/billing": [
+        "lib/billing/index.ts"
+      ]
     },
     "plugins": [
       {
         "name": "next"
       }
-    ],
-    "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json"
+    ]
   },
   "include": [
+    "**/*.cts",
+    "**/*.mts",
+    "**/*.ts",
+    "**/*.tsx",
     "next-env.d.ts",
-    ".next/types/**/*.ts",
-    "*.ts",
-    "*.tsx",
-    "*.mjs",
-    "./config/**/*.ts",
-    "components/**/*",
-    "lib/**/*",
-    "vendor/**/*",
-    "app",
-    "scripts/**/*.ts"
+    ".next/types/**/*.ts"
   ],
-  "exclude": ["node_modules", ".next"]
+  "exclude": [
+    "node_modules",
+    ".next",
+    "dist",
+    "build"
+  ]
 }

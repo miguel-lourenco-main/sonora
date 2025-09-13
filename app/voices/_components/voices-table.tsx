@@ -8,10 +8,8 @@ import { useVoicesColumns } from './voices-columns';
 import { CreateVoicesButton } from './create-voices-button';
 import { deleteVoice as deleteVoiceApi, renameVoice as renameVoiceApi } from '~/lib/client/elevenlabs';
 import { toast } from 'sonner';
-import { Database } from '~/lib/database.types';
-import { handleInsertOrUpdate, handleDelete } from '@kit/shared/utils';
 import { listVoices } from '~/lib/client/elevenlabs';
-import { clearCachedVoices, setCachedVoices, getCachedVoices } from '~/lib/local/storage';
+import { clearCachedVoices, setCachedVoices } from '~/lib/local/storage';
 import { Button } from '@kit/ui/shadcn/button';
 import { useVoices as useAutoVoices } from '~/lib/hooks/use-voices';
 
@@ -91,6 +89,8 @@ export default function VoicesTable({
 
   const columns = useVoicesColumns(handleDeleteVoice, handleRenameVoice, t);
 
+  console.log(columns);
+
   if (process.env.NODE_ENV === 'development' && !ready) return null;
 
   // Expose refetch function to parent component
@@ -128,7 +128,6 @@ export default function VoicesTable({
         </div>
       )}
       <CustomDataTable
-        defaultPageSize={10}
         data={voices}
         columns={columns}
         tableLabel={t('voices.lowercase')}

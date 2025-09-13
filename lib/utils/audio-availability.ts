@@ -48,6 +48,11 @@ export async function checkAudioAvailability(story: Story): Promise<AudioAvailab
  * Checks if a story has pre-recorded audio files
  */
 async function checkPreRecordedAudio(story: Story): Promise<boolean> {
+  // Fast path: only certain stories have pre-recorded samples
+  if (!hasPreRecordedAudio(story.label)) {
+    return false;
+  }
+
   if (!story.chapters?.[0]?.content?.nodes) {
     return false;
   }

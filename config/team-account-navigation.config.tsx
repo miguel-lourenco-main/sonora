@@ -13,7 +13,7 @@ const getRoutes = (account: string) => [
     children: [
       {
         label: 'common:routes.dashboard',
-        path: pathsConfig.app.accountHome.replace('[account]', account),
+        path: createPath(pathsConfig.app.selectStoryPage, account),
         Icon: <LayoutDashboard className={iconClasses} />,
         end: true,
       },
@@ -25,18 +25,18 @@ const getRoutes = (account: string) => [
     children: [
       {
         label: 'common:routes.settings',
-        path: createPath(pathsConfig.app.accountSettings, account),
+        path: createPath(pathsConfig.app.selectStoryPage, account),
         Icon: <Settings className={iconClasses} />,
       },
       {
         label: 'common:routes.members',
-        path: createPath(pathsConfig.app.accountMembers, account),
+        path: createPath(pathsConfig.app.voicesList, account),
         Icon: <Users className={iconClasses} />,
       },
       featureFlagsConfig.enableTeamAccountBilling
         ? {
             label: 'common:routes.billing',
-            path: createPath(pathsConfig.app.accountBilling, account),
+            path: createPath(pathsConfig.app.voicesList, account),
             Icon: <CreditCard className={iconClasses} />,
           }
         : undefined,

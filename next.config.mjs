@@ -9,7 +9,7 @@ const config = {
   images: {
     remotePatterns: getRemotePatterns(),
     dangerouslyAllowSVG: true,
-    domains: ['hebbkx1anhila5yf.public.blob.vercel-storage.com']
+    // domains is deprecated; use remotePatterns instead
   },
   logging: {
     fetches: {
@@ -51,7 +51,12 @@ export default config;
 
 function getRemotePatterns() {
   /** @type {import('next').NextConfig['remotePatterns']} */
-  const remotePatterns = [];
+  const remotePatterns = [
+    {
+      protocol: 'https',
+      hostname: 'hebbkx1anhila5yf.public.blob.vercel-storage.com',
+    },
+  ];
 
   if (SUPABASE_URL) {
     const hostname = new URL(SUPABASE_URL).hostname;
@@ -65,6 +70,7 @@ function getRemotePatterns() {
   return IS_PRODUCTION
     ? remotePatterns
     : [
+        ...remotePatterns,
         {
           protocol: 'http',
           hostname: '127.0.0.1',

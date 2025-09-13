@@ -1,5 +1,5 @@
 import { Button } from "@kit/ui/shadcn/button";
-import { TrackableFile } from "@kit/ui/interfaces";
+import { TrackableFile } from "@kit/ui/lib/interfaces";
 import { Download, Play, Square, Trash2Icon } from "lucide-react";
 import { formatFileSize } from "@kit/ui/lib";
 import { useCallback, useState, useRef, useEffect } from "react";

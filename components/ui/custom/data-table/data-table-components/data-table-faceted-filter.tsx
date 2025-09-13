@@ -20,7 +20,7 @@ import {
 } from "../../../shadcn/popover"
 import { Separator } from "../../../shadcn/separator"
 import { cn } from "../../../lib"
-import I18nComponent from "@kit/ui/custom/i18n-component"
+import I18nComponent from "components/ui/custom/i18n-component"
 
 
 

@@ -6,7 +6,7 @@ import dynamic from 'next/dynamic';
 
 import { ThemeProvider } from 'next-themes';
 
-import { AppEventsProvider } from '@kit/shared/events';
+// import { AppEventsProvider } from '../lib/shared/events/index';
 import { If } from '@kit/ui/makerkit/if';
 import { VersionUpdater } from '@kit/ui/makerkit/version-updater';
 
@@ -16,6 +16,9 @@ import appConfig from '~/config/app.config';
 import featuresFlagConfig from '~/config/feature-flags.config';
 
 import { ReactQueryProvider } from './react-query-provider';
+import { I18nProvider } from '~/lib/i18n/i18n-provider';
+import { getI18nSettings } from '~/lib/i18n/i18n.settings';
+import { i18nClientResolver } from '~/lib/i18n/i18n.client-resolver';
 
 export function RootProviders({
   lang,
@@ -25,12 +28,12 @@ export function RootProviders({
   lang: string;
   theme?: string;
 }>) {
+  const i18nSettings = getI18nSettings(lang);
 
   return (
-    <AppEventsProvider>
-      <AnalyticsProvider>
-        <ReactQueryProvider>
-          <AuthProvider>
+    <AnalyticsProvider>
+      <ReactQueryProvider>
+        <AuthProvider>
             <ThemeProvider
               attribute="class"
               enableSystem
@@ -38,7 +41,9 @@ export function RootProviders({
               defaultTheme={theme}
               enableColorScheme={false}
             >
-              {children}
+              <I18nProvider settings={i18nSettings} resolver={i18nClientResolver}>
+                {children}
+              </I18nProvider>
             </ThemeProvider>
           </AuthProvider>
 
@@ -47,6 +52,5 @@ export function RootProviders({
           </If>
         </ReactQueryProvider>
       </AnalyticsProvider>
-    </AppEventsProvider>
   );
 }

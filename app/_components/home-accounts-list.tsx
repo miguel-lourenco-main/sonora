@@ -15,7 +15,7 @@ import {
 } from '@kit/ui/makerkit/empty-state';
 import { Trans } from '@kit/ui/makerkit/trans';
 
-import { loadUserWorkspace } from '../app/(user)/_lib/server/load-user-workspace';
+import { loadUserWorkspace } from '../(user)/_lib/server/load-user-workspace';
 import { HomeAddAccountButton } from './home-add-account-button';
 
 export function HomeAccountsList() {
@@ -29,10 +29,10 @@ export function HomeAccountsList() {
     <div className="flex flex-col">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {accounts.map((account) => (
-          <CardButton key={account.value} asChild>
-            <Link href={`/app/${account.value}`}>
+          <CardButton key={account.id} asChild>
+            <Link href={`/app/${account.id}`}>
               <CardButtonHeader>
-                <CardButtonTitle>{account.label}</CardButtonTitle>
+                <CardButtonTitle>{account.name}</CardButtonTitle>
               </CardButtonHeader>
             </Link>
           </CardButton>

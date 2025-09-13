@@ -27,6 +27,7 @@ import { useSpeechRecognition } from "~/lib/hooks/use-speech-recognition"
 import { generateSpeech } from "~/lib/actions"
 import { Loader2 } from "lucide-react"
 import ChoiceStatus from "./choice-status"
+import { hasPreRecordedAudio } from "~/lib/utils/audio-availability"
 
 
 interface StoryPlayerProps {
@@ -136,7 +137,7 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
       generatingNodes.current.add(id);
       
       // Use pre-recorded default audio if selected
-      if (selectedVoice === 'default') {
+      if (selectedVoice === 'default' && hasPreRecordedAudio(story.label)) {
         const sampleUrl = `/samples/${story.label}-${id}.mp3`;
         try {
           const head = await fetch(sampleUrl, { method: 'HEAD' });

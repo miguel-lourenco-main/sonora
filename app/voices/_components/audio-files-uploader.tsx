@@ -2,7 +2,7 @@ import { useCallback, useState, useRef } from "react";
 import { Dispatch, SetStateAction } from "react";
 import { VOICE_FILES_SUPPORTED_TYPES } from "~/lib/constants";
 import FilesDragNDrop from "@kit/ui/custom/drag-n-drop/files-drag-n-drop";
-import { FileHandlers, TrackableFile } from "@kit/ui/interfaces";
+import { FileHandlers, TrackableFile } from "@kit/ui/lib/interfaces";
 import AudioFilesRecorder from "./audio-files-recorder";
 import { Button } from "@kit/ui/shadcn/button";
 import AudioFilesGrid from "./audio-files-grid";
@@ -276,6 +276,7 @@ export function AudioFilesUploader({
                     <FilesDragNDrop
                         acceptFiles={VOICE_FILES_SUPPORTED_TYPES}
                         files={audioFiles}
+                        setFiles={externalSetAudioFiles ?? setInternalAudioFiles}
                         addFiles={fileHandlers.handleAddFiles}
                         disabled={disabled ?? audioFiles.length >= MAX_SAMPLES}
                         removeFiles={fileHandlers.handleFileRemove}

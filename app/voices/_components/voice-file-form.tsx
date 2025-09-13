@@ -1,7 +1,7 @@
 import { AudioFilesUploader } from "./audio-files-uploader";
 import { createVoice as createVoiceApi } from "~/lib/client/elevenlabs";
 import { Dispatch, SetStateAction } from "react";
-import { TrackableFile } from "@kit/ui/interfaces";
+import { TrackableFile } from "@kit/ui/lib/interfaces";
 
 
 interface VoiceFileFormProps {

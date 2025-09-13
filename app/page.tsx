@@ -2,13 +2,13 @@ import { ScrollBar } from "@kit/ui/shadcn/scroll-area";
 import { ScrollArea } from "@kit/ui/shadcn/scroll-area";
 import { AudiobookCard } from "./_components/custom/audiobook-card";
 import { Separator } from "@kit/ui/shadcn/separator";
+import type { Metadata } from "next";
 import { CategoryPills } from "./_components/custom/category-pills";
 import { categories, featuredAudiobooks, recommendedAudiobooks } from "~/lib/data/audiobook-data";
 
 
-export const generateMetadata = async () => {
-
-  return "Select Story"
+export const metadata: Metadata = {
+  title: "Select Story",
 };
 
 export default function HomePage() {

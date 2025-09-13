@@ -45,3 +45,27 @@ export interface FileHandlers {
     handleAddFiles: (newFiles: TrackableFile[]) => void;
     handleFileRemove: (filteredFiles: TrackableFile[]) => void;
 }
+
+import { LucideIcon } from "lucide-react";
+
+export interface TranslationFile {
+  id: string;
+  name: string;
+  status: string;
+  usage: string;
+}
+export interface Filter {
+  id: string;
+  title: string;
+  options: {
+      value: string;
+      label: string;
+      icon: LucideIcon;
+  }[];
+}
+
+export interface DataTableActions {
+  name:string
+  exec: () => void
+  customItem: (() => React.ReactNode) | null
+}

@@ -12,9 +12,7 @@ export const generateMetadata = async () => {
   };
 };
 
-async function PlayerPage({ params }: { params: { id: string } }) {
-
-  // eslint-disable-next-line @typescript-eslint/await-thenable
+async function PlayerPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
   // Map audiobook ID to story index (audiobook IDs are 1-10, story indices are 0-9)

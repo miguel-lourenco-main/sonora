@@ -7,7 +7,7 @@ import { Button } from  "../../../shadcn/button"
 import { Input } from "../../../shadcn/input"
 
 import FacetedFilters from "./faceted-filters-list"
-import { Filter } from "../../_lib/interface"
+import { Filter } from "utils/interfaces"
 import { useTranslation } from "react-i18next"
 
 interface DataTableToolbarProps<TData> {
