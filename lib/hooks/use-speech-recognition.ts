@@ -1,6 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { Choice } from '../types';
-import { processVoiceChoice } from '../actions';
 import { toast } from 'sonner';
 
 declare global {
@@ -30,47 +29,32 @@ const AUDIO_SETTINGS = {
   audioBitsPerSecond: 128000
 } as const;
 
-async function convertToWav(blob: Blob): Promise<Blob> {
-  // Create AudioContext with specific sample rate
-  const audioContext = new (window.AudioContext || window.webkitAudioContext)({
-    sampleRate: AUDIO_SETTINGS.sampleRate
-  });
-  
-  const arrayBuffer = await blob.arrayBuffer();
-  const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-  
-  // Write WAV header
-  const wavBuffer = new ArrayBuffer(44 + audioBuffer.length * 2);
-  const view = new DataView(wavBuffer);
-  
-  const writeString = (view: DataView, offset: number, string: string) => {
-    for (let i = 0; i < string.length; i++) {
-      view.setUint8(offset + i, string.charCodeAt(i));
+// Basic local matching between transcript and available choices
+function selectChoiceFromTranscript(transcript: string, choices: Choice[]): number | null {
+  const cleaned = transcript.toLowerCase();
+  let bestIndex: number | null = null;
+  let bestScore = 0;
+
+  choices.forEach((choice, index) => {
+    const target = (choice.text || '').toLowerCase();
+    if (!target) return;
+
+    // Simple scoring: token overlap ratio + substring bonus
+    const cleanedTokens = new Set(cleaned.split(/[^a-z0-9]+/).filter(Boolean));
+    const targetTokens = new Set(target.split(/[^a-z0-9]+/).filter(Boolean));
+    const intersection = [...targetTokens].filter(t => cleanedTokens.has(t)).length;
+    const union = new Set([...targetTokens, ...cleanedTokens]).size || 1;
+    let score = intersection / union;
+    if (cleaned.includes(target)) score += 0.5; // substring bonus
+
+    if (score > bestScore) {
+      bestScore = score;
+      bestIndex = index;
     }
-  };
+  });
 
-  writeString(view, 0, 'RIFF');
-  view.setUint32(4, 36 + audioBuffer.length * 2, true);
-  writeString(view, 8, 'WAVE');
-  writeString(view, 12, 'fmt ');
-  view.setUint32(16, 16, true);
-  view.setUint16(20, 1, true);
-  view.setUint16(22, AUDIO_SETTINGS.channelCount, true);
-  view.setUint32(24, AUDIO_SETTINGS.sampleRate, true);
-  view.setUint32(28, AUDIO_SETTINGS.sampleRate * AUDIO_SETTINGS.channelCount * (AUDIO_SETTINGS.bitsPerSample / 8), true);
-  view.setUint16(32, AUDIO_SETTINGS.channelCount * (AUDIO_SETTINGS.bitsPerSample / 8), true);
-  view.setUint16(34, AUDIO_SETTINGS.bitsPerSample, true);
-  writeString(view, 36, 'data');
-  view.setUint32(40, audioBuffer.length * 2, true);
-
-  // Write audio data
-  const data = new Int16Array(wavBuffer, 44, audioBuffer.length);
-  const channelData = audioBuffer.getChannelData(0);
-  for (let i = 0; i < audioBuffer.length; i++) {
-    data[i] = Math.max(-1, Math.min(1, channelData[i] ?? 0)) * 0x7FFF;
-  }
-
-  return new Blob([wavBuffer], { type: 'audio/wav' });
+  // Require a minimal confidence
+  return bestScore >= 0.2 ? bestIndex : null;
 }
 
 export function useSpeechRecognition({
@@ -85,8 +69,7 @@ export function useSpeechRecognition({
     isProcessing: false
   });
 
-  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
-  const audioChunksRef = useRef<Blob[]>([]);
+  const recognitionRef = useRef<any>(null);
 
   const requestPermission = useCallback(async () => {
     try {
@@ -111,82 +94,59 @@ export function useSpeechRecognition({
     }
 
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ 
-        audio: {
-          channelCount: AUDIO_SETTINGS.channelCount,
-          sampleRate: AUDIO_SETTINGS.sampleRate,
-          sampleSize: AUDIO_SETTINGS.bitsPerSample,
-          echoCancellation: true,
-          noiseSuppression: true,
-          autoGainControl: false // Disable automatic gain control
-        } 
-      });
+      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        toast.error('Speech recognition not supported in this browser.');
+        setState(prev => ({ ...prev, error: 'Speech recognition not supported' }));
+        return;
+      }
 
-      const mediaRecorder = new MediaRecorder(stream, {
-        mimeType: 'audio/webm;codecs=opus',
-        audioBitsPerSecond: AUDIO_SETTINGS.audioBitsPerSecond
-      });
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'en-US';
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
 
-      mediaRecorderRef.current = mediaRecorder;
-      audioChunksRef.current = [];
+      recognition.onresult = (event: any) => {
+        const transcript: string = event.results?.[0]?.[0]?.transcript ?? '';
+        setState(prev => ({ ...prev, transcript }));
 
-      mediaRecorder.ondataavailable = (event) => {
-        if (event.data.size > 0) {
-          audioChunksRef.current.push(event.data);
+        const choiceIndex = selectChoiceFromTranscript(transcript, choices);
+        if (choiceIndex !== null) {
+          onChoiceMade(choiceIndex);
+        } else {
+          toast.error('Could not understand the choice. Please try again.');
+          setState(prev => ({ ...prev, error: 'Could not understand the choice.' }));
         }
       };
 
-      mediaRecorder.onstop = async () => {
-        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
-        setState(prev => ({ ...prev, isProcessing: true }));
-        
-        try {
-          const wavBlob = await convertToWav(audioBlob);
-          const result = await processVoiceChoice(wavBlob, choices);
-          
-          if (result) {
-            setState(prev => ({ ...prev, transcript: result.transcript }));
-            onChoiceMade(result.choiceIndex);
-          } else {
-            setState(prev => ({ 
-              ...prev, 
-              error: 'Could not understand the choice. Please try again.' 
-            }));
-            toast.error('Could not understand the choice. Please try again.');
-          }
-        } catch (err) {
-          console.error('Error processing voice choice:', err);
-          setState(prev => ({ 
-            ...prev, 
-            error: 'Failed to process speech' 
-          }));
-        } finally {
-          audioChunksRef.current = [];
-          stream.getTracks().forEach(track => track.stop());
-          setState(prev => ({ 
-            ...prev, 
-            isListening: false,
-            isProcessing: false 
-          }));
-        }
+      recognition.onerror = (event: any) => {
+        console.error('Speech recognition error:', event?.error);
+        toast.error('Speech recognition error');
+        setState(prev => ({ ...prev, error: 'Speech recognition error' }));
       };
 
-      mediaRecorder.start(100); // Collect data every 100ms
+      recognition.onend = () => {
+        setState(prev => ({ ...prev, isListening: false, isProcessing: false }));
+      };
+
+      recognitionRef.current = recognition;
       setState(prev => ({ ...prev, isListening: true, error: null }));
-
+      recognition.start();
     } catch (err) {
-      console.error('Error starting recording:', err);
+      console.error('Error starting speech recognition:', err);
       setState(prev => ({ 
         ...prev, 
         isListening: false,
-        error: 'Failed to start recording'
+        error: 'Failed to start speech recognition'
       }));
     }
   }, [state.hasPermission, requestPermission, onChoiceMade, choices]);
 
   const stopRecording = useCallback(() => {
-    if (mediaRecorderRef.current?.state === 'recording') {
-      mediaRecorderRef.current.stop();
+    if (recognitionRef.current) {
+      try {
+        recognitionRef.current.stop();
+      } catch {}
     }
   }, []);
 

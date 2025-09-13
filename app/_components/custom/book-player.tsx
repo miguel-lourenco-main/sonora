@@ -24,7 +24,7 @@ import { useVoices } from "~/lib/hooks/use-voices"
 import { VoiceControl } from "./voice-control"
 import Slider from "@kit/ui/shadcn/slider"
 import { useSpeechRecognition } from "~/lib/hooks/use-speech-recognition"
-import { generateSpeech } from "~/lib/actions"
+import { previewVoice } from "~/lib/client/elevenlabs"
 import { Loader2 } from "lucide-react"
 import ChoiceStatus from "./choice-status"
 import { hasPreRecordedAudio } from "~/lib/utils/audio-availability"
@@ -160,26 +160,24 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
         }
       }
 
-      const result = await generateSpeech({
-        text: node.text,
-        voiceId: selectedVoice,
-      });
-      
-      if (!result?.audioUrl) {
-        throw new Error('No audio URL returned from speech generation');
+      if (selectedVoice === 'default') {
+        // No server-side TTS available for default voice without pre-recorded assets
+        throw new Error('No pre-recorded audio available for default voice');
       }
+
+      // Client-side ElevenLabs preview (requires user API key set in Voices)
+      const audioUrl = await previewVoice(selectedVoice, node.text);
 
       console.log('Speech generated successfully:', {
         nodeId: id,
-        audioUrl: result.audioUrl.slice(0, 50) + '...',
-        provider: result.provider
+        audioUrl: audioUrl.slice(0, 50) + '...',
+        provider: 'elevenlabs'
       });
-      
+
       const updatedNode: ContentNode = {
         ...node,
-        audioUrl: result.audioUrl,
+        audioUrl,
         voiceId: selectedVoice,
-        ...(result.provider === 'elevenlabs' && { wordTimings: result.wordTimings })
       };
 
       // Update both the current node and the nodes map
