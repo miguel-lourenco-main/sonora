@@ -1,2 +1,3 @@
 packages:
-  - apps/sonora
+  - tooling/*
+  - vendor/kit/*

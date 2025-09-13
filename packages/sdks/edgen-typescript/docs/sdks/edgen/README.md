@@ -1,3 +1,0 @@
-# Edgen SDK
-
-## Overview

@@ -1,82 +1,33 @@
+# Your Application
 
-# Structure
-
-- `apps/web`: a template app for all other apps. Edit this one if you want to proliferate a change into every app
-- `packages/`: packages common to all apps
-
-
-# Update from Makerkit
+Write here everything about your application.
 
 ## Setup
-```bash
-git remote add remote/makerkit git@github.com:makerkit/next-supabase-saas-kit-turbo.git
-git fetch remote/makerkit main
 
-# create mirror/makerkit
-git checkout -b mirror/makerkit remote/makerkit/main
-git push origin mirror/makerkit
-git branch --set-upstream-to=origin/mirror/makerkit mirror/makerkit
+For working locally, please add a file named `.env.local` where we can place our environment variables. This file is not committed to Git, therefore it is safe to store sensitive information in it.
 
-# create subtree/apps-web
-git subtree split --prefix=apps/web --branch=subtree/apps-web
-git checkout subtree/apps-web
-git push origin subtree/apps-web
-git branch --set-upstream-to=origin/subtree/apps-web subtree/apps-web
+After starting Supabase, copy the service role key from the Supabase project settings and add it to the `.env.local` file.
+
+```
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 ```
 
-## Pull
-```bash
-git checkout update_makerkit
+## Stripe
 
-# Fetch and update our mirror branch
-git fetch remote/makerkit main
-git checkout mirror/makerkit
-git merge remote/makerkit/main
-git push origin mirror/makerkit
+For the Stripe integration, first we need to start the Stripe CLI:
 
-# Merge skeleton makerkit into update_makerkit
-git checkout update_makerkit
-git merge mirror/makerkit
-
-##### Create MR and merge to main WITHOUT SQUASHING COMMITS (we want makerkit's commits intact)
-
-# Pull main
-git checkout main
-git pull
-
-# Delete update_makerkit branch locally (on remote, it was probably deleted in the MR process)
-git branch -D update_makerkit
+```
+pnpm run stripe:listen
 ```
 
-## Proliferate app subtree's new updates into app submodules
+Then, update the `.env.local` file with the following variables:
 
-## Setup
-```bash
-cd apps/<app>
-git remote add remote/frontend git@gitlab.com:edgenai/frontend/frontend.git
+```
+STRIPE_WEBHOOK_SECRET=
+STRIPE_SECRET_KEY=
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
 ```
 
-## Proliferate
-```bash
-# Update subtree
-git subtree split --prefix=apps/web --branch=subtree/apps-web
-git push origin subtree/apps-web
+### Supabase
 
-cd apps/<app>
-
-# Fetch and update our mirror branch
-git fetch remote/frontend subtree/apps-web
-git checkout mirror/apps-web
-git merge remote/frontend/subtree/apps-web
-git push origin mirror/apps-web
-
-# Merge mirror into main
-git checkout main
-git merge mirror/apps-web -m "Merge updates from mirror/apps-web"
-git push origin
-```
-
-# Create a new app
-- Change `name` in `package.json` to the new app name
-- Change `project_id` in `supabase/config.toml` to the new app name
-- In `package.json`, remove `pnpm run supabase:typegen:packages && ` from `"supabase:typegen"`. Only web can generate types for packages.
+Please follow the instructions in the [Supabase README](../supabase/README.md) to setup your Supabase project.

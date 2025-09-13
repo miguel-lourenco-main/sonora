@@ -13,9 +13,6 @@ coverage
 out/
 next-env.d.ts
 
-# pnpm
-.pnpm-store
-
 # production
 build
 
@@ -48,3 +45,7 @@ yarn-error.log*
 
 # contentlayer
 .contentlayer/
+
+# wrangler
+.wrangler/
+wrangler.toml
