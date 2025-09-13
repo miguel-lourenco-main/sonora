@@ -90,9 +90,6 @@ export default function VoicesTable({
   const columns = useVoicesColumns(handleDeleteVoice, handleRenameVoice, t);
 
   console.log(columns);
-
-  if (process.env.NODE_ENV === 'development' && !ready) return null;
-
   // Expose refetch function to parent component
   useEffect(() => {
     if (refetch && onRefetchReady) {
@@ -113,6 +110,8 @@ export default function VoicesTable({
 
   // Empty state shown only when not loading and still empty
   const showEmptyState = !isAutoLoading && ((voices?.length ?? 0) === 0);
+
+  if (process.env.NODE_ENV === 'development' && !ready) return null;
 
   return (
     <div className="flex flex-col gap-4 w-full mt-8 lg:mt-20">

@@ -2,12 +2,15 @@ import { MetadataRoute } from 'next';
 
 import appConfig from '~/config/app.config';
 
+export const dynamic = 'force-static';
+export const revalidate = false;
+
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: '*',
       allow: '/',
     },
-    sitemap: `${appConfig.url}/server-sitemap.xml`,
+    sitemap: `${appConfig.url}/sitemap.xml`,
   };
 }
