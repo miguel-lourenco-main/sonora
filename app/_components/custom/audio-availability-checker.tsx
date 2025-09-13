@@ -60,7 +60,7 @@ export function AudioAvailabilityChecker({ story, initialVoiceId }: AudioAvailab
   return (
     <StoryPlayer 
       story={story} 
-      initialVoiceId={initialVoiceId}
+      initialVoiceId={audioResult?.hasPreRecorded ? 'default' : initialVoiceId}
     />
   )
 }

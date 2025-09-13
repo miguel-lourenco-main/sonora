@@ -328,6 +328,9 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
   const isCapturing = selectedChoice !== null && !isTransitioning;
   const isMakingChoice = selectedChoice !== null && isTransitioning;
 
+  // Disable playback controls while generating audio for a different voice than the one currently on the node
+  const shouldDisablePlayback = !isAudioReady || (isGeneratingSpeech && currentNode.voiceId !== selectedVoice);
+
   console.log('isCapturing', isCapturing)
   console.log('isMakingChoice', isMakingChoice)
   console.log('isProcessing', isProcessing)
@@ -362,7 +365,7 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
             </SelectTrigger>
             <SelectContent>
               <SelectItem key={'default'} value={'default'}>
-                Default voice
+                Pre-Recorded
               </SelectItem>
               {(voices ?? []).map((voice) => (
                 <SelectItem key={voice.voice_id} value={voice.voice_id}>
@@ -519,11 +522,11 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
                 <Button
                   variant="ghost"
                   size="icon"
-                  disabled={!isAudioReady || showGeneratingSpeech || undefined}
+                  disabled={shouldDisablePlayback || undefined}
                   className={cn(
                     "relative h-16 w-16 rounded-full transition-all duration-1000",
                     isPlaying ? "bg-primary text-primary-foreground" : "",
-                    (!isAudioReady || showGeneratingSpeech) && "opacity-50"
+                    (shouldDisablePlayback) && "opacity-50"
                   )}
                   onClick={replay}
                 >
@@ -545,11 +548,11 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
             <Button
               variant="ghost"
               size="icon"
-                  disabled={!isAudioReady || showGeneratingSpeech || undefined}
+                  disabled={shouldDisablePlayback || undefined}
               className={cn(
                     "relative h-16 w-16 rounded-full transition-all duration-1000",
                 isPlaying ? "bg-primary text-primary-foreground" : "",
-                    (!isAudioReady || showGeneratingSpeech) && "opacity-50"
+                    (shouldDisablePlayback) && "opacity-50"
               )}
               onClick={playPause}
             >
