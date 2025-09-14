@@ -364,24 +364,8 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
   console.log('isProcessing', isProcessing)
 
   return (
-    <div className="flex h-screen flex-col bg-background p-6">
-      <header className="flex items-center justify-between p-4">
-        <Link href="/" className="flex items-center gap-2">
-          <Button variant="ghost" size="icon">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="h-6 w-6"
-            >
-              <path d="M15 18l-6-6 6-6" />
-            </svg>
-          </Button>
-        </Link>
+    <div className="flex h-screen flex-col items-center bg-background p-6">
+      <header className="flex w-full items-center justify-end p-4">
         <div className="w-full max-w-xs">
           <Select
             value={selectedVoice}
@@ -404,7 +388,7 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
           </Select>
         </div>
       </header>
-      <div className="flex flex-1 flex-col items-center justify-start gap-8 p-4 md:flex-row md:items-start md:justify-center">
+      <div className="flex flex-col items-center justify-start gap-8 p-4 mb-24 md:flex-row md:items-start md:justify-center">
         <div className="relative aspect-[3/4] w-48 flex-shrink-0 overflow-hidden rounded-lg shadow-lg md:w-64">
           <Image
             src={story.coverUrl}
@@ -436,7 +420,7 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
         </div>
       </div>
       <div className={cn(
-        "flex flex-col gap-4 p-4 transition-all duration-300 ease-in-out",
+        "flex flex-col gap-4 p-4 transition-all w-full max-w-[80%] duration-300 ease-in-out",
         {
           "min-h-[12rem] max-h-[20rem]": (currentNode.choices?.length ?? 0) > 0 && 
             shouldShowChoices(currentNode) && 
