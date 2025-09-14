@@ -7,7 +7,7 @@ export const bookData: Story[] = [
     title: "The Enchanted Forest: An Interactive Tale",
     label: "enchanted-forest",
     author: "A. I. Storyteller",
-    coverUrl: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-9wm1QiJmXT9Rqir1ZnZTk7GBifUnsv.png",
+    coverUrl: "/images/enchanted_forest.jpg",
     chapters: [
       {
         number: 1,
@@ -69,7 +69,7 @@ export const bookData: Story[] = [
     title: "The Mystic Mountain: A Journey of Choices",
     label: "mystic-mountain",
     author: "Digital Wordsmith",
-    coverUrl: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-9wm1QiJmXT9Rqir1ZnZTk7GBifUnsv.png",
+    coverUrl: "/images/mystic_mountain.jpg",
     chapters: [
       {
         number: 1,
@@ -218,7 +218,7 @@ export const bookData: Story[] = [
     title: "The Midnight Library",
     label: "midnight-library",
     author: "Matt Haig",
-    coverUrl: "/images/placeholder.svg?height=400&width=300",
+    coverUrl: "/images/midnight_library.jpg",
     chapters: [
       {
         number: 1,
@@ -295,73 +295,90 @@ export const bookData: Story[] = [
   },
   {
     id: "4",
-    title: "Atomic Habits",
-    label: "atomic-habits",
-    author: "James Clear",
-    coverUrl: "/images/placeholder.svg?height=400&width=300",
+    title: "The Clockwork Kingdom: A Tale of Transformation",
+    label: "clockwork-kingdom",
+    author: "Luna Mechanica",
+    coverUrl: "/images/clockwork_kingdom.png",
     chapters: [
       {
         number: 1,
-        title: "The Fundamentals",
+        title: "The Mechanical Heart",
         content: {
           initialNodeId: "start",
           nodes: {
             "start": {
               id: "start",
-              text: "Small changes can make a remarkable difference. If you can get 1 percent better each day for one year, you'll end up thirty-seven times better by the time you're done. Conversely, if you get 1 percent worse each day for one year, you'll decline nearly down to zero. What starts as a small win or a minor setback accumulates into something much more.",
-              nextNodeId: "habit-loop",
+              text: "In the heart of the Clockwork Kingdom, where brass towers reach toward copper skies and golden gears turn the very fabric of time, a young apprentice named Zara discovers that her world is not what it seems. The kingdom's mechanical heart, which has kept the realm in perfect harmony for centuries, is beginning to falter. As the gears slow and the clockwork creatures grow restless, Zara must embark on a journey to restore the kingdom's balance before it collapses into chaos.",
+              nextNodeId: "mechanical-heart",
               voiceId: 'default',
             },
-            "habit-loop": {
-              id: "habit-loop",
-              text: "Every habit follows the same pattern: Cue, Craving, Response, and Reward. The cue triggers your brain to initiate a behavior. The craving is the motivational force behind every habit. The response is the actual habit you perform. The reward is the end goal of every habit.",
+            "mechanical-heart": {
+              id: "mechanical-heart",
+              text: "Zara stands before the Great Mechanical Heart, a massive brass and copper contraption that pulses with golden light. The heart's rhythm has become irregular, and strange shadows dance within its gears. The Master Clockmaker, an ancient automaton with eyes like polished gems, explains that the heart requires three sacred components to function properly: the Gear of Time, the Spring of Harmony, and the Key of Transformation. Each component is hidden in a different realm of the kingdom, and Zara must choose which path to take first.",
               choices: [
-                { text: "Learn about making habits obvious", nextNodeId: "obvious-habits" },
-                { text: "Learn about making habits attractive", nextNodeId: "attractive-habits" },
-                { text: "Learn about making habits easy", nextNodeId: "easy-habits" },
-                { text: "Learn about making habits satisfying", nextNodeId: "satisfying-habits" }
+                { text: "Seek the Gear of Time in the Temporal Gardens", nextNodeId: "temporal-gardens" },
+                { text: "Find the Spring of Harmony in the Melodic Caverns", nextNodeId: "melodic-caverns" },
+                { text: "Search for the Key of Transformation in the Alchemical Tower", nextNodeId: "alchemical-tower" }
               ],
               voiceId: 'default',
             },
-            "obvious-habits": {
-              id: "obvious-habits",
-              text: "The first law of behavior change is to make it obvious. You can't change a habit if you're not aware of it. Start by creating a habit scorecard - simply list your daily habits and mark them as positive, negative, or neutral. Then use implementation intentions: 'I will [BEHAVIOR] at [TIME] in [LOCATION].'",
-              nextNodeId: "habit-stacking",
+            "temporal-gardens": {
+              id: "temporal-gardens",
+              text: "Zara enters the Temporal Gardens, where time flows differently in each section. Clockwork flowers bloom and wither in rapid cycles, while mechanical butterflies flutter between past and future. The Gear of Time is guarded by the Chronos Guardian, a massive clockwork dragon that can manipulate time itself. To reach the gear, Zara must solve temporal puzzles and navigate through shifting timelines.",
+              nextNodeId: "chronos-challenge",
               voiceId: 'default',
             },
-            "attractive-habits": {
-              id: "attractive-habits",
-              text: "The second law is to make it attractive. Use temptation bundling - pair an action you want to do with an action you need to do. Join a culture where your desired behavior is the normal behavior. Create a motivation ritual by doing something you enjoy immediately before a difficult habit.",
-              nextNodeId: "habit-stacking",
+            "melodic-caverns": {
+              id: "melodic-caverns",
+              text: "Deep in the Melodic Caverns, Zara discovers a world where sound has physical form. Musical notes float through the air like glowing butterflies, and the walls themselves sing ancient melodies. The Spring of Harmony is protected by the Symphony Keeper, an ethereal being made of pure sound. To obtain the spring, Zara must compose a harmony that resonates with the cavern's natural frequencies.",
+              nextNodeId: "symphony-challenge",
               voiceId: 'default',
             },
-            "easy-habits": {
-              id: "easy-habits",
-              text: "The third law is to make it easy. Reduce friction for good habits and increase friction for bad habits. Use the two-minute rule: when you start a new habit, it should take less than two minutes to do. Focus on taking action, not being in motion.",
-              nextNodeId: "habit-stacking",
+            "alchemical-tower": {
+              id: "alchemical-tower",
+              text: "The Alchemical Tower rises impossibly high, its walls covered in glowing runes that shift and change. Inside, Zara finds a laboratory where the very laws of physics seem malleable. The Key of Transformation is held by the Alchemist Prime, a mysterious figure who can transmute matter itself. To earn the key, Zara must prove her understanding of the fundamental principles of change and transformation.",
+              nextNodeId: "alchemy-challenge",
               voiceId: 'default',
             },
-            "satisfying-habits": {
-              id: "satisfying-habits",
-              text: "The fourth law is to make it satisfying. Use immediate rewards to reinforce good habits. Track your habits with a simple method like marking an X on a calendar. Never miss twice - if you miss one day, try to get back on track as quickly as possible.",
-              nextNodeId: "habit-stacking",
+            "chronos-challenge": {
+              id: "chronos-challenge",
+              text: "The Chronos Guardian presents Zara with a temporal puzzle: she must navigate through three different time periods simultaneously, collecting fragments of the Gear of Time from past, present, and future. Each fragment requires her to understand how small changes in one era can create massive transformations in another. As she solves the puzzle, she learns that transformation is not about sudden change, but about the accumulation of small, consistent actions over time.",
+              nextNodeId: "gear-obtained",
               voiceId: 'default',
             },
-            "habit-stacking": {
-              id: "habit-stacking",
-              text: "One of the best ways to build a new habit is to identify a current habit you already do each day and then stack your new behavior on top. The formula is: 'After I [CURRENT HABIT], I will [NEW HABIT].' This creates a clear trigger for your new habit.",
-              nextNodeId: "environment-design",
+            "symphony-challenge": {
+              id: "symphony-challenge",
+              text: "The Symphony Keeper challenges Zara to create a harmony that represents the balance between order and chaos, tradition and innovation. She must blend the ancient melodies of the cavern with new, creative compositions. As she experiments with different combinations, she discovers that true harmony comes from understanding how different elements can work together to create something greater than the sum of their parts.",
+              nextNodeId: "spring-obtained",
               voiceId: 'default',
             },
-            "environment-design": {
-              id: "environment-design",
-              text: "Your environment is the invisible hand that shapes human behavior. Small changes in context can lead to large changes in behavior over time. Make the cues of good habits obvious and the cues of bad habits invisible. Design your environment to make good habits easier and bad habits harder.",
-              nextNodeId: "conclusion",
+            "alchemy-challenge": {
+              id: "alchemy-challenge",
+              text: "The Alchemist Prime tests Zara's understanding of transformation by asking her to transmute a simple brass gear into something more complex. She must demonstrate that she understands the fundamental principles: that change requires energy, that transformation is a process, and that the end result depends on the quality of the process. Through this challenge, she learns that personal transformation follows the same principles as alchemical transmutation.",
+              nextNodeId: "key-obtained",
               voiceId: 'default',
             },
-            "conclusion": {
-              id: "conclusion",
-              text: "Success is the product of daily habits, not once-in-a-lifetime transformations. You don't rise to the level of your goals; you fall to the level of your systems. Focus on your systems, not your goals. The goal is not to read a book, the goal is to become a reader. The goal is not to run a marathon, the goal is to become a runner.",
+            "gear-obtained": {
+              id: "gear-obtained",
+              text: "With the Gear of Time in her possession, Zara feels the weight of temporal responsibility. The gear pulses with golden energy, and she can sense how her actions ripple through time. She realizes that every choice she makes creates echoes in the past and future, and that true transformation requires understanding the interconnected nature of all things.",
+              nextNodeId: "final-assembly",
+              voiceId: 'default',
+            },
+            "spring-obtained": {
+              id: "spring-obtained",
+              text: "The Spring of Harmony flows with liquid music, its waters singing with the voices of all the melodies that have ever been created. As Zara collects it, she feels a deep sense of balance and peace. She understands that harmony is not about eliminating conflict, but about finding the right balance between different forces and perspectives.",
+              nextNodeId: "final-assembly",
+              voiceId: 'default',
+            },
+            "key-obtained": {
+              id: "key-obtained",
+              text: "The Key of Transformation is a living thing, constantly shifting between different forms and materials. As Zara holds it, she feels her own potential for change and growth. The key teaches her that transformation is not a destination, but a continuous process of becoming the best version of oneself.",
+              nextNodeId: "final-assembly",
+              voiceId: 'default',
+            },
+            "final-assembly": {
+              id: "final-assembly",
+              text: "Returning to the Great Mechanical Heart, Zara carefully installs the three sacred components. As each piece falls into place, the heart begins to beat with renewed vigor. The kingdom's clockwork creatures dance with joy, and the brass towers gleam with golden light. Zara realizes that her journey was not just about saving the kingdom, but about her own transformation from apprentice to master. She has learned that true change comes from understanding the interconnected nature of all things and the power of small, consistent actions.",
               voiceId: 'default',
             }
           }
@@ -376,7 +393,7 @@ export const bookData: Story[] = [
     title: "Project Hail Mary",
     label: "project-hail-mary",
     author: "Andy Weir",
-    coverUrl: "/images/placeholder.svg?height=400&width=300",
+    coverUrl: "/images/project_hail_mary.jpg",
     chapters: [
       {
         number: 1,
@@ -483,7 +500,7 @@ export const bookData: Story[] = [
     title: "Greenlights",
     label: "greenlights",
     author: "Matthew McConaughey",
-    coverUrl: "/images/placeholder.svg?height=400&width=300",
+    coverUrl: "/images/greenlights.jpg",
     chapters: [
       {
         number: 1,
@@ -579,102 +596,119 @@ export const bookData: Story[] = [
   },
   {
     id: "7",
-    title: "Dune",
-    label: "dune",
-    author: "Frank Herbert",
-    coverUrl: "/images/placeholder.svg?height=400&width=300",
+    title: "The Cosmic Navigator: A Space Odyssey",
+    label: "cosmic-navigator",
+    author: "Stellar Weaver",
+    coverUrl: "/images/cosmic_navigator.jpg",
     chapters: [
       {
         number: 1,
-        title: "The Desert Planet",
+        title: "The Stellar Gateway",
         content: {
           initialNodeId: "start",
           nodes: {
             "start": {
               id: "start",
-              text: "A beginning is the time for taking the most delicate care that the balances are correct. This every sister of the Bene Gesserit knows. To begin your study of the life of Muad'Dib, then, take care that you first place him in his time: born in the 57th year of the Padishah Emperor, Shaddam IV. And take the most special care that you locate Muad'Dib in his place: the planet Arrakis. Do not be deceived by the fact that he was born on Caladan and lived his first fifteen years there. Arrakis, the planet known as Dune, is forever his place.",
-              nextNodeId: "arrakis-intro",
+              text: "In the vast expanse of the Andromeda Galaxy, where stars are born and die in cosmic cycles, a young navigator named Nova discovers an ancient artifact that could change the fate of the universe. The Cosmic Compass, a device that can chart paths through the very fabric of space-time, has been lost for millennia. But when Nova's homeworld is threatened by the Void Shadows - entities that consume entire star systems - she must embark on a journey across the galaxy to find the compass and save her people.",
+              nextNodeId: "galaxy-intro",
               voiceId: 'default',
             },
-            "arrakis-intro": {
-              id: "arrakis-intro",
-              text: "Arrakis is a desert planet, harsh and unforgiving, where water is more precious than gold. It is the only source of the spice melange, the most valuable substance in the universe. The spice extends life, expands consciousness, and makes interstellar travel possible. Control of Arrakis means control of the universe.",
+            "galaxy-intro": {
+              id: "galaxy-intro",
+              text: "The galaxy is a vast network of star systems, each with its own mysteries and dangers. The Cosmic Compass is said to be hidden in one of three legendary locations: the Crystal Nebula, where space itself crystallizes into beautiful formations; the Quantum Void, where the laws of physics bend and twist; or the Ancient Observatory, a space station built by a long-lost civilization. Nova must choose which path to take first.",
               choices: [
-                { text: "Learn about the spice melange", nextNodeId: "spice-knowledge" },
-                { text: "Explore the Fremen culture", nextNodeId: "fremen-culture" },
-                { text: "Understand the political situation", nextNodeId: "political-situation" }
+                { text: "Journey to the Crystal Nebula", nextNodeId: "crystal-nebula" },
+                { text: "Navigate the Quantum Void", nextNodeId: "quantum-void" },
+                { text: "Explore the Ancient Observatory", nextNodeId: "ancient-observatory" }
               ],
               voiceId: 'default',
             },
-            "spice-knowledge": {
-              id: "spice-knowledge",
-              text: "The spice melange is produced by the giant sandworms that live in the deep desert. It is harvested by the native Fremen, who have learned to survive in the harsh environment. The spice is essential for the Guild Navigators, who use it to fold space and enable faster-than-light travel. Without spice, the galactic civilization would collapse.",
-              nextNodeId: "paul-arrival",
+            "crystal-nebula": {
+              id: "crystal-nebula",
+              text: "Nova enters the Crystal Nebula, where space itself has crystallized into beautiful, geometric formations. The crystals sing with harmonic frequencies that can guide ships through the most dangerous regions of space. Here, she encounters the Crystal Guardians, beings of pure light who test her understanding of cosmic harmony. To proceed, she must solve puzzles that require her to understand the relationship between light, sound, and the fabric of space-time.",
+              nextNodeId: "crystal-test",
               voiceId: 'default',
             },
-            "fremen-culture": {
-              id: "fremen-culture",
-              text: "The Fremen are the native people of Arrakis, adapted to life in the desert. They are fierce warriors who have learned to survive in the harshest conditions. They believe in a prophecy of a messiah who will lead them to freedom. They have developed advanced techniques for water conservation and desert survival.",
-              nextNodeId: "paul-arrival",
+            "quantum-void": {
+              id: "quantum-void",
+              text: "The Quantum Void is a region where the laws of physics break down and reality becomes fluid. Here, Nova must navigate through shifting dimensions where cause and effect are not always connected. She encounters quantum entities that exist in multiple states simultaneously and must learn to think in probabilities rather than certainties. The Void tests her ability to adapt to the impossible and find patterns in chaos.",
+              nextNodeId: "quantum-test",
               voiceId: 'default',
             },
-            "political-situation": {
-              id: "political-situation",
-              text: "The Atreides family has been given control of Arrakis by the Emperor, replacing the Harkonnens. This is a trap - the Emperor fears the growing power of House Atreides and has conspired with the Harkonnens to destroy them. The Atreides must navigate this political minefield while learning to survive on the dangerous planet.",
-              nextNodeId: "paul-arrival",
+            "ancient-observatory": {
+              id: "ancient-observatory",
+              text: "The Ancient Observatory is a massive space station built by a civilization that mastered the art of stellar navigation. Its halls are filled with star charts, navigation instruments, and holographic displays showing the movement of galaxies. Here, Nova discovers the true purpose of the Cosmic Compass and learns about the ancient navigators who once used it to chart courses across the universe.",
+              nextNodeId: "observatory-test",
               voiceId: 'default',
             },
-            "paul-arrival": {
-              id: "paul-arrival",
-              text: "Paul Atreides, the young heir to House Atreides, arrives on Arrakis with his family. He has been trained in the ways of the Bene Gesserit and has inherited his father's political acumen. But he is about to discover that his destiny is far greater than he imagined.",
-              choices: [
-                { text: "Follow Paul's training with the Fremen", nextNodeId: "fremen-training" },
-                { text: "Explore Paul's prescient visions", nextNodeId: "prescient-visions" },
-                { text: "Learn about the betrayal and attack", nextNodeId: "betrayal-attack" }
-              ],
+            "crystal-test": {
+              id: "crystal-test",
+              text: "The Crystal Guardians present Nova with a test of cosmic understanding. She must align the harmonic frequencies of the crystals to create a pathway through the nebula. As she works, she learns that the universe operates on principles of resonance and harmony, and that true navigation requires understanding these cosmic rhythms.",
+              nextNodeId: "compass-found",
               voiceId: 'default',
             },
-            "fremen-training": {
-              id: "fremen-training",
-              text: "Paul learns the ways of the Fremen, including their fighting techniques and desert survival skills. He proves himself to be a natural leader and warrior. The Fremen begin to see him as the fulfillment of their prophecy, the Lisan al-Gaib, the voice from the outer world.",
-              nextNodeId: "paul-transformation",
+            "quantum-test": {
+              id: "quantum-test",
+              text: "In the Quantum Void, Nova must solve puzzles that exist in multiple dimensions simultaneously. She learns to think in quantum terms, understanding that reality is not fixed but fluid. The quantum entities teach her that the Cosmic Compass works by manipulating the very fabric of space-time itself.",
+              nextNodeId: "compass-found",
               voiceId: 'default',
             },
-            "prescient-visions": {
-              id: "prescient-visions",
-              text: "Paul begins to experience prescient visions, seeing possible futures. He realizes that he has the power to see through time and space, a gift that comes from exposure to the spice. These visions show him the terrible cost of the path he must take, but also the necessity of his actions.",
-              nextNodeId: "paul-transformation",
+            "observatory-test": {
+              id: "observatory-test",
+              text: "At the Ancient Observatory, Nova discovers the true history of the Cosmic Compass. She learns that it was created by the first navigators to help them chart courses through the dangerous regions of space. The observatory's AI reveals that the compass is not just a tool, but a key to understanding the universe itself.",
+              nextNodeId: "compass-found",
               voiceId: 'default',
             },
-            "betrayal-attack": {
-              id: "betrayal-attack",
-              text: "The Harkonnens, with the help of the Emperor's Sardaukar troops, attack the Atreides stronghold. Paul's father is killed, and he and his mother must flee into the desert. This betrayal sets Paul on the path to becoming Muad'Dib, the leader of the Fremen rebellion.",
-              nextNodeId: "paul-transformation",
-              voiceId: 'default',
-            },
-            "paul-transformation": {
-              id: "paul-transformation",
-              text: "Paul transforms into Muad'Dib, the leader of the Fremen. He unites the desert tribes and leads them in a holy war against the Harkonnens and the Emperor. He becomes a messianic figure, worshipped by his followers, but he also sees the terrible consequences of his actions.",
+            "compass-found": {
+              id: "compass-found",
+              text: "Nova finally locates the Cosmic Compass, a device that glows with the light of a thousand stars. As she holds it, she feels the power of the universe flowing through her. The compass shows her the true nature of space-time and reveals the path she must take to save her homeworld from the Void Shadows.",
               nextNodeId: "final-battle",
+              voiceId: 'default',
+            },
+            "whispering-caves": {
+              id: "whispering-caves",
+              text: "Kira enters the Whispering Caves, where the walls themselves hold the secrets of the ancient treasure hunters. The caves are filled with echoes of past adventurers, and Kira must listen carefully to their whispers to find the path to the Golden Vault. The caves test her ability to distinguish truth from illusion and to trust her instincts.",
+              nextNodeId: "cave-secrets",
+              voiceId: 'default',
+            },
+            "bridge-trials": {
+              id: "bridge-trials",
+              text: "The Bridge of Trials spans a chasm that seems to go on forever. Each step tests Kira's resolve, courage, and wisdom. The bridge is guarded by ancient spirits who ask riddles and present moral dilemmas. Kira must prove that she is worthy of the treasure by demonstrating the qualities of a true hero.",
+              nextNodeId: "trial-complete",
+              voiceId: 'default',
+            },
+            "garden-illusions": {
+              id: "garden-illusions",
+              text: "The Garden of Illusions is a place where nothing is as it seems. Beautiful flowers turn into dangerous creatures, peaceful streams become raging rivers, and the path constantly shifts and changes. Kira must learn to see through the illusions and find the true path to the Golden Vault.",
+              nextNodeId: "illusions-overcome",
               voiceId: 'default',
             },
             "final-battle": {
               id: "final-battle",
-              text: "The final battle for Arrakis begins. Paul leads the Fremen in a massive assault on the Harkonnen strongholds. The battle is fierce and bloody, but Paul's prescient abilities give him an advantage. He must choose between his personal desires and the greater good of the universe.",
-              choices: [
-                { text: "Paul chooses to embrace his destiny", nextNodeId: "destiny-embraced" },
-                { text: "Paul tries to find an alternative path", nextNodeId: "alternative-path" }
-              ],
+              text: "Nova returns to her homeworld with the Cosmic Compass, just as the Void Shadows begin their final assault. Using the compass, she charts a course through the dangerous regions of space and leads her people to safety. The compass reveals that the Void Shadows are not evil, but lost entities seeking to return to their home dimension. Nova uses the compass to help them find their way home, saving both her world and the Void Shadows.",
               voiceId: 'default',
             },
-            "destiny-embraced": {
-              id: "destiny-embraced",
-              text: "Paul embraces his destiny as Muad'Dib and the Kwisatz Haderach. He leads the Fremen to victory and becomes the new Emperor. But he realizes that his victory has come at a terrible cost, and that the path he has chosen will lead to a galactic jihad that will claim billions of lives.",
+            "cave-secrets": {
+              id: "cave-secrets",
+              text: "The whispers in the caves reveal the true nature of the Golden Vault. It is not just a treasure chamber, but a repository of knowledge and wisdom from the ancient civilization. The treasure is not gold and jewels, but the secrets of how to live a meaningful life and build a just society.",
+              nextNodeId: "vault-discovery",
               voiceId: 'default',
             },
-            "alternative-path": {
-              id: "alternative-path",
-              text: "Paul tries to find an alternative path, but his prescient visions show him that there is no other way. The universe is on a collision course with destiny, and he must play his part. He accepts his role as Muad'Dib, knowing that it will bring both salvation and destruction.",
+            "trial-complete": {
+              id: "trial-complete",
+              text: "Kira successfully crosses the Bridge of Trials, proving her worthiness to the ancient spirits. They reveal that the true treasure is not material wealth, but the wisdom and courage she has gained through her journey. The spirits grant her access to the Golden Vault, where she will discover the greatest treasure of all.",
+              nextNodeId: "vault-discovery",
+              voiceId: 'default',
+            },
+            "illusions-overcome": {
+              id: "illusions-overcome",
+              text: "Kira learns to see through the illusions and finds the true path to the Golden Vault. She discovers that the illusions were not meant to deceive her, but to teach her to trust her instincts and see beyond the surface of things. This wisdom will be essential for what she finds in the vault.",
+              nextNodeId: "vault-discovery",
+              voiceId: 'default',
+            },
+            "vault-discovery": {
+              id: "vault-discovery",
+              text: "Kira finally reaches the Golden Vault, where she discovers that the greatest treasure is not gold or jewels, but the knowledge of how to live a meaningful life. The vault contains the wisdom of the ancient civilization, including their understanding of justice, compassion, and the importance of protecting the innocent. Kira realizes that her true quest was not to find treasure, but to become worthy of the wisdom it contains.",
               voiceId: 'default',
             }
           }
@@ -686,88 +720,54 @@ export const bookData: Story[] = [
   },
   {
     id: "8",
-    title: "The Psychology of Money",
-    label: "psychology-of-money",
-    author: "Morgan Housel",
-    coverUrl: "/images/placeholder.svg?height=400&width=300",
+    title: "The Golden Vault: A Treasure Hunter's Quest",
+    label: "golden-vault",
+    author: "Adventure Seeker",
+    coverUrl: "/images/golden_vault.jpg",
     chapters: [
       {
         number: 1,
-        title: "The Psychology of Wealth",
+        title: "The Lost Treasure Map",
         content: {
           initialNodeId: "start",
           nodes: {
             "start": {
               id: "start",
-              text: "Doing well with money has a little to do with how smart you are and a lot to do with how you behave. And behavior is hard to teach, even to really smart people. A genius who loses control of their emotions can be a financial disaster. The opposite is also true. Ordinary people with no financial education can be wealthy if they have a handful of behavioral skills that have nothing to do with formal measures of intelligence.",
-              nextNodeId: "money-psychology",
+              text: "In the ancient city of Aurelia, where golden spires reach toward the clouds and the streets are paved with precious stones, a young treasure hunter named Kira discovers a fragment of an ancient map. The map leads to the legendary Golden Vault, a treasure chamber said to contain the greatest riches ever assembled. But the vault is protected by ancient guardians, deadly traps, and a curse that has claimed the lives of countless adventurers. Kira must decide whether to pursue this dangerous quest or leave the treasure to legend.",
+              nextNodeId: "treasure-hunt",
               voiceId: 'default',
             },
-            "money-psychology": {
-              id: "money-psychology",
-              text: "Money is everywhere, it affects all of us, and I'm convinced that it's one of the biggest things on our minds. But for something that plays such a big role in our lives, we don't talk about it much. We don't teach it in schools. We don't discuss it at dinner parties. We don't even talk about it with our spouses, in many cases.",
+            "treasure-hunt": {
+              id: "treasure-hunt",
+              text: "Kira studies the ancient map fragment, which shows three possible paths to the Golden Vault: through the Whispering Caves, where the walls themselves hold secrets; across the Bridge of Trials, where each step tests the seeker's resolve; or through the Garden of Illusions, where nothing is as it seems. Each path offers different challenges and rewards, and Kira must choose wisely.",
               choices: [
-                { text: "Learn about the role of luck in wealth", nextNodeId: "luck-wealth" },
-                { text: "Explore the concept of enough", nextNodeId: "concept-enough" },
-                { text: "Understand the power of compounding", nextNodeId: "power-compounding" }
+                { text: "Enter the Whispering Caves", nextNodeId: "whispering-caves" },
+                { text: "Cross the Bridge of Trials", nextNodeId: "bridge-trials" },
+                { text: "Navigate the Garden of Illusions", nextNodeId: "garden-illusions" }
               ],
               voiceId: 'default',
             },
-            "luck-wealth": {
-              id: "luck-wealth",
-              text: "Luck and risk are both the reality that every outcome in life is guided by forces other than individual effort. They are so similar that you can't believe in one without equally respecting the other. They both happen because the world is too complex to allow 100% of your actions to dictate 100% of your outcomes.",
-              nextNodeId: "money-lessons",
+            "cave-secrets": {
+              id: "cave-secrets",
+              text: "The whispers in the caves reveal the true nature of the Golden Vault. It is not just a treasure chamber, but a repository of knowledge and wisdom from the ancient civilization. The treasure is not gold and jewels, but the secrets of how to live a meaningful life and build a just society.",
+              nextNodeId: "vault-discovery",
               voiceId: 'default',
             },
-            "concept-enough": {
-              id: "concept-enough",
-              text: "The hardest financial skill is getting the goalpost to stop moving. But it's one of the most important. Social comparison is the problem here. The ceiling of social comparison is so high that virtually no one will ever hit it. Which means it's a battle that can never be won, or that the only way to win is to not fight to begin with.",
-              nextNodeId: "money-lessons",
+            "trial-complete": {
+              id: "trial-complete",
+              text: "Kira successfully crosses the Bridge of Trials, proving her worthiness to the ancient spirits. They reveal that the true treasure is not material wealth, but the wisdom and courage she has gained through her journey. The spirits grant her access to the Golden Vault, where she will discover the greatest treasure of all.",
+              nextNodeId: "vault-discovery",
               voiceId: 'default',
             },
-            "power-compounding": {
-              id: "power-compounding",
-              text: "Compounding is the eighth wonder of the world. He who understands it, earns it; he who doesn't, pays it. Compounding doesn't rely on earning big returns. Merely good returns sustained uninterrupted for the longest period of time - especially in times of chaos and havoc - will always win.",
-              nextNodeId: "money-lessons",
+            "illusions-overcome": {
+              id: "illusions-overcome",
+              text: "Kira learns to see through the illusions and finds the true path to the Golden Vault. She discovers that the illusions were not meant to deceive her, but to teach her to trust her instincts and see beyond the surface of things. This wisdom will be essential for what she finds in the vault.",
+              nextNodeId: "vault-discovery",
               voiceId: 'default',
             },
-            "money-lessons": {
-              id: "money-lessons",
-              text: "The most important part of every plan is planning on your plan not going according to plan. The future is uncertain, and the best we can do is prepare for the unexpected. This means having emergency funds, diversifying investments, and being flexible in our approach to money and life.",
-              nextNodeId: "wealth-building",
-              voiceId: 'default',
-            },
-            "wealth-building": {
-              id: "wealth-building",
-              text: "Wealth is what you don't see. It's the cars not purchased. The diamonds not bought. The watches not worn, the clothes forgone and the first-class upgrade declined. Wealth is financial assets that haven't yet been converted into the stuff you see.",
-              choices: [
-                { text: "Learn about the importance of saving", nextNodeId: "importance-saving" },
-                { text: "Explore the psychology of spending", nextNodeId: "psychology-spending" },
-                { text: "Understand the value of patience", nextNodeId: "value-patience" }
-              ],
-              voiceId: 'default',
-            },
-            "importance-saving": {
-              id: "importance-saving",
-              text: "Saving is a hedge against life's inevitable ability to surprise the hell out of you at the worst possible moment. The ability to do what you want, when you want, with who you want, for as long as you want, is priceless. It is the highest dividend money pays.",
-              nextNodeId: "final-wisdom",
-              voiceId: 'default',
-            },
-            "psychology-spending": {
-              id: "psychology-spending",
-              text: "Spending money to show people how much money you have is the fastest way to have less money. The point of money is to give you options and flexibility. The ability to do what you want, when you want, with who you want, for as long as you want, is priceless.",
-              nextNodeId: "final-wisdom",
-              voiceId: 'default',
-            },
-            "value-patience": {
-              id: "value-patience",
-              text: "Patience is the rarest resource in a world where everyone wants to get rich quick. The ability to wait is the ability to let compound interest work its magic. Time is the most powerful force in investing, and patience is the key to unlocking its power.",
-              nextNodeId: "final-wisdom",
-              voiceId: 'default',
-            },
-            "final-wisdom": {
-              id: "final-wisdom",
-              text: "The most important thing is to stay in the game. The most important thing is to not get wiped out. The most important thing is to survive. Because if you survive, you get to play another day. And if you get to play another day, you get to compound. And if you get to compound, you get to build wealth.",
+            "vault-discovery": {
+              id: "vault-discovery",
+              text: "Kira finally reaches the Golden Vault, where she discovers that the greatest treasure is not gold or jewels, but the knowledge of how to live a meaningful life. The vault contains the wisdom of the ancient civilization, including their understanding of justice, compassion, and the importance of protecting the innocent. Kira realizes that her true quest was not to find treasure, but to become worthy of the wisdom it contains.",
               voiceId: 'default',
             }
           }
@@ -782,7 +782,7 @@ export const bookData: Story[] = [
     title: "The Thursday Murder Club",
     label: "thursday-murder-club",
     author: "Richard Osman",
-    coverUrl: "/images/placeholder.svg?height=400&width=300",
+    coverUrl: "/images/thursday_murder.jpg",
     chapters: [
       {
         number: 1,
@@ -886,83 +886,78 @@ export const bookData: Story[] = [
   },
   {
     id: "10",
-    title: "Think Again",
-    label: "think-again",
-    author: "Adam Grant",
-    coverUrl: "/images/placeholder.svg?height=400&width=300",
+    title: "The Mind's Labyrinth: A Journey of Discovery",
+    label: "minds-labyrinth",
+    author: "Cognitive Explorer",
+    coverUrl: "/images/minds_labyrinth.png",
     chapters: [
       {
         number: 1,
-        title: "The Power of Rethinking",
+        title: "The Labyrinth of Thoughts",
         content: {
           initialNodeId: "start",
           nodes: {
             "start": {
               id: "start",
-              text: "The ability to rethink and unlearn may be more important than the ability to think and learn. In a rapidly changing world, the ability to change your mind is a competitive advantage. But most of us are terrible at it. We cling to our beliefs even when evidence suggests we're wrong. We surround ourselves with people who agree with us. We seek out information that confirms what we already think.",
-              nextNodeId: "rethinking-intro",
+              text: "In the depths of the Mind's Labyrinth, where thoughts take physical form and beliefs become walls that can be rebuilt, a young scholar named Sage discovers that her world is not what it seems. The labyrinth is a vast, ever-changing maze where each corridor represents a different way of thinking, and the walls themselves are made of solidified beliefs. When Sage's mentor, the Wise Architect, disappears into the deepest levels of the labyrinth, she must navigate through the maze of her own assumptions to find him and discover the truth about the nature of knowledge itself.",
+              nextNodeId: "labyrinth-intro",
               voiceId: 'default',
             },
-            "rethinking-intro": {
-              id: "rethinking-intro",
-              text: "Rethinking is a set of skills that can be learned and developed. It involves questioning your assumptions, seeking out disconfirming evidence, and being open to changing your mind. It's about being confident in your ability to learn and grow, rather than being confident in your current knowledge.",
+            "labyrinth-intro": {
+              id: "labyrinth-intro",
+              text: "The Mind's Labyrinth is divided into three distinct regions, each representing a different approach to thinking. The Hall of Certainty, where thoughts are rigid and unchangeable; the Chamber of Doubt, where all beliefs are questioned; and the Garden of Curiosity, where new ideas bloom and grow. Sage must choose which path to take first, knowing that each will teach her different lessons about the nature of knowledge and the power of changing one's mind.",
               choices: [
-                { text: "Learn about the three types of thinking", nextNodeId: "three-types-thinking" },
-                { text: "Explore the psychology of being wrong", nextNodeId: "psychology-wrong" },
-                { text: "Understand the importance of intellectual humility", nextNodeId: "intellectual-humility" }
+                { text: "Enter the Hall of Certainty", nextNodeId: "hall-certainty" },
+                { text: "Explore the Chamber of Doubt", nextNodeId: "chamber-doubt" },
+                { text: "Wander the Garden of Curiosity", nextNodeId: "garden-curiosity" }
               ],
               voiceId: 'default',
             },
-            "three-types-thinking": {
-              id: "three-types-thinking",
-              text: "There are three types of thinking: thinking like a preacher, a prosecutor, or a politician. Preachers think they're right and try to convert others. Prosecutors think others are wrong and try to prove it. Politicians think about winning and try to gain support. But the most effective thinking is like a scientist: curious, open-minded, and focused on discovering the truth.",
-              nextNodeId: "rethinking-skills",
+            "hall-certainty": {
+              id: "hall-certainty",
+              text: "Sage enters the Hall of Certainty, where the walls are made of unbreakable stone and the air is thick with the weight of absolute truth. Here, she encounters the Preachers, Prosecutors, and Politicians - three groups of thinkers who each believe they have the final answer. The Preachers try to convert her to their way of thinking, the Prosecutors try to prove others wrong, and the Politicians seek to win arguments rather than find truth. Sage realizes that this rigid thinking is what creates the walls of the labyrinth itself.",
+              nextNodeId: "certainty-lesson",
               voiceId: 'default',
             },
-            "psychology-wrong": {
-              id: "psychology-wrong",
-              text: "Being wrong feels threatening because it challenges our identity and self-worth. We often confuse our beliefs with our identity, so when our beliefs are challenged, we feel like we're being attacked. This is why we defend our beliefs so fiercely, even when we know they might be wrong.",
-              nextNodeId: "rethinking-skills",
+            "chamber-doubt": {
+              id: "chamber-doubt",
+              text: "In the Chamber of Doubt, Sage finds herself surrounded by mirrors that reflect her deepest fears and insecurities. Here, she learns that being wrong feels threatening because it challenges her identity and self-worth. The chamber is filled with the voices of her past mistakes and failed attempts, but she also discovers that doubt is not the enemy of knowledge - it's the foundation of learning. The mirrors show her that the fear of being wrong is what keeps her trapped in the labyrinth.",
+              nextNodeId: "doubt-lesson",
               voiceId: 'default',
             },
-            "intellectual-humility": {
-              id: "intellectual-humility",
-              text: "Intellectual humility is the recognition that you might be wrong. It's not about being uncertain or indecisive - it's about being confident in your ability to learn and grow. People with intellectual humility are more open to new information, more willing to change their minds, and more effective at solving problems.",
-              nextNodeId: "rethinking-skills",
+            "garden-curiosity": {
+              id: "garden-curiosity",
+              text: "The Garden of Curiosity is a place where ideas bloom like flowers and questions grow like trees. Here, Sage encounters the Wise Architect, who explains that intellectual humility is not about being uncertain, but about being confident in one's ability to learn and grow. The garden is filled with floating questions, each one leading to new discoveries. Sage learns that curiosity is the key to navigating the labyrinth and that the most beautiful thoughts are those that are still growing.",
+              nextNodeId: "curiosity-lesson",
               voiceId: 'default',
             },
-            "rethinking-skills": {
-              id: "rethinking-skills",
-              text: "Rethinking is a skill that can be developed through practice. It involves asking better questions, seeking out disconfirming evidence, and being open to changing your mind. It's about being curious rather than certain, and about focusing on learning rather than being right.",
-              nextNodeId: "practical-applications",
+            "certainty-lesson": {
+              id: "certainty-lesson",
+              text: "In the Hall of Certainty, Sage learns that rigid thinking creates the very walls that trap her in the labyrinth. She discovers that the Preachers, Prosecutors, and Politicians are all different manifestations of the same problem: the unwillingness to change one's mind. As she watches them argue endlessly, she realizes that true wisdom comes not from being right, but from being open to learning. The walls of the hall begin to crack as she questions her own certainties.",
+              nextNodeId: "labyrinth-transformation",
               voiceId: 'default',
             },
-            "practical-applications": {
-              id: "practical-applications",
-              text: "Rethinking has practical applications in many areas of life: in our careers, our relationships, and our personal growth. It helps us make better decisions, solve problems more effectively, and adapt to change. It's a skill that becomes more valuable as the world becomes more complex and uncertain.",
-              choices: [
-                { text: "Learn about rethinking in the workplace", nextNodeId: "workplace-rethinking" },
-                { text: "Explore rethinking in relationships", nextNodeId: "relationship-rethinking" },
-                { text: "Understand rethinking in personal growth", nextNodeId: "personal-growth-rethinking" }
-              ],
+            "doubt-lesson": {
+              id: "doubt-lesson",
+              text: "In the Chamber of Doubt, Sage confronts her deepest fears about being wrong. She learns that doubt is not the enemy of knowledge, but its foundation. The mirrors show her that the fear of being wrong is what keeps her trapped in the labyrinth, and that embracing uncertainty is the first step toward true learning. As she accepts her doubts, the mirrors begin to show her new possibilities instead of just her fears.",
+              nextNodeId: "labyrinth-transformation",
               voiceId: 'default',
             },
-            "workplace-rethinking": {
-              id: "workplace-rethinking",
-              text: "In the workplace, rethinking helps us adapt to change, solve problems more effectively, and work better with others. It's especially important for leaders, who need to be able to change their minds when new information becomes available. Organizations that encourage rethinking are more innovative and resilient.",
-              nextNodeId: "final-wisdom",
+            "curiosity-lesson": {
+              id: "curiosity-lesson",
+              text: "In the Garden of Curiosity, Sage meets the Wise Architect, who explains that intellectual humility is the key to navigating the labyrinth. The garden is filled with floating questions that lead to new discoveries, and Sage learns that the most beautiful thoughts are those that are still growing. The Architect shows her that curiosity is not about having all the answers, but about asking the right questions.",
+              nextNodeId: "labyrinth-transformation",
               voiceId: 'default',
             },
-            "relationship-rethinking": {
-              id: "relationship-rethinking",
-              text: "In relationships, rethinking helps us understand others better, resolve conflicts more effectively, and build stronger connections. It's about being open to different perspectives and being willing to change your mind about people and situations. This leads to more empathy and better communication.",
-              nextNodeId: "final-wisdom",
+            "labyrinth-transformation": {
+              id: "labyrinth-transformation",
+              text: "As Sage applies the lessons from all three regions of the labyrinth, she begins to see the maze transform around her. The rigid walls of certainty become flexible, the mirrors of doubt show new possibilities, and the garden of curiosity expands to fill the entire labyrinth. She realizes that the labyrinth is not a prison, but a tool for learning and growth. The Wise Architect appears and explains that the ability to rethink and unlearn is more important than the ability to think and learn.",
+              nextNodeId: "final-discovery",
               voiceId: 'default',
             },
-            "personal-growth-rethinking": {
-              id: "personal-growth-rethinking",
-              text: "In personal growth, rethinking helps us learn from our mistakes, adapt to new circumstances, and become better versions of ourselves. It's about being open to feedback, willing to change, and focused on continuous improvement. This leads to greater resilience and personal fulfillment.",
-              nextNodeId: "final-wisdom",
+            "final-discovery": {
+              id: "final-discovery",
+              text: "Sage finally reaches the center of the labyrinth, where she discovers the greatest treasure of all: the ability to change her mind. The Wise Architect reveals that the labyrinth was never about finding the right answer, but about learning to ask better questions. Sage realizes that in a rapidly changing world, the ability to rethink and unlearn is the greatest advantage of all. She emerges from the labyrinth not with all the answers, but with the wisdom to keep learning and growing.",
               voiceId: 'default',
             },
             "final-wisdom": {

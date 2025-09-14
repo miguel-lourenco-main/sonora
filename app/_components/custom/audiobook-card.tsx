@@ -1,93 +1,76 @@
 "use client"
 
 import Image from "next/image"
-import { Play, Volume2 } from 'lucide-react'
 import Link from "next/link"
+import { Play, Volume2, Clock5 } from 'lucide-react'
 import { hasPreRecordedAudio } from '~/lib/utils/audio-availability'
-
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@kit/ui/shadcn/card"
-import { Button } from "@kit/ui/shadcn/button"
 import { cn } from "@kit/ui/lib"
+import { Story } from "~/lib/types"
+import { CardBody, CardContainer, CardItem } from "@/components/3d-card"
 
-interface Audiobook {
-  id: string
-  title: string
-  author: string
-  coverUrl: string
-  duration: string
-  narrator: string
-  category: string
-  label: string
+interface StoryCardProps extends React.HTMLAttributes<HTMLDivElement> {
+  story: Story
 }
 
-interface AudiobookCardProps extends React.HTMLAttributes<HTMLDivElement> {
-  audiobook: Audiobook
-  aspectRatio?: "portrait" | "square"
-  width?: number
-  height?: number
+function countStorySteps(story: Story): number {
+  try {
+    return story.chapters.reduce((total, chapter) => {
+      const nodes = chapter.content?.nodes ?? {}
+      return total + Object.keys(nodes).length
+    }, 0)
+  } catch {
+    return 0
+  }
 }
 
-export function AudiobookCard({
-  audiobook,
-  aspectRatio = "portrait",
-  width,
-  height,
-  className,
-  ...props
-}: AudiobookCardProps) {
-  // Check if this story has pre-recorded audio
-  const hasPreRecorded = hasPreRecordedAudio(audiobook.label);
+function estimateMinutesFromSteps(stepCount: number): number {
+  // Simple heuristic: ~30s per step, round up to next minute
+  const minutes = Math.ceil((stepCount * 30) / 60)
+  return Math.max(minutes, 1)
+}
+
+function getStoryDescription(story: Story, maxLen = 100): string {
+  try {
+    const chapter = story.chapters[0]
+    const initialId = chapter?.content.initialNodeId
+    const initialNode = chapter?.content.nodes[initialId ?? '']
+    const text = initialNode?.text ?? ""
+    if (text.length <= maxLen) return text
+    return text.slice(0, maxLen).trimEnd() + "…"
+  } catch {
+    return "Interactive story"
+  }
+}
+
+export function AudiobookCard({ story, className, ...props }: StoryCardProps) {
+  const hasPreRecorded = hasPreRecordedAudio(story.label)
+  const steps = countStorySteps(story)
+  const minutes = estimateMinutesFromSteps(steps)
+  const description = getStoryDescription(story)
 
   return (
-    <Card className={cn("overflow-hidden", className)} {...props}>
-      <Link href={`/player/${audiobook.id}`}>
-        <CardHeader className="border-b p-0">
-          <div className="relative">
-            <Image
-              src={audiobook.coverUrl}
-              alt={audiobook.title}
-              width={width}
-              height={height}
-              className={cn(
-                "object-cover transition-all hover:scale-105",
-                aspectRatio === "portrait" ? "aspect-[3/4]" : "aspect-square"
-              )}
-            />
-            <Button
-              size="icon"
-              variant="secondary"
-              className="absolute bottom-4 right-4 h-10 w-10 rounded-full opacity-90 hover:opacity-100"
-            >
-              <Play className="h-5 w-5" />
-            </Button>
-            {hasPreRecorded && (
-              <div className="absolute top-2 left-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1">
-                <Volume2 className="h-3 w-3" />
-                Audio Ready
-              </div>
-            )}
-          </div>
-        </CardHeader>
-        <CardContent className="grid gap-2.5 p-4">
-          <h3 className="line-clamp-1 text-base font-semibold leading-none">
-            {audiobook.title}
-          </h3>
-          <p className="line-clamp-1 text-xs text-muted-foreground">
-            By {audiobook.author}
-          </p>
-        </CardContent>
-        <CardFooter className="flex items-center justify-between p-4 pt-0">
-          <p className="text-xs text-muted-foreground">
-            Narrated by {audiobook.narrator}
-          </p>
-          <p className="text-xs font-medium whitespace-nowrap self-start">{audiobook.duration}</p>
-        </CardFooter>
+    <div className={cn("w-full", className)} {...props}>
+      <Link href={`/player/${story.id}`}>
+        <CardContainer containerClassName="" className="">
+          <CardBody className="flex flex-col items-center size-fit space-y-4 rounded-2xl py-6 bg-gradient-to-b from-muted/30 to-background shadow-lg">
+            <CardItem translateZ={60} className="py-6">
+              <h3 className="text-2xl font-semibold line-clamp-2">{story.title}</h3>
+            </CardItem>
+            <CardItem translateZ={100}>
+              <img src={story.coverUrl} alt={story.title} width={400} height={400} className="m-4 rounded-lg object-cover" />
+            </CardItem>
+            <div className="flex flex-col space-y-4 px-12 pt-4">
+              <CardItem translateZ={40}>
+                <p className="text-base text-muted-foreground line-clamp-3">{description}</p>
+              </CardItem>
+              <CardItem translateZ={20} className="flex items-center justify-between text-xs text-muted-foreground">
+                <span>{steps} steps</span>
+                <span className="inline-flex items-center gap-1"><Clock5 className="h-3 w-3" /> {minutes} min</span>
+              </CardItem>
+            </div>
+          </CardBody>
+        </CardContainer>
       </Link>
-    </Card>
+    </div>
   )
 }

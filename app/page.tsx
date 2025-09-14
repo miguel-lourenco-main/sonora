@@ -1,10 +1,6 @@
-import { ScrollBar } from "@kit/ui/shadcn/scroll-area";
-import { ScrollArea } from "@kit/ui/shadcn/scroll-area";
-import { AudiobookCard } from "./_components/custom/audiobook-card";
-import { Separator } from "@kit/ui/shadcn/separator";
 import type { Metadata } from "next";
-import { CategoryPills } from "./_components/custom/category-pills";
-import { categories, featuredAudiobooks, recommendedAudiobooks } from "~/lib/data/audiobook-data";
+import { AudiobookCard } from "./_components/custom/audiobook-card";
+import { bookData } from "~/lib/data/sample-story";
 
 
 export const metadata: Metadata = {
@@ -12,72 +8,17 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage() {
+  const stories = bookData.slice(0, 10)
   return (
-    <div className="flex flex-col gap-8 p-6">
-      <section>
-        <div className="mb-4">
-          <CategoryPills categories={categories} />
+    <div className="px-6 py-10">
+      <div className="mx-auto max-w-[80%]">
+        <h1 className="mb-6 text-center text-3xl font-semibold tracking-tight py-12">Choose Your Story</h1>
+        <div className="relative grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 3xl:grid-cols-4  gap-12 lg:gap-18 place-items-center">
+          {stories.map((story) => (
+            <AudiobookCard key={story.id} story={story} />
+          ))}
         </div>
-        <div className="flex items-center justify-between">
-          <div className="space-y-1">
-            <h2 className="text-2xl font-semibold tracking-tight">
-              Featured Audiobooks
-            </h2>
-            <p className="text-sm text-muted-foreground">
-              Top picks for you. Updated daily.
-            </p>
-          </div>
-        </div>
-        <Separator className="my-4" />
-        <div className="relative">
-          <ScrollArea>
-            <div className="flex space-x-4 pb-4">
-              {featuredAudiobooks.map((audiobook) => (
-                <AudiobookCard
-                  key={audiobook.id}
-                  audiobook={audiobook}
-                  className="w-[250px]"
-                  aspectRatio="portrait"
-                  width={250}
-                  height={330}
-                />
-              ))}
-            </div>
-            <ScrollBar orientation="horizontal" />
-          </ScrollArea>
-        </div>
-      </section>
-
-      <section>
-        <div className="flex items-center justify-between">
-          <div className="space-y-1">
-            <h2 className="text-2xl font-semibold tracking-tight">
-              Recommended for You
-            </h2>
-            <p className="text-sm text-muted-foreground">
-              Based on your listening history.
-            </p>
-          </div>
-        </div>
-        <Separator className="my-4" />
-        <div className="relative">
-          <ScrollArea>
-            <div className="flex space-x-4 pb-4">
-              {recommendedAudiobooks.map((audiobook) => (
-                <AudiobookCard
-                  key={audiobook.id}
-                  audiobook={audiobook}
-                  className="w-[250px]"
-                  aspectRatio="portrait"
-                  width={250}
-                  height={330}
-                />
-              ))}
-            </div>
-            <ScrollBar orientation="horizontal" />
-          </ScrollArea>
-        </div>
-      </section>
+      </div>
     </div>
   )
 }

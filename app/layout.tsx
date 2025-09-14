@@ -12,6 +12,7 @@ import appConfig from '~/config/app.config';
 
 import '../styles/globals.css';
 import { ModeToggle } from '@kit/ui/makerkit/mode-toggle';
+import Link from 'next/link';
 
 export default function RootLayout({
   children,
@@ -27,20 +28,15 @@ export default function RootLayout({
     <html lang={language} className={className}>
       <body>
         <RootProviders theme={theme} lang={language}>
-          <SidebarProvider>
-            <Sidebar>
-              <SidebarHeader className={'flex flex-row h-16 justify-between items-center'}>
-                <AppLogo width={56} height={56} />
-                <ModeToggle />
-              </SidebarHeader>
-              <SidebarContent>
-                <SidebarNavigation config={personalAccountNavigationConfig} />
-              </SidebarContent>
-            </Sidebar>
-            <SidebarInset>
-              {children}
-            </SidebarInset>
-          </SidebarProvider>
+          <div className='flex flex-row justify-between items-center h-fit py-3 px-8'>
+            <AppLogo width={56} height={56} />
+            <nav className='flex flex-row justify-between text-lg text-muted-foreground items-center gap-4'>
+              <Link href='/' className='hover:text-foreground transition-colors'>Stories</Link>
+              <Link href='/voices' className='hover:text-foreground transition-colors'>Voices</Link>
+            </nav>
+            <ModeToggle />
+          </div>
+          {children}
         </RootProviders>
 
         <Toaster richColors={true} theme={theme} position="top-center" />
