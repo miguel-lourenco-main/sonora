@@ -11,11 +11,11 @@ export default {
     container: {
       center: true,
       padding: '2rem',
-      screens: {
-        '2xl': '1400px',
-      },
     },
     extend: {
+      screens: {
+        '3xl': '1820px',
+      },
       borderColor: {
         DEFAULT: 'hsl(var(--border) / <alpha-value>)',
       },
@@ -84,6 +84,7 @@ export default {
         cal: ['var(--font-cal)', ...fontFamily.sans],
         sans: ['-apple-system', 'var(--font-sans)', ...fontFamily.sans],
         heading: ['var(--font-heading)'],
+        oregano: ['var(--font-oregano)', ...fontFamily.sans],
       },
       keyframes: {
         'fade-up': {

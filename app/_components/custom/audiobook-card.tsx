@@ -52,7 +52,7 @@ export function AudiobookCard({ story, className, ...props }: StoryCardProps) {
     <div className={cn("w-full", className)} {...props}>
       <Link href={`/player/${story.id}`}>
         <CardContainer containerClassName="" className="">
-          <CardBody className="flex flex-col items-center size-fit space-y-4 rounded-2xl py-6 bg-gradient-to-b from-muted/30 to-background shadow-lg">
+          <CardBody className="flex flex-col items-center size-fit space-y-4 rounded-2xl py-6 bg-muted shadow-lg">
             <CardItem translateZ={60} className="py-6">
               <h3 className="text-2xl font-semibold line-clamp-2">{story.title}</h3>
             </CardItem>

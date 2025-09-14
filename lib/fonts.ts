@@ -1,16 +1,26 @@
-import { Inter as SansFont } from 'next/font/google';
+import localFont from 'next/font/local';
 
 /**
  * @sans
  * @description Define here the sans font.
- * By default, it uses the Inter font from Google Fonts.
+ * Using custom Oregano font from public/fonts/
  */
-const sans = SansFont({
-  subsets: ['latin'],
+const sans = localFont({
+  src: [
+    {
+      path: '../public/fonts/Oregano-Regular.ttf',
+      weight: '400',
+      style: 'normal',
+    },
+    {
+      path: '../public/fonts/Oregano-Italic.ttf',
+      weight: '400',
+      style: 'italic',
+    },
+  ],
   variable: '--font-sans',
   fallback: ['system-ui', 'Helvetica Neue', 'Helvetica', 'Arial'],
   preload: true,
-  weight: ['300', '400', '500', '600', '700'],
 });
 
 /**
@@ -19,5 +29,27 @@ const sans = SansFont({
  */
 const heading = sans;
 
+/**
+ * @oregano
+ * @description Custom Oregano font for special use cases
+ */
+const oregano = localFont({
+  src: [
+    {
+      path: '../public/fonts/Oregano-Regular.ttf',
+      weight: '400',
+      style: 'normal',
+    },
+    {
+      path: '../public/fonts/Oregano-Italic.ttf',
+      weight: '400',
+      style: 'italic',
+    },
+  ],
+  variable: '--font-oregano',
+  fallback: ['system-ui', 'Helvetica Neue', 'Helvetica', 'Arial'],
+  preload: true,
+});
+
 // we export these fonts into the root layout
-export { sans, heading };
+export { sans, heading, oregano };

@@ -6,7 +6,7 @@ import { SidebarProvider, Sidebar, SidebarInset, SidebarContent, SidebarHeader }
 import { SidebarNavigation } from '@kit/ui/shadcn/sidebar';
 import { personalAccountNavigationConfig } from '~/config/personal-account-navigation.config';
 import { AppLogo } from '~/components/app-logo';
-import { heading, sans } from '~/lib/fonts';
+import { heading, sans, oregano } from '~/lib/fonts';
 import type { Metadata } from 'next';
 import appConfig from '~/config/app.config';
 
@@ -49,7 +49,7 @@ function getClassName(theme?: string) {
   const dark = theme === 'dark';
   const light = !dark;
 
-  const font = [sans.variable, heading.variable].reduce<string[]>(
+  const font = [sans.variable, heading.variable, oregano.variable].reduce<string[]>(
     (acc, curr) => {
       if (acc.includes(curr)) return acc;
 
