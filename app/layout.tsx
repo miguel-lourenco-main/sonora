@@ -26,7 +26,7 @@ export default function RootLayout({
 
   return (
     <html lang={language} className={className}>
-      <body>
+      <body className='flex flex-col h-screen'>
         <RootProviders theme={theme} lang={language}>
           <div className='flex flex-row justify-between items-center h-fit py-3 px-8'>
             <AppLogo width={56} height={56} />

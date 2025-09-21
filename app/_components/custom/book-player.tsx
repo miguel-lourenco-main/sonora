@@ -364,7 +364,7 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
   console.log('isProcessing', isProcessing)
 
   return (
-    <div className="flex h-screen flex-col items-center bg-background p-6">
+    <div className="flex h-full flex-col items-center justify-between bg-background px-6 pb-6">
       <header className="flex w-full items-center justify-end p-4">
         <div className="w-full max-w-xs">
           <Select
@@ -537,7 +537,7 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className="size-1"
+                    className="size-12"
                   >
                     <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
                     <path d="M3 3v5h5" />
