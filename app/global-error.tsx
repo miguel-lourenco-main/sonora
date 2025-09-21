@@ -51,7 +51,7 @@ const GlobalErrorPage = ({
 
                 <div>
                   <Button
-                    className={'w-full'}
+                    className={''}
                     variant={'default'}
                     onClick={reset}
                   >

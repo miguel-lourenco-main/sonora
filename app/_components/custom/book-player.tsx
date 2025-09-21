@@ -375,9 +375,9 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
             <SelectTrigger>
               <SelectValue placeholder="Select a voice" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="text-lg">
               <SelectItem key={'default'} value={'default'}>
-                Pre-Recorded
+                <p className="text-lg">Pre-Recorded</p>
               </SelectItem>
               {(voices ?? []).map((voice) => (
                 <SelectItem key={voice.voice_id} value={voice.voice_id}>
@@ -388,7 +388,7 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
           </Select>
         </div>
       </header>
-      <div className="flex flex-col items-center justify-start gap-8 p-4 mb-24 md:flex-row md:items-start md:justify-center">
+      <div className="flex flex-col items-center justify-start gap-8 p-4 mb-4 md:flex-row md:items-start md:justify-center">
         <div className="relative aspect-[3/4] w-48 flex-shrink-0 overflow-hidden rounded-lg shadow-lg md:w-64">
           <Image
             src={story.coverUrl}
@@ -401,7 +401,7 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
           <h1 className="mb-2 text-3xl font-bold">{story.title}</h1>
           <p className="mb-4 text-lg text-muted-foreground">By {story.author}</p>
           
-          <div className="relative h-48 w-full max-w-md rounded-md border p-4 md:h-64">
+          <div className="relative h-48 w-full max-w-xl rounded-md border p-4 md:h-64">
             {showLoadingUI && (
               <div className="absolute inset-0 flex items-center justify-center bg-background/80 backdrop-blur-sm z-10">
                 <p className="text-sm text-muted-foreground flex items-center gap-2">
@@ -431,19 +431,6 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
             isPlaying
         }
       )}>
-        <div className="flex flex-col w-full items-center justify-center mb-4">
-          <Slider
-            value={[canReplay && currentTime > 0  && (!currentNode.nextNodeId || currentNode.nextNodeId === '' || currentNode.choices?.length === 0) ? 100 : 0]}
-            max={100}
-            step={1}
-            className="w-full"
-            disabled={!!(isLoading ?? !currentNode.audioUrl)}
-          />
-          <div className="flex w-full justify-between mt-3 text-sm text-muted-foreground">
-            {formatTime(currentTime)}
-            <span>--:--</span>
-          </div>
-        </div>
         {currentNode.choices && 
           currentNode.choices.length > 0 && 
           shouldShowChoices(currentNode) ? (
@@ -536,7 +523,7 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
                   size="icon"
                   disabled={shouldDisablePlayback || undefined}
                   className={cn(
-                    "relative h-16 w-16 rounded-full transition-all duration-1000",
+                    "relative rounded-full transition-all duration-1000",
                     isPlaying ? "bg-primary text-primary-foreground" : "",
                     (shouldDisablePlayback) && "opacity-50"
                   )}
@@ -550,7 +537,7 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className="h-8 w-8"
+                    className="size-1"
                   >
                     <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
                     <path d="M3 3v5h5" />
@@ -562,7 +549,7 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
               size="icon"
                   disabled={shouldDisablePlayback || undefined}
               className={cn(
-                    "relative h-16 w-16 rounded-full transition-all duration-1000",
+                    "relative size-12 rounded-full transition-all duration-1000",
                 isPlaying ? "bg-primary text-primary-foreground" : "",
                     (shouldDisablePlayback) && "opacity-50"
               )}
@@ -577,7 +564,7 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className="h-8 w-8"
+                  className="size-8"
                 >
                   <rect x="6" y="4" width="4" height="16" />
                   <rect x="14" y="4" width="4" height="16" />
@@ -591,7 +578,7 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className="h-8 w-8"
+                  className="size-8"
                 >
                   <polygon points="5 3 19 12 5 21 5 3" />
                 </svg>
@@ -601,6 +588,19 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
           </div>
           </BlurFade>
         )}
+        <div className="flex flex-col w-full items-center justify-center mb-4">
+          <Slider
+            value={[canReplay && currentTime > 0  && (!currentNode.nextNodeId || currentNode.nextNodeId === '' || currentNode.choices?.length === 0) ? 100 : 0]}
+            max={100}
+            step={1}
+            className="w-full"
+            disabled={!!(isLoading ?? !currentNode.audioUrl)}
+          />
+          <div className="flex w-full justify-between mt-3 text-sm text-muted-foreground">
+            {formatTime(currentTime)}
+            <span>--:--</span>
+          </div>
+        </div>
         <div className="text-center text-base text-muted-foreground">
           Chapter {story.currentChapter} of {story.totalChapters}
         </div>

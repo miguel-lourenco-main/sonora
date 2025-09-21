@@ -7,6 +7,7 @@ import { hasPreRecordedAudio } from '~/lib/utils/audio-availability'
 import { cn } from "@kit/ui/lib"
 import { Story } from "~/lib/types"
 import { CardBody, CardContainer, CardItem } from "@/components/3d-card"
+import { useEffect, useState } from "react"
 
 interface StoryCardProps extends React.HTMLAttributes<HTMLDivElement> {
   story: Story
@@ -48,16 +49,31 @@ export function AudiobookCard({ story, className, ...props }: StoryCardProps) {
   const minutes = estimateMinutesFromSteps(steps)
   const description = getStoryDescription(story)
 
+  const [imageWidth, setImageWidth] = useState(400)
+  const [imageHeight, setImageHeight] = useState(400)
+
+  useEffect(() => {
+    function updateImageSize() {
+      if (typeof window === "undefined") return
+      const viewportWidth = window.innerWidth
+      // Scale image relative to device width with bounds
+      const target = Math.min(400, Math.max(220, Math.floor(viewportWidth * 0.6)))
+      setImageWidth(target)
+      setImageHeight(target)
+    }
+
+    updateImageSize()
+    window.addEventListener('resize', updateImageSize)
+    return () => window.removeEventListener('resize', updateImageSize)
+  }, [])
+
   return (
-    <div className={cn("w-full", className)} {...props}>
-      <Link href={`/player/${story.id}`}>
-        <CardContainer containerClassName="" className="">
-          <CardBody className="flex flex-col items-center size-fit max-w-[32rem] space-y-4 rounded-2xl py-6 bg-muted shadow-lg">
-            <CardItem translateZ={60} className="py-6">
-              <h3 className="text-3xl font-semibold text-center line-clamp-2">{story.title}</h3>
-            </CardItem>
-            <CardItem translateZ={100}>
-              <img src={story.coverUrl} alt={story.title} width={400} height={400} className="m-4 rounded-lg object-cover" />
+    <div className={cn("size-full", className)} {...props}>
+      <Link href={`/player/${story.id}`} className="size-full">
+        <CardContainer containerClassName="size-full" className="size-full">
+          <CardBody className="grid grid-cols-1 place-items-center size-full max-w-[32rem] space-y-4 rounded-2xl py-6 bg-muted shadow-lg">
+            <CardItem translateZ={100} className="size-full">
+              <AudiobookCardContent story={story} />
             </CardItem>
             <div className="flex flex-col space-y-4 px-12 pt-4">
               <CardItem translateZ={40}>
@@ -71,6 +87,15 @@ export function AudiobookCard({ story, className, ...props }: StoryCardProps) {
           </CardBody>
         </CardContainer>
       </Link>
+    </div>
+  )
+}
+
+function AudiobookCardContent({ story }: { story: Story }) {
+  return (
+    <div className="relative size-full min-h-[32rem]">
+      <img src="/images/book_cover.png" alt={story.title} className="absolute top-[2rem] left-[4rem] z-10 w-[22rem] m-4 rounded-lg object-cover" />
+      <img src={story.coverUrl} alt={story.title} className="absolute top-[3.5rem] left-[10.5rem] z-20 w-[13rem] m-4 rounded-lg object-cover" />
     </div>
   )
 }

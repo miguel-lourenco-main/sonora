@@ -42,7 +42,7 @@ export function AudioAvailabilityChecker({ story, initialVoiceId }: AudioAvailab
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center space-y-4">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-          <p className="text-muted-foreground">Checking audio availability...</p>
+          <p className="text-muted-foreground text-3xl">Checking audio availability...</p>
         </div>
       </div>
     )

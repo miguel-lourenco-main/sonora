@@ -100,7 +100,7 @@ const AudioFileItem = ({ audioFile, onRemove, onDurationLoad, onValidityChange }
                     variant="ghost"
                     size="icon"
                     onClick={handlePlayPause}
-                    className="h-8 w-8"
+                    className="size-4"
                 >
                     {isPlaying ? <Square className="h-4 w-4" /> : <Play className="h-4 w-4" />}
                 </Button>

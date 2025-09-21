@@ -31,8 +31,8 @@ export default function RootLayout({
           <div className='flex flex-row justify-between items-center h-fit py-3 px-8'>
             <AppLogo width={56} height={56} />
             <nav className='flex flex-row justify-between text-lg text-muted-foreground items-center gap-4'>
-              <Link href='/' className='hover:text-foreground transition-colors'>Stories</Link>
-              <Link href='/voices' className='hover:text-foreground transition-colors'>Voices</Link>
+              <Link href='/' className='hover:text-foreground transition-colors text-xl'>Stories</Link>
+              <Link href='/voices' className='hover:text-foreground transition-colors text-xl'>Voices</Link>
             </nav>
             <ModeToggle />
           </div>

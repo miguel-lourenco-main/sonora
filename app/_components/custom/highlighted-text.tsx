@@ -61,7 +61,7 @@ export function HighlightedText({
   }, [currentTime, wordTimings]);
 
   return (
-    <div ref={containerRef} className="h-full overflow-y-auto">
+    <div ref={containerRef} className="text-2xl h-full overflow-y-auto">
       {text.split(' ').map((word, index) => {
         const timing = wordTimings?.[index];
         
