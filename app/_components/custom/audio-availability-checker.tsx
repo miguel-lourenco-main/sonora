@@ -27,7 +27,6 @@ export function AudioAvailabilityChecker({ story, initialVoiceId }: AudioAvailab
           hasPreRecorded: false,
           hasApiKey: false,
           reason: "Error checking audio availability",
-          instructions: ["There was an error checking if audio is available for this story."]
         })
       } finally {
         setIsLoading(false)
@@ -49,12 +48,7 @@ export function AudioAvailabilityChecker({ story, initialVoiceId }: AudioAvailab
   }
 
   if (!audioResult?.canPlay) {
-    return (
-      <AudioUnavailableWarning 
-        storyTitle={story.title}
-        audioResult={audioResult!}
-      />
-    )
+    return <AudioUnavailableWarning />
   }
 
   return (

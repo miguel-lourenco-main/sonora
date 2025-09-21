@@ -6,7 +6,6 @@ export interface AudioAvailabilityResult {
   hasPreRecorded: boolean;
   hasApiKey: boolean;
   reason?: string;
-  instructions?: string[];
 }
 
 /**
@@ -35,12 +34,6 @@ export async function checkAudioAvailability(story: Story): Promise<AudioAvailab
     hasPreRecorded: false,
     hasApiKey: false,
     reason: "No audio source available",
-    instructions: [
-      "This story requires either pre-recorded audio files or an API key to generate audio.",
-      "To listen to this story, you can:",
-      "1. Add an ElevenLabs API key in the Voices section to generate audio on-demand",
-      "2. Or wait for pre-recorded audio files to be added to this story"
-    ]
   };
 }
 

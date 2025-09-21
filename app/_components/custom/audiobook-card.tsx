@@ -2,12 +2,13 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { Play, Volume2, Clock5 } from 'lucide-react'
+import { Play, Volume2, Clock5, VolumeOff } from 'lucide-react'
 import { hasPreRecordedAudio } from '~/lib/utils/audio-availability'
 import { cn } from "@kit/ui/lib"
 import { Story } from "~/lib/types"
 import { CardBody, CardContainer, CardItem } from "@/components/3d-card"
 import { useEffect, useState } from "react"
+import TooltipComponent from "@/components/ui/custom/tooltip-component"
 
 interface StoryCardProps extends React.HTMLAttributes<HTMLDivElement> {
   story: Story
@@ -72,16 +73,39 @@ export function AudiobookCard({ story, className, ...props }: StoryCardProps) {
       <Link href={`/player/${story.id}`} className="size-full">
         <CardContainer containerClassName="size-full" className="size-full">
           <CardBody className="grid grid-cols-1 place-items-center size-full max-w-[32rem] space-y-4 rounded-2xl py-6 bg-muted shadow-lg">
-            <CardItem translateZ={100} className="size-full">
+            <CardItem translateZ={150} className="size-full">
               <AudiobookCardContent story={story} />
             </CardItem>
             <div className="flex flex-col space-y-4 px-12 pt-4">
               <CardItem translateZ={40}>
                 <p className="text-xl text-muted-foreground line-clamp-3">{description}</p>
               </CardItem>
-              <CardItem translateZ={20} className="flex items-center justify-between text-xs text-muted-foreground">
-                <span>{steps} steps</span>
-                <span className="inline-flex items-center gap-1"><Clock5 className="h-3 w-3" /> {minutes} min</span>
+              <CardItem translateZ={20} className="flex items-center w-full justify-between text-xs text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <span>{steps} steps</span>
+                  <span className="inline-flex items-center gap-1"><Clock5 className="h-3 w-3" /> {minutes} min</span>
+                </div>
+                {hasPreRecorded ? (
+                  <TooltipComponent
+                    trigger={
+                      <div className="inline-flex items-center gap-1 text-green-600">
+                        <Volume2 className="size-8" />
+                      </div>
+                    }
+                    content="Pre-recorded audio available"
+                    className="bg-green-600 text-white text-xl"
+                  />
+                ) : (
+                  <TooltipComponent
+                    trigger={
+                      <div className="inline-flex items-center gap-1 text-slate-600">
+                        <VolumeOff className="size-8" />
+                      </div>
+                    }
+                    content="Pre-recorded audio NOT available"
+                    className="bg-slate-600 text-white text-xl"
+                  />
+                )}
               </CardItem>
             </div>
           </CardBody>
