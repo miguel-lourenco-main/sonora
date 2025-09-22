@@ -81,7 +81,7 @@ export function AudiobookCard({ story, className, ...props }: StoryCardProps) {
                 <p className="text-xl text-muted-foreground line-clamp-3">{description}</p>
               </CardItem>
               <CardItem translateZ={20} className="flex items-center w-full justify-between text-xs text-muted-foreground">
-                <div className="flex items-center gap-2">
+                <div className="flex text-base items-center gap-2">
                   <span>{steps} steps</span>
                   <span className="inline-flex items-center gap-1"><Clock5 className="h-3 w-3" /> {minutes} min</span>
                 </div>
