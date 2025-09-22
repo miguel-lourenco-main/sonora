@@ -48,7 +48,7 @@ export function ModeToggle(props: ModeToggleProps) {
 
       return (
         <DropdownMenuItem
-          className={cn('space-x-2', {
+          className={cn('space-x-2 text-lg', {
             'bg-muted': isSelected,
           })}
           key={mode}
@@ -71,8 +71,8 @@ export function ModeToggle(props: ModeToggleProps) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant={variant} size={size} shape={shape} className={className} aria-label={srLabel}>
-          <Sun className="h-[0.9rem] w-[0.9rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <Moon className="absolute h-[0.9rem] w-[0.9rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          <Sun className="size-6 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+          <Moon className="absolute size-6 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
           <span className="sr-only">{srLabel}</span>
         </Button>
       </DropdownMenuTrigger>
@@ -103,7 +103,7 @@ export function SubMenuModeToggle() {
           >
             <Icon theme={mode} />
 
-            <span>
+            <span className="text-xl">
               <Trans i18nKey={`common:${mode}Theme`} />
             </span>
           </DropdownMenuItem>
@@ -150,10 +150,10 @@ function setCookieTheme(theme: string) {
 function Icon({ theme }: { theme: string | undefined }) {
   switch (theme) {
     case 'light':
-      return <Sun className="h-4" />;
+      return <Sun className="size-5" />;
     case 'dark':
-      return <Moon className="h-4" />;
+      return <Moon className="size-5" />;
     case 'system':
-      return <Computer className="h-4" />;
+      return <Computer className="size-5" />;
   }
 }

@@ -2,9 +2,6 @@ import { Toaster } from '@kit/ui/shadcn/sonner';
 import { cn } from '@kit/ui/lib';
 
 import { RootProviders } from '~/components/root-providers';
-import { SidebarProvider, Sidebar, SidebarInset, SidebarContent, SidebarHeader } from '@kit/ui/shadcn/sidebar';
-import { SidebarNavigation } from '@kit/ui/shadcn/sidebar';
-import { personalAccountNavigationConfig } from '~/config/personal-account-navigation.config';
 import { AppLogo } from '~/components/app-logo';
 import { heading, sans, oregano } from '~/lib/fonts';
 import type { Metadata } from 'next';
@@ -29,7 +26,7 @@ export default function RootLayout({
       <body className='flex flex-col h-screen'>
         <RootProviders theme={theme} lang={language}>
           <div className='flex flex-row justify-between items-center h-fit py-3 px-8'>
-            <AppLogo width={56} height={56} />
+            <AppLogo width={92} height={92} />
             <nav className='flex flex-row justify-between text-lg text-muted-foreground items-center gap-4'>
               <Link href='/' className='hover:text-foreground transition-colors text-xl'>Stories</Link>
               <Link href='/voices' className='hover:text-foreground transition-colors text-xl'>Voices</Link>
