@@ -100,19 +100,19 @@ export function useVoicesColumns(
             trigger={
               <div className={cn(columnClasses.base, "w-60")}>
                 {state.editingId === voice.id ? (
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>
                     <Input
                         value={state.editingName}
                         onChange={(e) => state.setEditingName(e.target.value)}
-                        className="h-8"
+                        className="h-8 text-base"
                     />
-                    <Button size="sm" onClick={() => state.handleRename(voice.id)}>
+                    <Button size="sm" onClick={() => state.handleRename(voice.id)} className="text-base">
                         <TooltipComponent
                             trigger={<Check className="h-4 w-4" />}
                             content={t('voices.rename.button')}
                         />
                     </Button>
-                    <Button size="sm" variant="outline" onClick={() => state.setEditingId(null)}>
+                    <Button size="sm" variant="outline" onClick={() => state.setEditingId(null)} className="text-base">
                         <TooltipComponent
                             trigger={<X className="h-4 w-4" />}
                             content={t('voices.rename.cancel')}
@@ -120,7 +120,7 @@ export function useVoicesColumns(
                     </Button>
                 </div>
                 ) : (
-                voice.name
+                <span className="font-oregano text-xl pl-2">{voice.name}</span>
                 )}
               </div>
             }
@@ -143,8 +143,8 @@ export function useVoicesColumns(
         return (  
           <TooltipComponent
             trigger={
-            <div className={cn(columnClasses.base, columnClasses.createdAt)}>
-              {createdAt}
+            <div className={cn(columnClasses.base, columnClasses.createdAt)} style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>
+              <span className="text-base leading-relaxed">{createdAt}</span>
             </div>
           }
           content={createdAt}
@@ -180,7 +180,7 @@ export function useVoicesColumns(
         const loading = state.isLoading === voice.id;
 
         return(
-          <div className={cn(columnClasses.base, columnClasses.actions, columnClasses.flexRow)}>
+          <div className={cn(columnClasses.base, columnClasses.actions, columnClasses.flexRow)} style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>
             <Button
                 variant="outline"
                 size="icon"

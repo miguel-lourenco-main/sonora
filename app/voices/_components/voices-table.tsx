@@ -53,7 +53,7 @@ export default function VoicesTable({
 
   const createToolbarButtons = useCallback(() => {
     return (
-      <div className="flex items-center gap-x-4">
+      <div className="flex items-center gap-x-4" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>
         <CreateVoicesButton 
           open={newFilesDialogOpen} 
           setOpen={setNewFilesDialogOpen} 
@@ -61,6 +61,7 @@ export default function VoicesTable({
         <Button
           variant="outline"
           size="sm"
+          className="text-base"
           onClick={async () => {
             try {
               clearCachedVoices();
@@ -114,14 +115,14 @@ export default function VoicesTable({
   if (process.env.NODE_ENV === 'development' && !ready) return null;
 
   return (
-    <div className="flex flex-col gap-4 w-full mt-8 lg:mt-20">
+    <div className="flex flex-col gap-4 w-full mt-8 lg:mt-20" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>
       {showEmptyState && (
         <div className="flex items-center justify-between rounded-md border p-4">
           <div>
-            <div className="font-medium">{t('voices.empty.title') ?? 'No voices yet'}</div>
-            <div className="text-sm text-muted-foreground">{t('voices.empty.description') ?? 'Add your ElevenLabs key in Settings and create or refresh voices.'}</div>
+            <div className="font-medium text-lg leading-relaxed">{t('voices.empty.title') ?? 'No voices yet'}</div>
+            <div className="text-base text-muted-foreground leading-relaxed">{t('voices.empty.description') ?? 'Add your ElevenLabs key in Settings and create or refresh voices.'}</div>
           </div>
-          <Button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          <Button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-base">
             Go to API Keys
           </Button>
         </div>

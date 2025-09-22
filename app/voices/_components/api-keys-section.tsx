@@ -107,25 +107,25 @@ export function ApiKeysSection({ onRefetchVoices }: ApiKeysSectionProps) {
   }
 
   return (
-    <Card>
+    <Card style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>
       <CardHeader>
-        <CardTitle>API Keys</CardTitle>
-        <CardDescription>Store your ElevenLabs API key locally on this device.</CardDescription>
+        <CardTitle className="text-xl font-normal leading-relaxed">API Keys</CardTitle>
+        <CardDescription className="text-base leading-relaxed">Store your ElevenLabs API key locally on this device.</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-4 max-w-xl">
           <div className="grid gap-2">
-            <Label htmlFor="el-key">ElevenLabs API key</Label>
-            <Input id="el-key" type="password" value={key} onChange={(e) => handleKeyChange(e.target.value)} placeholder="xi-..." />
+            <Label htmlFor="el-key" className="text-base font-medium leading-relaxed">ElevenLabs API key</Label>
+            <Input id="el-key" type="password" value={key} onChange={(e) => handleKeyChange(e.target.value)} placeholder="xi-..." className="text-base" />
           </div>
           <div className="flex gap-2">
-            <Button onClick={saveKey} disabled={isValidating}>
+            <Button onClick={saveKey} disabled={isValidating} className="text-base">
               {isValidating ? 'Validating...' : 'Save key'}
             </Button>
-            <Button variant="outline" onClick={cleanApiKey} disabled={!key.trim()}>
+            <Button variant="outline" onClick={cleanApiKey} disabled={!key.trim()} className="text-base">
               Clear key
             </Button>
-            <Button variant="outline" onClick={persistStorage}>Request persistent storage</Button>
+            <Button variant="outline" onClick={persistStorage} className="text-base">Request persistent storage</Button>
           </div>
         </div>
       </CardContent>
