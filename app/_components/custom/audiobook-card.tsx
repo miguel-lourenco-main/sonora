@@ -89,7 +89,7 @@ export function AudiobookCard({ story, className, ...props }: StoryCardProps) {
                   <TooltipComponent
                     trigger={
                       <div className="inline-flex items-center gap-1 text-green-600">
-                        <Volume2 className="size-8" />
+                        <Volume2 className="size-6" />
                       </div>
                     }
                     content="Pre-recorded audio available"
@@ -99,7 +99,7 @@ export function AudiobookCard({ story, className, ...props }: StoryCardProps) {
                   <TooltipComponent
                     trigger={
                       <div className="inline-flex items-center gap-1 text-slate-600">
-                        <VolumeOff className="size-8" />
+                        <VolumeOff className="size-6" />
                       </div>
                     }
                     content="Pre-recorded audio NOT available"
