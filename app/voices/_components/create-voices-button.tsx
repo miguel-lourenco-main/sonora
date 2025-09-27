@@ -38,7 +38,7 @@ export function CreateVoicesButton({ open, setOpen }: { open: boolean, setOpen: 
               setOpen(true)
             }} className="text-base" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>
               <div className="flex flex-row items-center gap-x-1">
-                <Plus className="h-[18px] w-[18px]"/>
+                <Plus className="size-4"/>
                 {t('voices.new')}
               </div>
             </Button>

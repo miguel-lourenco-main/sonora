@@ -43,8 +43,9 @@ const useVoiceColumnState = (onRename: (id: string, name: string) => Promise<voi
         setEditingName('')
         toast.success(t('voices.rename.success'))
       } catch (error) {
-        toast.error(t('voices.rename.error'))
-        console.error(error)
+        const errorMessage = error instanceof Error ? error.message : t('voices.rename.error');
+        toast.error(errorMessage);
+        console.error('Rename voice error:', error);
       } finally {
         setIsLoading(null)
       }
@@ -58,8 +59,9 @@ const useVoiceColumnState = (onRename: (id: string, name: string) => Promise<voi
       await onDelete(id)
       toast.success(t('voices.delete.success'))
     } catch (error) {
-      toast.error(t('voices.delete.error'))
-      console.error(error)
+      const errorMessage = error instanceof Error ? error.message : t('voices.delete.error');
+      toast.error(errorMessage);
+      console.error('Delete voice error:', error);
     } finally {
       setIsLoading(null)
     }

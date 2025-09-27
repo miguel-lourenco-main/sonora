@@ -246,7 +246,9 @@ export function AudioFilesUploader({
             onSuccess?.();
             setTimeout(() => setSubmitStatus('idle'), STATUS_DURATION);
         } catch (error) {
-            console.error(error);
+            console.error('Create voice error:', error);
+            const errorMessage = error instanceof Error ? error.message : 'Failed to create voice';
+            toast.error(errorMessage);
             setSubmitStatus('error');
             setTimeout(() => setSubmitStatus('idle'), STATUS_DURATION);
         }

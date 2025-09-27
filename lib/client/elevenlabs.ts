@@ -72,12 +72,23 @@ export async function deleteVoice(voiceId: string): Promise<void> {
 
 export async function renameVoice(voiceId: string, name: string): Promise<void> {
   const apiKey = await requireApiKey();
+  
+  // Try using FormData instead of JSON, similar to createVoice
+  const form = new FormData();
+  form.set('name', name);
+  console.log('Renaming voice with FormData, name:', name);
+  
   const res = await fetch(`https://api.elevenlabs.io/v1/voices/${voiceId}/edit`, {
     method: 'POST',
-    headers: { 'xi-api-key': apiKey, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name }),
+    headers: { 'xi-api-key': apiKey },
+    body: form,
   });
-  if (!res.ok) throw new Error('Failed to rename voice');
+  
+  if (!res.ok) {
+    const errorText = await res.text();
+    console.error('Rename voice error response:', errorText);
+    throw new Error(`Failed to rename voice: ${errorText}`);
+  }
 }
 
 export async function previewVoice(voiceId: string, text: string): Promise<string> {

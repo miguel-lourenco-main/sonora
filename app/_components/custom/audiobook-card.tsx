@@ -73,7 +73,7 @@ export function AudiobookCard({ story, className, ...props }: StoryCardProps) {
       <Link href={`/player/${story.id}`} className="size-full">
         <CardContainer containerClassName="size-full" className="size-full">
           <CardBody className="grid grid-cols-1 place-items-center size-full max-w-[32rem] space-y-4 rounded-2xl py-6 bg-muted shadow-lg">
-            <CardItem translateZ={150} className="size-full">
+            <CardItem translateZ={150} className="flex items-center justify-center">
               <AudiobookCardContent story={story} />
             </CardItem>
             <div className="flex flex-col space-y-4 px-12 pt-4">
@@ -117,9 +117,9 @@ export function AudiobookCard({ story, className, ...props }: StoryCardProps) {
 
 function AudiobookCardContent({ story }: { story: Story }) {
   return (
-    <div className="relative size-full min-h-[32rem]">
-      <img src="/images/book_cover.png" alt={story.title} className="absolute top-[2rem] left-[4rem] z-10 w-[22rem] m-4 rounded-lg object-cover" />
-      <img src={story.coverUrl} alt={story.title} className="absolute top-[3.5rem] left-[10.5rem] z-20 w-[13rem] m-4 rounded-lg object-cover" />
+    <div className="relative w-[22rem] h-full min-h-[32rem]">
+      <img src="/images/book_cover.png" alt={story.title} className="absolute top-0 left-0 z-10 size-full rounded-lg object-contain" />
+      <img src={story.coverUrl} alt={story.title} className="absolute top-[3.5rem] left-[6rem] z-20 w-[13rem] m-4 rounded-lg object-cover" />
     </div>
   )
 }

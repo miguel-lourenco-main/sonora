@@ -38,7 +38,8 @@ export function useVoices() {
       }
     } catch (err) {
       console.error('Error fetching voices:', err);
-      setError(err instanceof Error ? err : new Error('Failed to fetch voices'));
+      const errorMessage = err instanceof Error ? err.message : 'Failed to fetch voices';
+      setError(new Error(errorMessage));
     } finally {
       setIsLoading(false);
     }

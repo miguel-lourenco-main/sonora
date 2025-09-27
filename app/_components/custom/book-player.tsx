@@ -365,22 +365,22 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
 
   return (
     <div className="flex h-full flex-col items-center justify-between bg-background px-6 pb-6">
-      <header className="flex w-full items-center justify-end p-4">
+      <header className="flex w-full items-center justify-center md:justify-end p-4">
         <div className="w-full max-w-xs">
           <Select
             value={selectedVoice}
             onValueChange={setSelectedVoice}
             disabled={isLoadingVoices || isGeneratingSpeech || isPlaying || undefined}
           >
-            <SelectTrigger>
+            <SelectTrigger className="text-lg">
               <SelectValue placeholder="Select a voice" />
             </SelectTrigger>
-            <SelectContent className="text-lg">
+            <SelectContent>
               <SelectItem key={'default'} value={'default'}>
                 <p className="text-lg">Pre-Recorded</p>
               </SelectItem>
               {(voices ?? []).map((voice) => (
-                <SelectItem key={voice.voice_id} value={voice.voice_id}>
+                <SelectItem key={voice.voice_id} value={voice.voice_id} className="text-lg">
                   {voice.name}
                 </SelectItem>
               ))}
@@ -389,7 +389,7 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
         </div>
       </header>
       <div className="flex flex-col items-center justify-start gap-8 p-4 mb-4 md:flex-row md:items-start md:justify-center">
-        <div className="relative aspect-[3/4] w-48 flex-shrink-0 overflow-hidden rounded-lg shadow-lg md:w-64">
+        <div className="relative aspect-[3/5] w-48 flex-shrink-0 overflow-hidden rounded-lg shadow-lg md:w-72">
           <Image
             src={story.coverUrl}
             alt={story.title}
@@ -401,7 +401,7 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
           <h1 className="mb-2 text-3xl font-bold">{story.title}</h1>
           <p className="mb-4 text-lg text-muted-foreground">By {story.author}</p>
           
-          <div className="relative h-48 w-full max-w-xl rounded-md border p-4 md:h-64">
+          <div className="relative h-64 w-full max-w-xl rounded-md border p-4 md:h-96">
             {showLoadingUI && (
               <div className="absolute inset-0 flex items-center justify-center bg-background/80 backdrop-blur-sm z-10">
                 <p className="text-sm text-muted-foreground flex items-center gap-2">

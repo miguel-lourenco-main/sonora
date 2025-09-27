@@ -12,6 +12,7 @@ import { listVoices } from '~/lib/client/elevenlabs';
 import { clearCachedVoices, setCachedVoices } from '~/lib/local/storage';
 import { Button } from '@kit/ui/shadcn/button';
 import { useVoices as useAutoVoices } from '~/lib/hooks/use-voices';
+import { RefreshCcw } from 'lucide-react';
 
 interface VoicesTableProps {
   initialVoices: Voice[];
@@ -36,8 +37,9 @@ export default function VoicesTable({
       await deleteVoiceApi(voice.voice_id);
       toast.success(t('voices.delete.success'));
     } catch (error) {
-      toast.error(t('voices.delete.error'));
-      console.error(error);
+      const errorMessage = error instanceof Error ? error.message : t('voices.delete.error');
+      toast.error(errorMessage);
+      console.error('Delete voice error:', error);
     }
   }, [t, voices]);
 
@@ -46,8 +48,9 @@ export default function VoicesTable({
       await renameVoiceApi(id, name);
       toast.success(t('voices.rename.success'));
     } catch (error) {
-      toast.error(t('voices.rename.error'));
-      console.error(error);
+      const errorMessage = error instanceof Error ? error.message : t('voices.rename.error');
+      toast.error(errorMessage);
+      console.error('Rename voice error:', error);
     }
   }, [t]);
 
@@ -60,8 +63,8 @@ export default function VoicesTable({
         />
         <Button
           variant="outline"
-          size="sm"
-          className="text-base"
+          size="default"
+          className="text-base h-fit flex gap-x-2"
           onClick={async () => {
             try {
               clearCachedVoices();
@@ -82,6 +85,7 @@ export default function VoicesTable({
             }
           }}
         >
+          <RefreshCcw className="size-4" />
           {t('voices.refresh.button')}
         </Button>
       </div>

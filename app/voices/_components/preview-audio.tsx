@@ -3,6 +3,7 @@ import { Button } from "@kit/ui/shadcn/button";
 import { Loader2, Play, Check, X } from "lucide-react";
 import { cn } from "@kit/ui/lib";
 import { previewVoice } from '~/lib/client/elevenlabs';
+import { toast } from 'sonner';
 
 interface PreviewAudioProps {
     voiceId: string;
@@ -27,6 +28,8 @@ export function PreviewAudio({ voiceId, voiceName }: PreviewAudioProps) {
             }, 2000);
         } catch (error) {
             console.error('Preview error:', error);
+            const errorMessage = error instanceof Error ? error.message : 'Failed to generate preview';
+            toast.error(errorMessage);
             setStatus('error');
             setTimeout(() => setStatus('idle'), 2000);
         }
