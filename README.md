@@ -2,7 +2,7 @@
 
 ## 🎯 Project Overview
 
-**Sonora** is an innovative interactive audiobook platform developed during my time at Edgen, exploring partnerships in the toy industry. The application enables users to generate immersive stories with AI-powered voice narration, creating personalized audio experiences for children and families.
+**Sonora** is an innovative interactive audiobook platform developed during my time at [Edgen](https://edgen.co/), exploring partnerships in the toy industry. The application enables users to generate immersive stories with AI-powered voice narration, creating personalized audio experiences for children and families.
 
 ## 🚀 **Live Demo**
 
@@ -124,7 +124,3 @@ This project is for portfolio purposes. All rights reserved.
 **Contact**: [LinkedIn](https://www.linkedin.com/in/miguel-louren%C3%A7o-395335355/) | [GitLab](https://gitlab.com/miguel-lourenco-main) | [Email](mailto:migasoulou@gmail.com)
 
 **Built with ❤️ by Miguel Lourenço**
-
----
-
-*Developed during partnership exploration at Edgen, showcasing rapid development capabilities and user-centric design approach.*
