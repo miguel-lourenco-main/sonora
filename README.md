@@ -111,6 +111,20 @@ This project demonstrates expertise in:
 - **Rapid prototyping** and user feedback integration
 - **Production deployment** and performance optimization
 
+## 🤝 **Contributing**
+
+This is a personal portfolio project, but suggestions and feedback are welcome!
+
+## 📄 **License**
+
+This project is for portfolio purposes. All rights reserved.
+
+---
+
+**Contact**: [LinkedIn](https://www.linkedin.com/in/miguel-louren%C3%A7o-395335355/) | [GitLab](https://gitlab.com/miguel-lourenco-main) | [Email](mailto:migasoulou@gmail.com)
+
+**Built with ❤️ by Miguel Lourenço**
+
 ---
 
 *Developed during partnership exploration at Edgen, showcasing rapid development capabilities and user-centric design approach.*
