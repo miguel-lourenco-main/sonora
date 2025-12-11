@@ -24,6 +24,7 @@
 - 🎨 **Modern UX**: 3D card interactions with Framer Motion animations
 - ⚡ **Real-time Audio**: Progressive audio loading and synchronization
 
+
 ---
 
 ## 📱 Application Features
@@ -56,6 +57,7 @@
 - **Internationalization**: Multi-language support with i18n framework
 - **Accessibility**: Screen reader support and keyboard navigation
 
+
 ---
 
 ## 🛠️ Development Commands
@@ -86,6 +88,9 @@ pnpm format
 pnpm generate-audio
 ```
 
+
+---
+
 ## 🔧 Configuration
 
 ### Environment Setup
@@ -111,6 +116,7 @@ npx supabase gen types typescript --local > lib/database.types.ts
 
 ```
 
+
 ---
 
 ## 🤖 Automated Code Documentation
@@ -135,17 +141,20 @@ An n8n workflow runs on an Azure VM that automatically analyzes code changes on 
 
 This automation helps maintain high code quality and documentation standards throughout the project lifecycle.
 
+
 ---
 
 ## 🤝 **Contributing**
 
 This is a personal portfolio project, but suggestions and feedback are welcome!
 
+
 ---
 
 ## 📄 **License**
 
 This project is for portfolio purposes. All rights reserved.
+
 
 ---
 
