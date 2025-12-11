@@ -11,6 +11,8 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4.15-38B2AC?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
 [![React](https://img.shields.io/badge/React-19.0.0-61DAFB?style=flat-square&logo=react)](https://react.dev/)
 
+---
+
 ## 🚀 Project Overview
 
 **Sonora** is an innovative interactive audiobook platform developed during my time at [Edgen](https://edgen.co/), exploring partnerships in the toy industry. The application enables users to generate immersive stories with AI-powered voice narration, creating personalized audio experiences for children and families.
@@ -20,39 +22,9 @@
 - 🎯 **Interactive Storytelling**: Dynamic branching narratives with user choices
 - 🤖 **AI Voice Technology**: Advanced text-to-speech with ElevenLabs integration
 - 🎨 **Modern UX**: 3D card interactions with Framer Motion animations
-- 🌐 **Internationalization**: Multi-language support with i18n framework
-- 📱 **Mobile-First Design**: Responsive design optimized for all devices
 - ⚡ **Real-time Audio**: Progressive audio loading and synchronization
 
-## 🛠️ Technical Stack
-
-### Frontend
-
-- **Next.js 15** - React framework with App Router and Server Components
-- **TypeScript 5.6.3** - Full type safety across the application
-- **Tailwind CSS 3.4.15** - Utility-first styling with custom design system
-- **Framer Motion** - Advanced animations and 3D interactions
-- **Radix UI** - Accessible component primitives
-- **Lucide React** - Modern icon library
-- **React Query** - Efficient data fetching and state management
-
-### Backend & APIs
-
-- **Supabase** - PostgreSQL database with authentication services
-- **ElevenLabs API** - AI voice generation and text-to-speech
-- **OpenAI Integration** - Story content generation and processing
-- **Node.js Scripts** - Audio processing and content generation
-
-### Key Features
-
-- **Interactive Story Generation** - Branching narratives with choice-based outcomes
-- **AI Voice Management** - Create, customize, and manage multiple AI voices
-- **Voice Cloning** - Upload audio samples to create personalized voices
-- **Audio Synchronization** - Precise word-level timing for subtitle generation
-- **Pre-recorded Audio Support** - High-quality audio for enhanced experience
-- **Theme System** - Light/dark mode support
-- **Error Handling** - Robust error management
-- **Loading States** - Smooth user experience
+---
 
 ## 📱 Application Features
 
@@ -83,6 +55,8 @@
 - **Dark/Light Mode**: Adaptive theming for optimal viewing
 - **Internationalization**: Multi-language support with i18n framework
 - **Accessibility**: Screen reader support and keyboard navigation
+
+---
 
 ## 🛠️ Development Commands
 
@@ -134,7 +108,10 @@ npx supabase db reset
 
 # Generate types
 npx supabase gen types typescript --local > lib/database.types.ts
+
 ```
+
+---
 
 ## 🤖 Automated Code Documentation
 
@@ -158,18 +135,13 @@ An n8n workflow runs on an Azure VM that automatically analyzes code changes on 
 
 This automation helps maintain high code quality and documentation standards throughout the project lifecycle.
 
-## 📞 Contact & Portfolio
-
-This project demonstrates expertise in:
-- **Full-stack development** with modern React/Next.js
-- **AI integration** and voice technology
-- **Complex state management** and user experience design
-- **Rapid prototyping** and user feedback integration
-- **Production deployment** and performance optimization
+---
 
 ## 🤝 **Contributing**
 
 This is a personal portfolio project, but suggestions and feedback are welcome!
+
+---
 
 ## 📄 **License**
 
