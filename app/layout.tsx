@@ -26,7 +26,7 @@ export default function RootLayout({
       <body className='flex flex-col h-screen'>
         <RootProviders theme={theme} lang={language}>
           <div className='flex flex-row justify-between items-center h-fit py-3 px-8'>
-            <AppLogo width={92} height={92} />
+            <AppLogo width={96} height={96} />
             <nav className='flex flex-row justify-between text-lg text-muted-foreground items-center gap-4'>
               <Link href='/' className='hover:text-foreground transition-colors text-xl'>Stories</Link>
               <Link href='/voices' className='hover:text-foreground transition-colors text-xl'>Voices</Link>
@@ -66,6 +66,15 @@ export const metadata: Metadata = {
   description: appConfig.description,
   metadataBase: new URL(appConfig.url),
   applicationName: appConfig.name,
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/images/app-logo.svg', type: 'image/svg+xml', sizes: 'any' },
+    ],
+    apple: [
+      { url: '/apple-icon.png', sizes: '360x360', type: 'image/png' },
+    ],
+  },
   openGraph: {
     url: appConfig.url,
     siteName: appConfig.name,
