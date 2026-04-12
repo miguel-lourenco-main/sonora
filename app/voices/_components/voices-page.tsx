@@ -12,7 +12,7 @@ export default function VoicesPage({
   const { t, ready } = useTranslation('custom')
   const { voices } = useVoiceManager(initialVoices)
 
-  if (process.env.NODE_ENV === 'development' && !ready) return null;
+  if (!ready) return null;
 
   return (
     <div className="container py-6">

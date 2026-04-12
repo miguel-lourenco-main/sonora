@@ -116,7 +116,7 @@ export default function VoicesTable({
   // Empty state shown only when not loading and still empty
   const showEmptyState = !isAutoLoading && ((voices?.length ?? 0) === 0);
 
-  if (process.env.NODE_ENV === 'development' && !ready) return null;
+  if (!ready) return null;
 
   return (
     <div className="flex flex-col gap-4 w-full mt-8 lg:mt-20" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>

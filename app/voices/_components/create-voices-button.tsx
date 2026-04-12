@@ -25,7 +25,7 @@ export function CreateVoicesButton({ open, setOpen }: { open: boolean, setOpen: 
     }
   };
 
-  if (process.env.NODE_ENV === 'development' && !ready) return null;
+  if (!ready) return null;
 
   return (
     <DialogLayout

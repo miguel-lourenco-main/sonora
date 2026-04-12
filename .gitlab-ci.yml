@@ -4,7 +4,6 @@ image: node:18
 
 # Define variables
 variables:
-  NODE_ENV: production
   CI_COMMIT_REF_SLUG: $CI_COMMIT_REF_SLUG
 
 # Cache node_modules for faster builds
@@ -15,9 +14,31 @@ cache:
 
 # Define stages
 stages:
+  - lint
+  - typecheck
   - build
   #- test
   - deploy
+
+# Lint stage
+lint:
+  stage: lint
+  script:
+    - pnpm run lint
+  artifacts:
+    paths:
+      - .eslintcache
+    expire_in: 1 hour
+
+# Typecheck stage
+typecheck:
+  stage: typecheck
+  script:
+    - pnpm run typecheck
+  artifacts:
+    paths:
+      - .tsbuildinfo
+    expire_in: 1 hour
 
 # Build stage for all branches
 build:
@@ -27,11 +48,8 @@ build:
     - pnpm install --frozen-lockfile
   script:
     - echo "Environment variables for debugging:"
-    - echo "NODE_ENV=$NODE_ENV"
     - echo "CI_COMMIT_REF_SLUG=$CI_COMMIT_REF_SLUG"
     - echo "CI_DEFAULT_BRANCH=$CI_DEFAULT_BRANCH"
-    - pnpm run typecheck
-    - pnpm run lint
     - pnpm run build
   artifacts:
     paths:

@@ -34,7 +34,7 @@ const useVoiceColumnState = (onRename: (id: string, name: string) => Promise<voi
   const [isLoading, setIsLoading] = useState<string | null>(null)
 
   const handleRename = async (id: string) => {
-    if (!ready && process.env.NODE_ENV === 'development') return;
+    if (!ready) return;
     if (editingName.trim()) {
       try {
         setIsLoading(id)
@@ -53,7 +53,7 @@ const useVoiceColumnState = (onRename: (id: string, name: string) => Promise<voi
   }
 
   const handleDelete = async (id: string, onDelete: (id: string) => Promise<void>) => {
-    if (!ready && process.env.NODE_ENV === 'development') return;
+    if (!ready) return;
     try {
       setIsLoading(id)
       await onDelete(id)
