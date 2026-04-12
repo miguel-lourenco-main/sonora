@@ -6,8 +6,7 @@ stages:
   - lint
   - typecheck
   - build
-  - pages
-  - pages-review
+  - deploy
   - comment_mirror
   - ci_fix
 
