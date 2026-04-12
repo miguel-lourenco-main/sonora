@@ -7,9 +7,8 @@
 lint_job:
   stage: lint
   extends:
-    - .rule_mr_to_main_only
-  extends:
     - .node18_pnpm
+    - .rule_mr_to_main_only
   script:
     - pnpm lint
 
