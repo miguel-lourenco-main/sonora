@@ -14,7 +14,7 @@ pages:
       - public/
     expire_in: never
   dependencies:
-    - build
+    - build_job
     #- test
   environment:
     name: production
@@ -42,7 +42,7 @@ pages-review:
     path_prefix: "$CI_COMMIT_REF_SLUG"  # Creates URL: site.com/branch-name/
     expire_in: 1 week  # Auto-cleanup after 1 week
   dependencies:
-    - build
+    - build_job
   environment:
     name: review/$CI_COMMIT_REF_SLUG
     url: $CI_PAGES_URL/$CI_COMMIT_REF_SLUG/
