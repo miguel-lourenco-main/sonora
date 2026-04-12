@@ -1,0 +1,21 @@
+comment_mirror:
+  stage: comment_mirror
+  extends: .cursor_node22_pnpm
+  resource_group: comment-mirror-main
+  rules:
+    - if: '$ENABLE_COMMENT_MIRROR != "1"'
+      when: never
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "main"'
+      when: on_success
+    - when: never
+  variables:
+    GIT_DEPTH: "0"
+  script:
+    - export PATH="$HOME/.local/bin:$PATH"
+    - node infra/ci/scripts/gitlab-run-comment-mirror.mjs
+    - cat comment-mirror-result.json
+  artifacts:
+    when: always
+    paths:
+      - comment-mirror-result.json
+    expire_in: 1 week

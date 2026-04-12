@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://o-guardanapo.dev/contracts/ci-fix-result.schema.json",
+  "title": "CiFixResult",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["ok"],
+  "properties": {
+    "ok": { "type": "boolean" },
+    "error": { "type": "string" },
+    "backend": { "type": "string", "enum": ["cursor", "openai"] },
+    "dry_run": { "type": "boolean" },
+    "skipped": { "type": "boolean" },
+    "reason": { "type": "string" },
+    "mr_url": { "type": "string" },
+    "source_branch": { "type": "string" },
+    "target_branch": { "type": "string" },
+    "files_count": { "type": "integer", "minimum": 0 },
+    "marker": { "type": "string" }
+  }
+}

@@ -1,0 +1,72 @@
+default:
+  interruptible: true
+
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME =~ /^comment-mirror\//'
+      when: never
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH =~ /^comment-mirror\//'
+      when: never
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH =~ /^ci-fix\//'
+      when: never
+    - if: '$CI_PIPELINE_SOURCE == "schedule" && $CI_FIX_CLEANUP == "1"'
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: never
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS
+      when: never
+    - if: $CI_COMMIT_BRANCH
+
+stages:
+  - sync
+  - lint
+  - typecheck
+  - build
+  - test
+  - deploy_preview
+  - deploy_production
+  - comment_mirror
+  - ci_fix
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+    - .turbo/
+
+variables:
+  NPM_CONFIG_LOGLEVEL: "warn"
+  DOCKER_BUILDKIT: "1"
+  SUPABASE_LOG_LEVEL: "warn"
+  ENABLE_VERCEL_DEPLOY: "1"
+  ENABLE_COMMENT_MIRROR: "1"
+  ENABLE_CI_FIX: "1"
+
+# Reusable rule blocks via extends (safer than YAML anchors across includes).
+.rule_mr_to_main_only:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main"'
+
+.node18_pnpm:
+  image: node:18.18.0
+  before_script:
+    - corepack enable
+    - corepack prepare pnpm@9.12.0 --activate
+    - pnpm install --frozen-lockfile
+
+.node22_pnpm:
+  image: node:22
+  before_script:
+    - corepack enable
+    - corepack prepare pnpm@9.12.0 --activate
+    - pnpm install --frozen-lockfile
+
+.cursor_node22_pnpm:
+  image: node:22
+  before_script:
+    - apt-get update && apt-get install -y --no-install-recommends jq curl git ca-certificates
+    - curl -fsSL https://cursor.com/install | bash
+    - export PATH="$HOME/.local/bin:$PATH"
+    - corepack enable
+    - corepack prepare pnpm@9.12.0 --activate
+    - pnpm install --frozen-lockfile

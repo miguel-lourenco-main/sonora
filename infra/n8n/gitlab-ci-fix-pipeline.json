@@ -1,0 +1,15 @@
+{
+  "name": "DEPRECATED - CI fix via n8n",
+  "status": "retired",
+  "retired_reason": "CI-only migration replaces runtime n8n/executor flow.",
+  "replacement": {
+    "collect_context": "infra/ci/scripts/collect-ci-fix-context.sh",
+    "runner": "infra/ci/scripts/gitlab-run-ci-fix.mjs",
+    "pipeline": ".gitlab-ci.yml job ci_fix",
+    "contract_doc": "infra/ci-fix-contract.md"
+  },
+  "notes": [
+    "This file is intentionally retained as a deprecation marker.",
+    "Do not import this workflow in n8n for CI-fix automation."
+  ]
+}

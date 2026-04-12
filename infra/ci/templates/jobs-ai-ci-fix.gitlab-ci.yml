@@ -1,0 +1,46 @@
+# CI-only auto-fix flow (single job: avoids needs->missing-job when rules exclude collect from the DAG).
+# Required: GITLAB_TOKEN, CURSOR_API_KEY (default backend: Cursor Agent CLI headless).
+# Optional: CI_FIX_BACKEND=openai + OPENAI_API_KEY for legacy JSON-only path (GitLab API commits, no Cursor CLI).
+# Optional: GITLAB_API_URL, OPENAI_MODEL, CI_FIX_MAX_ITERATIONS, CI_FIX_ALLOWED_PATH_PREFIXES, CI_FIX_DRY_RUN, CI_FIX_LINT_VALIDATE, CURSOR_AGENT_BIN
+ci_fix:
+  stage: ci_fix
+  extends: .cursor_node22_pnpm
+  resource_group: ci-fix-$CI_COMMIT_REF_NAME
+  variables:
+    # Request merge-when-pipeline-succeeds for generated ci-fix/* MRs.
+    CI_FIX_AUTO_MERGE: "1"
+  rules:
+    - if: '$ENABLE_CI_FIX != "1"'
+      when: never
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: never
+    - when: on_failure
+  script:
+    - export PATH="$HOME/.local/bin:$PATH"
+    - bash infra/ci/scripts/collect-ci-fix-context.sh > ci-fix-context.json
+    - jq . ci-fix-context.json
+    - node infra/ci/scripts/gitlab-run-ci-fix.mjs ci-fix-context.json
+    - cat ci-fix-result.json
+  artifacts:
+    when: always
+    paths:
+      - ci-fix-context.json
+      - ci-fix-result.json
+    expire_in: 1 week
+
+# Scheduled CI-fix disposal by target branch.
+# Policy: once any ci-fix/* MR is merged into target T, remaining ci-fix/* branches for T are disposable.
+# Configure a schedule with CI_FIX_CLEANUP=1 and optional CI_FIX_CLEANUP_DRY_RUN.
+ci_fix_cleanup_branches:
+  stage: ci_fix
+  image: node:22
+  resource_group: ci-fix-cleanup
+  rules:
+    - if: '$ENABLE_CI_FIX != "1"'
+      when: never
+    - if: '$CI_PIPELINE_SOURCE == "schedule" && $CI_FIX_CLEANUP == "1"'
+    - when: never
+  before_script:
+    - apt-get update && apt-get install -y --no-install-recommends jq curl ca-certificates
+  script:
+    - bash infra/ci/scripts/cleanup-ci-fix-branches.sh
