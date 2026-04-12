@@ -1,22 +1,6 @@
 default:
   interruptible: true
 
-workflow:
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME =~ /^comment-mirror\//'
-      when: never
-    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH =~ /^comment-mirror\//'
-      when: never
-    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH =~ /^ci-fix\//'
-      when: never
-    - if: '$CI_PIPELINE_SOURCE == "schedule" && $CI_FIX_CLEANUP == "1"'
-    - if: $CI_PIPELINE_SOURCE == "schedule"
-      when: never
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    - if: $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS
-      when: never
-    - if: $CI_COMMIT_BRANCH
-
 stages:
   - sync
   - lint
@@ -38,7 +22,6 @@ variables:
   NPM_CONFIG_LOGLEVEL: "warn"
   DOCKER_BUILDKIT: "1"
   SUPABASE_LOG_LEVEL: "warn"
-  ENABLE_VERCEL_DEPLOY: "1"
   ENABLE_COMMENT_MIRROR: "1"
   ENABLE_CI_FIX: "1"
 

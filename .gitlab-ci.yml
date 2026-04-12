@@ -1,6 +1,6 @@
 include:
   - local: infra/ci/templates/base.gitlab-ci.yml
   - local: infra/ci/templates/jobs-quality.gitlab-ci.yml
-  - local: infra/ci/templates/jobs-deploy-vercel.gitlab-ci.yml
   - local: infra/ci/templates/jobs-comment-mirror.gitlab-ci.yml
   - local: infra/ci/templates/jobs-ai-ci-fix.gitlab-ci.yml
+  - local: infra/ci/templates/deploy-gitlab-pages.gitlab-ci.yml
