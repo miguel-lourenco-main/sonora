@@ -25,3 +25,7 @@ build_job:
     - .node18_pnpm
   script:
     - pnpm build
+  artifacts:
+    paths:
+      - out/
+    expire_in: 1 hour
