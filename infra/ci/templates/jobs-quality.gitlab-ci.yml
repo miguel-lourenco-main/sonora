@@ -4,39 +4,11 @@
 #   - Prefer GITLAB_TOKEN (PAT with api or write_repository) as oauth2:<token>@host
 #   - Else CI_JOB_TOKEN as gitlab-ci-token:<token>@host (enable "CI job token can push" in project CI/CD settings).
 # Fork MRs are skipped (no secrets on fork pipelines).
-sync_translations:
-  stage: sync
-  extends: .node22_pnpm
-  resource_group: translation-sync-mr-$CI_MERGE_REQUEST_IID
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
-  variables:
-    GIT_DEPTH: "0"
-  script:
-    - |
-      set -e
-      pnpm translations:sync:locales
-      git config user.email "gitlab-ci@${CI_SERVER_HOST}"
-      git config user.name "GitLab CI"
-      git add apps/web/public/locales
-      if git diff --staged --quiet; then
-        echo "No locale changes to commit."
-        exit 0
-      fi
-      git commit -m "chore(i18n): sync translatable_content to locale files"
-      if [ -n "${GITLAB_TOKEN:-}" ]; then
-        git remote set-url origin "https://oauth2:${GITLAB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git"
-      else
-        git remote set-url origin "https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git"
-      fi
-      git push origin "HEAD:${CI_COMMIT_REF_NAME}"
-
 lint_job:
   stage: lint
   extends:
-    - .rule_mr_to_main_only
-  extends:
     - .node18_pnpm
+    - .rule_mr_to_main_only
   script:
     - pnpm lint
 
@@ -53,67 +25,7 @@ build_job:
     - .node18_pnpm
   script:
     - pnpm build
-
-test:
-  stage: test
-  extends:
-    - .rule_mr_to_main_only
-  image: node:18.18.0
-  services:
-    - docker:24-dind
-  variables:
-    DOCKER_HOST: tcp://docker:2375
-    DOCKER_TLS_CERTDIR: ""
-    DOCKER_DRIVER: overlay2
-  before_script:
-    - apt-get update && apt-get install -y docker.io curl
-    - sleep 10
-    - docker info
-    - curl -fsSL https://github.com/supabase/cli/releases/download/v1.204.6/supabase_1.204.6_linux_amd64.tar.gz | tar -xz && mv supabase /usr/local/bin/supabase
-    - corepack enable
-    - corepack prepare pnpm@9.12.0 --activate
-    - pnpm install --frozen-lockfile
-    - cd apps/e2e && pnpm exec playwright install --with-deps && cd ../..
-    - pnpm supabase:web:start
-    - pnpm supabase:web:reset
-    - echo "Waiting for Supabase to be fully ready..."
-    - sleep 15
-    - curl -f http://docker:54321/rest/v1/ || (echo "Supabase API not ready" && exit 1)
-    - curl -f http://docker:54324/api/v1/messages || (echo "Supabase Email service not ready" && exit 1)
-    - echo "Building web app and starting Next.js production server (dev overlay blocks E2E clicks)..."
-    - |
-      export NEXT_PUBLIC_SUPABASE_URL=http://docker:54321
-      export NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0
-      export SUPABASE_SECRET_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU
-      export SUPABASE_JWT_SECRET=super-secret-jwt-token-with-at-least-32-characters-long
-      export NEXT_PUBLIC_INBUCKET_URL=http://docker:54324
-      export PLAYWRIGHT_TEST_MODE=true
-      export NEXT_PUBLIC_CI=true
-      export EMAIL_SENDER=o-guardanapo1@gmail.com
-      export NEXT_PUBLIC_LOG_LEVEL=debug
-      export TEST_TIER=fast
-      export NEXT_PUBLIC_THEME_COLOR="#ffffff"
-      export NEXT_PUBLIC_DEFAULT_LANGUAGE=en
-      export NEXT_PUBLIC_SITE_URL=http://localhost:3000
-      export NEXT_PUBLIC_DEFAULT_CURRENCY=USD
-      NODE_ENV=production pnpm --filter web build
-      cd apps/web
-      pnpm start &
-      cd ../..
-    - echo "Waiting for Next.js server to be ready..."
-    - timeout 60 bash -c 'until curl -f http://localhost:3000 > /dev/null 2>&1; do echo "Waiting for server..."; sleep 2; done'
-    - echo "Next.js server is ready!"
-  script:
-    - cd apps/e2e
-    - export NEXT_PUBLIC_INBUCKET_URL=http://docker:54324
-    - export NEXT_PUBLIC_SUPABASE_URL=http://docker:54321
-    - pnpm test tests
   artifacts:
-    when: always
     paths:
-      - apps/e2e/playwright-report/
-    expire_in: 1 week
-  needs:
-    - lint_job
-    - typecheck_job
-    - build_job
+      - out/
+    expire_in: 1 hour

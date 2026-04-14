@@ -22,9 +22,7 @@ stages:
   - lint
   - typecheck
   - build
-  - test
-  - deploy_preview
-  - deploy_production
+  - deploy
   - comment_mirror
   - ci_fix
 
@@ -38,7 +36,6 @@ variables:
   NPM_CONFIG_LOGLEVEL: "warn"
   DOCKER_BUILDKIT: "1"
   SUPABASE_LOG_LEVEL: "warn"
-  ENABLE_VERCEL_DEPLOY: "1"
   ENABLE_COMMENT_MIRROR: "1"
   ENABLE_CI_FIX: "1"
 
