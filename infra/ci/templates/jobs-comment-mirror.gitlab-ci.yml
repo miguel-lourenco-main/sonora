@@ -10,6 +10,7 @@ comment_mirror:
     - when: never
   variables:
     GIT_DEPTH: "0"
+    COMMENT_MIRROR_ALLOWED_PATH_PREFIXES: "app/,apps/,packages/,components/,lib/,utils/,hooks/,types/,styles/,assets/,public/,content/,tooling/,scripts/,infra/,config/"
   script:
     - export PATH="$HOME/.local/bin:$PATH"
     - node infra/ci/scripts/gitlab-run-comment-mirror.mjs

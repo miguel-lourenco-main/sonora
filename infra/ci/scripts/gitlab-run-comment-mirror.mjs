@@ -25,7 +25,8 @@ const ENV = {
   dryRun: process.env.COMMENT_MIRROR_DRY_RUN === '1',
   debug: process.env.COMMENT_MIRROR_DEBUG === '1',
   allowedPrefixes: normalizePathPrefixes(
-    process.env.COMMENT_MIRROR_ALLOWED_PATH_PREFIXES || 'apps/,packages/,tooling/,scripts/,infra/',
+    process.env.COMMENT_MIRROR_ALLOWED_PATH_PREFIXES ||
+      'app/,apps/,packages/,components/,lib/,utils/,hooks/,types/,styles/,assets/,public/,content/,tooling/,scripts/,infra/,config/',
   ),
   maxFiles: parsePositiveInt(process.env.COMMENT_MIRROR_MAX_FILES, 120),
   maxBytesPerFile: parsePositiveInt(process.env.COMMENT_MIRROR_MAX_BYTES_PER_FILE, 500000),

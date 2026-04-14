@@ -28,7 +28,7 @@ Canonical contract for the `comment_mirror` CI flow.
 - `CURSOR_AGENT_BIN` (default `agent`)
 - `COMMENT_MIRROR_BRANCH` (default `comment-mirror/main`)
 - `COMMENT_MIRROR_TARGET_BRANCH` (default `main`)
-- `COMMENT_MIRROR_ALLOWED_PATH_PREFIXES` (default `apps/,packages/,tooling/,scripts/,infra/`)
+- `COMMENT_MIRROR_ALLOWED_PATH_PREFIXES` (default includes `app/`, `apps/`, `lib/`, `public/`, `scripts/`, `infra/`, and related source roots — see `gitlab-run-comment-mirror.mjs`)
 - `COMMENT_MIRROR_MAX_FILES` (default `120`)
 - `COMMENT_MIRROR_MAX_BYTES_PER_FILE` (default `500000`)
 - `COMMENT_MIRROR_DRY_RUN` (`1` enables dry-run)
