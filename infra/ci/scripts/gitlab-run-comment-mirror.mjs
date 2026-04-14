@@ -121,6 +121,8 @@ async function runCursorCommentMirror(runMarker) {
   const prompt = buildCursorPrompt()
   runCursorAgentCli(prompt, repoRoot)
 
+  discardDisallowedWorkingTreeChanges(repoRoot)
+
   const changedPaths = getGitChangedPaths(repoRoot)
   if (changedPaths.length === 0) {
     const result = {
@@ -202,6 +204,7 @@ function buildCursorPrompt() {
     'Hard constraints:',
     '- Only add comments. Do not change executable logic, imports, exports, APIs, formatting-only lines, dependencies, or configuration values.',
     '- Never edit lockfiles, generated files, binaries, or .env files.',
+    '- Never modify images, fonts, archives, or other non-text assets (including under public/).',
     '- Keep comments concise and meaningful; skip obvious lines.',
     '- Use the existing comment style already used in each file.',
     '- If a file does not need comments, leave it unchanged.',
@@ -251,6 +254,51 @@ function getGitChangedPaths(repoRoot) {
     encoding: 'utf8',
   })
   return uniquePaths([...splitLines(unstaged), ...splitLines(staged), ...splitLines(untracked)])
+}
+
+/**
+ * Drops working-tree changes the agent must not make (binaries, lockfiles, etc.).
+ * Those paths are blocked in validation; reverting here keeps legitimate comment edits.
+ *
+ * @param {string} repoRoot
+ * @returns {string[]} paths that were discarded
+ */
+function discardDisallowedWorkingTreeChanges(repoRoot) {
+  const changedPaths = getGitChangedPaths(repoRoot)
+  const discarded = []
+  for (const filePath of changedPaths) {
+    const normalized = filePath.replace(/\\/g, '/')
+    if (!isDisallowedPath(normalized)) continue
+    const abs = path.join(repoRoot, filePath)
+    const tracked =
+      execFileSync('git', ['ls-files', '--', filePath], { cwd: repoRoot, encoding: 'utf8' }).trim()
+        .length > 0
+    try {
+      if (tracked) {
+        execFileSync('git', ['restore', '--staged', '--worktree', '--', filePath], {
+          cwd: repoRoot,
+          stdio: 'pipe',
+        })
+      } else {
+        execFileSync('git', ['clean', '-f', '--', filePath], { cwd: repoRoot, stdio: 'pipe' })
+      }
+    } catch {
+      if (fs.existsSync(abs)) {
+        try {
+          fs.unlinkSync(abs)
+        } catch {
+          // ignore
+        }
+      }
+    }
+    discarded.push(filePath)
+  }
+  if (discarded.length > 0) {
+    console.warn(
+      `comment-mirror-runner: discarded disallowed path changes: ${discarded.join(', ')}`,
+    )
+  }
+  return discarded
 }
 
 function getUnifiedDiff(repoRoot, changedPaths) {

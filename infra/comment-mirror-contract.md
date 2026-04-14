@@ -47,6 +47,7 @@ Canonical contract for the `comment_mirror` CI flow.
 ## Safety guardrails
 
 - Treat Cursor output as untrusted and validate with deterministic checks.
+- After the agent runs, the runner discards working-tree changes on disallowed paths (e.g. images, lockfiles) so a stray edit does not fail the job when other files have valid comment-only diffs.
 - Changed files must remain inside `COMMENT_MIRROR_ALLOWED_PATH_PREFIXES`.
 - Reject sensitive/generated/binary files (`.env*`, lockfiles, binary extensions, build outputs).
 - Reject diffs containing non-comment additions/removals.
