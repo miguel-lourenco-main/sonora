@@ -3,6 +3,8 @@ import { Voice } from '~/lib/types';
 import { listVoices } from '../client/elevenlabs';
 import { getCachedVoices, setCachedVoices, getElevenLabsApiKey } from '../local/storage';
 
+// Loads ElevenLabs voices when a key exists; serves cached list between refreshes (TTL in storage helpers).
+
 export function useVoices() {
   const [voices, setVoices] = useState<Voice[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);

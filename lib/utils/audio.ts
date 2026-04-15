@@ -10,6 +10,7 @@ export const DEFAULT_AUDIO_CONFIG: AudioDeviceConfig = {
 
 export async function getAudioDevices(): Promise<MediaDeviceInfo[]> {
   try {
+    // Requesting the mic unlocks device labels in many browsers (otherwise inputs can be unnamed/empty)
     await navigator.mediaDevices.getUserMedia({ audio: true });
     const devices = await navigator.mediaDevices.enumerateDevices();
     return devices.filter(device => device.kind === 'audioinput');

@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { calculateWordTimings, getAudioDuration } from '../utils/audio';
 
+// Resolves duration + per-word timings: ElevenLabs supplies alignment; OpenAI path derives timings from duration.
+
 export type WordTiming = {
   word: string;
   start: number;

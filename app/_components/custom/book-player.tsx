@@ -36,6 +36,8 @@ interface StoryPlayerProps {
   initialVoiceId?: string;
 }
 
+// Orchestrates chapter graph, voice/TTS selection, prefetch of next nodes, and timed highlight sync.
+
 export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
 
   const nodes = story.chapters[0]?.content.nodes ?? {};

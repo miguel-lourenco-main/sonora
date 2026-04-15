@@ -1,3 +1,4 @@
+// Precomputed word-level start/end times (seconds) keyed by story `ContentNode` id for karaoke-style UI.
 interface WordTiming {
     word: string;
     start: number;

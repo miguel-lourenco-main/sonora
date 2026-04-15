@@ -1,6 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ContentNode } from '../types';
 
+// Branching narrative playback: one <audio> element per session; `currentTime` is per clip while refs
+// sum finished clips so the UI can show a single timeline across nodes.
+
 interface UseStoryPlayerProps {
   initialNodeId: string;
   nodes: Record<string, ContentNode>;
@@ -20,7 +23,9 @@ export function useStoryPlayer({ initialNodeId, nodes }: UseStoryPlayerProps) {
   const [canReplay, setCanReplay] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   const previousNodeDuration = useRef<number>(0);
+  // Cumulative duration of all fully played clips (seconds); add active clip `currentTime` for display position
   const lastNodeEndTime = useRef<number>(0);
+  // Guards against `timeupdate` handling while React state is moving to the next node
   const isTransitioning = useRef<boolean>(false);
 
   const onTimeUpdate = useCallback(() => {

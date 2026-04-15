@@ -1,5 +1,7 @@
 'use client'
 
+// Gates the story player until we know playback is possible (bundled samples and/or user ElevenLabs key).
+
 import { useState, useEffect } from 'react'
 import { Story } from '~/lib/types'
 import { StoryPlayer } from './book-player'

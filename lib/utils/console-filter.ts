@@ -1,3 +1,5 @@
+// Optional dev/prod console gating via NEXT_PUBLIC_*; call once on the client from app bootstrap.
+
 type ConsoleMethod = 'debug' | 'log' | 'info' | 'warn' | 'error';
 
 function shouldEnableLogs(): boolean {

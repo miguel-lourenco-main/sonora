@@ -23,7 +23,7 @@ export function HighlightedText({
   useEffect(() => {
     if (!wordTimings?.length || !containerRef.current) return;
 
-    // Find the currently highlighted word with a small look-ahead offset
+    // Resolve the active word from the timeline, then scroll so it stays near the upper viewport band
     const currentWord = wordTimings.find(
       timing => currentTime >= timing.start && currentTime <= timing.end
     );

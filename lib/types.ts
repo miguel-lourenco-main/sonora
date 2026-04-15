@@ -110,6 +110,7 @@ export interface AudioDeviceConfig {
 
 export type Voice = Tables<'voice'>;
 
+// Character-level alignment from ElevenLabs streams (basis for word timings in the ElevenLabs path)
 export type Alignment = {
   characters: string[];
   character_start_times_seconds: number[];

@@ -2,6 +2,8 @@ import { useReducer, useCallback } from 'react'
 import { createVoice as createVoiceApi } from "../client/elevenlabs";
 import { Tables } from "~/lib/database.types";
 
+// Client-side voice list + ElevenLabs "instant voice clone" create; optimistic updates via reducer.
+
 export type Voice = Tables<'voice'> & {
   audioUrl?: string
 }
@@ -33,6 +35,7 @@ const voiceReducer = (state: VoiceState, action: VoiceAction): VoiceState => {
   }
 }
 
+// Wraps user-facing messages; optional `response` when upstream attached HTTP context
 class ApiError extends Error {
   response?: Response;
   constructor(message: string, response?: Response) {
@@ -76,7 +79,7 @@ export const useVoiceManager = (initialVoices: Voice[] = []) => {
     } catch (error) {
         console.log('Hook: Error caught:', error);
         
-        // Parse error message from the string format
+        // Some failures stringify the JSON body into `Error.message` ("Body: {...}"); extract `detail.message`
         let errorMessage = 'Failed to create voice';
         
         if (error instanceof Error) {

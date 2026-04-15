@@ -1,3 +1,5 @@
+// Browser-side ElevenLabs REST helpers (API key from local storage). Used for voices list, TTS preview, validation.
+
 import { getElevenLabsApiKey } from "../local/storage";
 
 export type ElevenLabsVoice = {

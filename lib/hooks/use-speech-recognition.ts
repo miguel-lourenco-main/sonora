@@ -2,6 +2,8 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 import { Choice } from '../types';
 import { toast } from 'sonner';
 
+// Microphone + Web Speech API: matches transcript tokens to branching `choices` and reports an index.
+
 declare global {
   interface Window {
     webkitAudioContext: typeof AudioContext;
