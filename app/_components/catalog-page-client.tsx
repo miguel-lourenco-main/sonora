@@ -1,5 +1,7 @@
 'use client';
 
+// Home catalog shell: category pills + story grid over static `bookData`.
+
 import { useMemo, useState } from 'react';
 import { AudiobookCard } from './custom/audiobook-card';
 import { CategoryPills } from './custom/category-pills';

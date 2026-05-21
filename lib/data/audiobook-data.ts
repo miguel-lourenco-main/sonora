@@ -1,6 +1,7 @@
 import { Audiobook } from "../types"
 
-// This is sample data
+// Catalog card metadata (duration, narrator); story graphs live in `sample-story.ts`.
+
 export const featuredAudiobooks: Audiobook[] = [
   {
     id: "1",

@@ -1,5 +1,7 @@
 'use client'
 
+// Shown when a story has no bundled samples and the user has no ElevenLabs API key.
+
 import { AlertTriangle, Settings, ExternalLink } from 'lucide-react'
 import { Button } from '@kit/ui/shadcn/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@kit/ui/shadcn/card'

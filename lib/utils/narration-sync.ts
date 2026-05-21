@@ -98,6 +98,7 @@ export function alignWordTimingsToText(
   return rescaleWordTimings(evenTimings, duration);
 }
 
+// Binary search for the last word whose start time is at or before `time`.
 export function findActiveWordIndex(timings: WordTiming[], time: number): number {
   if (timings.length === 0 || time < 0) {
     return -1;

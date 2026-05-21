@@ -1,5 +1,7 @@
 'use client'
 
+// Persists the ElevenLabs API key in localStorage and validates it against `/v1/user`.
+
 import { useState, useEffect, useCallback } from 'react'
 import { Button } from '@kit/ui/shadcn/button'
 import { Input } from '@kit/ui/shadcn/input'

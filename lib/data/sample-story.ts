@@ -1,6 +1,8 @@
 import { Story } from "~/lib/types";
 import { wordTimings } from "./word-timings";
 
+// Branching interactive stories: node graph, optional bundled timings, and cover assets.
+
 export const bookData: Story[] = [
   {
     id: "1",

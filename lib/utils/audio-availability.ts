@@ -1,6 +1,8 @@
 import { Story } from "~/lib/types";
 import { getElevenLabsApiKey } from "~/lib/local/storage";
 
+// Client-side gate: playback needs bundled `/samples/*` files and/or a stored ElevenLabs key.
+
 export interface AudioAvailabilityResult {
   canPlay: boolean;
   hasPreRecorded: boolean;

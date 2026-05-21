@@ -1,5 +1,7 @@
 "use client"
 
+// Sticky playback bar: clip-local seek scrubber and play/pause/replay for the active story node.
+
 import { useCallback, useRef, useState } from "react"
 import { cn } from "@kit/ui/lib"
 import { BookOpen, Pause, Play, RotateCcw } from "lucide-react"
@@ -38,6 +40,7 @@ export function PlayerFooter({
   onSeek,
 }: PlayerFooterProps) {
   const trackRef = useRef<HTMLDivElement>(null)
+  // Ref tracks drag state for pointer handlers without forcing re-renders on every move
   const isDraggingRef = useRef(false)
   const [isDragging, setIsDragging] = useState(false)
   const handleMainAction = canReplay && !isPlaying ? onReplay ?? onPlayPause : onPlayPause

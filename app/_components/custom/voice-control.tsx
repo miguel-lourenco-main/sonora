@@ -1,5 +1,7 @@
 "use client"
 
+// Mic permission + record toggle; transcript matching lives in `useSpeechRecognition`.
+
 import { Mic, MicOff} from "lucide-react"
 import { Button } from "@kit/ui/shadcn/button"
 import { cn } from "@kit/ui/lib"

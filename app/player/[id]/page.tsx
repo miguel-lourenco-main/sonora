@@ -1,4 +1,7 @@
 // Server i18n removed for static export
+
+// Pre-rendered player route: maps `/player/[id]` to a `bookData` story graph.
+
 import { AudioAvailabilityChecker } from '../../_components/custom/audio-availability-checker';
 import { bookData } from '~/lib/data/sample-story';
 

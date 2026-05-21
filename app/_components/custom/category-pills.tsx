@@ -1,5 +1,7 @@
 "use client"
 
+// Horizontal catalog filters; supports controlled or internal selected state.
+
 import * as React from "react"
 import { cn } from "@kit/ui/lib"
 import { SonoraChip } from "@/components/sonora"

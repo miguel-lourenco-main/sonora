@@ -1,5 +1,7 @@
 'use client';
 
+// ElevenLabs voice list with rename/delete and clone upload entry point.
+
 import { useCallback, useState, useEffect } from 'react';
 import { CustomDataTable } from '@kit/ui/custom/custom-data-table';
 import { useTranslation } from 'react-i18next';

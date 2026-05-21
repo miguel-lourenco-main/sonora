@@ -1,5 +1,7 @@
 import { cn } from '@kit/ui/lib';
 
+// Shared horizontal padding and max-width for catalog, player, and voices pages.
+
 interface PageContainerProps {
   children: React.ReactNode;
   className?: string;

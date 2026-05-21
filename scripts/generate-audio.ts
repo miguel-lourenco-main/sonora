@@ -10,6 +10,8 @@ import { ContentNode, Subtitle, NodeDuration, DurationMetadata } from '../lib/ty
 import { bookData } from '../lib/data/sample-story';
 import { mkdirSync } from 'fs';
 
+// Offline OpenAI TTS batch job: writes `/public/samples/*.mp3` and duration metadata for stories.
+
 // Load .env file
 dotenv.config({ path: resolve(process.cwd(), '.env') });
 

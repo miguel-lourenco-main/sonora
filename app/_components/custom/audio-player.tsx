@@ -1,5 +1,7 @@
 "use client"
 
+// Hidden `<audio>` element: loads node URLs and polls playback time for highlight sync.
+
 import { useEffect } from "react"
 import { ContentNode } from "~/lib/types"
 import { dataUrlToBlob } from "~/lib/utils/audio"
@@ -169,6 +171,7 @@ export function AudioPlayer({
       onTimeUpdate?.();
     };
 
+    // Poll ~60fps while playing; browser `timeupdate` alone is too coarse for word highlighting
     const interval = window.setInterval(() => {
       if (isPlaying && audio.currentTime > 0) {
         handleTimeUpdate();

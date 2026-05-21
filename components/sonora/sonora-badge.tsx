@@ -1,6 +1,8 @@
 import { cn } from '@kit/ui/lib';
 import { Sparkles } from 'lucide-react';
 
+// Cover badge for narration mode (bundled samples vs on-demand TTS).
+
 type SonoraBadgeVariant = 'ai-live' | 'pre-recorded' | 'new-tale';
 
 interface SonoraBadgeProps {

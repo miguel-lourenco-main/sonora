@@ -97,6 +97,7 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
   const { voices, isLoading: isLoadingVoices } = useVoices();
 
   const generatingNodes = useRef(new Set<string>());
+  // Skip repeated TTS attempts after a node+voice pair fails or has no sample
   const unavailableNodes = useRef(new Set<string>());
 
   useEffect(() => {
@@ -111,6 +112,7 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
   const handleChoiceClick = (index: number) => {
     setSelectedChoice(index);
     
+    // Staggered UI beats before `makeChoice` advances the graph (mirrors voice-choice flow)
     setTimeout(() => {
       setIsTransitioning(true);
       setTimeout(() => {
@@ -232,6 +234,7 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
     }
   }, [selectedVoice, initialNodeId, storyNodes, generateNodeSpeech]);
 
+  // While the current clip plays, prefetch TTS for reachable next nodes
   useEffect(() => {
     if (!isPlaying || isGeneratingSpeech) return;
     if (!audioRef.current || audioRef.current.ended) return;
@@ -274,6 +277,7 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
   const isElevenLabsNode = (node: ContentNode): node is ElevenLabsContentNode => 
     node.voiceId !== 'default';
 
+  // Default / missing timings use length-weighted estimates; ElevenLabs nodes use provider alignment
   const audioTimingsProps =
     currentNode.voiceId === 'default' || (isElevenLabsNode(currentNode) && (!currentNode.wordTimings || currentNode.wordTimings.length === 0))
       ? {
@@ -314,6 +318,7 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
   const shouldDisablePlayback = !isAudioReady || (isGeneratingSpeech && currentNode.voiceId !== selectedVoice);
   const showChoices = currentNode.choices && currentNode.choices.length > 0 && shouldShowChoices(currentNode) && !isPlaying;
 
+  // Footer seek bar uses clip-local time; `currentTime` from the hook spans the whole session
   const nodeLocalTime = Math.max(0, currentTime - cumulativeTime);
   const audioDuration = audioRef.current?.duration ?? 0;
   const progressPercent = audioDuration > 0

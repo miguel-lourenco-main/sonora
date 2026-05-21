@@ -77,6 +77,7 @@ export function useAudioTimings(props: AudioTimingsProps): AudioTimingsResult {
             audioDuration > 0
               ? Math.abs(lastEnd - audioDuration) / audioDuration
               : 0;
+          // Rescale when provider timings drift >3% from measured clip duration
           setWordTimings(
             drift > 0.03 ? rescaleWordTimings(aligned, audioDuration) : aligned,
           );

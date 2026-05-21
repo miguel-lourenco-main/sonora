@@ -1,5 +1,7 @@
 import { z } from "zod"
 
+// Route templates and ElevenLabs voice-clone upload limits shared by the voices UI.
+
 export const SONORA_STORY_PLAYER_PAGE_PATH = "/app/player/[id]"
 
 export const SONORA_CUSTOM_PATHS_SCHEMA = {

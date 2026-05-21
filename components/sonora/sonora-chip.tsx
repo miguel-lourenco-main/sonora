@@ -2,6 +2,8 @@
 
 import { cn } from '@kit/ui/lib';
 
+// Pill-shaped filter control used by the catalog category row.
+
 interface SonoraChipProps {
   label: string;
   active?: boolean;

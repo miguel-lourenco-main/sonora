@@ -1,5 +1,6 @@
 import { ContentNode } from "../types";
 
+// Shortest path depth from `initialNodeId` through choices and linear `nextNodeId` links
 function computeMinDepths(
   nodes: Record<string, ContentNode>,
   initialNodeId: string,

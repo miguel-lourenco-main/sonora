@@ -1,5 +1,7 @@
 'use client';
 
+// Site chrome: Stories / Voices nav and theme toggle for the static export shell.
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';

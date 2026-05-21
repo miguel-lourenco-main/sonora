@@ -1,5 +1,7 @@
 "use client"
 
+// Karaoke-style narration: highlights the active word from timings + live audio clock.
+
 import { useEffect, useMemo, useRef, useState } from "react"
 import { WordTiming } from "~/lib/types"
 import { cn } from "@kit/ui/lib"
@@ -20,6 +22,7 @@ interface HighlightedTextProps {
   audioRef?: React.RefObject<HTMLAudioElement | null>;
 }
 
+// Throttle React updates while playing; native `timeupdate` is too sparse for smooth underline fill
 const SYNC_TICK_HZ = 30;
 
 export function HighlightedText({
@@ -95,6 +98,7 @@ export function HighlightedText({
   useEffect(() => {
     if (!wordTimings?.length || !containerRef.current || activeIndex < 0) return;
 
+    // Keep the active word near the top quarter of the scroll viewport
     const wordElement = wordsRef.current[activeIndex];
     if (!wordElement || !containerRef.current) return;
 

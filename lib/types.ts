@@ -14,6 +14,7 @@ export type WordTiming = {
   end: number;
 };
 
+// One narration clip in the story graph; may branch via `choices` or continue with `nextNodeId`.
 export type BaseContentNode = {
   id: string;
   text: string;
@@ -33,6 +34,7 @@ export type ElevenLabsContentNode = BaseContentNode & {
 
 export type ContentNode = OpenAIContentNode | ElevenLabsContentNode;
 
+// Directed graph of narration nodes for a single chapter.
 export interface Content {
   initialNodeId: string;
   nodes: Record<string, ContentNode>;

@@ -1,5 +1,7 @@
 'use client';
 
+// Voices settings page: API key storage and ElevenLabs voice table.
+
 import { useState, useCallback } from 'react';
 import { ApiKeysSection } from './api-keys-section';
 import VoicesTable from './voices-table';

@@ -1,5 +1,7 @@
 import { cn } from '@kit/ui/lib';
 
+// Elevated story tile with optional grain overlay and hover lift.
+
 interface SonoraCardProps {
   children: React.ReactNode;
   className?: string;

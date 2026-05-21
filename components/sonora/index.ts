@@ -1,3 +1,5 @@
+// Re-exports Sonora layout and catalog UI primitives.
+
 export { PageContainer } from './page-container';
 export { SonoraChip } from './sonora-chip';
 export { SonoraBadge } from './sonora-badge';

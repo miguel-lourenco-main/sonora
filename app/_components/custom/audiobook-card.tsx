@@ -1,5 +1,7 @@
 "use client"
 
+// Catalog tile: cover, step count, and link into the static `/player/[id]` route.
+
 import Image from "next/image"
 import Link from "next/link"
 import { ArrowRight, Clock5, Footprints } from 'lucide-react'

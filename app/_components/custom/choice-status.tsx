@@ -1,3 +1,5 @@
+// Transient status labels while voice or click choices are captured and applied.
+
 import { CheckCircle2 } from "lucide-react";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@kit/ui/lib";

@@ -1,6 +1,8 @@
 import { Toaster } from '@kit/ui/shadcn/sonner';
 import { cn } from '@kit/ui/lib';
 
+// Root layout for the static GitLab Pages export (light theme, Sonora fonts, global header).
+
 import { RootProviders } from '~/components/root-providers';
 import { display, body } from '~/lib/fonts';
 import type { Metadata } from 'next';

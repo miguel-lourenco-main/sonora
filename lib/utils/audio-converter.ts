@@ -1,3 +1,5 @@
+// Decode arbitrary browser audio blobs to WAV for ElevenLabs voice-clone uploads.
+
 export async function convertAudioToWav(audioBlob: Blob): Promise<Blob> {
     // Create an audio context
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();

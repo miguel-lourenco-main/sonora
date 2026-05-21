@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+
+// Static catalog entry; player routes are pre-rendered from the same `bookData` slice.
+
 import { CatalogPageClient } from "./_components/catalog-page-client";
 import { bookData } from "~/lib/data/sample-story";
 
