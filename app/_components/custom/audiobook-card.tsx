@@ -2,13 +2,11 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { Play, Volume2, Clock5, VolumeOff } from 'lucide-react'
+import { ArrowRight, Clock5, Footprints } from 'lucide-react'
 import { hasPreRecordedAudio } from '~/lib/utils/audio-availability'
 import { cn } from "@kit/ui/lib"
 import { Story } from "~/lib/types"
-import { CardBody, CardContainer, CardItem } from "@/components/3d-card"
-import { useEffect, useState } from "react"
-import TooltipComponent from "@/components/ui/custom/tooltip-component"
+import { SonoraBadge, SonoraCard } from "@/components/sonora"
 
 interface StoryCardProps extends React.HTMLAttributes<HTMLDivElement> {
   story: Story
@@ -26,7 +24,6 @@ function countStorySteps(story: Story): number {
 }
 
 function estimateMinutesFromSteps(stepCount: number): number {
-  // Simple heuristic: ~30s per step, round up to next minute
   const minutes = Math.ceil((stepCount * 30) / 60)
   return Math.max(minutes, 1)
 }
@@ -50,76 +47,44 @@ export function AudiobookCard({ story, className, ...props }: StoryCardProps) {
   const minutes = estimateMinutesFromSteps(steps)
   const description = getStoryDescription(story)
 
-  const [imageWidth, setImageWidth] = useState(400)
-  const [imageHeight, setImageHeight] = useState(400)
-
-  useEffect(() => {
-    function updateImageSize() {
-      if (typeof window === "undefined") return
-      const viewportWidth = window.innerWidth
-      // Scale image relative to device width with bounds
-      const target = Math.min(400, Math.max(220, Math.floor(viewportWidth * 0.6)))
-      setImageWidth(target)
-      setImageHeight(target)
-    }
-
-    updateImageSize()
-    window.addEventListener('resize', updateImageSize)
-    return () => window.removeEventListener('resize', updateImageSize)
-  }, [])
-
   return (
     <div className={cn("size-full", className)} {...props}>
-      <Link href={`/player/${story.id}`} className="size-full">
-        <CardContainer containerClassName="size-full" className="size-full">
-          <CardBody className="grid grid-cols-1 place-items-center size-full max-w-[32rem] space-y-4 rounded-2xl py-6 bg-muted shadow-lg">
-            <CardItem translateZ={150} className="flex items-center justify-center">
-              <AudiobookCardContent story={story} />
-            </CardItem>
-            <div className="flex flex-col space-y-4 px-12 pt-4">
-              <CardItem translateZ={40}>
-                <p className="text-xl text-muted-foreground line-clamp-3">{description}</p>
-              </CardItem>
-              <CardItem translateZ={20} className="flex items-center w-full justify-between text-xs text-muted-foreground">
-                <div className="flex text-base items-center gap-2">
-                  <span>{steps} steps</span>
-                  <span className="inline-flex items-center gap-1"><Clock5 className="h-3 w-3" /> {minutes} min</span>
-                </div>
-                {hasPreRecorded ? (
-                  <TooltipComponent
-                    trigger={
-                      <div className="inline-flex items-center gap-1 text-green-600">
-                        <Volume2 className="size-6" />
-                      </div>
-                    }
-                    content="Pre-recorded audio available"
-                    className="bg-green-600 text-white text-xl"
-                  />
-                ) : (
-                  <TooltipComponent
-                    trigger={
-                      <div className="inline-flex items-center gap-1 text-slate-600">
-                        <VolumeOff className="size-6" />
-                      </div>
-                    }
-                    content="Pre-recorded audio NOT available"
-                    className="bg-slate-600 text-white text-xl"
-                  />
-                )}
-              </CardItem>
+      <Link href={`/player/${story.id}`} className="group block size-full">
+        <SonoraCard className="cursor-pointer">
+          <div className="relative aspect-[3/4] overflow-hidden rounded-xl border-[8px] border-surface-container-high shadow-inner book-texture">
+            <div className="absolute inset-y-0 left-0 z-10 w-8 book-spine" />
+            <Image
+              src={story.coverUrl}
+              alt={story.title}
+              fill
+              className="object-cover transition-transform duration-700 group-hover:scale-110"
+              sizes="(max-width: 768px) 100vw, 33vw"
+            />
+            <div className="absolute right-4 top-4 z-20">
+              <SonoraBadge variant={hasPreRecorded ? 'pre-recorded' : 'ai-live'} />
             </div>
-          </CardBody>
-        </CardContainer>
+          </div>
+          <div className="flex flex-col flex-1 justify-between mt-6 space-y-3">
+            <h3 className="font-headline-md text-headline-md text-primary">{story.title}</h3>
+            <p className="line-clamp-2 font-body-md text-body-md italic text-on-surface-variant">
+              {description}
+            </p>
+            <div className="flex items-center justify-between pt-2">
+              <div className="flex items-center gap-4 font-label-lg text-label-lg text-on-surface-variant">
+                <span className="flex items-center gap-1">
+                  <Footprints className="size-[18px]" />
+                  {steps} steps
+                </span>
+                <span className="flex items-center gap-1">
+                  <Clock5 className="size-[18px]" />
+                  {minutes} min
+                </span>
+              </div>
+              <ArrowRight className="size-5 text-primary transition-transform group-hover:translate-x-1" />
+            </div>
+          </div>
+        </SonoraCard>
       </Link>
-    </div>
-  )
-}
-
-function AudiobookCardContent({ story }: { story: Story }) {
-  return (
-    <div className="relative w-[22rem] h-full min-h-[32rem]">
-      <img src="/images/book_cover.png" alt={story.title} className="absolute top-0 left-0 z-10 size-full rounded-lg object-contain" />
-      <img src={story.coverUrl} alt={story.title} className="absolute top-[3.5rem] left-[6rem] z-20 w-[13rem] m-4 rounded-lg object-cover" />
     </div>
   )
 }

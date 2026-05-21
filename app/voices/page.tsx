@@ -5,11 +5,9 @@ import { VoicesContent } from './_components/voices-content';
 
 export default function VoicesPage() {
     return (
-        <div className="container py-6 size-full flex flex-col gap-6">
-            <Suspense fallback={<VoicesLoading />}>
-                <VoicesContent />
-            </Suspense>
-        </div>
+        <Suspense fallback={<VoicesLoading />}>
+            <VoicesContent />
+        </Suspense>
     );
 }
 

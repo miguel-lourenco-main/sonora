@@ -1,5 +1,11 @@
 import { useEffect, useState } from 'react';
-import { calculateWordTimings, getAudioDuration } from '../utils/audio';
+import { getAudioDuration } from '../utils/audio';
+import {
+  alignWordTimingsToText,
+  buildLengthWeightedWordTimings,
+  NarrationSyncMode,
+  rescaleWordTimings,
+} from '../utils/narration-sync';
 
 export type WordTiming = {
   word: string;
@@ -15,6 +21,7 @@ type OpenAIAudioTimingsProps = {
 
 type ElevenLabsAudioTimingsProps = {
   audioUrl: string;
+  text: string;
   provider: 'elevenlabs';
   wordTimings: WordTiming[];
 };
@@ -24,6 +31,7 @@ type AudioTimingsProps = OpenAIAudioTimingsProps | ElevenLabsAudioTimingsProps;
 type AudioTimingsResult = {
   duration: number;
   wordTimings: WordTiming[];
+  syncMode: NarrationSyncMode;
   isLoading: boolean;
   error: Error | null;
 };
@@ -51,21 +59,29 @@ export function useAudioTimings(props: AudioTimingsProps): AudioTimingsResult {
         setIsLoading(true);
         setError(null);
 
+        const audioDuration = await getAudioDuration(props.audioUrl);
+        if (!isMounted) return;
+
+        setDuration(audioDuration);
+
         if (props.provider === 'elevenlabs') {
-          // For ElevenLabs, we already have the word timings
-          setWordTimings(props.wordTimings);
-          const audioDuration = await getAudioDuration(props.audioUrl);
-          if (isMounted) {
-            setDuration(audioDuration);
-          }
+          const aligned = alignWordTimingsToText(
+            props.text,
+            props.wordTimings,
+            audioDuration,
+          );
+          const lastEnd = aligned[aligned.length - 1]?.end ?? 0;
+          const drift =
+            audioDuration > 0
+              ? Math.abs(lastEnd - audioDuration) / audioDuration
+              : 0;
+          setWordTimings(
+            drift > 0.03 ? rescaleWordTimings(aligned, audioDuration) : aligned,
+          );
         } else {
-          // For OpenAI, we need to calculate word timings based on audio duration
-          const audioDuration = await getAudioDuration(props.audioUrl);
-          if (!isMounted) return;
-          
-          setDuration(audioDuration);
-          const calculatedTimings = calculateWordTimings(props.text, audioDuration);
-          setWordTimings(calculatedTimings);
+          setWordTimings(
+            buildLengthWeightedWordTimings(props.text, audioDuration),
+          );
         }
       } catch (err) {
         if (isMounted) {
@@ -87,12 +103,21 @@ export function useAudioTimings(props: AudioTimingsProps): AudioTimingsResult {
     return () => {
       isMounted = false;
     };
-  }, [props.audioUrl, props.provider, props.provider === 'elevenlabs' ? props.wordTimings : props.text]);
+  }, [
+    props.audioUrl,
+    props.provider,
+    props.text,
+    props.provider === 'elevenlabs' ? props.wordTimings : undefined,
+  ]);
+
+  const syncMode: NarrationSyncMode =
+    props.provider === 'elevenlabs' ? 'precise' : 'estimated';
 
   return {
     duration,
     wordTimings,
+    syncMode,
     isLoading,
-    error
+    error,
   };
 } 

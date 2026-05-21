@@ -3,7 +3,6 @@
 import * as React from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { Button } from "@kit/ui/shadcn/button"
 import { cn } from "@kit/ui/lib"
 import { ContentNode, ElevenLabsContentNode, Story } from "~/lib/types"
 import { useStoryPlayer } from "~/lib/hooks/use-story-player"
@@ -11,7 +10,6 @@ import { AudioPlayer } from "./audio-player"
 import { HighlightedText } from "./highlighted-text"
 import { useState, useEffect, useCallback, useRef } from "react"
 import { BlurFade } from "@kit/ui/magic-ui/blur-fade"
-import { SparkleBorder } from "@kit/ui/magic-ui/sparkle-border"
 import { useAudioTimings } from "~/lib/hooks/use-audio-timings"
 import {
   Select,
@@ -22,13 +20,14 @@ import {
 } from "@kit/ui/shadcn/select"
 import { useVoices } from "~/lib/hooks/use-voices"
 import { VoiceControl } from "./voice-control"
-import Slider from "@kit/ui/shadcn/slider"
 import { useSpeechRecognition } from "~/lib/hooks/use-speech-recognition"
 import { previewVoice } from "~/lib/client/elevenlabs"
-import { Loader2 } from "lucide-react"
+import { ArrowLeft, ArrowRight, Loader2, Mic, Sparkles } from "lucide-react"
 import ChoiceStatus from "./choice-status"
 import { hasPreRecordedAudio } from "~/lib/utils/audio-availability"
 import { toast } from "sonner"
+import { PageContainer } from "@/components/sonora"
+import { PlayerFooter } from "./player-footer"
 
 
 interface StoryPlayerProps {
@@ -41,7 +40,6 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
   const nodes = story.chapters[0]?.content.nodes ?? {};
   const initialNodeId = story.chapters[0]?.content.initialNodeId ?? '';
   
-  // Add state to track all nodes with their audio URLs
   const [storyNodes, setStoryNodes] = useState<Record<string, ContentNode>>(nodes);
 
   const { 
@@ -60,7 +58,7 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
     replay,
   } = useStoryPlayer({
     initialNodeId: initialNodeId,
-    nodes: storyNodes  // Use storyNodes instead of nodes
+    nodes: storyNodes
   });
 
   const { 
@@ -94,11 +92,9 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
   );
   const { voices, isLoading: isLoadingVoices } = useVoices();
 
-  // Track nodes being generated to prevent duplicate generation
   const generatingNodes = useRef(new Set<string>());
   const unavailableNodes = useRef(new Set<string>());
 
-  // If no pre-recorded audio and we have ElevenLabs voices, default to first available voice
   useEffect(() => {
     if (!hasPreRecordedAudio(story.label) && selectedVoice === 'default' && !isLoadingVoices) {
       const firstVoice = (voices ?? [])[0]?.voice_id;
@@ -122,40 +118,29 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
   };
 
   const generateNodeSpeech = useCallback(async (id: string) => {
-    // Skip if already generating speech for this node
     if (generatingNodes.current.has(id)) {
-      console.log('Already generating speech for node:', id);
       return;
     }
 
-    // Skip if this node/voice combination was marked unavailable
     const unavailableKey = `${id}:${selectedVoice}`;
     if (unavailableNodes.current.has(unavailableKey)) {
-      console.log('Skipping generation for unavailable node/voice:', unavailableKey);
       return;
     }
 
     const node = storyNodes[id];
 
     if (!node?.text || !selectedVoice) {
-      console.log('Missing required data:', { 
-        hasText: !!node?.text, 
-        selectedVoice,
-      });
       return;
     }
     
-    // Skip if we already have audio for this voice
     if (node.audioUrl && node.voiceId === selectedVoice) {
       return;
     }
 
     try {
-      console.log('Generating speech for node:', id);
       setIsGeneratingSpeech(true);
       generatingNodes.current.add(id);
       
-      // Use pre-recorded default audio if selected
       if (selectedVoice === 'default' && hasPreRecordedAudio(story.label)) {
         const sampleUrl = `/samples/${story.label}-${id}.mp3`;
         try {
@@ -180,19 +165,11 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
       }
 
       if (selectedVoice === 'default') {
-        // Mark as unavailable for this node/voice and stop retrying
         unavailableNodes.current.add(unavailableKey);
         return;
       }
 
-      // Client-side ElevenLabs preview (requires user API key set in Voices)
       const audioUrl = await previewVoice(selectedVoice, node.text);
-
-      console.log('Speech generated successfully:', {
-        nodeId: id,
-        audioUrl: audioUrl.slice(0, 50) + '...',
-        provider: 'elevenlabs'
-      });
 
       const updatedNode: ContentNode = {
         ...node,
@@ -200,12 +177,10 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
         voiceId: selectedVoice,
       };
 
-      // Update both the current node and the nodes map
       if (id === currentNode.id) {
         setCurrentNode(updatedNode);
       }
       
-      // Always update the storyNodes map
       setStoryNodes(prev => ({
         ...prev,
         [id]: updatedNode
@@ -213,14 +188,11 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
     } catch (error) {
       console.error('Error generating speech:', error);
       
-      // Show error message in toast
       const errorMessage = error instanceof Error ? error.message : 'Failed to generate speech';
       toast.error(errorMessage);
       
-      // Remove the node from generating set even if it failed
       generatingNodes.current.delete(id);
       
-      // Reset the node's audio state
       const resetNode = node.voiceId === 'default' 
         ? {
             ...node,
@@ -242,7 +214,6 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
         [id]: resetNode
       }));
 
-      // Avoid retry loops for this node/voice
       unavailableNodes.current.add(unavailableKey);
     } finally {
       generatingNodes.current.delete(id);
@@ -250,30 +221,19 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
     }
   }, [selectedVoice, setCurrentNode, currentNode.id, storyNodes, story.label]);
 
-  // Generate speech for the initial node
   useEffect(() => {
     const node = storyNodes[initialNodeId];
     if (node && selectedVoice && (!node.audioUrl || node.voiceId !== selectedVoice)) {
-      console.log('Generating initial node speech:', {
-        nodeId: initialNodeId,
-        hasAudio: !!node.audioUrl,
-        currentVoice: node.voiceId,
-        selectedVoice
-      });
       void generateNodeSpeech(initialNodeId);
     }
   }, [selectedVoice, initialNodeId, storyNodes, generateNodeSpeech]);
 
-  // Generate speech for next nodes while current node is playing
   useEffect(() => {
     if (!isPlaying || isGeneratingSpeech) return;
-
-    // Only check for next nodes when we're not at the end of the current audio
     if (!audioRef.current || audioRef.current.ended) return;
 
     const nextNodeIds = new Set<string>();
 
-    // Collect next node IDs from choices
     if (currentNode.choices) {
       currentNode.choices.forEach(choice => {
         if (choice.nextNodeId) {
@@ -284,7 +244,6 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
         }
       });
     } 
-    // Or collect single next node
     else if (currentNode.nextNodeId) {
       const nextNode = storyNodes[currentNode.nextNodeId];
       if (nextNode && (!nextNode.audioUrl || nextNode.voiceId !== selectedVoice)) {
@@ -292,9 +251,7 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
       }
     }
 
-    // Generate speech for collected nodes
     if (nextNodeIds.size > 0) {
-      console.log('Preparing next nodes:', Array.from(nextNodeIds));
       for (const nodeId of nextNodeIds) {
         void generateNodeSpeech(nodeId);
       }
@@ -310,12 +267,9 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
     audioRef
   ]);
 
-  // Type guard for ElevenLabs nodes
   const isElevenLabsNode = (node: ContentNode): node is ElevenLabsContentNode => 
     node.voiceId !== 'default';
 
-  // Add audio timing hook
-  // If ElevenLabs node lacks explicit word timings, fall back to calculated timings ("openai" mode)
   const audioTimingsProps =
     currentNode.voiceId === 'default' || (isElevenLabsNode(currentNode) && (!currentNode.wordTimings || currentNode.wordTimings.length === 0))
       ? {
@@ -325,17 +279,22 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
         }
       : {
           audioUrl: currentNode.audioUrl ?? '',
+          text: currentNode.text,
           provider: 'elevenlabs' as const,
           wordTimings: (currentNode as ElevenLabsContentNode).wordTimings!,
         };
 
-  const { wordTimings, isLoading: isLoadingTimings, error: timingsError } = useAudioTimings(audioTimingsProps);
+  const {
+    wordTimings,
+    duration: timingsDuration,
+    syncMode,
+    isLoading: isLoadingTimings,
+    error: timingsError,
+  } = useAudioTimings(audioTimingsProps);
 
-  // Combine loading states
   const isLoading = isGeneratingSpeech || (isLoadingTimings && currentNode.audioUrl);
   const showLoadingUI = isLoading && !isPlaying && (!currentNode.audioUrl || currentNode.voiceId !== selectedVoice);
 
-  // Show error state if speech generation failed
   useEffect(() => {
     if (timingsError) {
       console.error('Error loading audio timings:', timingsError);
@@ -346,271 +305,225 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
     return <div>No chapters available</div>;
   }
 
-  const formatTime = (time: number) => {
-    const minutes = Math.floor(time / 60)
-    const seconds = Math.floor(time % 60)
-    return `${minutes}:${seconds.toString().padStart(2, '0')}`
-  }
-
-  const showGeneratingSpeech = isGeneratingSpeech && !isPlaying && !currentNode.audioUrl 
   const isCapturing = selectedChoice !== null && !isTransitioning;
   const isMakingChoice = selectedChoice !== null && isTransitioning;
-
-  // Disable playback controls while generating audio for a different voice than the one currently on the node
   const shouldDisablePlayback = !isAudioReady || (isGeneratingSpeech && currentNode.voiceId !== selectedVoice);
+  const showChoices = currentNode.choices && currentNode.choices.length > 0 && shouldShowChoices(currentNode) && !isPlaying;
 
-  console.log('isCapturing', isCapturing)
-  console.log('isMakingChoice', isMakingChoice)
-  console.log('isProcessing', isProcessing)
+  const nodeLocalTime = Math.max(0, currentTime - cumulativeTime);
+  const audioDuration = audioRef.current?.duration ?? 0;
+  const progressPercent = audioDuration > 0
+    ? (nodeLocalTime / audioDuration) * 100
+    : canReplay && currentTime > 0 ? 100 : 0;
+
+  const chapterLabel = `Chapter ${story.currentChapter} of ${story.totalChapters}`;
+  const hasPreRecorded = hasPreRecordedAudio(story.label);
 
   return (
-    <div className="flex h-full flex-col items-center justify-between bg-background px-6 pb-6">
-      <header className="flex w-full items-center justify-center md:justify-end p-4">
-        <div className="w-full max-w-xs">
-          <Select
-            value={selectedVoice}
-            onValueChange={setSelectedVoice}
-            disabled={isLoadingVoices || isGeneratingSpeech || isPlaying || undefined}
-          >
-            <SelectTrigger className="text-lg">
-              <SelectValue placeholder="Select a voice" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem key={'default'} value={'default'}>
-                <p className="text-lg">Pre-Recorded</p>
-              </SelectItem>
-              {(voices ?? []).map((voice) => (
-                <SelectItem key={voice.voice_id} value={voice.voice_id} className="text-lg">
-                  {voice.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+    <div className="flex min-h-full flex-col bg-surface">
+      <PageContainer wide className="flex flex-grow flex-col gap-8 py-8 md:py-12">
+        <div className="text-center md:mb-4">
+          <h1 className="font-headline-lg text-headline-lg-mobile text-primary md:text-headline-lg">
+            {story.title}
+          </h1>
+          <p className="mt-1 font-body-md text-body-md italic text-on-surface-variant opacity-80">
+            By {story.author}
+          </p>
         </div>
-      </header>
-      <div className="flex flex-col items-center justify-start gap-8 p-4 mb-4 md:flex-row md:items-start md:justify-center">
-        <div className="relative aspect-[3/5] w-48 flex-shrink-0 overflow-hidden rounded-lg shadow-lg md:w-72">
-          <Image
-            src={story.coverUrl}
-            alt={story.title}
-            fill
-            className="object-cover"
-          />
-        </div>
-        <div className="flex flex-col items-center md:items-start md:pl-8">
-          <h1 className="mb-2 text-3xl font-bold">{story.title}</h1>
-          <p className="mb-4 text-lg text-muted-foreground">By {story.author}</p>
-          
-          <div className="relative h-64 w-full max-w-xl rounded-md border p-4 md:h-96">
-            {showLoadingUI && (
-              <div className="absolute inset-0 flex items-center justify-center bg-background/80 backdrop-blur-sm z-10">
-                <p className="text-sm text-muted-foreground flex items-center gap-2">
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  {isGeneratingSpeech ? 'Generating speech...' : 'Loading audio...'}
-                </p>
+
+        <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12 lg:gap-12">
+          <section className="flex justify-center lg:col-span-5">
+            <div className="relative w-full max-w-[400px] lg:max-w-none">
+              <div className="absolute inset-0 translate-x-4 translate-y-4 rounded-xl bg-ink-blue/10 blur-xl" />
+              <div className="relative aspect-[3/4] w-full overflow-hidden rounded-2xl book-frame bg-surface-container-lowest shadow-2xl ring-2 ring-primary/10 transition-transform duration-500 hover:scale-[1.02] md:rounded-xl">
+                <Image
+                  src={story.coverUrl}
+                  alt={story.title}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 400px, 420px"
+                  priority
+                />
+                {showLoadingUI && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-background/60 backdrop-blur-sm">
+                    <p className="flex items-center gap-2 font-label-lg text-label-lg text-on-surface-variant">
+                      <Loader2 className="size-4 animate-spin" />
+                      {isGeneratingSpeech ? 'Generating speech...' : 'Loading audio...'}
+                    </p>
+                  </div>
+                )}
+                <div className="absolute inset-0 paper-texture opacity-20 pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/50 to-transparent md:hidden" />
+                <div className="absolute bottom-0 left-0 right-0 p-6 md:hidden">
+                  <h2 className="font-headline-md text-headline-md text-white drop-shadow-md">{story.title}</h2>
+                </div>
               </div>
-            )}
-            <HighlightedText
-              text={currentNode.text}
-              currentTime={currentTime - cumulativeTime}
-              wordTimings={wordTimings}
-              isPlaying={isPlaying}
-            />
-          </div>
+              {isGeneratingSpeech && (
+                <div className="absolute -right-2 -top-2 flex items-center gap-2 rounded-full border border-outline-variant/30 bg-surface px-4 py-2 shadow-lg">
+                  <Sparkles className="size-4 text-tertiary" />
+                  <span className="font-label-lg text-label-lg text-primary">Generating...</span>
+                </div>
+              )}
+            </div>
+          </section>
+
+          <section className="flex flex-col gap-6 lg:col-span-7">
+            <div className="relative min-h-[280px] overflow-hidden rounded-3xl border border-outline-variant/20 bg-surface-container-low/50 p-8 paper-texture shadow-sm md:min-h-[400px] md:p-10">
+              {showLoadingUI && (
+                <div className="absolute inset-0 z-10 flex items-center justify-center bg-surface/80 backdrop-blur-sm">
+                  <p className="flex items-center gap-2 font-body-md text-on-surface-variant">
+                    <Loader2 className="size-4 animate-spin" />
+                    {isGeneratingSpeech ? 'Generating speech...' : 'Loading audio...'}
+                  </p>
+                </div>
+              )}
+              <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+                <div className="flex items-center gap-2">
+                  <span className="size-2 animate-pulse rounded-full bg-tertiary shadow-[0_0_8px_rgba(112,93,0,0.6)]" />
+                  <span className="font-label-lg text-label-lg uppercase tracking-widest text-on-surface-variant">
+                    {isPlaying ? 'Narration Active' : 'Ready to Listen'}
+                  </span>
+                </div>
+                <span className="inline-flex items-center gap-2 rounded-full border border-outline-variant/20 bg-surface-container-lowest/80 px-4 py-2 font-label-lg text-label-lg text-primary">
+                  <Mic className="size-4" />
+                  {hasPreRecorded && selectedVoice === 'default' ? 'Pre-Recorded' : 'AI Voice'}
+                </span>
+              </div>
+              <HighlightedText
+                text={currentNode.text}
+                currentTime={nodeLocalTime}
+                audioDuration={audioDuration || timingsDuration}
+                wordTimings={wordTimings}
+                syncMode={syncMode}
+                isPlaying={isPlaying}
+                audioRef={audioRef}
+              />
+            </div>
+
+            <div className="flex flex-wrap items-center gap-4">
+              <Select
+                value={selectedVoice}
+                onValueChange={setSelectedVoice}
+                disabled={isLoadingVoices || isGeneratingSpeech || isPlaying || undefined}
+              >
+                <SelectTrigger className="h-12 min-w-[200px] rounded-full border-none bg-surface-container font-label-lg text-label-lg shadow-sm hover:bg-surface-container-high focus:ring-2 focus:ring-primary">
+                  <SelectValue placeholder="Select a voice" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="default">
+                    <span className="font-body-md">Pre-Recorded</span>
+                  </SelectItem>
+                  {(voices ?? []).map((voice) => (
+                    <SelectItem key={voice.voice_id} value={voice.voice_id}>
+                      {voice.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </section>
         </div>
-      </div>
-      <div className={cn(
-        "flex flex-col gap-4 p-4 transition-all w-full max-w-[80%] duration-300 ease-in-out",
-        {
-          "min-h-[12rem] max-h-[20rem]": (currentNode.choices?.length ?? 0) > 0 && 
-            shouldShowChoices(currentNode) && 
-            !isPlaying,
-          
-          "min-h-[11rem] max-h-[11rem]": !(currentNode.choices?.length ?? 0) || 
-            !shouldShowChoices(currentNode) || 
-            isPlaying
-        }
-      )}>
-        {currentNode.choices && 
-          currentNode.choices.length > 0 && 
-          shouldShowChoices(currentNode) ? (
-          <div className="flex flex-col items-center gap-4">
-            {!isPlaying && (
-                <>
+
+        <div className={cn(
+          "w-full transition-all duration-300",
+          showChoices ? "min-h-[12rem]" : "min-h-0",
+        )}>
+          {showChoices ? (
+            <div className="flex flex-col items-center gap-6">
+              <BlurFade show duration={1.0} delay={0.1} direction="down" offset={12} inView useLayout>
+                <div className="flex flex-col items-center gap-3 text-center">
+                  {isProcessing || isCapturing || isMakingChoice ? (
+                    <ChoiceStatus
+                      isProcessing={isProcessing}
+                      isCapturing={isCapturing}
+                      isMakingChoice={isMakingChoice}
+                    />
+                  ) : (
+                    <>
+                      <h3 className="font-headline-md text-headline-md text-primary">
+                        What should our hero do next?
+                      </h3>
+                      <VoiceControl
+                        isListening={isListening}
+                        hasPermission={hasPermission}
+                        onRequestPermission={requestPermission}
+                        onStartRecording={startRecording}
+                        onStopRecording={stopRecording}
+                      />
+                    </>
+                  )}
+                </div>
+              </BlurFade>
+              <div className={cn(
+                "grid w-full max-w-4xl grid-cols-1 gap-4 md:grid-cols-2",
+                isTransitioning && "pointer-events-none opacity-0",
+              )}>
+                {currentNode.choices?.map((choice, index) => (
                   <BlurFade
-                    show={true}
+                    key={`choice-${choice.text}`}
+                    show={!isTransitioning}
                     duration={1.0}
-                    delay={0.1}
+                    delay={index * 0.1}
                     direction="down"
                     offset={12}
                     inView
-                    useLayout={true}
+                    useLayout
                   >
-                    <div className="flex flex-col items-center gap-2 mb-2">
-                      {isProcessing || isCapturing || isMakingChoice ? (
-                        <ChoiceStatus
-                          isProcessing={isProcessing}
-                          isCapturing={isCapturing}
-                          isMakingChoice={isMakingChoice}
-                        />
-                      ) : (
-                        <>
-            <p className="text-lg font-semibold">Make a choice:</p>
-            <div className="flex flex-col items-center w-full">
-              <VoiceControl
-                isListening={isListening}
-                hasPermission={hasPermission}
-                onRequestPermission={requestPermission}
-                onStartRecording={startRecording}
-                onStopRecording={stopRecording}
-              />
-            </div>
-                        </>
+                    <button
+                      type="button"
+                      onClick={() => handleChoiceClick(index)}
+                      disabled={selectedChoice !== null && selectedChoice !== index}
+                      className={cn(
+                        "group flex min-h-tap-target-min w-full items-center justify-between rounded-2xl p-6 text-left transition-all active:scale-95",
+                        index === 0
+                          ? "bg-primary-container text-on-primary-container shadow-lg hover:shadow-xl hover:shadow-primary/20"
+                          : "border-2 border-outline-variant bg-surface-container-lowest text-on-surface hover:border-tertiary hover:bg-tertiary/10",
+                        selectedChoice === index && "magical-glow-strong",
                       )}
-                    </div>
+                    >
+                      <div className="flex flex-col gap-1">
+                        <span className={cn(
+                          "font-label-lg text-label-lg uppercase tracking-wider",
+                          index === 0 ? "text-primary-fixed-dim" : "text-outline",
+                        )}>
+                          Choice {String.fromCharCode(65 + index)}
+                        </span>
+                        <span className="font-headline-md text-headline-md text-inherit">
+                          {choice.text}
+                        </span>
+                      </div>
+                      <ArrowRight className={cn(
+                        "size-8 transition-transform group-hover:translate-x-2",
+                        index === 0 ? "text-tertiary-fixed" : "text-primary",
+                      )} />
+                    </button>
                   </BlurFade>
-                  <div className={cn(
-                    "flex flex-col items-center gap-4",
-                    isTransitioning ? "h-0 overflow-hidden" : "h-auto"
-                  )}>
-                    {currentNode.choices.map((choice, index) => (
-                      <BlurFade
-                        key={`choice-${choice.text}`}
-                        show={!isTransitioning}
-                        duration={1.0}
-                        delay={index * 0.1}
-                        direction="down"
-                        offset={12}
-                        inView
-                        useLayout={true}
-                      >
-                        <SparkleBorder
-                          isSelected={selectedChoice === index}
-                          className="w-fit"
-                        >
-                          <Button
-                            variant="outline"
-                            onClick={() => handleChoiceClick(index)}
-                            disabled={selectedChoice !== null && selectedChoice !== index}
-                            className={cn(
-                              "text-left text-lg w-fit border-0 bg-background hover:bg-background/80",
-                              "text-foreground",
-                              selectedChoice === index && "text-foreground"
-                            )}
-                          >
-                            {choice.text}
-                          </Button>
-                        </SparkleBorder>
-                      </BlurFade>
-                    ))}
-                  </div>
-                </>
-              )}
-          </div>
-        ) : (
-          <BlurFade
-            show={true}
-            duration={0.5}
-            offset={12}
-            inView
-            useLayout={true}
-            className="flex flex-col relative items-center justify-center gap-4"
-          >
-            <div className="relative">
-              {canReplay ? (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  disabled={shouldDisablePlayback || undefined}
-                  className={cn(
-                    "relative rounded-full transition-all duration-1000",
-                    isPlaying ? "bg-primary text-primary-foreground" : "",
-                    (shouldDisablePlayback) && "opacity-50"
-                  )}
-                  onClick={replay}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="size-12"
-                  >
-                    <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
-                    <path d="M3 3v5h5" />
-                  </svg>
-                </Button>
-              ) : (
-            <Button
-              variant="ghost"
-              size="icon"
-                  disabled={shouldDisablePlayback || undefined}
-              className={cn(
-                    "relative size-12 rounded-full transition-all duration-1000",
-                isPlaying ? "bg-primary text-primary-foreground" : "",
-                    (shouldDisablePlayback) && "opacity-50"
-              )}
-              onClick={playPause}
-            >
-              {isPlaying ? (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="size-8"
-                >
-                  <rect x="6" y="4" width="4" height="16" />
-                  <rect x="14" y="4" width="4" height="16" />
-                </svg>
-              ) : (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="size-8"
-                >
-                  <polygon points="5 3 19 12 5 21 5 3" />
-                </svg>
-              )}
-            </Button>
-              )}
-          </div>
-          </BlurFade>
-        )}
-        <div className="flex flex-col w-full items-center justify-center mb-4">
-          <Slider
-            value={[canReplay && currentTime > 0  && (!currentNode.nextNodeId || currentNode.nextNodeId === '' || currentNode.choices?.length === 0) ? 100 : 0]}
-            max={100}
-            step={1}
-            className="w-full"
-            disabled={!!(isLoading ?? !currentNode.audioUrl)}
-          />
-          <div className="flex w-full justify-between mt-3 text-sm text-muted-foreground">
-            {formatTime(currentTime)}
-            <span>--:--</span>
-          </div>
+                ))}
+              </div>
+            </div>
+          ) : null}
         </div>
-        <div className="text-center text-base text-muted-foreground">
-          Chapter {story.currentChapter} of {story.totalChapters}
-        </div>
-      </div>
-        <AudioPlayer
-          node={currentNode}
+      </PageContainer>
+
+      {!showChoices && (
+        <PlayerFooter
           isPlaying={isPlaying}
-          audioRef={audioRef}
-        onTimeUpdate={onTimeUpdate}
+          currentTime={currentTime}
+          progressPercent={progressPercent}
+          chapterLabel={chapterLabel}
+          disabled={shouldDisablePlayback}
+          canReplay={canReplay}
+          onPlayPause={playPause}
+          onReplay={replay}
         />
+      )}
+
+      <AudioPlayer
+        node={currentNode}
+        isPlaying={isPlaying}
+        audioRef={audioRef}
+        onTimeUpdate={onTimeUpdate}
+      />
     </div>
   );
 }

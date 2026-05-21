@@ -122,7 +122,7 @@ export function useVoicesColumns(
                     </Button>
                 </div>
                 ) : (
-                <span className="font-oregano text-xl pl-2">{voice.name}</span>
+                <span className="pl-2 font-headline-md text-headline-md text-primary">{voice.name}</span>
                 )}
               </div>
             }

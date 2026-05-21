@@ -1,87 +1,90 @@
+@import './sonora-tokens.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 224 71.4% 4.1%;
-    --card: 0 0% 100%;
-    --card-foreground: 224 71.4% 4.1%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 224 71.4% 4.1%;
-    --primary: 220.9 39.3% 11%;
-    --primary-foreground: 210 20% 98%;
-    --secondary: 220 14.3% 95.9%;
-    --secondary-foreground: 220.9 39.3% 11%;
-    --muted: 220 14.3% 95.9%;
-    --muted-foreground: 220 8.9% 46.1%;
-    --accent: 220 14.3% 95.9%;
-    --accent-foreground: 220.9 39.3% 11%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 20% 98%;
-    --border: 214.3 31.8% 94.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 224 71.4% 4.1%;
-    --radius: 0.5rem;
+    /* Sonora palette mapped to shadcn HSL tokens */
+    --background: 36 71% 97%;
+    --foreground: 48 7% 10%;
+    --card: 36 33% 93%;
+    --card-foreground: 48 7% 10%;
+    --popover: 36 71% 97%;
+    --popover-foreground: 48 7% 10%;
+    --primary: 115 72% 16%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 252 44% 92%;
+    --secondary-foreground: 244 21% 13%;
+    --muted: 36 33% 93%;
+    --muted-foreground: 100 7% 27%;
+    --accent: 48 100% 71%;
+    --accent-foreground: 48 100% 12%;
+    --destructive: 0 76% 42%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 92 9% 76%;
+    --input: 36 33% 93%;
+    --ring: 113 34% 31%;
+    --radius: 0.75rem;
 
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
+    --chart-1: 115 72% 16%;
+    --chart-2: 48 100% 71%;
+    --chart-3: 252 44% 92%;
+    --chart-4: 113 34% 31%;
+    --chart-5: 0 76% 42%;
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 36 71% 97%;
+    --sidebar-foreground: 48 7% 10%;
+    --sidebar-primary: 115 72% 16%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 36 33% 93%;
+    --sidebar-accent-foreground: 48 7% 10%;
+    --sidebar-border: 92 9% 76%;
+    --sidebar-ring: 113 34% 31%;
   }
 
   .dark {
-    --background: 224 71.4% 4.1%;
-    --foreground: 210 20% 98%;
-    --card: 224 71.4% 4.1%;
-    --card-foreground: 210 20% 98%;
-    --popover: 224 71.4% 4.1%;
-    --popover-foreground: 210 20% 98%;
-    --primary: 210 20% 98%;
-    --primary-foreground: 220.9 39.3% 11%;
-    --secondary: 215 27.9% 13%;
-    --secondary-foreground: 210 20% 98%;
-    --muted: 215 27.9% 13%;
-    --muted-foreground: 217.9 10.6% 64.9%;
-    --accent: 215 27.9% 13%;
-    --accent-foreground: 210 20% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 20% 98%;
-    --border: 215 27.9% 13%;
-    --input: 215 27.9% 13%;
-    --ring: 216 12.2% 83.9%;
+    --background: 22 12% 8%;
+    --foreground: 36 40% 95%;
+    --card: 30 10% 14%;
+    --card-foreground: 36 40% 95%;
+    --popover: 30 10% 14%;
+    --popover-foreground: 36 40% 95%;
+    --primary: 115 35% 55%;
+    --primary-foreground: 115 72% 8%;
+    --secondary: 252 20% 22%;
+    --secondary-foreground: 252 44% 92%;
+    --muted: 30 8% 18%;
+    --muted-foreground: 100 8% 65%;
+    --accent: 48 85% 55%;
+    --accent-foreground: 48 100% 10%;
+    --destructive: 0 62% 55%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 100 8% 28%;
+    --input: 30 8% 18%;
+    --ring: 115 35% 55%;
 
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
+    --chart-1: 115 40% 45%;
+    --chart-2: 48 80% 55%;
+    --chart-3: 252 30% 40%;
+    --chart-4: 113 34% 31%;
+    --chart-5: 0 62% 50%;
 
-    --sidebar-background: 224 71.4% 4.1%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-background: 48 7% 10%;
+    --sidebar-foreground: 36 71% 97%;
+    --sidebar-primary: 115 40% 45%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 215 27.9% 13%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 48 7% 18%;
+    --sidebar-accent-foreground: 36 71% 97%;
+    --sidebar-border: 48 7% 22%;
+    --sidebar-ring: 115 40% 45%;
   }
 }
 
 @layer base {
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-body text-body-md;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 
@@ -107,7 +110,7 @@ Optimize dropdowns for mobile
 
 .site-header > .container:before,
 .site-footer > .container:before {
-  background: radial-gradient(62.87% 100% at 50% 100%, theme('colors.gray.200') 0%, rgba(255, 255, 255, 0) 100%);
+  background: radial-gradient(62.87% 100% at 50% 100%, theme('colors.outline-variant') 0%, rgba(255, 255, 255, 0) 100%);
 
   bottom: 0;
   content: "";
@@ -124,4 +127,134 @@ Optimize dropdowns for mobile
 
 .site-footer > .container:before {
   top: 0;
+}
+
+/* Sonora utility classes (from design mockups) */
+.magical-glow {
+  box-shadow: var(--sonora-glow);
+}
+
+.magical-glow-strong {
+  box-shadow: var(--sonora-glow-strong);
+}
+
+.story-card-shadow {
+  box-shadow: var(--sonora-card-shadow);
+}
+
+.magical-shadow {
+  box-shadow: var(--sonora-magical-shadow);
+}
+
+.dark .book-spine {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.5) 0%,
+    rgba(255, 255, 255, 0.05) 50%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
+}
+
+.book-spine {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+}
+
+.paper-texture {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  background-blend-mode: multiply;
+}
+
+.book-texture {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.06'/%3E%3C/svg%3E");
+}
+
+.grain-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: 0;
+  border-radius: inherit;
+}
+
+.grain-overlay {
+  position: relative;
+}
+
+.glass-card {
+  background: var(--sonora-glass-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--sonora-glass-border);
+}
+
+.narration-word-active {
+  text-shadow: 0 0 12px rgba(255, 225, 109, 0.35);
+}
+
+.narration-underline-track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.06em;
+  height: 3px;
+  border-radius: 9999px;
+  background: rgb(var(--sonora-tertiary) / 0.2);
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.narration-underline-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: rgb(var(--sonora-tertiary-fixed));
+  box-shadow: 0 0 6px rgba(255, 225, 109, 0.55);
+  transition: width 50ms linear;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .narration-underline-fill {
+    transition: none;
+  }
+}
+
+.book-frame {
+  border: 2px solid var(--sonora-book-frame-border);
+  box-shadow: var(--sonora-book-frame-shadow);
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    var(--sonora-shimmer-mid) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 200% 100%;
+  animation: sonora-shimmer 2s infinite;
+}
+
+@keyframes sonora-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }

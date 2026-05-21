@@ -1,40 +1,46 @@
 "use client"
 
 import * as React from "react"
-import { ScrollArea, ScrollBar } from "@kit/ui/shadcn/scroll-area"
 import { cn } from "@kit/ui/lib"
+import { SonoraChip } from "@/components/sonora"
 
 interface CategoryPillsProps extends React.HTMLAttributes<HTMLDivElement> {
   categories: string[]
+  selected?: string
+  onCategorySelect?: (category: string) => void
 }
 
 export function CategoryPills({
   categories,
+  selected: controlledSelected,
+  onCategorySelect,
   className,
   ...props
 }: CategoryPillsProps) {
-  const [selectedCategory, setSelectedCategory] = React.useState("All")
+  const [internalSelected, setInternalSelected] = React.useState(categories[0] ?? "All Stories")
+  const selected = controlledSelected ?? internalSelected
+
+  const handleSelect = (category: string) => {
+    setInternalSelected(category)
+    onCategorySelect?.(category)
+  }
 
   return (
-    <ScrollArea className="w-full whitespace-nowrap">
-      <div className={cn("flex w-max space-x-2 p-1", className)} {...props}>
-        {categories.map((category) => (
-          <button
-            key={category}
-            onClick={() => setSelectedCategory(category)}
-            className={cn(
-              "inline-flex items-center rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-              selectedCategory === category
-                ? "border-primary bg-primary text-primary-foreground"
-                : "border-input bg-background hover:bg-accent hover:text-accent-foreground"
-            )}
-          >
-            {category}
-          </button>
-        ))}
-      </div>
-      <ScrollBar orientation="horizontal" />
-    </ScrollArea>
+    <div
+      className={cn(
+        "flex gap-3 overflow-x-auto pb-2 hide-scrollbar md:flex-wrap md:justify-center md:overflow-visible",
+        className,
+      )}
+      {...props}
+    >
+      {categories.map((category) => (
+        <SonoraChip
+          key={category}
+          label={category}
+          active={selected === category}
+          onClick={() => handleSelect(category)}
+        />
+      ))}
+    </div>
   )
 }

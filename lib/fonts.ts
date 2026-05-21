@@ -1,55 +1,30 @@
-import localFont from 'next/font/local';
+import { Playfair_Display, Quicksand } from 'next/font/google';
 
 /**
- * @sans
- * @description Define here the sans font.
- * Using custom Oregano font from public/fonts/
+ * Display / headline font (storybook personality)
  */
-const sans = localFont({
-  src: [
-    {
-      path: '../public/fonts/Oregano-Regular.ttf',
-      weight: '400',
-      style: 'normal',
-    },
-    {
-      path: '../public/fonts/Oregano-Italic.ttf',
-      weight: '400',
-      style: 'italic',
-    },
-  ],
-  variable: '--font-sans',
-  fallback: ['system-ui', 'Helvetica Neue', 'Helvetica', 'Arial'],
-  preload: true,
+const display = Playfair_Display({
+  subsets: ['latin'],
+  weight: ['400', '600', '700'],
+  style: ['normal', 'italic'],
+  variable: '--font-display',
+  display: 'swap',
 });
 
 /**
- * @heading
- * @description Define here the heading font.
+ * Body / UI / narration font
  */
-const heading = sans;
-
-/**
- * @oregano
- * @description Custom Oregano font for special use cases
- */
-const oregano = localFont({
-  src: [
-    {
-      path: '../public/fonts/Oregano-Regular.ttf',
-      weight: '400',
-      style: 'normal',
-    },
-    {
-      path: '../public/fonts/Oregano-Italic.ttf',
-      weight: '400',
-      style: 'italic',
-    },
-  ],
-  variable: '--font-oregano',
-  fallback: ['system-ui', 'Helvetica Neue', 'Helvetica', 'Arial'],
-  preload: true,
+const body = Quicksand({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-body',
+  display: 'swap',
 });
 
-// we export these fonts into the root layout
-export { sans, heading, oregano };
+/** @deprecated Use `display` — kept for layout import compatibility */
+const heading = display;
+
+/** @deprecated Use `body` — kept for layout import compatibility */
+const sans = body;
+
+export { display, body, heading, sans };
