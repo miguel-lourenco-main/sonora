@@ -127,6 +127,21 @@ export function useStoryPlayer({ initialNodeId, nodes }: UseStoryPlayerProps) {
     }
   }, [isPlaying]);
 
+  const seekTo = useCallback((localTime: number) => {
+    if (!audioRef.current || isTransitioning.current) return;
+
+    const duration = audioRef.current.duration;
+    if (!Number.isFinite(duration) || duration <= 0) return;
+
+    const clamped = Math.max(0, Math.min(localTime, Math.max(0, duration - 0.05)));
+    audioRef.current.currentTime = clamped;
+    setCurrentTime(lastNodeEndTime.current + clamped);
+
+    if (canReplay && clamped < duration) {
+      setCanReplay(false);
+    }
+  }, [canReplay]);
+
   const replay = useCallback(() => {
     if (!audioRef.current || isTransitioning.current) return;
 
@@ -231,6 +246,7 @@ export function useStoryPlayer({ initialNodeId, nodes }: UseStoryPlayerProps) {
     setIsAudioReady,
     canReplay,
     replay,
+    seekTo,
   };
 }
 

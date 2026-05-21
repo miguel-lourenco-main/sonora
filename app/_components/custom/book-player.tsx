@@ -25,6 +25,7 @@ import { previewVoice } from "~/lib/client/elevenlabs"
 import { ArrowLeft, ArrowRight, Loader2, Mic, Sparkles } from "lucide-react"
 import ChoiceStatus from "./choice-status"
 import { hasPreRecordedAudio } from "~/lib/utils/audio-availability"
+import { getProgressChapterNumber } from "~/lib/utils/chapter-progress"
 import { toast } from "sonner"
 import { PageContainer } from "@/components/sonora"
 import { PlayerFooter } from "./player-footer"
@@ -56,6 +57,7 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
     isAudioReady,
     canReplay,
     replay,
+    seekTo,
   } = useStoryPlayer({
     initialNodeId: initialNodeId,
     nodes: storyNodes
@@ -316,7 +318,13 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
     ? (nodeLocalTime / audioDuration) * 100
     : canReplay && currentTime > 0 ? 100 : 0;
 
-  const chapterLabel = `Chapter ${story.currentChapter} of ${story.totalChapters}`;
+  const progressChapter = getProgressChapterNumber(
+    storyNodes,
+    initialNodeId,
+    currentNode.id,
+    story.totalChapters,
+  );
+  const chapterLabel = `Chapter ${progressChapter} of ${story.totalChapters}`;
   const hasPreRecorded = hasPreRecordedAudio(story.label);
 
   return (
@@ -508,13 +516,16 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
       {!showChoices && (
         <PlayerFooter
           isPlaying={isPlaying}
-          currentTime={currentTime}
+          currentTime={nodeLocalTime}
+          duration={audioDuration}
           progressPercent={progressPercent}
           chapterLabel={chapterLabel}
           disabled={shouldDisablePlayback}
+          seekDisabled={shouldDisablePlayback || audioDuration <= 0}
           canReplay={canReplay}
           onPlayPause={playPause}
           onReplay={replay}
+          onSeek={seekTo}
         />
       )}
 
