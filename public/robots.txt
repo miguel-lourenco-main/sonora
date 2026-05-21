@@ -1,4 +1,0 @@
-User-Agent: *
-Allow: /
-
-Sitemap: https://sonora.edgen.co/sitemap.xml
