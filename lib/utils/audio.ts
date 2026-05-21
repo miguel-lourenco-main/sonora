@@ -265,11 +265,5 @@ export function calculateWordTimings(text: string, totalDuration: number) {
     }
   });
 
-  console.log('📝 [timings] Final word timings:', {
-    wordCount: wordTimings.length,
-    totalTime: wordTimings[wordTimings.length - 1]?.end.toFixed(2) ?? 0,
-    averageWordDuration: (totalDuration / wordTimings.length).toFixed(2)
-  });
-
   return wordTimings;
 } 

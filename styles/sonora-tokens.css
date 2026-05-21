@@ -1,0 +1,113 @@
+/**
+ * Sonora design tokens — light + dark (RGB channels for Tailwind alpha)
+ */
+
+:root {
+  --sonora-background: 254 249 242;
+  --sonora-surface: 254 249 242;
+  --sonora-on-background: 29 28 24;
+  --sonora-on-surface: 29 28 24;
+  --sonora-primary: 21 66 18;
+  --sonora-primary-container: 45 90 39;
+  --sonora-on-primary: 255 255 255;
+  --sonora-on-primary-container: 157 208 144;
+  --sonora-primary-fixed: 188 240 174;
+  --sonora-primary-fixed-dim: 161 212 148;
+  --sonora-secondary: 95 92 112;
+  --sonora-secondary-fixed: 228 223 247;
+  --sonora-on-secondary-fixed: 27 26 42;
+  --sonora-secondary-container: 228 223 247;
+  --sonora-on-secondary-container: 101 98 118;
+  --sonora-tertiary: 112 93 0;
+  --sonora-tertiary-fixed: 255 225 109;
+  --sonora-tertiary-fixed-dim: 233 196 0;
+  --sonora-on-tertiary-fixed: 34 27 0;
+  --sonora-tertiary-container: 201 169 0;
+  --sonora-surface-container-lowest: 255 255 255;
+  --sonora-surface-container-low: 248 243 236;
+  --sonora-surface-container: 242 237 230;
+  --sonora-surface-container-high: 236 231 225;
+  --sonora-surface-container-highest: 230 226 219;
+  --sonora-surface-dim: 222 217 211;
+  --sonora-surface-variant: 230 226 219;
+  --sonora-on-surface-variant: 66 73 62;
+  --sonora-outline: 114 121 110;
+  --sonora-outline-variant: 194 201 187;
+  --sonora-error: 186 26 26;
+  --sonora-surface-tint: 59 105 52;
+  --sonora-storybook-cream: 253 248 241;
+  --sonora-ink-blue: 26 27 38;
+  --sonora-magic-purple: 138 43 226;
+  --sonora-sunset-pink: 233 85 155;
+  --sonora-on-tertiary: 255 255 255;
+  --sonora-on-secondary: 255 255 255;
+  --sonora-on-error: 255 255 255;
+  --sonora-inverse-surface: 50 48 44;
+  --sonora-inverse-on-surface: 245 240 233;
+
+  --sonora-glow: 0 0 25px rgba(255, 225, 109, 0.15);
+  --sonora-glow-strong: 0 0 20px rgba(233, 196, 0, 0.4);
+  --sonora-card-shadow: 0 10px 30px -10px rgba(21, 66, 18, 0.15);
+  --sonora-magical-shadow: 0 10px 40px -10px rgba(21, 66, 18, 0.12);
+
+  --sonora-glass-bg: rgba(255, 255, 255, 0.6);
+  --sonora-glass-border: rgba(255, 255, 255, 0.8);
+  --sonora-book-frame-border: rgba(21, 66, 18, 0.1);
+  --sonora-book-frame-shadow: 0 10px 30px -10px rgba(21, 66, 18, 0.3), 5px 0 15px -5px rgba(21, 66, 18, 0.1);
+  --sonora-shimmer-mid: rgba(255, 255, 255, 0.4);
+}
+
+.dark {
+  --sonora-background: 22 21 18;
+  --sonora-surface: 26 25 22;
+  --sonora-on-background: 245 240 233;
+  --sonora-on-surface: 245 240 233;
+  --sonora-primary: 161 212 148;
+  --sonora-primary-container: 59 105 52;
+  --sonora-on-primary: 15 40 12;
+  --sonora-on-primary-container: 188 240 174;
+  --sonora-primary-fixed: 188 240 174;
+  --sonora-primary-fixed-dim: 161 212 148;
+  --sonora-secondary: 196 192 210;
+  --sonora-secondary-fixed: 55 52 68;
+  --sonora-on-secondary-fixed: 228 223 247;
+  --sonora-secondary-container: 70 67 82;
+  --sonora-on-secondary-container: 196 192 210;
+  --sonora-tertiary: 255 225 109;
+  --sonora-tertiary-fixed: 233 196 0;
+  --sonora-tertiary-fixed-dim: 201 169 0;
+  --sonora-on-tertiary-fixed: 34 27 0;
+  --sonora-tertiary-container: 112 93 0;
+  --sonora-surface-container-lowest: 18 17 15;
+  --sonora-surface-container-low: 32 31 27;
+  --sonora-surface-container: 38 37 33;
+  --sonora-surface-container-high: 48 46 42;
+  --sonora-surface-container-highest: 58 56 51;
+  --sonora-surface-dim: 22 21 18;
+  --sonora-surface-variant: 48 46 42;
+  --sonora-on-surface-variant: 194 201 187;
+  --sonora-outline: 148 155 142;
+  --sonora-outline-variant: 72 78 68;
+  --sonora-error: 255 180 171;
+  --sonora-surface-tint: 161 212 148;
+  --sonora-storybook-cream: 32 31 27;
+  --sonora-ink-blue: 200 205 220;
+  --sonora-magic-purple: 180 140 255;
+  --sonora-sunset-pink: 255 140 190;
+  --sonora-on-tertiary: 34 27 0;
+  --sonora-on-secondary: 27 26 42;
+  --sonora-on-error: 105 0 5;
+  --sonora-inverse-surface: 230 226 219;
+  --sonora-inverse-on-surface: 29 28 24;
+
+  --sonora-glow: 0 0 25px rgba(255, 225, 109, 0.08);
+  --sonora-glow-strong: 0 0 20px rgba(233, 196, 0, 0.25);
+  --sonora-card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.4);
+  --sonora-magical-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.35);
+
+  --sonora-glass-bg: rgba(38, 37, 33, 0.75);
+  --sonora-glass-border: rgba(72, 78, 68, 0.5);
+  --sonora-book-frame-border: rgba(161, 212, 148, 0.15);
+  --sonora-book-frame-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), 5px 0 15px -5px rgba(0, 0, 0, 0.3);
+  --sonora-shimmer-mid: rgba(255, 255, 255, 0.08);
+}

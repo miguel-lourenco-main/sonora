@@ -26,7 +26,7 @@ const ENV = {
   debug: process.env.COMMENT_MIRROR_DEBUG === '1',
   allowedPrefixes: normalizePathPrefixes(
     process.env.COMMENT_MIRROR_ALLOWED_PATH_PREFIXES ||
-      'app/,apps/,packages/,components/,lib/,utils/,hooks/,types/,styles/,assets/,public/,content/,tooling/,scripts/,infra/,config/',
+      'app/,apps/,packages/,components/,lib/,utils/,hooks/,types/,styles/,assets/,public/locales/,public/images/,public/fonts/,public/samples/,public/default_voices/,content/,tooling/,scripts/,infra/,config/',
   ),
   maxFiles: parsePositiveInt(process.env.COMMENT_MIRROR_MAX_FILES, 120),
   maxBytesPerFile: parsePositiveInt(process.env.COMMENT_MIRROR_MAX_BYTES_PER_FILE, 500000),
@@ -125,6 +125,9 @@ async function runCursorCommentMirror(runMarker) {
 
   const changedPaths = getGitChangedPaths(repoRoot)
   if (changedPaths.length === 0) {
+    if (hasUnpushedCommits(repoRoot, ENV.sourceBranch)) {
+      pushBranchWithTokenAuth(repoRoot, ENV.sourceBranch, ENV.token)
+    }
     const result = {
       ok: true,
       skipped: true,
@@ -170,23 +173,92 @@ async function runCursorCommentMirror(runMarker) {
 }
 
 function checkoutWorkingBranch(repoRoot) {
+  ensureCleanWorkingTree(repoRoot)
   execFileSync('git', ['fetch', '--prune', 'origin', ENV.targetBranch], { cwd: repoRoot, stdio: 'inherit' })
   if (branchExistsOnRemote(repoRoot, ENV.sourceBranch)) {
     execFileSync('git', ['fetch', '--prune', 'origin', ENV.sourceBranch], {
       cwd: repoRoot,
       stdio: 'inherit',
     })
-    execFileSync('git', ['checkout', '-B', ENV.sourceBranch, `origin/${ENV.sourceBranch}`], {
+    execFileSync('git', ['checkout', '-f', '-B', ENV.sourceBranch, `origin/${ENV.sourceBranch}`], {
       cwd: repoRoot,
       stdio: 'inherit',
     })
-    execFileSync('git', ['merge', '--no-edit', `origin/${ENV.targetBranch}`], {
+    mergeTargetIntoMirrorBranch(repoRoot)
+    commitDisallowedPathCleanup(repoRoot)
+    return
+  }
+  execFileSync('git', ['checkout', '-f', '-B', ENV.sourceBranch, ENV.sha], {
+    cwd: repoRoot,
+    stdio: 'inherit',
+  })
+}
+
+/**
+ * Fast-forward the mirror branch toward target. On conflict, prefer target (`-X theirs`);
+ * if merge still fails, reset the mirror branch to target and let the agent re-annotate.
+ *
+ * @param {string} repoRoot
+ */
+function mergeTargetIntoMirrorBranch(repoRoot) {
+  const targetRef = `origin/${ENV.targetBranch}`
+  try {
+    execFileSync('git', ['merge', '-X', 'theirs', '--no-edit', targetRef], {
       cwd: repoRoot,
       stdio: 'inherit',
     })
     return
+  } catch {
+    console.warn(
+      `comment-mirror-runner: merge with ${targetRef} failed; resetting mirror branch to target`,
+    )
   }
-  execFileSync('git', ['checkout', '-B', ENV.sourceBranch, ENV.sha], { cwd: repoRoot, stdio: 'inherit' })
+  try {
+    execFileSync('git', ['merge', '--abort'], { cwd: repoRoot, stdio: 'pipe' })
+  } catch {
+    // No merge in progress, or already aborted.
+  }
+  execFileSync('git', ['reset', '--hard', targetRef], { cwd: repoRoot, stdio: 'inherit' })
+}
+
+/**
+ * Drops local/CI dirt (e.g. pages job copying `out/*` into `public/`) before branch checkout.
+ *
+ * @param {string} repoRoot
+ */
+function ensureCleanWorkingTree(repoRoot) {
+  execFileSync('git', ['reset', '--hard', 'HEAD'], { cwd: repoRoot, stdio: 'inherit' })
+  execFileSync('git', ['clean', '-fdx'], { cwd: repoRoot, stdio: 'inherit' })
+}
+
+/**
+ * Removes generated/static-export paths that must not live on the comment-mirror branch.
+ *
+ * @param {string} repoRoot
+ * @returns {string[]}
+ */
+function removeDisallowedTrackedPaths(repoRoot) {
+  const tracked = execFileSync('git', ['ls-files'], { cwd: repoRoot, encoding: 'utf8' })
+  const toRemove = splitLines(tracked).filter((filePath) => isDisallowedPath(filePath.replace(/\\/g, '/')))
+  if (toRemove.length === 0) return []
+  execFileSync('git', ['rm', '-rf', '--ignore-unmatch', '--', ...toRemove], {
+    cwd: repoRoot,
+    stdio: 'inherit',
+  })
+  console.warn(
+    `comment-mirror-runner: removed disallowed tracked paths: ${toRemove.slice(0, 20).join(', ')}${toRemove.length > 20 ? ` (+${toRemove.length - 20} more)` : ''}`,
+  )
+  return toRemove
+}
+
+/**
+ * @param {string} repoRoot
+ */
+function commitDisallowedPathCleanup(repoRoot) {
+  const removed = removeDisallowedTrackedPaths(repoRoot)
+  if (removed.length === 0) return
+  const summary = `chore(comment-mirror): prune disallowed paths (${ENV.targetBranch})`
+  execFileSync('git', ['commit', '-m', summary], { cwd: repoRoot, stdio: 'inherit' })
 }
 
 function branchExistsOnRemote(repoRoot, branch) {
@@ -197,6 +269,19 @@ function branchExistsOnRemote(repoRoot, branch) {
   return out.trim().length > 0
 }
 
+/**
+ * @param {string} repoRoot
+ * @param {string} branch
+ */
+function hasUnpushedCommits(repoRoot, branch) {
+  const upstream = `origin/${branch}`
+  const out = execFileSync('git', ['rev-list', '--count', `${upstream}..HEAD`], {
+    cwd: repoRoot,
+    encoding: 'utf8',
+  })
+  return Number(out.trim()) > 0
+}
+
 function buildCursorPrompt() {
   return [
     'You are maintaining a comment-only mirror branch for this repository.',
@@ -205,6 +290,7 @@ function buildCursorPrompt() {
     '- Only add comments. Do not change executable logic, imports, exports, APIs, formatting-only lines, dependencies, or configuration values.',
     '- Never edit lockfiles, generated files, binaries, or .env files.',
     '- Never modify images, fonts, archives, or other non-text assets (including under public/).',
+    '- Never touch Next.js static export or GitLab Pages output under public/ (_next/, index.html, player routes, etc.).',
     '- Keep comments concise and meaningful; skip obvious lines.',
     '- Use the existing comment style already used in each file.',
     '- If a file does not need comments, leave it unchanged.',
@@ -344,7 +430,7 @@ export function validateAllowedPaths(changedPaths, allowedPrefixes) {
   }
 }
 
-function isDisallowedPath(filePath) {
+export function isDisallowedPath(filePath) {
   const baseName = path.basename(filePath)
   if (baseName === '.env' || baseName.startsWith('.env.')) return true
   const denyList = [
@@ -358,6 +444,29 @@ function isDisallowedPath(filePath) {
   if (filePath.includes('/dist/') || filePath.includes('/.next/') || filePath.includes('/coverage/')) {
     return true
   }
+  if (isPublicStaticExportArtifact(filePath)) return true
+  return false
+}
+
+/**
+ * Next static export / GitLab Pages output must not be mirrored or committed.
+ *
+ * @param {string} filePath
+ */
+export function isPublicStaticExportArtifact(filePath) {
+  if (!filePath.startsWith('public/')) return false
+  if (filePath.startsWith('public/_next/')) return true
+  const exportRoots = new Set([
+    'public/404.html',
+    'public/404/index.html',
+    'public/index.html',
+    'public/index.txt',
+    'public/manifest.json',
+    'public/robots.txt',
+  ])
+  if (exportRoots.has(filePath)) return true
+  if (filePath.startsWith('public/player/')) return true
+  if (filePath === 'public/voices/index.html' || filePath === 'public/voices/index.txt') return true
   return false
 }
 

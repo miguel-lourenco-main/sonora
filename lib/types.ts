@@ -53,6 +53,8 @@ export interface Story {
   chapters: Chapter[];
   currentChapter: number;
   totalChapters: number;
+  /** Catalog filter genre (Adventure, Fantasy, Fiction, Sci-Fi, etc.) */
+  category?: string;
 }
 
 export interface Audiobook {

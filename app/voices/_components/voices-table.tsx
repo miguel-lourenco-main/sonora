@@ -56,7 +56,7 @@ export default function VoicesTable({
 
   const createToolbarButtons = useCallback(() => {
     return (
-      <div className="flex items-center gap-x-4" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>
+      <div className="flex items-center gap-x-4">
         <CreateVoicesButton 
           open={newFilesDialogOpen} 
           setOpen={setNewFilesDialogOpen} 
@@ -64,7 +64,7 @@ export default function VoicesTable({
         <Button
           variant="outline"
           size="default"
-          className="text-base h-fit flex gap-x-2"
+          className="flex h-fit gap-x-2 rounded-2xl border-outline-variant bg-secondary-container font-bold text-on-secondary-container"
           onClick={async () => {
             try {
               clearCachedVoices();
@@ -119,14 +119,17 @@ export default function VoicesTable({
   if (!ready) return null;
 
   return (
-    <div className="flex flex-col gap-4 w-full mt-8 lg:mt-20" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>
+    <section className="flex w-full flex-col gap-6">
       {showEmptyState && (
-        <div className="flex items-center justify-between rounded-md border p-4">
+        <div className="flex flex-col items-start justify-between gap-4 rounded-3xl border border-outline-variant/30 bg-surface-container-low p-6 md:flex-row md:items-center">
           <div>
-            <div className="font-medium text-lg leading-relaxed">{t('voices.empty.title') ?? 'No voices yet'}</div>
-            <div className="text-base text-muted-foreground leading-relaxed">{t('voices.empty.description') ?? 'Add your ElevenLabs key in Settings and create or refresh voices.'}</div>
+            <div className="font-headline-md text-headline-md text-primary">{t('voices.empty.title') ?? 'No voices yet'}</div>
+            <div className="mt-1 font-body-md text-body-md text-on-surface-variant">{t('voices.empty.description') ?? 'Add your ElevenLabs key in Settings and create or refresh voices.'}</div>
           </div>
-          <Button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-base">
+          <Button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="rounded-full bg-primary font-bold text-on-primary"
+          >
             Go to API Keys
           </Button>
         </div>
@@ -140,6 +143,6 @@ export default function VoicesTable({
         identifier="name"
         initialSorting={[{ id: 'created_at', desc: true }]}
       />
-    </div>
+    </section>
   );
 }
