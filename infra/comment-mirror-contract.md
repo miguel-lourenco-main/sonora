@@ -28,7 +28,7 @@ Canonical contract for the `comment_mirror` CI flow.
 - `CURSOR_AGENT_BIN` (default `agent`)
 - `COMMENT_MIRROR_BRANCH` (default `comment-mirror/main`)
 - `COMMENT_MIRROR_TARGET_BRANCH` (default `main`)
-- `COMMENT_MIRROR_ALLOWED_PATH_PREFIXES` (default includes `app/`, `apps/`, `lib/`, `public/`, `scripts/`, `infra/`, and related source roots — see `gitlab-run-comment-mirror.mjs`)
+- `COMMENT_MIRROR_ALLOWED_PATH_PREFIXES` (default includes `app/`, `apps/`, `lib/`, `public/locales/`, `public/images/`, etc. — not blanket `public/`; see `gitlab-run-comment-mirror.mjs`)
 - `COMMENT_MIRROR_MAX_FILES` (default `120`)
 - `COMMENT_MIRROR_MAX_BYTES_PER_FILE` (default `500000`)
 - `COMMENT_MIRROR_DRY_RUN` (`1` enables dry-run)
@@ -50,6 +50,9 @@ Canonical contract for the `comment_mirror` CI flow.
 - After the agent runs, the runner discards working-tree changes on disallowed paths (e.g. images, lockfiles) so a stray edit does not fail the job when other files have valid comment-only diffs.
 - Changed files must remain inside `COMMENT_MIRROR_ALLOWED_PATH_PREFIXES`.
 - Reject sensitive/generated/binary files (`.env*`, lockfiles, binary extensions, build outputs).
+- Reject Next.js static export / GitLab Pages artifacts under `public/` (`_next/`, `index.html`, `player/`, etc.).
+- Before branch checkout, reset and clean the working tree so deploy-stage `public/` copies cannot block `git checkout`.
+- After merging `main` into the mirror branch, drop any disallowed tracked paths still present on the mirror branch.
 - Reject diffs containing non-comment additions/removals.
 - Limit blast radius with `COMMENT_MIRROR_MAX_FILES` and `COMMENT_MIRROR_MAX_BYTES_PER_FILE`.
 - Never open MR and never auto-merge in this flow.
