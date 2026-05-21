@@ -184,10 +184,7 @@ function checkoutWorkingBranch(repoRoot) {
       cwd: repoRoot,
       stdio: 'inherit',
     })
-    execFileSync('git', ['merge', '--no-edit', `origin/${ENV.targetBranch}`], {
-      cwd: repoRoot,
-      stdio: 'inherit',
-    })
+    mergeTargetIntoMirrorBranch(repoRoot)
     commitDisallowedPathCleanup(repoRoot)
     return
   }
@@ -195,6 +192,33 @@ function checkoutWorkingBranch(repoRoot) {
     cwd: repoRoot,
     stdio: 'inherit',
   })
+}
+
+/**
+ * Fast-forward the mirror branch toward target. On conflict, prefer target (`-X theirs`);
+ * if merge still fails, reset the mirror branch to target and let the agent re-annotate.
+ *
+ * @param {string} repoRoot
+ */
+function mergeTargetIntoMirrorBranch(repoRoot) {
+  const targetRef = `origin/${ENV.targetBranch}`
+  try {
+    execFileSync('git', ['merge', '-X', 'theirs', '--no-edit', targetRef], {
+      cwd: repoRoot,
+      stdio: 'inherit',
+    })
+    return
+  } catch {
+    console.warn(
+      `comment-mirror-runner: merge with ${targetRef} failed; resetting mirror branch to target`,
+    )
+  }
+  try {
+    execFileSync('git', ['merge', '--abort'], { cwd: repoRoot, stdio: 'pipe' })
+  } catch {
+    // No merge in progress, or already aborted.
+  }
+  execFileSync('git', ['reset', '--hard', targetRef], { cwd: repoRoot, stdio: 'inherit' })
 }
 
 /**

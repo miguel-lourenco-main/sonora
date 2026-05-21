@@ -52,7 +52,8 @@ Canonical contract for the `comment_mirror` CI flow.
 - Reject sensitive/generated/binary files (`.env*`, lockfiles, binary extensions, build outputs).
 - Reject Next.js static export / GitLab Pages artifacts under `public/` (`_next/`, `index.html`, `player/`, etc.).
 - Before branch checkout, reset and clean the working tree so deploy-stage `public/` copies cannot block `git checkout`.
-- After merging `main` into the mirror branch, drop any disallowed tracked paths still present on the mirror branch.
+- After merging `main` into the mirror branch, prefer `main` on content conflicts (`-X theirs`); if merge still fails, reset the mirror branch to `main` and re-run annotation.
+- After merging, drop any disallowed tracked paths still present on the mirror branch.
 - Reject diffs containing non-comment additions/removals.
 - Limit blast radius with `COMMENT_MIRROR_MAX_FILES` and `COMMENT_MIRROR_MAX_BYTES_PER_FILE`.
 - Never open MR and never auto-merge in this flow.
