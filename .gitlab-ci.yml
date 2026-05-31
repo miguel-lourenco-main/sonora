@@ -1,6 +1,11 @@
+# Submodule `infra` is not part of the parent tree; `include:local` cannot see those paths on GitLab.
+# Pin `ref` to match: `git ls-tree HEAD infra` (update both when bumping the submodule).
 include:
-  - local: infra/ci/templates/base.gitlab-ci.yml
-  - local: infra/ci/templates/jobs-quality.gitlab-ci.yml
-  - local: infra/ci/templates/jobs-comment-mirror.gitlab-ci.yml
-  - local: infra/ci/templates/jobs-ai-ci-fix.gitlab-ci.yml
-  - local: infra/ci/templates/deploy-gitlab-pages.gitlab-ci.yml
+  - project: public-work4/infra
+    ref: 9b5aefdbf859b548930c01b85ac7b080a1243cbc
+    file:
+      - ci/templates/base.gitlab-ci.yml
+      - ci/templates/jobs-quality.gitlab-ci.yml
+      - ci/templates/jobs-comment-mirror.gitlab-ci.yml
+      - ci/templates/jobs-ai-ci-fix.gitlab-ci.yml
+      - ci/templates/deploy-gitlab-pages.gitlab-ci.yml
