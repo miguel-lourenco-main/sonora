@@ -9,3 +9,6 @@ include:
       - ci/templates/jobs-comment-mirror.gitlab-ci.yml
       - ci/templates/jobs-ai-ci-fix.gitlab-ci.yml
       - ci/templates/deploy-gitlab-pages.gitlab-ci.yml
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
