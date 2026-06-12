@@ -7,7 +7,35 @@ import { FileIcon } from "lucide-react";
 
 import { clsx } from 'clsx';
 import type { ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
+import { extendTailwindMerge } from 'tailwind-merge';
+
+/**
+ * Teach tailwind-merge the custom font-size tokens so it doesn't treat
+ * `text-label-lg` and color classes like `text-on-primary` as conflicting
+ * (by default unknown `text-*` values all land in the same group and the
+ * later class silently drops the earlier one).
+ */
+const twMerge = extendTailwindMerge({
+  extend: {
+    classGroups: {
+      'font-size': [
+        {
+          text: [
+            'headline-lg',
+            'headline-lg-mobile',
+            'headline-md',
+            'body-md',
+            'body-lg',
+            'label-lg',
+            'display-lg',
+            'narration-text',
+            'narration-text-lg',
+          ],
+        },
+      ],
+    },
+  },
+});
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

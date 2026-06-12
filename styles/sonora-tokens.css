@@ -55,6 +55,12 @@
   --sonora-book-frame-border: rgba(21, 66, 18, 0.1);
   --sonora-book-frame-shadow: 0 10px 30px -10px rgba(21, 66, 18, 0.3), 5px 0 15px -5px rgba(21, 66, 18, 0.1);
   --sonora-shimmer-mid: rgba(255, 255, 255, 0.4);
+
+  --sonora-aurora-gold: 255 225 109;
+  --sonora-aurora-green: 161 212 148;
+  --sonora-aurora-purple: 180 140 255;
+  --sonora-aurora-pink: 233 85 155;
+  --sonora-hero-scrim: rgba(254, 249, 242, 0.55);
 }
 
 .dark {
@@ -110,4 +116,10 @@
   --sonora-book-frame-border: rgba(161, 212, 148, 0.15);
   --sonora-book-frame-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), 5px 0 15px -5px rgba(0, 0, 0, 0.3);
   --sonora-shimmer-mid: rgba(255, 255, 255, 0.08);
+
+  --sonora-aurora-gold: 255 225 109;
+  --sonora-aurora-green: 161 212 148;
+  --sonora-aurora-purple: 180 140 255;
+  --sonora-aurora-pink: 255 140 190;
+  --sonora-hero-scrim: rgba(22, 21, 18, 0.55);
 }

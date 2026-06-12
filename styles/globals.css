@@ -258,3 +258,101 @@ Optimize dropdowns for mobile
     background-position: 200% 0;
   }
 }
+
+/* Aurora backdrop — layered radial washes, soft falloff via gradient stops (no blur) */
+.aurora-bg {
+  background:
+    radial-gradient(60% 50% at 12% 18%, rgb(var(--sonora-aurora-gold) / 0.22), transparent 70%),
+    radial-gradient(50% 45% at 85% 8%, rgb(var(--sonora-aurora-purple) / 0.16), transparent 70%),
+    radial-gradient(70% 60% at 50% 95%, rgb(var(--sonora-aurora-green) / 0.2), transparent 70%);
+}
+
+.dark .aurora-bg {
+  background:
+    radial-gradient(60% 50% at 12% 18%, rgb(var(--sonora-aurora-gold) / 0.1), transparent 70%),
+    radial-gradient(50% 45% at 85% 8%, rgb(var(--sonora-aurora-purple) / 0.12), transparent 70%),
+    radial-gradient(70% 60% at 50% 95%, rgb(var(--sonora-aurora-green) / 0.1), transparent 70%);
+}
+
+.aurora-bg-animated {
+  background-size: 160% 160%;
+  animation: sonora-aurora-drift 24s ease-in-out infinite alternate;
+}
+
+@keyframes sonora-aurora-drift {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 60%;
+  }
+}
+
+/* Radial wash under hero text — keeps contrast without flattening the aurora */
+.hero-scrim {
+  background: radial-gradient(60% 70% at 50% 45%, var(--sonora-hero-scrim), transparent 80%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Decorative headline accents only — never the sole carrier of meaning */
+.text-gradient-gold {
+  background: linear-gradient(
+    120deg,
+    rgb(var(--sonora-tertiary)) 0%,
+    rgb(var(--sonora-tertiary-fixed-dim)) 50%,
+    rgb(var(--sonora-primary-container)) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Hover shine sweep for primary CTAs */
+.sonora-button-shine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.25) 50%,
+    transparent 70%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.sonora-button-shine:hover::after {
+  transform: translateX(100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sonora-button-shine::after {
+    display: none;
+  }
+}
+
+.glow-focus:focus-visible {
+  outline: 2px solid transparent;
+  box-shadow:
+    0 0 0 3px rgb(var(--sonora-tertiary-fixed) / 0.7),
+    var(--sonora-glow);
+}
+
+.skeleton-base {
+  @apply bg-surface-container-high relative overflow-hidden rounded-2xl;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shimmer,
+  .aurora-bg-animated,
+  .animate-float-gentle {
+    animation: none;
+  }
+}

@@ -3,7 +3,7 @@ import { CatalogPageClient } from "./_components/catalog-page-client";
 import { bookData } from "~/lib/data/sample-story";
 
 export const metadata: Metadata = {
-  title: "Choose Your Story",
+  title: "Sonora — Interactive AI Audiobooks",
 };
 
 export default function HomePage() {

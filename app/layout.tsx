@@ -8,6 +8,7 @@ import appConfig from '~/config/app.config';
 
 import '../styles/globals.css';
 import { AppHeader } from './_components/app-header';
+import { AppFooter } from './_components/app-footer';
 
 export default function RootLayout({
   children,
@@ -24,6 +25,7 @@ export default function RootLayout({
         <RootProviders theme={theme} lang={language}>
           <AppHeader />
           <main className="flex flex-1 flex-col">{children}</main>
+          <AppFooter />
         </RootProviders>
 
         <Toaster richColors={true} theme={theme} position="top-center" />

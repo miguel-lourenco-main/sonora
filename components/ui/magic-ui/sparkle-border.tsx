@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "motion/react";
 
 interface SparkleBorderProps {
   children: React.ReactNode;
@@ -24,9 +24,10 @@ export function SparkleBorder({
 }: SparkleBorderProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const sparklesRef = useRef<HTMLDivElement[]>([]);
+  const reducedMotion = useReducedMotion();
 
   useEffect(() => {
-    if (!isSelected) return;
+    if (!isSelected || reducedMotion) return;
 
     const container = containerRef.current;
     if (!container) return;
@@ -141,7 +142,7 @@ export function SparkleBorder({
       sparklesRef.current.forEach(sparkle => sparkle.remove());
       sparklesRef.current = [];
     };
-  }, [isSelected]);
+  }, [isSelected, reducedMotion]);
 
   return (
     <div 
@@ -151,10 +152,12 @@ export function SparkleBorder({
       {children}
       <motion.div
         animate={{
-          borderColor: isSelected ? 'hsl(var(--primary))' : 'hsl(var(--muted-foreground/30))',
+          borderColor: isSelected
+            ? 'rgb(var(--sonora-tertiary-fixed))'
+            : 'rgb(var(--sonora-outline-variant) / 0.3)',
           transition: { duration: 0.3 }
         }}
-        className="absolute inset-0 rounded-md border-2 pointer-events-none"
+        className="absolute inset-0 rounded-[inherit] border-2 pointer-events-none"
       />
     </div>
   );

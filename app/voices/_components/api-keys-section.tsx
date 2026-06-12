@@ -18,10 +18,14 @@ export function ApiKeysSection({ onRefetchVoices }: ApiKeysSectionProps) {
   const [key, setKey] = useState('')
   const [showKey, setShowKey] = useState(false)
   const [isValidating, setIsValidating] = useState(false)
+  const [connected, setConnected] = useState(false)
 
   useEffect(() => {
     const existing = getElevenLabsApiKey()
-    if (existing) setKey(existing)
+    if (existing) {
+      setKey(existing)
+      setConnected(true)
+    }
   }, [])
 
   const debouncedRefetch = useCallback(() => {
@@ -58,6 +62,7 @@ export function ApiKeysSection({ onRefetchVoices }: ApiKeysSectionProps) {
     clearElevenLabsApiKey()
     clearCachedVoices()
     setKey('')
+    setConnected(false)
     toast.success('API key and cached voices cleared from storage')
     if (onRefetchVoices) {
       try {
@@ -89,6 +94,7 @@ export function ApiKeysSection({ onRefetchVoices }: ApiKeysSectionProps) {
         setElevenLabsApiKey(key.trim())
         toast.success('API key saved')
       }
+      setConnected(true)
       await persistStorage()
       
       if (onRefetchVoices) {
@@ -104,9 +110,15 @@ export function ApiKeysSection({ onRefetchVoices }: ApiKeysSectionProps) {
       <div className="absolute -right-10 -top-10 size-40 rounded-full bg-tertiary-fixed/10 blur-3xl" />
       <div className="relative z-10 flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
         <div className="flex-1">
-          <div className="mb-2 flex items-center gap-3">
+          <div className="mb-2 flex flex-wrap items-center gap-3">
             <Key className="size-6 text-tertiary" />
             <h2 className="font-headline-md text-headline-md text-primary">API Settings</h2>
+            {connected && (
+              <span className="magical-glow inline-flex items-center gap-2 rounded-full bg-primary-container/30 px-3 py-1 font-label-lg text-xs font-bold text-primary">
+                <span className="size-2 rounded-full bg-primary" aria-hidden="true" />
+                Connected
+              </span>
+            )}
           </div>
           <p className="mb-6 max-w-xl font-body-md text-body-md text-on-surface-variant">
             Connect your ElevenLabs account to enable high-quality AI narration for your stories.

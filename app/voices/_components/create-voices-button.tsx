@@ -34,11 +34,15 @@ export function CreateVoicesButton({ open, setOpen }: { open: boolean, setOpen: 
       trigger={ () => 
         <TooltipComponent 
           trigger={
-            <Button variant="foreground" size="default" onClick={() => {
-              setOpen(true)
-            }} className="text-base" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>
-              <div className="flex flex-row items-center gap-x-1">
-                <Plus className="size-4"/>
+            <Button
+              size="default"
+              onClick={() => {
+                setOpen(true)
+              }}
+              className="magical-glow min-h-tap-target-min rounded-full bg-primary font-bold text-on-primary hover:brightness-110"
+            >
+              <div className="flex flex-row items-center gap-x-1.5">
+                <Plus className="size-4" aria-hidden="true" />
                 {t('voices.new')}
               </div>
             </Button>
