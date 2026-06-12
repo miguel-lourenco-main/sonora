@@ -45,5 +45,61 @@
             "actions": "Actions"
         }
     },
-    "goToRecorder": "Go to Recorder"
+    "goToRecorder": "Go to Recorder",
+    "footer": {
+        "tagline": "Interactive audiobooks where every choice writes a different tale.",
+        "navLabel": "Footer navigation",
+        "explore": "Explore",
+        "links": {
+            "stories": "Stories",
+            "voices": "Voices"
+        },
+        "madeWith": "Made with wonder"
+    },
+    "home": {
+        "hero": {
+            "eyebrow": "Interactive AI audiobooks",
+            "titleLead": "Stories that",
+            "titleAccent": "listen back",
+            "subtitle": "Step into enchanted worlds where your voice shapes the tale. Choose your path, and let the story unfold around you.",
+            "ctaPrimary": "Start your first story",
+            "ctaBrowse": "Browse the library"
+        },
+        "continue": {
+            "title": "Continue listening",
+            "resume": "Resume"
+        },
+        "featured": {
+            "eyebrow": "Featured tale",
+            "cta": "Read the story"
+        },
+        "search": {
+            "placeholder": "Search stories...",
+            "clearLabel": "Clear search"
+        },
+        "empty": {
+            "title": "No stories found",
+            "body": "Try a different search or category.",
+            "clear": "Clear filters"
+        }
+    },
+    "storyDetail": {
+        "start": "Start listening",
+        "resume": "Resume — {{chapter}}",
+        "back": "Back to library",
+        "steps": "{{count}} steps",
+        "minutes": "{{count}} min",
+        "chapters": "{{count}} chapters",
+        "mapEyebrow": "Branching paths",
+        "mapTitle": "Every choice writes a different tale",
+        "branchingMoments": "{{count}} branching moments await",
+        "locked": "Chapter {{number}} — unlocks as you listen",
+        "moreLikeThis": "More like this"
+    },
+    "voiceStudio": {
+        "title": "Voice Studio",
+        "subtitle": "Craft the narrators of your tales — record or upload a voice and hear your stories come alive.",
+        "myNarrators": "My narrators",
+        "connected": "Connected"
+    }
 }

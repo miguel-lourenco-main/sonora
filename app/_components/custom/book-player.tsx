@@ -9,6 +9,7 @@ import { useStoryPlayer } from "~/lib/hooks/use-story-player"
 import { AudioPlayer } from "./audio-player"
 import { HighlightedText } from "./highlighted-text"
 import { useState, useEffect, useCallback, useRef } from "react"
+import { AnimatePresence, motion } from "motion/react"
 import { BlurFade } from "@kit/ui/magic-ui/blur-fade"
 import { useAudioTimings } from "~/lib/hooks/use-audio-timings"
 import {
@@ -22,12 +23,16 @@ import { useVoices } from "~/lib/hooks/use-voices"
 import { VoiceControl } from "./voice-control"
 import { useSpeechRecognition } from "~/lib/hooks/use-speech-recognition"
 import { previewVoice } from "~/lib/client/elevenlabs"
-import { ArrowLeft, ArrowRight, Loader2, Mic, Sparkles } from "lucide-react"
+import { ArrowLeft, Loader2, Mic, Sparkles } from "lucide-react"
 import ChoiceStatus from "./choice-status"
 import { hasPreRecordedAudio } from "~/lib/utils/audio-availability"
 import { getProgressChapterNumber } from "~/lib/utils/chapter-progress"
 import { toast } from "sonner"
-import { PageContainer } from "@/components/sonora"
+import { PageContainer, StaggerGroup, StaggerItem } from "@/components/sonora"
+import { useListeningProgress } from "~/lib/hooks/use-listening-progress"
+import { fadeUp } from "~/lib/motion/variants"
+import { ChoiceCard } from "./choice-card"
+import { PlayerBackdrop } from "./player-backdrop"
 import { PlayerFooter } from "./player-footer"
 
 
@@ -93,9 +98,27 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
     !currentNode?.audioUrl || currentNode.voiceId !== initialVoiceId
   );
   const { voices, isLoading: isLoadingVoices } = useVoices();
+  const { recordProgress } = useListeningProgress();
 
   const generatingNodes = useRef(new Set<string>());
   const unavailableNodes = useRef(new Set<string>());
+
+  // Keep the home page "Continue listening" rail in sync with playback
+  useEffect(() => {
+    const chapter = getProgressChapterNumber(
+      storyNodes,
+      initialNodeId,
+      currentNode.id,
+      story.totalChapters,
+    );
+    recordProgress({
+      storyId: story.id,
+      nodeId: currentNode.id,
+      percent: story.totalChapters > 0 ? (chapter / story.totalChapters) * 100 : 0,
+      chapterLabel: `Chapter ${chapter} of ${story.totalChapters}`,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentNode.id]);
 
   useEffect(() => {
     if (!hasPreRecordedAudio(story.label) && selectedVoice === 'default' && !isLoadingVoices) {
@@ -328,15 +351,27 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
   const hasPreRecorded = hasPreRecordedAudio(story.label);
 
   return (
-    <div className="flex min-h-full flex-col bg-surface">
+    <div className="flex min-h-full flex-col bg-transparent">
+      <PlayerBackdrop coverUrl={story.coverUrl} />
       <PageContainer wide className="flex flex-grow flex-col gap-8 py-8 md:py-12">
-        <div className="text-center md:mb-4">
-          <h1 className="font-headline-lg text-headline-lg-mobile text-primary md:text-headline-lg">
-            {story.title}
-          </h1>
-          <p className="mt-1 font-body-md text-body-md italic text-on-surface-variant opacity-80">
-            By {story.author}
-          </p>
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <Link
+              href={`/story/${story.id}`}
+              aria-label="Back to story details"
+              className="glow-focus flex size-11 shrink-0 items-center justify-center rounded-full glass-card text-primary transition-transform hover:scale-105 active:scale-95"
+            >
+              <ArrowLeft className="size-5" aria-hidden="true" />
+            </Link>
+            <div>
+              <h1 className="font-headline-lg text-headline-lg-mobile text-primary md:text-headline-lg">
+                {story.title}
+              </h1>
+              <p className="mt-0.5 font-body-md text-body-md italic text-on-surface-variant opacity-80">
+                By {story.author}
+              </p>
+            </div>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12 lg:gap-12">
@@ -376,7 +411,7 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
           </section>
 
           <section className="flex flex-col gap-6 lg:col-span-7">
-            <div className="relative min-h-[280px] overflow-hidden rounded-3xl border border-outline-variant/20 bg-surface-container-low/50 p-8 paper-texture shadow-sm md:min-h-[400px] md:p-10">
+            <div className="glass-card paper-texture relative min-h-[280px] overflow-hidden rounded-[32px] border-outline-variant/20 p-8 shadow-sm md:min-h-[400px] md:p-10">
               {showLoadingUI && (
                 <div className="absolute inset-0 z-10 flex items-center justify-center bg-surface/80 backdrop-blur-sm">
                   <p className="flex items-center gap-2 font-body-md text-on-surface-variant">
@@ -397,15 +432,26 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
                   {hasPreRecorded && selectedVoice === 'default' ? 'Pre-Recorded' : 'AI Voice'}
                 </span>
               </div>
-              <HighlightedText
-                text={currentNode.text}
-                currentTime={nodeLocalTime}
-                audioDuration={audioDuration || timingsDuration}
-                wordTimings={wordTimings}
-                syncMode={syncMode}
-                isPlaying={isPlaying}
-                audioRef={audioRef}
-              />
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentNode.id}
+                  variants={fadeUp}
+                  initial="hidden"
+                  animate="visible"
+                  exit={{ opacity: 0, transition: { duration: 0.25 } }}
+                  className="h-full"
+                >
+                  <HighlightedText
+                    text={currentNode.text}
+                    currentTime={nodeLocalTime}
+                    audioDuration={audioDuration || timingsDuration}
+                    wordTimings={wordTimings}
+                    syncMode={syncMode}
+                    isPlaying={isPlaying}
+                    audioRef={audioRef}
+                  />
+                </motion.div>
+              </AnimatePresence>
             </div>
 
             <div className="flex flex-wrap items-center gap-4">
@@ -414,7 +460,7 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
                 onValueChange={setSelectedVoice}
                 disabled={isLoadingVoices || isGeneratingSpeech || isPlaying || undefined}
               >
-                <SelectTrigger className="h-12 min-w-[200px] rounded-full border-none bg-surface-container font-label-lg text-label-lg shadow-sm hover:bg-surface-container-high focus:ring-2 focus:ring-primary">
+                <SelectTrigger className="glass-card h-12 min-w-[200px] rounded-full font-label-lg text-label-lg shadow-sm hover:bg-surface-container-high/60 focus:ring-2 focus:ring-tertiary-fixed/60">
                   <SelectValue placeholder="Select a voice" />
                 </SelectTrigger>
                 <SelectContent>
@@ -462,52 +508,27 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
                   )}
                 </div>
               </BlurFade>
-              <div className={cn(
-                "grid w-full max-w-4xl grid-cols-1 gap-4 md:grid-cols-2",
-                isTransitioning && "pointer-events-none opacity-0",
-              )}>
+              <StaggerGroup
+                inView={false}
+                stagger={0.09}
+                className={cn(
+                  "grid w-full max-w-4xl grid-cols-1 gap-4 md:grid-cols-2",
+                  isTransitioning && "pointer-events-none opacity-0 transition-opacity duration-300",
+                )}
+              >
                 {currentNode.choices?.map((choice, index) => (
-                  <BlurFade
-                    key={`choice-${choice.text}`}
-                    show={!isTransitioning}
-                    duration={1.0}
-                    delay={index * 0.1}
-                    direction="down"
-                    offset={12}
-                    inView
-                    useLayout
-                  >
-                    <button
-                      type="button"
-                      onClick={() => handleChoiceClick(index)}
+                  <StaggerItem key={`choice-${choice.text}`} variant="scaleIn">
+                    <ChoiceCard
+                      text={choice.text}
+                      index={index}
+                      selected={selectedChoice === index}
+                      dimmed={selectedChoice !== null && selectedChoice !== index}
                       disabled={selectedChoice !== null && selectedChoice !== index}
-                      className={cn(
-                        "group flex min-h-tap-target-min w-full items-center justify-between rounded-2xl p-6 text-left transition-all active:scale-95",
-                        index === 0
-                          ? "bg-primary-container text-on-primary-container shadow-lg hover:shadow-xl hover:shadow-primary/20"
-                          : "border-2 border-outline-variant bg-surface-container-lowest text-on-surface hover:border-tertiary hover:bg-tertiary/10",
-                        selectedChoice === index && "magical-glow-strong",
-                      )}
-                    >
-                      <div className="flex flex-col gap-1">
-                        <span className={cn(
-                          "font-label-lg text-label-lg uppercase tracking-wider",
-                          index === 0 ? "text-primary-fixed-dim" : "text-outline",
-                        )}>
-                          Choice {String.fromCharCode(65 + index)}
-                        </span>
-                        <span className="font-headline-md text-headline-md text-inherit">
-                          {choice.text}
-                        </span>
-                      </div>
-                      <ArrowRight className={cn(
-                        "size-8 transition-transform group-hover:translate-x-2",
-                        index === 0 ? "text-tertiary-fixed" : "text-primary",
-                      )} />
-                    </button>
-                  </BlurFade>
+                      onClick={() => handleChoiceClick(index)}
+                    />
+                  </StaggerItem>
                 ))}
-              </div>
+              </StaggerGroup>
             </div>
           ) : null}
         </div>

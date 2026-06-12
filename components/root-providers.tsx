@@ -4,6 +4,7 @@ import { useMemo } from 'react';
 
 import dynamic from 'next/dynamic';
 
+import { MotionConfig } from 'motion/react';
 import { ThemeProvider } from 'next-themes';
 
 // import { AppEventsProvider } from '../lib/shared/events/index';
@@ -45,7 +46,7 @@ export function RootProviders({
               enableColorScheme={false}
             >
               <I18nProvider settings={i18nSettings} resolver={i18nClientResolver}>
-                {children}
+                <MotionConfig reducedMotion="user">{children}</MotionConfig>
               </I18nProvider>
             </ThemeProvider>
           </AuthProvider>

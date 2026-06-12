@@ -125,7 +125,7 @@ export function HighlightedText({
   return (
     <div
       ref={containerRef}
-      className="h-full overflow-y-auto font-narration-text text-narration-text leading-relaxed"
+      className="h-full overflow-y-auto font-narration-text text-narration-text leading-relaxed md:text-narration-text-lg"
     >
       {tokens.map((word, index) => {
         const timing = wordTimings?.[index];

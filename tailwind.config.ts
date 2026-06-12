@@ -55,6 +55,10 @@ const sonoraTokenNames = [
   'on-primary',
   'secondary',
   'on-secondary',
+  'aurora-gold',
+  'aurora-green',
+  'aurora-purple',
+  'aurora-pink',
 ] as const;
 
 const sonoraColors = Object.fromEntries(
@@ -175,6 +179,15 @@ export default {
         'label-lg': ['14px', { lineHeight: '20px', letterSpacing: '0.05em', fontWeight: '700' }],
         'display-lg': ['48px', { lineHeight: '56px', letterSpacing: '-0.02em', fontWeight: '700' }],
         'narration-text': ['24px', { lineHeight: '36px', fontWeight: '500' }],
+        'narration-text-lg': ['28px', { lineHeight: '44px', fontWeight: '500' }],
+      },
+      transitionTimingFunction: {
+        sonora: 'cubic-bezier(0.16, 1, 0.3, 1)',
+      },
+      boxShadow: {
+        glow: 'var(--sonora-glow)',
+        'glow-strong': 'var(--sonora-glow-strong)',
+        card: 'var(--sonora-card-shadow)',
       },
       keyframes: {
         'fade-up': {
@@ -207,6 +220,10 @@ export default {
           '0%': { backgroundPosition: 'top center' },
           '100%': { backgroundPosition: 'bottom center' },
         },
+        'float-gentle': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-8px)' },
+        },
       },
       animation: {
         'fade-up': 'fade-up 0.5s',
@@ -216,6 +233,7 @@ export default {
         'border-beam': 'border-beam calc(var(--duration)*1s) infinite linear',
         shine: 'shine var(--duration) infinite linear',
         'background-position-spin': 'background-position-spin 3000ms infinite alternate',
+        'float-gentle': 'float-gentle 6s ease-in-out infinite',
       },
     },
   },

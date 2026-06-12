@@ -7,7 +7,7 @@ import {
   useInView,
   UseInViewOptions,
   Variants,
-} from "framer-motion";
+} from "motion/react";
 
 type MarginType = UseInViewOptions["margin"];
 
@@ -80,20 +80,20 @@ export function BlurFade({
     transition: useLayout ? {
       layout: {
         duration: duration,
-        ease: [0.16, 1, 0.3, 1],
+        ease: [0.16, 1, 0.3, 1] as const,
       },
       opacity: {
         duration: duration,
-        ease: [0.16, 1, 0.3, 1],
+        ease: [0.16, 1, 0.3, 1] as const,
       },
       default: {
         duration: duration,
-        ease: [0.16, 1, 0.3, 1],
+        ease: [0.16, 1, 0.3, 1] as const,
       }
     } : {
       delay: delay,
       duration,
-      ease: [0.16, 1, 0.3, 1],
+      ease: [0.16, 1, 0.3, 1] as const,
     }
   };
 

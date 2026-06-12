@@ -1,6 +1,7 @@
 "use client"
 
 import { useCallback, useRef, useState } from "react"
+import { AnimatePresence, motion } from "motion/react"
 import { cn } from "@kit/ui/lib"
 import { BookOpen, Pause, Play, RotateCcw } from "lucide-react"
 
@@ -78,8 +79,8 @@ export function PlayerFooter({
   }
 
   return (
-    <footer className="sticky bottom-0 z-50 w-full border-t border-outline-variant/30 bg-surface-container-highest/90 backdrop-blur-xl">
-      <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-4 px-container-margin-mobile py-6 md:px-container-margin-desktop">
+    <footer className="sticky bottom-0 z-50 w-full px-3 pb-[max(env(safe-area-inset-bottom),12px)] pt-2">
+      <div className="glass-card mx-auto flex w-full max-w-[1100px] flex-col gap-4 rounded-[28px] px-5 py-5 shadow-2xl md:px-8">
         <div className="flex w-full items-center gap-4">
           <span className="min-w-[40px] font-label-lg text-label-lg text-on-surface-variant">
             {formatTime(currentTime)}
@@ -115,7 +116,7 @@ export function PlayerFooter({
           >
             <div
               className={cn(
-                "pointer-events-none absolute inset-y-0 left-0 rounded-full bg-tertiary-fixed magical-glow",
+                "pointer-events-none absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-tertiary-fixed-dim to-tertiary-fixed magical-glow",
                 !isDragging && "transition-all duration-300",
               )}
               style={{ width: `${Math.min(100, Math.max(0, progressPercent))}%` }}
@@ -130,25 +131,47 @@ export function PlayerFooter({
             <BookOpen className="size-5 text-primary" />
             <span className="font-label-lg text-label-lg text-primary">{chapterLabel}</span>
           </div>
-          <button
+          <motion.button
             type="button"
             disabled={disabled}
             onClick={handleMainAction}
+            whileHover={disabled ? undefined : { scale: 1.05 }}
+            whileTap={disabled ? undefined : { scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 500, damping: 30 }}
             className={cn(
-              "flex size-20 items-center justify-center rounded-full bg-primary text-on-primary shadow-2xl transition-transform magical-glow-strong hover:scale-105 active:scale-95",
+              "glow-focus relative flex size-20 cursor-pointer items-center justify-center rounded-full bg-primary text-on-primary shadow-2xl magical-glow-strong",
               disabled && "pointer-events-none opacity-50",
               isPlaying && "bg-tertiary",
             )}
             aria-label={isPlaying ? "Pause" : canReplay ? "Replay" : "Play"}
           >
-            {isPlaying ? (
-              <Pause className="size-10 fill-current" />
-            ) : canReplay ? (
-              <RotateCcw className="size-10" />
-            ) : (
-              <Play className="size-10 fill-current" />
+            {isPlaying && (
+              <motion.span
+                className="absolute inset-0 rounded-full bg-tertiary-fixed/40"
+                animate={{ scale: [1, 1.35], opacity: [0.5, 0] }}
+                transition={{ duration: 2.4, repeat: Infinity, ease: "easeOut" }}
+                aria-hidden="true"
+              />
             )}
-          </button>
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.span
+                key={isPlaying ? "pause" : canReplay ? "replay" : "play"}
+                initial={{ scale: 0.6, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.6, opacity: 0 }}
+                transition={{ duration: 0.15 }}
+                className="relative flex items-center justify-center"
+              >
+                {isPlaying ? (
+                  <Pause className="size-10 fill-current" />
+                ) : canReplay ? (
+                  <RotateCcw className="size-10" />
+                ) : (
+                  <Play className="size-10 fill-current" />
+                )}
+              </motion.span>
+            </AnimatePresence>
+          </motion.button>
           <div className="w-24" />
         </div>
       </div>

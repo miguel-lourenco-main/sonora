@@ -1,11 +1,13 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ApiKeysSection } from './api-keys-section';
 import VoicesTable from './voices-table';
-import { PageContainer } from '@/components/sonora';
+import { PageContainer, StaggerGroup, StaggerItem } from '@/components/sonora';
 
 export function VoicesContent() {
+  const { t } = useTranslation('custom');
   const [refetchVoices, setRefetchVoices] = useState<(() => Promise<void>) | null>(null);
 
   const handleRefetchReady = useCallback((refetch: () => Promise<void>) => {
@@ -13,18 +15,33 @@ export function VoicesContent() {
   }, []);
 
   return (
-    <PageContainer className="flex flex-col gap-10 py-8 md:py-12">
-      <section>
-        <h1 className="font-display-lg text-display-lg text-primary">Voice Library</h1>
-        <p className="mt-2 max-w-2xl font-body-md text-body-md text-on-surface-variant">
-          Manage your magical narrators and connection keys. Crafted for parents, powered by wonder.
-        </p>
-      </section>
-      <ApiKeysSection onRefetchVoices={refetchVoices || undefined} />
-      <VoicesTable 
-        initialVoices={[]}
-        onRefetchReady={handleRefetchReady}
+    <div className="relative">
+      <div
+        className="aurora-bg pointer-events-none absolute inset-x-0 top-0 h-72 opacity-60"
+        aria-hidden="true"
       />
-    </PageContainer>
+      <PageContainer className="relative flex flex-col gap-10 py-8 md:py-12">
+        <StaggerGroup inView={false} stagger={0.08}>
+          <StaggerItem>
+            <section>
+              <h1 className="font-display-lg text-display-lg text-primary">
+                {t('voiceStudio.title', 'Voice Studio')}
+              </h1>
+              <p className="mt-2 max-w-2xl font-body-lg text-body-lg text-on-surface-variant">
+                {t(
+                  'voiceStudio.subtitle',
+                  'Craft the narrators of your tales — record or upload a voice and hear your stories come alive.',
+                )}
+              </p>
+            </section>
+          </StaggerItem>
+        </StaggerGroup>
+        <ApiKeysSection onRefetchVoices={refetchVoices || undefined} />
+        <VoicesTable
+          initialVoices={[]}
+          onRefetchReady={handleRefetchReady}
+        />
+      </PageContainer>
+    </div>
   );
 }
