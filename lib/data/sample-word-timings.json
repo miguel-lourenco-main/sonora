@@ -1,0 +1,5231 @@
+{
+ "enchanted-forest-start": [
+  {
+   "word": "Deep",
+   "start": 0.03,
+   "end": 0.27
+  },
+  {
+   "word": "within",
+   "start": 0.27,
+   "end": 0.51
+  },
+  {
+   "word": "the",
+   "start": 0.51,
+   "end": 0.6
+  },
+  {
+   "word": "realm",
+   "start": 0.6,
+   "end": 0.87
+  },
+  {
+   "word": "of",
+   "start": 0.87,
+   "end": 0.99
+  },
+  {
+   "word": "ancient",
+   "start": 1.02,
+   "end": 1.38
+  },
+  {
+   "word": "magic",
+   "start": 1.38,
+   "end": 1.89
+  },
+  {
+   "word": "lies",
+   "start": 1.98,
+   "end": 2.37
+  },
+  {
+   "word": "the",
+   "start": 2.37,
+   "end": 2.49
+  },
+  {
+   "word": "Enchanted",
+   "start": 2.49,
+   "end": 2.94
+  },
+  {
+   "word": "Forest,",
+   "start": 2.94,
+   "end": 3.51
+  },
+  {
+   "word": "a",
+   "start": 4.02,
+   "end": 4.08
+  },
+  {
+   "word": "place",
+   "start": 4.08,
+   "end": 4.44
+  },
+  {
+   "word": "where",
+   "start": 4.44,
+   "end": 4.59
+  },
+  {
+   "word": "every",
+   "start": 4.59,
+   "end": 4.89
+  },
+  {
+   "word": "choice",
+   "start": 4.89,
+   "end": 5.4
+  },
+  {
+   "word": "shapes",
+   "start": 5.43,
+   "end": 5.82
+  },
+  {
+   "word": "destiny.",
+   "start": 5.82,
+   "end": 6.42
+  },
+  {
+   "word": "As",
+   "start": 6.75,
+   "end": 6.9
+  },
+  {
+   "word": "you",
+   "start": 6.9,
+   "end": 6.99
+  },
+  {
+   "word": "step",
+   "start": 6.99,
+   "end": 7.26
+  },
+  {
+   "word": "through",
+   "start": 7.26,
+   "end": 7.41
+  },
+  {
+   "word": "the",
+   "start": 7.41,
+   "end": 7.56
+  },
+  {
+   "word": "ethereal",
+   "start": 7.56,
+   "end": 8.04
+  },
+  {
+   "word": "mist",
+   "start": 8.04,
+   "end": 8.46
+  },
+  {
+   "word": "that",
+   "start": 8.46,
+   "end": 8.61
+  },
+  {
+   "word": "marks",
+   "start": 8.61,
+   "end": 8.91
+  },
+  {
+   "word": "its",
+   "start": 8.91,
+   "end": 9.09
+  },
+  {
+   "word": "borders,",
+   "start": 9.09,
+   "end": 9.69
+  },
+  {
+   "word": "you",
+   "start": 10.02,
+   "end": 10.2
+  },
+  {
+   "word": "feel",
+   "start": 10.2,
+   "end": 10.44
+  },
+  {
+   "word": "the",
+   "start": 10.44,
+   "end": 10.53
+  },
+  {
+   "word": "forest's",
+   "start": 10.53,
+   "end": 11.07
+  },
+  {
+   "word": "consciousness",
+   "start": 11.07,
+   "end": 11.743
+  },
+  {
+   "word": "stirring.",
+   "start": 11.743,
+   "end": 12.3
+  },
+  {
+   "word": "The",
+   "start": 12.96,
+   "end": 13.08
+  },
+  {
+   "word": "very",
+   "start": 13.08,
+   "end": 13.41
+  },
+  {
+   "word": "air",
+   "start": 13.47,
+   "end": 13.8
+  },
+  {
+   "word": "seems",
+   "start": 13.8,
+   "end": 14.16
+  },
+  {
+   "word": "alive",
+   "start": 14.16,
+   "end": 14.67
+  },
+  {
+   "word": "with",
+   "start": 14.67,
+   "end": 14.82
+  },
+  {
+   "word": "whispers",
+   "start": 14.82,
+   "end": 15.24
+  },
+  {
+   "word": "of",
+   "start": 15.24,
+   "end": 15.36
+  },
+  {
+   "word": "untold",
+   "start": 15.36,
+   "end": 15.81
+  },
+  {
+   "word": "stories,",
+   "start": 15.81,
+   "end": 16.53
+  },
+  {
+   "word": "and",
+   "start": 16.8,
+   "end": 16.92
+  },
+  {
+   "word": "the",
+   "start": 16.92,
+   "end": 17.01
+  },
+  {
+   "word": "path",
+   "start": 17.01,
+   "end": 17.34
+  },
+  {
+   "word": "before",
+   "start": 17.34,
+   "end": 17.7
+  },
+  {
+   "word": "you",
+   "start": 17.7,
+   "end": 18
+  },
+  {
+   "word": "pulses",
+   "start": 18.06,
+   "end": 18.63
+  },
+  {
+   "word": "with",
+   "start": 18.63,
+   "end": 18.78
+  },
+  {
+   "word": "magical",
+   "start": 18.78,
+   "end": 19.29
+  },
+  {
+   "word": "energy.",
+   "start": 19.29,
+   "end": 19.77
+  },
+  {
+   "word": "Your",
+   "start": 20.55,
+   "end": 20.79
+  },
+  {
+   "word": "journey",
+   "start": 20.79,
+   "end": 21.15
+  },
+  {
+   "word": "into",
+   "start": 21.15,
+   "end": 21.33
+  },
+  {
+   "word": "these",
+   "start": 21.33,
+   "end": 21.54
+  },
+  {
+   "word": "mystical",
+   "start": 21.54,
+   "end": 21.93
+  },
+  {
+   "word": "woods",
+   "start": 21.93,
+   "end": 22.41
+  },
+  {
+   "word": "begins",
+   "start": 22.53,
+   "end": 23.04
+  },
+  {
+   "word": "now.",
+   "start": 23.07,
+   "end": 23.52
+  }
+ ],
+ "enchanted-forest-path-split": [
+  {
+   "word": "The",
+   "start": 0,
+   "end": 0.15
+  },
+  {
+   "word": "forest",
+   "start": 0.15,
+   "end": 0.54
+  },
+  {
+   "word": "path",
+   "start": 0.54,
+   "end": 0.9
+  },
+  {
+   "word": "divides",
+   "start": 0.9,
+   "end": 1.35
+  },
+  {
+   "word": "before",
+   "start": 1.35,
+   "end": 1.74
+  },
+  {
+   "word": "you.",
+   "start": 1.74,
+   "end": 2.07
+  },
+  {
+   "word": "To",
+   "start": 2.37,
+   "end": 2.55
+  },
+  {
+   "word": "your",
+   "start": 2.55,
+   "end": 2.67
+  },
+  {
+   "word": "left,",
+   "start": 2.67,
+   "end": 3.09
+  },
+  {
+   "word": "shadows",
+   "start": 3.15,
+   "end": 3.69
+  },
+  {
+   "word": "dance",
+   "start": 3.72,
+   "end": 4.11
+  },
+  {
+   "word": "invitingly",
+   "start": 4.11,
+   "end": 4.68
+  },
+  {
+   "word": "beneath",
+   "start": 4.68,
+   "end": 5.01
+  },
+  {
+   "word": "ancient",
+   "start": 5.01,
+   "end": 5.37
+  },
+  {
+   "word": "boughs.",
+   "start": 5.37,
+   "end": 6.24
+  },
+  {
+   "word": "To",
+   "start": 6.24,
+   "end": 6.39
+  },
+  {
+   "word": "your",
+   "start": 6.39,
+   "end": 6.57
+  },
+  {
+   "word": "right,",
+   "start": 6.57,
+   "end": 6.9
+  },
+  {
+   "word": "golden",
+   "start": 6.96,
+   "end": 7.32
+  },
+  {
+   "word": "sunlight",
+   "start": 7.32,
+   "end": 7.8
+  },
+  {
+   "word": "streams",
+   "start": 7.8,
+   "end": 8.22
+  },
+  {
+   "word": "through",
+   "start": 8.22,
+   "end": 8.37
+  },
+  {
+   "word": "a",
+   "start": 8.37,
+   "end": 8.4
+  },
+  {
+   "word": "canopy",
+   "start": 8.4,
+   "end": 8.91
+  },
+  {
+   "word": "of",
+   "start": 8.91,
+   "end": 9.03
+  },
+  {
+   "word": "emerald",
+   "start": 9.03,
+   "end": 9.63
+  },
+  {
+   "word": "leaves.",
+   "start": 9.63,
+   "end": 10.2
+  }
+ ],
+ "enchanted-forest-shadow-path": [
+  {
+   "word": "You",
+   "start": 0.06,
+   "end": 0.18
+  },
+  {
+   "word": "venture",
+   "start": 0.18,
+   "end": 0.57
+  },
+  {
+   "word": "down",
+   "start": 0.57,
+   "end": 0.9
+  },
+  {
+   "word": "the",
+   "start": 0.9,
+   "end": 0.96
+  },
+  {
+   "word": "shadowy",
+   "start": 0.96,
+   "end": 1.41
+  },
+  {
+   "word": "path,",
+   "start": 1.41,
+   "end": 2.01
+  },
+  {
+   "word": "where",
+   "start": 2.25,
+   "end": 2.46
+  },
+  {
+   "word": "ancient",
+   "start": 2.49,
+   "end": 2.91
+  },
+  {
+   "word": "moss-covered",
+   "start": 2.91,
+   "end": 3.63
+  },
+  {
+   "word": "trees",
+   "start": 3.63,
+   "end": 4.11
+  },
+  {
+   "word": "loom",
+   "start": 4.11,
+   "end": 4.47
+  },
+  {
+   "word": "overhead",
+   "start": 4.47,
+   "end": 5.07
+  },
+  {
+   "word": "like",
+   "start": 5.07,
+   "end": 5.28
+  },
+  {
+   "word": "silent",
+   "start": 5.28,
+   "end": 5.73
+  },
+  {
+   "word": "guardians.",
+   "start": 5.73,
+   "end": 6.48
+  },
+  {
+   "word": "The",
+   "start": 6.78,
+   "end": 6.93
+  },
+  {
+   "word": "air",
+   "start": 6.93,
+   "end": 7.2
+  },
+  {
+   "word": "grows",
+   "start": 7.2,
+   "end": 7.503
+  },
+  {
+   "word": "thick",
+   "start": 7.503,
+   "end": 7.77
+  },
+  {
+   "word": "with",
+   "start": 7.77,
+   "end": 7.92
+  },
+  {
+   "word": "mystery",
+   "start": 7.92,
+   "end": 8.37
+  },
+  {
+   "word": "as",
+   "start": 8.37,
+   "end": 8.49
+  },
+  {
+   "word": "you",
+   "start": 8.49,
+   "end": 8.58
+  },
+  {
+   "word": "navigate",
+   "start": 8.58,
+   "end": 9.06
+  },
+  {
+   "word": "through",
+   "start": 9.06,
+   "end": 9.24
+  },
+  {
+   "word": "twisted",
+   "start": 9.24,
+   "end": 9.69
+  },
+  {
+   "word": "roots",
+   "start": 9.69,
+   "end": 10.2
+  },
+  {
+   "word": "and",
+   "start": 10.56,
+   "end": 10.74
+  },
+  {
+   "word": "hear",
+   "start": 10.74,
+   "end": 10.98
+  },
+  {
+   "word": "distant",
+   "start": 10.98,
+   "end": 11.46
+  },
+  {
+   "word": "echoes",
+   "start": 11.46,
+   "end": 11.85
+  },
+  {
+   "word": "of",
+   "start": 11.85,
+   "end": 11.94
+  },
+  {
+   "word": "forgotten",
+   "start": 11.94,
+   "end": 12.42
+  },
+  {
+   "word": "magic.",
+   "start": 12.42,
+   "end": 13.02
+  },
+  {
+   "word": "Strange",
+   "start": 13.68,
+   "end": 14.25
+  },
+  {
+   "word": "glowing",
+   "start": 14.25,
+   "end": 14.64
+  },
+  {
+   "word": "mushrooms",
+   "start": 14.64,
+   "end": 15.15
+  },
+  {
+   "word": "illuminate",
+   "start": 15.15,
+   "end": 15.63
+  },
+  {
+   "word": "your",
+   "start": 15.63,
+   "end": 15.78
+  },
+  {
+   "word": "way,",
+   "start": 15.78,
+   "end": 16.2
+  },
+  {
+   "word": "casting",
+   "start": 16.41,
+   "end": 16.907
+  },
+  {
+   "word": "an",
+   "start": 16.92,
+   "end": 17.01
+  },
+  {
+   "word": "otherworldly",
+   "start": 17.04,
+   "end": 17.7
+  },
+  {
+   "word": "blue",
+   "start": 17.7,
+   "end": 18
+  },
+  {
+   "word": "light",
+   "start": 18,
+   "end": 18.33
+  },
+  {
+   "word": "that",
+   "start": 18.36,
+   "end": 18.54
+  },
+  {
+   "word": "dances",
+   "start": 18.54,
+   "end": 19.016
+  },
+  {
+   "word": "across",
+   "start": 19.016,
+   "end": 19.38
+  },
+  {
+   "word": "your",
+   "start": 19.38,
+   "end": 19.5
+  },
+  {
+   "word": "path.",
+   "start": 19.5,
+   "end": 20.04
+  },
+  {
+   "word": "The",
+   "start": 20.49,
+   "end": 20.61
+  },
+  {
+   "word": "whispers",
+   "start": 20.61,
+   "end": 21.09
+  },
+  {
+   "word": "of",
+   "start": 21.09,
+   "end": 21.18
+  },
+  {
+   "word": "the",
+   "start": 21.18,
+   "end": 21.27
+  },
+  {
+   "word": "forest",
+   "start": 21.27,
+   "end": 21.72
+  },
+  {
+   "word": "grow",
+   "start": 21.72,
+   "end": 21.93
+  },
+  {
+   "word": "stronger",
+   "start": 21.93,
+   "end": 22.47
+  },
+  {
+   "word": "here,",
+   "start": 22.47,
+   "end": 22.86
+  },
+  {
+   "word": "speaking",
+   "start": 23.04,
+   "end": 23.55
+  },
+  {
+   "word": "of",
+   "start": 23.55,
+   "end": 23.64
+  },
+  {
+   "word": "secrets",
+   "start": 23.64,
+   "end": 24.18
+  },
+  {
+   "word": "long",
+   "start": 24.18,
+   "end": 24.51
+  },
+  {
+   "word": "buried",
+   "start": 24.51,
+   "end": 25.02
+  },
+  {
+   "word": "in",
+   "start": 25.05,
+   "end": 25.2
+  },
+  {
+   "word": "these",
+   "start": 25.2,
+   "end": 25.38
+  },
+  {
+   "word": "dark",
+   "start": 25.38,
+   "end": 25.68
+  },
+  {
+   "word": "depths.",
+   "start": 25.68,
+   "end": 26.28
+  },
+  {
+   "word": "As",
+   "start": 27.06,
+   "end": 27.21
+  },
+  {
+   "word": "you",
+   "start": 27.21,
+   "end": 27.33
+  },
+  {
+   "word": "press",
+   "start": 27.33,
+   "end": 27.6
+  },
+  {
+   "word": "forward,",
+   "start": 27.605,
+   "end": 28.2
+  },
+  {
+   "word": "you",
+   "start": 28.29,
+   "end": 28.44
+  },
+  {
+   "word": "can't",
+   "start": 28.44,
+   "end": 28.71
+  },
+  {
+   "word": "shake",
+   "start": 28.71,
+   "end": 28.98
+  },
+  {
+   "word": "the",
+   "start": 28.98,
+   "end": 29.1
+  },
+  {
+   "word": "feeling",
+   "start": 29.1,
+   "end": 29.58
+  },
+  {
+   "word": "that",
+   "start": 29.82,
+   "end": 30.03
+  },
+  {
+   "word": "unseen",
+   "start": 30.06,
+   "end": 30.57
+  },
+  {
+   "word": "eyes",
+   "start": 30.6,
+   "end": 31.11
+  },
+  {
+   "word": "are",
+   "start": 31.2,
+   "end": 31.35
+  },
+  {
+   "word": "watching",
+   "start": 31.35,
+   "end": 31.74
+  },
+  {
+   "word": "your",
+   "start": 31.74,
+   "end": 31.92
+  },
+  {
+   "word": "every",
+   "start": 31.92,
+   "end": 32.25
+  },
+  {
+   "word": "move,",
+   "start": 32.25,
+   "end": 32.7
+  },
+  {
+   "word": "judging",
+   "start": 33.03,
+   "end": 33.42
+  },
+  {
+   "word": "your",
+   "start": 33.42,
+   "end": 33.57
+  },
+  {
+   "word": "worthiness",
+   "start": 33.57,
+   "end": 34.29
+  },
+  {
+   "word": "to",
+   "start": 34.41,
+   "end": 34.56
+  },
+  {
+   "word": "witness",
+   "start": 34.56,
+   "end": 35.01
+  },
+  {
+   "word": "the",
+   "start": 35.01,
+   "end": 35.16
+  },
+  {
+   "word": "forest's",
+   "start": 35.16,
+   "end": 35.76
+  },
+  {
+   "word": "deepest",
+   "start": 35.76,
+   "end": 36.24
+  },
+  {
+   "word": "mysteries.",
+   "start": 36.24,
+   "end": 36.93
+  }
+ ],
+ "enchanted-forest-sun-path": [
+  {
+   "word": "The",
+   "start": 0,
+   "end": 0.15
+  },
+  {
+   "word": "sunlit",
+   "start": 0.15,
+   "end": 0.57
+  },
+  {
+   "word": "path",
+   "start": 0.57,
+   "end": 0.99
+  },
+  {
+   "word": "welcomes",
+   "start": 0.99,
+   "end": 1.44
+  },
+  {
+   "word": "you",
+   "start": 1.44,
+   "end": 1.62
+  },
+  {
+   "word": "with",
+   "start": 1.62,
+   "end": 1.77
+  },
+  {
+   "word": "a",
+   "start": 1.77,
+   "end": 1.86
+  },
+  {
+   "word": "warm",
+   "start": 1.86,
+   "end": 2.25
+  },
+  {
+   "word": "embrace",
+   "start": 2.25,
+   "end": 2.76
+  },
+  {
+   "word": "as",
+   "start": 2.76,
+   "end": 2.91
+  },
+  {
+   "word": "golden",
+   "start": 2.91,
+   "end": 3.36
+  },
+  {
+   "word": "rays",
+   "start": 3.36,
+   "end": 3.72
+  },
+  {
+   "word": "filter",
+   "start": 3.72,
+   "end": 4.11
+  },
+  {
+   "word": "through",
+   "start": 4.11,
+   "end": 4.35
+  },
+  {
+   "word": "the",
+   "start": 4.35,
+   "end": 4.44
+  },
+  {
+   "word": "swaying",
+   "start": 4.44,
+   "end": 4.89
+  },
+  {
+   "word": "branches",
+   "start": 4.89,
+   "end": 5.34
+  },
+  {
+   "word": "above.",
+   "start": 5.34,
+   "end": 5.82
+  },
+  {
+   "word": "Butterflies",
+   "start": 6.75,
+   "end": 7.32
+  },
+  {
+   "word": "with",
+   "start": 7.32,
+   "end": 7.47
+  },
+  {
+   "word": "wings",
+   "start": 7.47,
+   "end": 7.95
+  },
+  {
+   "word": "like",
+   "start": 7.95,
+   "end": 8.13
+  },
+  {
+   "word": "stained",
+   "start": 8.13,
+   "end": 8.52
+  },
+  {
+   "word": "glass",
+   "start": 8.52,
+   "end": 9.06
+  },
+  {
+   "word": "dance",
+   "start": 9.09,
+   "end": 9.45
+  },
+  {
+   "word": "around",
+   "start": 9.45,
+   "end": 9.72
+  },
+  {
+   "word": "wildflowers",
+   "start": 9.72,
+   "end": 10.44
+  },
+  {
+   "word": "that",
+   "start": 10.44,
+   "end": 10.59
+  },
+  {
+   "word": "carpet",
+   "start": 10.59,
+   "end": 11.01
+  },
+  {
+   "word": "the",
+   "start": 11.01,
+   "end": 11.1
+  },
+  {
+   "word": "forest",
+   "start": 11.1,
+   "end": 11.58
+  },
+  {
+   "word": "floor",
+   "start": 11.58,
+   "end": 12.03
+  },
+  {
+   "word": "in",
+   "start": 12.03,
+   "end": 12.18
+  },
+  {
+   "word": "a",
+   "start": 12.18,
+   "end": 12.21
+  },
+  {
+   "word": "riot",
+   "start": 12.21,
+   "end": 12.6
+  },
+  {
+   "word": "of",
+   "start": 12.6,
+   "end": 12.69
+  },
+  {
+   "word": "colors.",
+   "start": 12.69,
+   "end": 13.29
+  },
+  {
+   "word": "As",
+   "start": 14.37,
+   "end": 14.55
+  },
+  {
+   "word": "you",
+   "start": 14.55,
+   "end": 14.67
+  },
+  {
+   "word": "walk,",
+   "start": 14.67,
+   "end": 15.09
+  },
+  {
+   "word": "you",
+   "start": 15.12,
+   "end": 15.24
+  },
+  {
+   "word": "discover",
+   "start": 15.24,
+   "end": 15.69
+  },
+  {
+   "word": "small",
+   "start": 15.69,
+   "end": 16.11
+  },
+  {
+   "word": "clearings",
+   "start": 16.11,
+   "end": 16.8
+  },
+  {
+   "word": "where",
+   "start": 16.8,
+   "end": 16.95
+  },
+  {
+   "word": "magical",
+   "start": 16.95,
+   "end": 17.49
+  },
+  {
+   "word": "creatures",
+   "start": 17.49,
+   "end": 17.97
+  },
+  {
+   "word": "go",
+   "start": 17.97,
+   "end": 18.18
+  },
+  {
+   "word": "about",
+   "start": 18.18,
+   "end": 18.45
+  },
+  {
+   "word": "their",
+   "start": 18.45,
+   "end": 18.57
+  },
+  {
+   "word": "daily",
+   "start": 18.57,
+   "end": 18.93
+  },
+  {
+   "word": "lives",
+   "start": 18.93,
+   "end": 19.53
+  },
+  {
+   "word": "-",
+   "start": 19.53,
+   "end": 20.04
+  },
+  {
+   "word": "pixies",
+   "start": 20.04,
+   "end": 20.58
+  },
+  {
+   "word": "tending",
+   "start": 20.58,
+   "end": 20.97
+  },
+  {
+   "word": "to",
+   "start": 20.97,
+   "end": 21.06
+  },
+  {
+   "word": "luminous",
+   "start": 21.06,
+   "end": 21.48
+  },
+  {
+   "word": "flowers,",
+   "start": 21.48,
+   "end": 22.05
+  },
+  {
+   "word": "and",
+   "start": 22.29,
+   "end": 22.44
+  },
+  {
+   "word": "small",
+   "start": 22.44,
+   "end": 22.71
+  },
+  {
+   "word": "forest",
+   "start": 22.71,
+   "end": 22.992
+  },
+  {
+   "word": "spirits",
+   "start": 22.992,
+   "end": 23.49
+  },
+  {
+   "word": "playing",
+   "start": 23.49,
+   "end": 23.88
+  },
+  {
+   "word": "among",
+   "start": 23.88,
+   "end": 24.12
+  },
+  {
+   "word": "the",
+   "start": 24.12,
+   "end": 24.24
+  },
+  {
+   "word": "roots",
+   "start": 24.24,
+   "end": 24.63
+  },
+  {
+   "word": "of",
+   "start": 24.63,
+   "end": 24.75
+  },
+  {
+   "word": "ancient",
+   "start": 24.78,
+   "end": 25.14
+  },
+  {
+   "word": "trees.",
+   "start": 25.14,
+   "end": 25.71
+  },
+  {
+   "word": "The",
+   "start": 26.67,
+   "end": 26.82
+  },
+  {
+   "word": "air",
+   "start": 26.82,
+   "end": 27
+  },
+  {
+   "word": "here",
+   "start": 27,
+   "end": 27.21
+  },
+  {
+   "word": "is",
+   "start": 27.21,
+   "end": 27.33
+  },
+  {
+   "word": "sweet",
+   "start": 27.33,
+   "end": 27.78
+  },
+  {
+   "word": "with",
+   "start": 27.78,
+   "end": 27.9
+  },
+  {
+   "word": "the",
+   "start": 27.9,
+   "end": 27.99
+  },
+  {
+   "word": "scent",
+   "start": 27.99,
+   "end": 28.32
+  },
+  {
+   "word": "of",
+   "start": 28.32,
+   "end": 28.41
+  },
+  {
+   "word": "blooming",
+   "start": 28.41,
+   "end": 28.89
+  },
+  {
+   "word": "magic,",
+   "start": 28.89,
+   "end": 29.46
+  },
+  {
+   "word": "though",
+   "start": 29.76,
+   "end": 29.94
+  },
+  {
+   "word": "beneath",
+   "start": 29.94,
+   "end": 30.33
+  },
+  {
+   "word": "this",
+   "start": 30.33,
+   "end": 30.51
+  },
+  {
+   "word": "cheerful",
+   "start": 30.51,
+   "end": 30.96
+  },
+  {
+   "word": "facade,",
+   "start": 30.96,
+   "end": 31.59
+  },
+  {
+   "word": "you",
+   "start": 31.92,
+   "end": 32.07
+  },
+  {
+   "word": "sense",
+   "start": 32.07,
+   "end": 32.37
+  },
+  {
+   "word": "powerful",
+   "start": 32.37,
+   "end": 32.97
+  },
+  {
+   "word": "forces",
+   "start": 32.97,
+   "end": 33.42
+  },
+  {
+   "word": "at",
+   "start": 33.42,
+   "end": 33.57
+  },
+  {
+   "word": "work,",
+   "start": 33.57,
+   "end": 33.96
+  },
+  {
+   "word": "weaving",
+   "start": 34.23,
+   "end": 34.62
+  },
+  {
+   "word": "spells",
+   "start": 34.62,
+   "end": 35.22
+  },
+  {
+   "word": "as",
+   "start": 35.22,
+   "end": 35.43
+  },
+  {
+   "word": "old",
+   "start": 35.46,
+   "end": 35.82
+  },
+  {
+   "word": "as",
+   "start": 35.82,
+   "end": 35.94
+  },
+  {
+   "word": "the",
+   "start": 35.94,
+   "end": 36.03
+  },
+  {
+   "word": "forest",
+   "start": 36.03,
+   "end": 36.48
+  },
+  {
+   "word": "itself.",
+   "start": 36.48,
+   "end": 37.05
+  }
+ ],
+ "enchanted-forest-end-chapter": [
+  {
+   "word": "Your",
+   "start": 0.03,
+   "end": 0.18
+  },
+  {
+   "word": "choice",
+   "start": 0.18,
+   "end": 0.57
+  },
+  {
+   "word": "has",
+   "start": 0.57,
+   "end": 0.75
+  },
+  {
+   "word": "set",
+   "start": 0.75,
+   "end": 1.02
+  },
+  {
+   "word": "in",
+   "start": 1.02,
+   "end": 1.14
+  },
+  {
+   "word": "motion",
+   "start": 1.14,
+   "end": 1.62
+  },
+  {
+   "word": "events",
+   "start": 1.65,
+   "end": 2.16
+  },
+  {
+   "word": "that",
+   "start": 2.16,
+   "end": 2.31
+  },
+  {
+   "word": "will",
+   "start": 2.31,
+   "end": 2.46
+  },
+  {
+   "word": "echo",
+   "start": 2.49,
+   "end": 2.82
+  },
+  {
+   "word": "through",
+   "start": 2.82,
+   "end": 3.15
+  },
+  {
+   "word": "the",
+   "start": 3.15,
+   "end": 3.3
+  },
+  {
+   "word": "Enchanted",
+   "start": 3.3,
+   "end": 3.81
+  },
+  {
+   "word": "Forest.",
+   "start": 3.81,
+   "end": 4.47
+  },
+  {
+   "word": "But",
+   "start": 4.92,
+   "end": 5.13
+  },
+  {
+   "word": "this",
+   "start": 5.13,
+   "end": 5.64
+  },
+  {
+   "word": "is",
+   "start": 5.79,
+   "end": 5.94
+  },
+  {
+   "word": "just",
+   "start": 5.94,
+   "end": 6.36
+  },
+  {
+   "word": "the",
+   "start": 6.36,
+   "end": 6.42
+  },
+  {
+   "word": "beginning",
+   "start": 6.42,
+   "end": 6.81
+  },
+  {
+   "word": "of",
+   "start": 6.81,
+   "end": 6.9
+  },
+  {
+   "word": "your",
+   "start": 6.9,
+   "end": 7.02
+  },
+  {
+   "word": "magical",
+   "start": 7.02,
+   "end": 7.41
+  },
+  {
+   "word": "journey.",
+   "start": 7.41,
+   "end": 7.86
+  }
+ ],
+ "mystic-mountain-start": [
+  {
+   "word": "Before",
+   "start": 0.06,
+   "end": 0.42
+  },
+  {
+   "word": "you",
+   "start": 0.42,
+   "end": 0.54
+  },
+  {
+   "word": "stands",
+   "start": 0.54,
+   "end": 1.05
+  },
+  {
+   "word": "the",
+   "start": 1.05,
+   "end": 1.17
+  },
+  {
+   "word": "legendary",
+   "start": 1.17,
+   "end": 1.77
+  },
+  {
+   "word": "Mystic",
+   "start": 1.77,
+   "end": 2.16
+  },
+  {
+   "word": "Mountain,",
+   "start": 2.16,
+   "end": 2.67
+  },
+  {
+   "word": "its",
+   "start": 2.67,
+   "end": 3.006
+  },
+  {
+   "word": "snow-capped",
+   "start": 3.006,
+   "end": 3.63
+  },
+  {
+   "word": "peaks",
+   "start": 3.63,
+   "end": 4.05
+  },
+  {
+   "word": "piercing",
+   "start": 4.05,
+   "end": 4.53
+  },
+  {
+   "word": "the",
+   "start": 4.53,
+   "end": 4.62
+  },
+  {
+   "word": "clouds",
+   "start": 4.62,
+   "end": 5.25
+  },
+  {
+   "word": "like",
+   "start": 5.34,
+   "end": 5.61
+  },
+  {
+   "word": "ancient",
+   "start": 5.64,
+   "end": 6.06
+  },
+  {
+   "word": "spears",
+   "start": 6.06,
+   "end": 6.72
+  },
+  {
+   "word": "thrust",
+   "start": 6.72,
+   "end": 7.2
+  },
+  {
+   "word": "into",
+   "start": 7.23,
+   "end": 7.41
+  },
+  {
+   "word": "the",
+   "start": 7.41,
+   "end": 7.53
+  },
+  {
+   "word": "heavens.",
+   "start": 7.53,
+   "end": 8.13
+  },
+  {
+   "word": "Swirling",
+   "start": 8.37,
+   "end": 8.94
+  },
+  {
+   "word": "mists",
+   "start": 8.94,
+   "end": 9.42
+  },
+  {
+   "word": "dance",
+   "start": 9.42,
+   "end": 9.78
+  },
+  {
+   "word": "around",
+   "start": 9.78,
+   "end": 10.08
+  },
+  {
+   "word": "its",
+   "start": 10.08,
+   "end": 10.23
+  },
+  {
+   "word": "middle",
+   "start": 10.23,
+   "end": 10.53
+  },
+  {
+   "word": "reaches,",
+   "start": 10.53,
+   "end": 11.16
+  },
+  {
+   "word": "hiding",
+   "start": 11.67,
+   "end": 12.03
+  },
+  {
+   "word": "secrets",
+   "start": 12.03,
+   "end": 12.63
+  },
+  {
+   "word": "that",
+   "start": 12.63,
+   "end": 12.78
+  },
+  {
+   "word": "have",
+   "start": 12.78,
+   "end": 12.9
+  },
+  {
+   "word": "drawn",
+   "start": 12.9,
+   "end": 13.23
+  },
+  {
+   "word": "seekers",
+   "start": 13.23,
+   "end": 13.71
+  },
+  {
+   "word": "and",
+   "start": 13.71,
+   "end": 13.83
+  },
+  {
+   "word": "mystics",
+   "start": 13.83,
+   "end": 14.34
+  },
+  {
+   "word": "for",
+   "start": 14.34,
+   "end": 14.52
+  },
+  {
+   "word": "countless",
+   "start": 14.52,
+   "end": 14.94
+  },
+  {
+   "word": "generations.",
+   "start": 14.94,
+   "end": 15.84
+  },
+  {
+   "word": "The",
+   "start": 16.35,
+   "end": 16.47
+  },
+  {
+   "word": "mountain's",
+   "start": 16.47,
+   "end": 16.86
+  },
+  {
+   "word": "presence",
+   "start": 16.86,
+   "end": 17.28
+  },
+  {
+   "word": "feels",
+   "start": 17.28,
+   "end": 17.58
+  },
+  {
+   "word": "alive,",
+   "start": 17.58,
+   "end": 18.21
+  },
+  {
+   "word": "almost",
+   "start": 18.51,
+   "end": 18.93
+  },
+  {
+   "word": "sentient,",
+   "start": 18.93,
+   "end": 19.77
+  },
+  {
+   "word": "as",
+   "start": 19.77,
+   "end": 19.95
+  },
+  {
+   "word": "if",
+   "start": 19.95,
+   "end": 20.1
+  },
+  {
+   "word": "it's",
+   "start": 20.1,
+   "end": 20.22
+  },
+  {
+   "word": "evaluating",
+   "start": 20.22,
+   "end": 20.91
+  },
+  {
+   "word": "your",
+   "start": 20.91,
+   "end": 21.03
+  },
+  {
+   "word": "worthiness",
+   "start": 21.03,
+   "end": 21.63
+  },
+  {
+   "word": "to",
+   "start": 21.63,
+   "end": 21.78
+  },
+  {
+   "word": "climb",
+   "start": 21.78,
+   "end": 22.14
+  },
+  {
+   "word": "its",
+   "start": 22.14,
+   "end": 22.282
+  },
+  {
+   "word": "sacred",
+   "start": 22.282,
+   "end": 22.68
+  },
+  {
+   "word": "slopes.",
+   "start": 22.68,
+   "end": 23.34
+  },
+  {
+   "word": "Local",
+   "start": 23.97,
+   "end": 24.33
+  },
+  {
+   "word": "legends",
+   "start": 24.33,
+   "end": 24.793
+  },
+  {
+   "word": "speak",
+   "start": 24.793,
+   "end": 25.17
+  },
+  {
+   "word": "of",
+   "start": 25.17,
+   "end": 25.29
+  },
+  {
+   "word": "powerful",
+   "start": 25.29,
+   "end": 25.83
+  },
+  {
+   "word": "artifacts",
+   "start": 25.83,
+   "end": 26.52
+  },
+  {
+   "word": "and",
+   "start": 26.52,
+   "end": 26.716
+  },
+  {
+   "word": "ancient",
+   "start": 26.716,
+   "end": 27.09
+  },
+  {
+   "word": "wisdom",
+   "start": 27.09,
+   "end": 27.63
+  },
+  {
+   "word": "hidden",
+   "start": 27.81,
+   "end": 28.14
+  },
+  {
+   "word": "within",
+   "start": 28.14,
+   "end": 28.41
+  },
+  {
+   "word": "its",
+   "start": 28.41,
+   "end": 28.56
+  },
+  {
+   "word": "depths,",
+   "start": 28.56,
+   "end": 29.1
+  },
+  {
+   "word": "but",
+   "start": 29.34,
+   "end": 29.52
+  },
+  {
+   "word": "also",
+   "start": 29.52,
+   "end": 29.88
+  },
+  {
+   "word": "of",
+   "start": 29.88,
+   "end": 30
+  },
+  {
+   "word": "those",
+   "start": 30,
+   "end": 30.3
+  },
+  {
+   "word": "who",
+   "start": 30.3,
+   "end": 30.39
+  },
+  {
+   "word": "ventured",
+   "start": 30.39,
+   "end": 30.75
+  },
+  {
+   "word": "forth",
+   "start": 30.75,
+   "end": 31.29
+  },
+  {
+   "word": "and",
+   "start": 31.5,
+   "end": 31.68
+  },
+  {
+   "word": "never",
+   "start": 31.68,
+   "end": 32.01
+  },
+  {
+   "word": "returned.",
+   "start": 32.01,
+   "end": 32.64
+  },
+  {
+   "word": "As",
+   "start": 33.27,
+   "end": 33.45
+  },
+  {
+   "word": "you",
+   "start": 33.45,
+   "end": 33.54
+  },
+  {
+   "word": "stand",
+   "start": 33.54,
+   "end": 33.9
+  },
+  {
+   "word": "at",
+   "start": 33.9,
+   "end": 33.99
+  },
+  {
+   "word": "its",
+   "start": 33.99,
+   "end": 34.17
+  },
+  {
+   "word": "base,",
+   "start": 34.17,
+   "end": 34.71
+  },
+  {
+   "word": "the",
+   "start": 35.01,
+   "end": 35.16
+  },
+  {
+   "word": "mountain's",
+   "start": 35.16,
+   "end": 35.58
+  },
+  {
+   "word": "energy",
+   "start": 35.58,
+   "end": 36
+  },
+  {
+   "word": "pulses",
+   "start": 36,
+   "end": 36.57
+  },
+  {
+   "word": "through",
+   "start": 36.57,
+   "end": 36.78
+  },
+  {
+   "word": "the",
+   "start": 36.78,
+   "end": 36.9
+  },
+  {
+   "word": "ground",
+   "start": 36.9,
+   "end": 37.35
+  },
+  {
+   "word": "beneath",
+   "start": 37.35,
+   "end": 37.71
+  },
+  {
+   "word": "your",
+   "start": 37.71,
+   "end": 37.86
+  },
+  {
+   "word": "feet,",
+   "start": 37.86,
+   "end": 38.34
+  },
+  {
+   "word": "calling",
+   "start": 38.52,
+   "end": 38.94
+  },
+  {
+   "word": "you",
+   "start": 38.94,
+   "end": 39.21
+  },
+  {
+   "word": "to",
+   "start": 39.24,
+   "end": 39.42
+  },
+  {
+   "word": "begin",
+   "start": 39.42,
+   "end": 39.75
+  },
+  {
+   "word": "your",
+   "start": 39.75,
+   "end": 39.93
+  },
+  {
+   "word": "ascent.",
+   "start": 39.93,
+   "end": 40.32
+  }
+ ],
+ "mystic-mountain-mountain_base": [
+  {
+   "word": "Two",
+   "start": 0.03,
+   "end": 0.27
+  },
+  {
+   "word": "paths",
+   "start": 0.27,
+   "end": 0.72
+  },
+  {
+   "word": "lie",
+   "start": 0.72,
+   "end": 0.9
+  },
+  {
+   "word": "before",
+   "start": 0.9,
+   "end": 1.29
+  },
+  {
+   "word": "you:",
+   "start": 1.29,
+   "end": 1.56
+  },
+  {
+   "word": "ancient",
+   "start": 1.89,
+   "end": 2.28
+  },
+  {
+   "word": "stone",
+   "start": 2.28,
+   "end": 2.67
+  },
+  {
+   "word": "steps",
+   "start": 2.67,
+   "end": 3.24
+  },
+  {
+   "word": "worn",
+   "start": 3.24,
+   "end": 3.489
+  },
+  {
+   "word": "smooth",
+   "start": 3.489,
+   "end": 3.99
+  },
+  {
+   "word": "by",
+   "start": 3.99,
+   "end": 4.14
+  },
+  {
+   "word": "countless",
+   "start": 4.14,
+   "end": 4.56
+  },
+  {
+   "word": "pilgrims,",
+   "start": 4.56,
+   "end": 5.22
+  },
+  {
+   "word": "and",
+   "start": 5.46,
+   "end": 5.61
+  },
+  {
+   "word": "a",
+   "start": 5.61,
+   "end": 5.67
+  },
+  {
+   "word": "misty",
+   "start": 5.67,
+   "end": 6.06
+  },
+  {
+   "word": "mountain",
+   "start": 6.06,
+   "end": 6.45
+  },
+  {
+   "word": "trail",
+   "start": 6.45,
+   "end": 6.84
+  },
+  {
+   "word": "that",
+   "start": 6.84,
+   "end": 7.02
+  },
+  {
+   "word": "winds",
+   "start": 7.02,
+   "end": 7.38
+  },
+  {
+   "word": "into",
+   "start": 7.38,
+   "end": 7.56
+  },
+  {
+   "word": "the",
+   "start": 7.56,
+   "end": 7.65
+  },
+  {
+   "word": "swirling",
+   "start": 7.65,
+   "end": 8.13
+  },
+  {
+   "word": "fog.",
+   "start": 8.13,
+   "end": 8.64
+  },
+  {
+   "word": "Each",
+   "start": 9.18,
+   "end": 9.45
+  },
+  {
+   "word": "promises",
+   "start": 9.45,
+   "end": 9.96
+  },
+  {
+   "word": "its",
+   "start": 9.96,
+   "end": 10.11
+  },
+  {
+   "word": "own",
+   "start": 10.11,
+   "end": 10.29
+  },
+  {
+   "word": "challenges",
+   "start": 10.29,
+   "end": 10.98
+  },
+  {
+   "word": "and",
+   "start": 10.98,
+   "end": 11.13
+  },
+  {
+   "word": "revelations.",
+   "start": 11.13,
+   "end": 11.91
+  }
+ ],
+ "mystic-mountain-stone_steps": [
+  {
+   "word": "You",
+   "start": 0.03,
+   "end": 0.21
+  },
+  {
+   "word": "choose",
+   "start": 0.21,
+   "end": 0.63
+  },
+  {
+   "word": "the",
+   "start": 0.63,
+   "end": 0.78
+  },
+  {
+   "word": "ancient",
+   "start": 0.81,
+   "end": 1.17
+  },
+  {
+   "word": "stone",
+   "start": 1.17,
+   "end": 1.5
+  },
+  {
+   "word": "steps.",
+   "start": 1.5,
+   "end": 2.13
+  },
+  {
+   "word": "Each",
+   "start": 2.64,
+   "end": 2.88
+  },
+  {
+   "word": "one",
+   "start": 2.88,
+   "end": 3.09
+  },
+  {
+   "word": "bears",
+   "start": 3.09,
+   "end": 3.39
+  },
+  {
+   "word": "intricate",
+   "start": 3.42,
+   "end": 3.93
+  },
+  {
+   "word": "carvings",
+   "start": 3.93,
+   "end": 4.56
+  },
+  {
+   "word": "that",
+   "start": 4.56,
+   "end": 4.77
+  },
+  {
+   "word": "glow",
+   "start": 4.77,
+   "end": 5.07
+  },
+  {
+   "word": "faintly",
+   "start": 5.07,
+   "end": 5.58
+  },
+  {
+   "word": "at",
+   "start": 5.58,
+   "end": 5.67
+  },
+  {
+   "word": "your",
+   "start": 5.67,
+   "end": 5.79
+  },
+  {
+   "word": "touch,",
+   "start": 5.79,
+   "end": 6.33
+  },
+  {
+   "word": "pulsing",
+   "start": 6.69,
+   "end": 7.2
+  },
+  {
+   "word": "with",
+   "start": 7.2,
+   "end": 7.35
+  },
+  {
+   "word": "the",
+   "start": 7.35,
+   "end": 7.44
+  },
+  {
+   "word": "wisdom",
+   "start": 7.44,
+   "end": 7.83
+  },
+  {
+   "word": "of",
+   "start": 7.83,
+   "end": 7.95
+  },
+  {
+   "word": "ages.",
+   "start": 7.95,
+   "end": 8.55
+  },
+  {
+   "word": "The",
+   "start": 9.3,
+   "end": 9.42
+  },
+  {
+   "word": "higher",
+   "start": 9.42,
+   "end": 9.78
+  },
+  {
+   "word": "you",
+   "start": 9.78,
+   "end": 9.93
+  },
+  {
+   "word": "climb,",
+   "start": 9.93,
+   "end": 10.47
+  },
+  {
+   "word": "the",
+   "start": 10.77,
+   "end": 10.89
+  },
+  {
+   "word": "more",
+   "start": 10.89,
+   "end": 11.16
+  },
+  {
+   "word": "you",
+   "start": 11.16,
+   "end": 11.28
+  },
+  {
+   "word": "feel",
+   "start": 11.28,
+   "end": 11.52
+  },
+  {
+   "word": "the",
+   "start": 11.52,
+   "end": 11.64
+  },
+  {
+   "word": "mountain's",
+   "start": 11.64,
+   "end": 12.09
+  },
+  {
+   "word": "ancient",
+   "start": 12.12,
+   "end": 12.57
+  },
+  {
+   "word": "power",
+   "start": 12.57,
+   "end": 13.11
+  },
+  {
+   "word": "flowing",
+   "start": 13.29,
+   "end": 13.8
+  },
+  {
+   "word": "through",
+   "start": 13.8,
+   "end": 14.04
+  },
+  {
+   "word": "the",
+   "start": 14.04,
+   "end": 14.13
+  },
+  {
+   "word": "very",
+   "start": 14.13,
+   "end": 14.46
+  },
+  {
+   "word": "stone",
+   "start": 14.46,
+   "end": 14.82
+  },
+  {
+   "word": "beneath",
+   "start": 14.82,
+   "end": 15.12
+  },
+  {
+   "word": "your",
+   "start": 15.12,
+   "end": 15.24
+  },
+  {
+   "word": "feet.",
+   "start": 15.24,
+   "end": 15.66
+  }
+ ],
+ "mystic-mountain-misty_trail": [
+  {
+   "word": "The",
+   "start": 0,
+   "end": 0.15
+  },
+  {
+   "word": "misty",
+   "start": 0.15,
+   "end": 0.48
+  },
+  {
+   "word": "trail",
+   "start": 0.48,
+   "end": 0.87
+  },
+  {
+   "word": "embraces",
+   "start": 0.87,
+   "end": 1.44
+  },
+  {
+   "word": "you",
+   "start": 1.44,
+   "end": 1.68
+  },
+  {
+   "word": "in",
+   "start": 1.68,
+   "end": 1.83
+  },
+  {
+   "word": "its",
+   "start": 1.83,
+   "end": 1.98
+  },
+  {
+   "word": "ethereal",
+   "start": 1.98,
+   "end": 2.7
+  },
+  {
+   "word": "veil.",
+   "start": 2.7,
+   "end": 3.24
+  },
+  {
+   "word": "Shapes",
+   "start": 3.75,
+   "end": 4.23
+  },
+  {
+   "word": "and",
+   "start": 4.23,
+   "end": 4.35
+  },
+  {
+   "word": "shadows",
+   "start": 4.35,
+   "end": 4.98
+  },
+  {
+   "word": "dance",
+   "start": 5.01,
+   "end": 5.4
+  },
+  {
+   "word": "in",
+   "start": 5.4,
+   "end": 5.49
+  },
+  {
+   "word": "the",
+   "start": 5.49,
+   "end": 5.58
+  },
+  {
+   "word": "fog",
+   "start": 5.58,
+   "end": 5.97
+  },
+  {
+   "word": "around",
+   "start": 5.97,
+   "end": 6.33
+  },
+  {
+   "word": "you,",
+   "start": 6.33,
+   "end": 6.66
+  },
+  {
+   "word": "and",
+   "start": 6.81,
+   "end": 6.93
+  },
+  {
+   "word": "the",
+   "start": 6.93,
+   "end": 6.99
+  },
+  {
+   "word": "path",
+   "start": 6.99,
+   "end": 7.38
+  },
+  {
+   "word": "seems",
+   "start": 7.38,
+   "end": 7.68
+  },
+  {
+   "word": "to",
+   "start": 7.68,
+   "end": 7.8
+  },
+  {
+   "word": "shift",
+   "start": 7.8,
+   "end": 8.28
+  },
+  {
+   "word": "with",
+   "start": 8.28,
+   "end": 8.46
+  },
+  {
+   "word": "each",
+   "start": 8.46,
+   "end": 8.64
+  },
+  {
+   "word": "step.",
+   "start": 8.64,
+   "end": 9.09
+  },
+  {
+   "word": "Yet",
+   "start": 9.42,
+   "end": 9.6
+  },
+  {
+   "word": "somehow,",
+   "start": 9.6,
+   "end": 10.02
+  },
+  {
+   "word": "you",
+   "start": 10.02,
+   "end": 10.14
+  },
+  {
+   "word": "sense",
+   "start": 10.14,
+   "end": 10.5
+  },
+  {
+   "word": "you're",
+   "start": 10.5,
+   "end": 10.62
+  },
+  {
+   "word": "being",
+   "start": 10.62,
+   "end": 10.86
+  },
+  {
+   "word": "guided",
+   "start": 10.89,
+   "end": 11.34
+  },
+  {
+   "word": "toward",
+   "start": 11.34,
+   "end": 11.67
+  },
+  {
+   "word": "something",
+   "start": 11.682,
+   "end": 12.06
+  },
+  {
+   "word": "significant.",
+   "start": 12.06,
+   "end": 12.93
+  }
+ ],
+ "mystic-mountain-mountain_sage": [
+  {
+   "word": "In",
+   "start": 0.06,
+   "end": 0.18
+  },
+  {
+   "word": "a",
+   "start": 0.18,
+   "end": 0.21
+  },
+  {
+   "word": "small",
+   "start": 0.21,
+   "end": 0.6
+  },
+  {
+   "word": "alcove",
+   "start": 0.6,
+   "end": 1.17
+  },
+  {
+   "word": "carved",
+   "start": 1.2,
+   "end": 1.62
+  },
+  {
+   "word": "into",
+   "start": 1.62,
+   "end": 1.8
+  },
+  {
+   "word": "the",
+   "start": 1.8,
+   "end": 1.89
+  },
+  {
+   "word": "mountainside,",
+   "start": 1.89,
+   "end": 2.64
+  },
+  {
+   "word": "you",
+   "start": 2.85,
+   "end": 3.03
+  },
+  {
+   "word": "encounter",
+   "start": 3.03,
+   "end": 3.48
+  },
+  {
+   "word": "an",
+   "start": 3.48,
+   "end": 3.57
+  },
+  {
+   "word": "elderly",
+   "start": 3.6,
+   "end": 3.99
+  },
+  {
+   "word": "sage.",
+   "start": 3.99,
+   "end": 4.62
+  },
+  {
+   "word": "His",
+   "start": 5.07,
+   "end": 5.25
+  },
+  {
+   "word": "white",
+   "start": 5.25,
+   "end": 5.52
+  },
+  {
+   "word": "robes",
+   "start": 5.52,
+   "end": 6.044
+  },
+  {
+   "word": "seem",
+   "start": 6.044,
+   "end": 6.3
+  },
+  {
+   "word": "to",
+   "start": 6.306,
+   "end": 6.42
+  },
+  {
+   "word": "shimmer",
+   "start": 6.42,
+   "end": 6.84
+  },
+  {
+   "word": "with",
+   "start": 6.84,
+   "end": 6.99
+  },
+  {
+   "word": "their",
+   "start": 6.99,
+   "end": 7.14
+  },
+  {
+   "word": "own",
+   "start": 7.14,
+   "end": 7.41
+  },
+  {
+   "word": "inner",
+   "start": 7.41,
+   "end": 7.65
+  },
+  {
+   "word": "light,",
+   "start": 7.65,
+   "end": 8.13
+  },
+  {
+   "word": "and",
+   "start": 8.43,
+   "end": 8.58
+  },
+  {
+   "word": "his",
+   "start": 8.58,
+   "end": 8.7
+  },
+  {
+   "word": "eyes",
+   "start": 8.7,
+   "end": 9.03
+  },
+  {
+   "word": "hold",
+   "start": 9.03,
+   "end": 9.24
+  },
+  {
+   "word": "the",
+   "start": 9.24,
+   "end": 9.33
+  },
+  {
+   "word": "depth",
+   "start": 9.33,
+   "end": 9.66
+  },
+  {
+   "word": "of",
+   "start": 9.66,
+   "end": 9.75
+  },
+  {
+   "word": "centuries.",
+   "start": 9.75,
+   "end": 10.5
+  },
+  {
+   "word": "Ancient",
+   "start": 11.1,
+   "end": 11.46
+  },
+  {
+   "word": "scrolls",
+   "start": 11.46,
+   "end": 12.03
+  },
+  {
+   "word": "and",
+   "start": 12.03,
+   "end": 12.15
+  },
+  {
+   "word": "crystalline",
+   "start": 12.15,
+   "end": 12.69
+  },
+  {
+   "word": "artifacts",
+   "start": 12.69,
+   "end": 13.325
+  },
+  {
+   "word": "surround",
+   "start": 13.325,
+   "end": 13.74
+  },
+  {
+   "word": "him,",
+   "start": 13.74,
+   "end": 13.98
+  },
+  {
+   "word": "each",
+   "start": 14.31,
+   "end": 14.55
+  },
+  {
+   "word": "one",
+   "start": 14.55,
+   "end": 14.82
+  },
+  {
+   "word": "pulsing",
+   "start": 14.82,
+   "end": 15.33
+  },
+  {
+   "word": "with",
+   "start": 15.33,
+   "end": 15.48
+  },
+  {
+   "word": "mysterious",
+   "start": 15.48,
+   "end": 16.2
+  },
+  {
+   "word": "energy.",
+   "start": 16.2,
+   "end": 16.74
+  },
+  {
+   "word": "As",
+   "start": 17.28,
+   "end": 17.46
+  },
+  {
+   "word": "he",
+   "start": 17.46,
+   "end": 17.52
+  },
+  {
+   "word": "turns",
+   "start": 17.52,
+   "end": 17.85
+  },
+  {
+   "word": "his",
+   "start": 17.85,
+   "end": 17.97
+  },
+  {
+   "word": "knowing",
+   "start": 17.97,
+   "end": 18.3
+  },
+  {
+   "word": "gaze",
+   "start": 18.3,
+   "end": 18.6
+  },
+  {
+   "word": "upon",
+   "start": 18.6,
+   "end": 18.96
+  },
+  {
+   "word": "you,",
+   "start": 18.96,
+   "end": 19.26
+  },
+  {
+   "word": "you",
+   "start": 19.44,
+   "end": 19.59
+  },
+  {
+   "word": "sense",
+   "start": 19.59,
+   "end": 19.92
+  },
+  {
+   "word": "that",
+   "start": 19.92,
+   "end": 20.07
+  },
+  {
+   "word": "this",
+   "start": 20.07,
+   "end": 20.25
+  },
+  {
+   "word": "meeting",
+   "start": 20.25,
+   "end": 20.58
+  },
+  {
+   "word": "is",
+   "start": 20.58,
+   "end": 20.67
+  },
+  {
+   "word": "no",
+   "start": 20.67,
+   "end": 20.85
+  },
+  {
+   "word": "coincidence.",
+   "start": 20.85,
+   "end": 21.66
+  }
+ ],
+ "mystic-mountain-crystal_cave": [
+  {
+   "word": "The",
+   "start": 0,
+   "end": 0.15
+  },
+  {
+   "word": "cave",
+   "start": 0.15,
+   "end": 0.48
+  },
+  {
+   "word": "entrance",
+   "start": 0.48,
+   "end": 0.93
+  },
+  {
+   "word": "sparkles",
+   "start": 0.93,
+   "end": 1.5
+  },
+  {
+   "word": "with",
+   "start": 1.5,
+   "end": 1.65
+  },
+  {
+   "word": "embedded",
+   "start": 1.65,
+   "end": 2.13
+  },
+  {
+   "word": "crystals",
+   "start": 2.13,
+   "end": 2.64
+  },
+  {
+   "word": "of",
+   "start": 2.64,
+   "end": 2.76
+  },
+  {
+   "word": "every",
+   "start": 2.76,
+   "end": 3.06
+  },
+  {
+   "word": "color",
+   "start": 3.06,
+   "end": 3.39
+  },
+  {
+   "word": "imaginable,",
+   "start": 3.39,
+   "end": 4.11
+  },
+  {
+   "word": "each",
+   "start": 4.44,
+   "end": 4.71
+  },
+  {
+   "word": "one",
+   "start": 4.71,
+   "end": 4.92
+  },
+  {
+   "word": "pulsing",
+   "start": 4.92,
+   "end": 5.49
+  },
+  {
+   "word": "with",
+   "start": 5.49,
+   "end": 5.64
+  },
+  {
+   "word": "its",
+   "start": 5.64,
+   "end": 5.79
+  },
+  {
+   "word": "own",
+   "start": 5.79,
+   "end": 6
+  },
+  {
+   "word": "rhythm",
+   "start": 6,
+   "end": 6.3
+  },
+  {
+   "word": "of",
+   "start": 6.3,
+   "end": 6.45
+  },
+  {
+   "word": "light.",
+   "start": 6.45,
+   "end": 6.9
+  },
+  {
+   "word": "The",
+   "start": 7.62,
+   "end": 7.8
+  },
+  {
+   "word": "air",
+   "start": 7.83,
+   "end": 8.07
+  },
+  {
+   "word": "here",
+   "start": 8.07,
+   "end": 8.34
+  },
+  {
+   "word": "feels",
+   "start": 8.34,
+   "end": 8.67
+  },
+  {
+   "word": "charged",
+   "start": 8.67,
+   "end": 9.18
+  },
+  {
+   "word": "with",
+   "start": 9.18,
+   "end": 9.36
+  },
+  {
+   "word": "ancient",
+   "start": 9.39,
+   "end": 9.78
+  },
+  {
+   "word": "power,",
+   "start": 9.81,
+   "end": 10.35
+  },
+  {
+   "word": "and",
+   "start": 10.59,
+   "end": 10.71
+  },
+  {
+   "word": "the",
+   "start": 10.71,
+   "end": 10.8
+  },
+  {
+   "word": "crystals",
+   "start": 10.8,
+   "end": 11.294
+  },
+  {
+   "word": "seem",
+   "start": 11.294,
+   "end": 11.55
+  },
+  {
+   "word": "to",
+   "start": 11.55,
+   "end": 11.67
+  },
+  {
+   "word": "sing",
+   "start": 11.67,
+   "end": 11.97
+  },
+  {
+   "word": "a",
+   "start": 11.97,
+   "end": 12.03
+  },
+  {
+   "word": "haunting",
+   "start": 12.03,
+   "end": 12.42
+  },
+  {
+   "word": "melody",
+   "start": 12.42,
+   "end": 13.02
+  },
+  {
+   "word": "that",
+   "start": 13.05,
+   "end": 13.26
+  },
+  {
+   "word": "resonates",
+   "start": 13.26,
+   "end": 13.86
+  },
+  {
+   "word": "deep",
+   "start": 13.89,
+   "end": 14.19
+  },
+  {
+   "word": "within",
+   "start": 14.19,
+   "end": 14.49
+  },
+  {
+   "word": "your",
+   "start": 14.49,
+   "end": 14.64
+  },
+  {
+   "word": "soul.",
+   "start": 14.64,
+   "end": 15.15
+  },
+  {
+   "word": "As",
+   "start": 16.59,
+   "end": 16.8
+  },
+  {
+   "word": "you",
+   "start": 16.8,
+   "end": 16.89
+  },
+  {
+   "word": "step",
+   "start": 16.89,
+   "end": 17.19
+  },
+  {
+   "word": "inside,",
+   "start": 17.19,
+   "end": 17.85
+  },
+  {
+   "word": "the",
+   "start": 17.88,
+   "end": 18
+  },
+  {
+   "word": "crystals'",
+   "start": 18,
+   "end": 18.45
+  },
+  {
+   "word": "light",
+   "start": 18.45,
+   "end": 18.75
+  },
+  {
+   "word": "intensifies,",
+   "start": 18.75,
+   "end": 19.65
+  },
+  {
+   "word": "revealing",
+   "start": 19.86,
+   "end": 20.37
+  },
+  {
+   "word": "patterns",
+   "start": 20.37,
+   "end": 20.94
+  },
+  {
+   "word": "and",
+   "start": 20.94,
+   "end": 21.06
+  },
+  {
+   "word": "symbols",
+   "start": 21.06,
+   "end": 21.6
+  },
+  {
+   "word": "etched",
+   "start": 21.69,
+   "end": 22.05
+  },
+  {
+   "word": "into",
+   "start": 22.05,
+   "end": 22.26
+  },
+  {
+   "word": "the",
+   "start": 22.26,
+   "end": 22.38
+  },
+  {
+   "word": "walls",
+   "start": 22.38,
+   "end": 22.8
+  },
+  {
+   "word": "that",
+   "start": 22.8,
+   "end": 22.95
+  },
+  {
+   "word": "seem",
+   "start": 22.95,
+   "end": 23.28
+  },
+  {
+   "word": "to",
+   "start": 23.28,
+   "end": 23.4
+  },
+  {
+   "word": "shift",
+   "start": 23.4,
+   "end": 23.88
+  },
+  {
+   "word": "and",
+   "start": 23.88,
+   "end": 24
+  },
+  {
+   "word": "change",
+   "start": 24,
+   "end": 24.54
+  },
+  {
+   "word": "as",
+   "start": 24.54,
+   "end": 24.69
+  },
+  {
+   "word": "you",
+   "start": 24.69,
+   "end": 24.81
+  },
+  {
+   "word": "watch.",
+   "start": 24.81,
+   "end": 25.38
+  }
+ ],
+ "mystic-mountain-sage_quest": [
+  {
+   "word": "The",
+   "start": 0,
+   "end": 0.15
+  },
+  {
+   "word": "mountain",
+   "start": 0.15,
+   "end": 0.45
+  },
+  {
+   "word": "sage",
+   "start": 0.45,
+   "end": 0.81
+  },
+  {
+   "word": "speaks",
+   "start": 0.81,
+   "end": 1.23
+  },
+  {
+   "word": "in",
+   "start": 1.23,
+   "end": 1.32
+  },
+  {
+   "word": "a",
+   "start": 1.32,
+   "end": 1.375
+  },
+  {
+   "word": "voice",
+   "start": 1.375,
+   "end": 1.71
+  },
+  {
+   "word": "that",
+   "start": 1.71,
+   "end": 1.89
+  },
+  {
+   "word": "echoes",
+   "start": 1.89,
+   "end": 2.25
+  },
+  {
+   "word": "with",
+   "start": 2.25,
+   "end": 2.4
+  },
+  {
+   "word": "the",
+   "start": 2.4,
+   "end": 2.49
+  },
+  {
+   "word": "weight",
+   "start": 2.49,
+   "end": 2.79
+  },
+  {
+   "word": "of",
+   "start": 2.79,
+   "end": 2.91
+  },
+  {
+   "word": "ages:",
+   "start": 2.94,
+   "end": 3.54
+  },
+  {
+   "word": "'The",
+   "start": 4.08,
+   "end": 4.14
+  },
+  {
+   "word": "sacred",
+   "start": 4.14,
+   "end": 4.59
+  },
+  {
+   "word": "crystal",
+   "start": 4.59,
+   "end": 5.04
+  },
+  {
+   "word": "you",
+   "start": 5.04,
+   "end": 5.19
+  },
+  {
+   "word": "seek",
+   "start": 5.19,
+   "end": 5.67
+  },
+  {
+   "word": "is",
+   "start": 5.79,
+   "end": 5.97
+  },
+  {
+   "word": "both",
+   "start": 5.97,
+   "end": 6.24
+  },
+  {
+   "word": "blessing",
+   "start": 6.24,
+   "end": 6.87
+  },
+  {
+   "word": "and",
+   "start": 6.9,
+   "end": 7.08
+  },
+  {
+   "word": "burden,",
+   "start": 7.08,
+   "end": 7.62
+  },
+  {
+   "word": "young",
+   "start": 7.86,
+   "end": 8.22
+  },
+  {
+   "word": "seeker.",
+   "start": 8.22,
+   "end": 8.79
+  },
+  {
+   "word": "It",
+   "start": 9.48,
+   "end": 9.63
+  },
+  {
+   "word": "maintains",
+   "start": 9.63,
+   "end": 10.23
+  },
+  {
+   "word": "the",
+   "start": 10.23,
+   "end": 10.35
+  },
+  {
+   "word": "delicate",
+   "start": 10.35,
+   "end": 10.83
+  },
+  {
+   "word": "balance",
+   "start": 10.83,
+   "end": 11.28
+  },
+  {
+   "word": "of",
+   "start": 11.28,
+   "end": 11.4
+  },
+  {
+   "word": "energies",
+   "start": 11.4,
+   "end": 11.97
+  },
+  {
+   "word": "that",
+   "start": 11.97,
+   "end": 12.12
+  },
+  {
+   "word": "keep",
+   "start": 12.12,
+   "end": 12.42
+  },
+  {
+   "word": "this",
+   "start": 12.42,
+   "end": 12.6
+  },
+  {
+   "word": "mountain,",
+   "start": 12.6,
+   "end": 13.11
+  },
+  {
+   "word": "and",
+   "start": 13.14,
+   "end": 13.29
+  },
+  {
+   "word": "the",
+   "start": 13.29,
+   "end": 13.38
+  },
+  {
+   "word": "lands",
+   "start": 13.38,
+   "end": 13.74
+  },
+  {
+   "word": "beyond,",
+   "start": 13.743,
+   "end": 14.34
+  },
+  {
+   "word": "in",
+   "start": 14.34,
+   "end": 14.46
+  },
+  {
+   "word": "harmony.",
+   "start": 14.46,
+   "end": 15
+  },
+  {
+   "word": "But",
+   "start": 15.36,
+   "end": 15.54
+  },
+  {
+   "word": "dark",
+   "start": 15.54,
+   "end": 15.84
+  },
+  {
+   "word": "forces",
+   "start": 15.84,
+   "end": 16.23
+  },
+  {
+   "word": "gather,",
+   "start": 16.23,
+   "end": 16.74
+  },
+  {
+   "word": "seeking",
+   "start": 16.92,
+   "end": 17.43
+  },
+  {
+   "word": "to",
+   "start": 17.43,
+   "end": 17.55
+  },
+  {
+   "word": "harness",
+   "start": 17.55,
+   "end": 18.03
+  },
+  {
+   "word": "its",
+   "start": 18.03,
+   "end": 18.21
+  },
+  {
+   "word": "power",
+   "start": 18.21,
+   "end": 18.63
+  },
+  {
+   "word": "for",
+   "start": 18.63,
+   "end": 18.75
+  },
+  {
+   "word": "their",
+   "start": 18.75,
+   "end": 18.96
+  },
+  {
+   "word": "own",
+   "start": 18.96,
+   "end": 19.23
+  },
+  {
+   "word": "ends.",
+   "start": 19.26,
+   "end": 19.89
+  },
+  {
+   "word": "The",
+   "start": 20.34,
+   "end": 20.46
+  },
+  {
+   "word": "choice",
+   "start": 20.46,
+   "end": 20.79
+  },
+  {
+   "word": "before",
+   "start": 20.79,
+   "end": 21.18
+  },
+  {
+   "word": "you",
+   "start": 21.18,
+   "end": 21.42
+  },
+  {
+   "word": "is",
+   "start": 21.42,
+   "end": 21.57
+  },
+  {
+   "word": "greater",
+   "start": 21.57,
+   "end": 21.93
+  },
+  {
+   "word": "than",
+   "start": 21.93,
+   "end": 22.08
+  },
+  {
+   "word": "you",
+   "start": 22.08,
+   "end": 22.2
+  },
+  {
+   "word": "know",
+   "start": 22.2,
+   "end": 22.62
+  },
+  {
+   "word": "-",
+   "start": 22.62,
+   "end": 22.86
+  },
+  {
+   "word": "will",
+   "start": 22.86,
+   "end": 23.04
+  },
+  {
+   "word": "you",
+   "start": 23.04,
+   "end": 23.19
+  },
+  {
+   "word": "take",
+   "start": 23.19,
+   "end": 23.46
+  },
+  {
+   "word": "up",
+   "start": 23.46,
+   "end": 23.58
+  },
+  {
+   "word": "this",
+   "start": 23.58,
+   "end": 23.76
+  },
+  {
+   "word": "burden,",
+   "start": 23.76,
+   "end": 24.24
+  },
+  {
+   "word": "knowing",
+   "start": 24.57,
+   "end": 24.9
+  },
+  {
+   "word": "the",
+   "start": 24.9,
+   "end": 24.99
+  },
+  {
+   "word": "dangers",
+   "start": 24.99,
+   "end": 25.56
+  },
+  {
+   "word": "that",
+   "start": 25.56,
+   "end": 25.71
+  },
+  {
+   "word": "come",
+   "start": 25.71,
+   "end": 25.98
+  },
+  {
+   "word": "with",
+   "start": 25.98,
+   "end": 26.19
+  },
+  {
+   "word": "it?",
+   "start": 26.19,
+   "end": 26.43
+  },
+  {
+   "word": "Or",
+   "start": 27.45,
+   "end": 27.57
+  },
+  {
+   "word": "do",
+   "start": 27.57,
+   "end": 27.69
+  },
+  {
+   "word": "you",
+   "start": 27.69,
+   "end": 27.84
+  },
+  {
+   "word": "wish",
+   "start": 27.84,
+   "end": 28.08
+  },
+  {
+   "word": "to",
+   "start": 28.08,
+   "end": 28.2
+  },
+  {
+   "word": "learn",
+   "start": 28.2,
+   "end": 28.47
+  },
+  {
+   "word": "more",
+   "start": 28.47,
+   "end": 28.8
+  },
+  {
+   "word": "of",
+   "start": 28.8,
+   "end": 28.92
+  },
+  {
+   "word": "what",
+   "start": 28.92,
+   "end": 29.1
+  },
+  {
+   "word": "awaits",
+   "start": 29.1,
+   "end": 29.52
+  },
+  {
+   "word": "on",
+   "start": 29.52,
+   "end": 29.64
+  },
+  {
+   "word": "this",
+   "start": 29.64,
+   "end": 29.79
+  },
+  {
+   "word": "treacherous",
+   "start": 29.793,
+   "end": 30.36
+  },
+  {
+   "word": "path?'",
+   "start": 30.36,
+   "end": 30.9
+  },
+  {
+   "word": "His",
+   "start": 31.74,
+   "end": 31.95
+  },
+  {
+   "word": "eyes",
+   "start": 31.95,
+   "end": 32.28
+  },
+  {
+   "word": "pierce",
+   "start": 32.28,
+   "end": 32.91
+  },
+  {
+   "word": "into",
+   "start": 32.28,
+   "end": 32.91
+  },
+  {
+   "word": "yours,",
+   "start": 32.91,
+   "end": 33.42
+  },
+  {
+   "word": "waiting",
+   "start": 33.63,
+   "end": 34.05
+  },
+  {
+   "word": "for",
+   "start": 34.05,
+   "end": 34.17
+  },
+  {
+   "word": "your",
+   "start": 34.17,
+   "end": 34.32
+  },
+  {
+   "word": "response.",
+   "start": 34.32,
+   "end": 35.07
+  }
+ ],
+ "mystic-mountain-cave_discovery": [
+  {
+   "word": "Deep",
+   "start": 0.03,
+   "end": 0.27
+  },
+  {
+   "word": "within",
+   "start": 0.27,
+   "end": 0.54
+  },
+  {
+   "word": "the",
+   "start": 0.54,
+   "end": 0.63
+  },
+  {
+   "word": "crystal",
+   "start": 0.63,
+   "end": 1.02
+  },
+  {
+   "word": "cave,",
+   "start": 1.02,
+   "end": 1.47
+  },
+  {
+   "word": "you",
+   "start": 1.53,
+   "end": 1.68
+  },
+  {
+   "word": "find",
+   "start": 1.68,
+   "end": 1.92
+  },
+  {
+   "word": "yourself",
+   "start": 1.92,
+   "end": 2.25
+  },
+  {
+   "word": "in",
+   "start": 2.25,
+   "end": 2.34
+  },
+  {
+   "word": "a",
+   "start": 2.34,
+   "end": 2.37
+  },
+  {
+   "word": "vast",
+   "start": 2.37,
+   "end": 2.76
+  },
+  {
+   "word": "chamber",
+   "start": 2.76,
+   "end": 3.18
+  },
+  {
+   "word": "that",
+   "start": 3.18,
+   "end": 3.36
+  },
+  {
+   "word": "takes",
+   "start": 3.36,
+   "end": 3.69
+  },
+  {
+   "word": "your",
+   "start": 3.69,
+   "end": 3.81
+  },
+  {
+   "word": "breath",
+   "start": 3.81,
+   "end": 4.17
+  },
+  {
+   "word": "away.",
+   "start": 4.17,
+   "end": 4.53
+  },
+  {
+   "word": "Massive",
+   "start": 5.1,
+   "end": 5.73
+  },
+  {
+   "word": "crystal",
+   "start": 5.73,
+   "end": 6.12
+  },
+  {
+   "word": "formations",
+   "start": 6.12,
+   "end": 6.78
+  },
+  {
+   "word": "reach",
+   "start": 6.78,
+   "end": 7.08
+  },
+  {
+   "word": "from",
+   "start": 7.08,
+   "end": 7.23
+  },
+  {
+   "word": "floor",
+   "start": 7.23,
+   "end": 7.62
+  },
+  {
+   "word": "to",
+   "start": 7.62,
+   "end": 7.71
+  },
+  {
+   "word": "ceiling",
+   "start": 7.71,
+   "end": 8.25
+  },
+  {
+   "word": "like",
+   "start": 8.58,
+   "end": 8.85
+  },
+  {
+   "word": "frozen",
+   "start": 8.85,
+   "end": 9.27
+  },
+  {
+   "word": "waterfalls",
+   "start": 9.27,
+   "end": 9.9
+  },
+  {
+   "word": "of",
+   "start": 9.9,
+   "end": 10.02
+  },
+  {
+   "word": "light,",
+   "start": 10.02,
+   "end": 10.44
+  },
+  {
+   "word": "each",
+   "start": 10.86,
+   "end": 11.13
+  },
+  {
+   "word": "one",
+   "start": 11.13,
+   "end": 11.49
+  },
+  {
+   "word": "thrumming",
+   "start": 11.55,
+   "end": 12.3
+  },
+  {
+   "word": "with",
+   "start": 12.33,
+   "end": 12.57
+  },
+  {
+   "word": "ancient",
+   "start": 12.6,
+   "end": 12.99
+  },
+  {
+   "word": "power.",
+   "start": 12.99,
+   "end": 13.5
+  },
+  {
+   "word": "On",
+   "start": 13.92,
+   "end": 14.1
+  },
+  {
+   "word": "one",
+   "start": 14.1,
+   "end": 14.34
+  },
+  {
+   "word": "side,",
+   "start": 14.34,
+   "end": 14.82
+  },
+  {
+   "word": "a",
+   "start": 14.91,
+   "end": 15
+  },
+  {
+   "word": "particular",
+   "start": 15,
+   "end": 15.57
+  },
+  {
+   "word": "cluster",
+   "start": 15.57,
+   "end": 16.05
+  },
+  {
+   "word": "of",
+   "start": 16.05,
+   "end": 16.17
+  },
+  {
+   "word": "crystals",
+   "start": 16.17,
+   "end": 16.68
+  },
+  {
+   "word": "pulses",
+   "start": 16.71,
+   "end": 17.34
+  },
+  {
+   "word": "with",
+   "start": 17.34,
+   "end": 17.52
+  },
+  {
+   "word": "an",
+   "start": 17.52,
+   "end": 17.64
+  },
+  {
+   "word": "almost",
+   "start": 17.64,
+   "end": 18.06
+  },
+  {
+   "word": "hypnotic",
+   "start": 18.06,
+   "end": 18.57
+  },
+  {
+   "word": "rhythm,",
+   "start": 18.57,
+   "end": 19.02
+  },
+  {
+   "word": "their",
+   "start": 19.17,
+   "end": 19.35
+  },
+  {
+   "word": "light",
+   "start": 19.35,
+   "end": 19.68
+  },
+  {
+   "word": "dancing",
+   "start": 19.68,
+   "end": 20.16
+  },
+  {
+   "word": "in",
+   "start": 20.16,
+   "end": 20.25
+  },
+  {
+   "word": "patterns",
+   "start": 20.25,
+   "end": 20.79
+  },
+  {
+   "word": "that",
+   "start": 20.79,
+   "end": 20.97
+  },
+  {
+   "word": "seem",
+   "start": 20.97,
+   "end": 21.24
+  },
+  {
+   "word": "to",
+   "start": 21.245,
+   "end": 21.36
+  },
+  {
+   "word": "tell",
+   "start": 21.36,
+   "end": 21.57
+  },
+  {
+   "word": "a",
+   "start": 21.57,
+   "end": 21.63
+  },
+  {
+   "word": "story.",
+   "start": 21.63,
+   "end": 22.17
+  },
+  {
+   "word": "On",
+   "start": 23.01,
+   "end": 23.19
+  },
+  {
+   "word": "the",
+   "start": 23.19,
+   "end": 23.31
+  },
+  {
+   "word": "other,",
+   "start": 23.31,
+   "end": 23.7
+  },
+  {
+   "word": "the",
+   "start": 23.76,
+   "end": 23.85
+  },
+  {
+   "word": "cave",
+   "start": 23.85,
+   "end": 24.18
+  },
+  {
+   "word": "walls",
+   "start": 24.18,
+   "end": 24.57
+  },
+  {
+   "word": "are",
+   "start": 24.57,
+   "end": 24.66
+  },
+  {
+   "word": "covered",
+   "start": 24.66,
+   "end": 25.11
+  },
+  {
+   "word": "in",
+   "start": 25.11,
+   "end": 25.23
+  },
+  {
+   "word": "intricate",
+   "start": 25.26,
+   "end": 25.77
+  },
+  {
+   "word": "paintings",
+   "start": 25.77,
+   "end": 26.37
+  },
+  {
+   "word": "that",
+   "start": 26.37,
+   "end": 26.52
+  },
+  {
+   "word": "seem",
+   "start": 26.52,
+   "end": 26.79
+  },
+  {
+   "word": "to",
+   "start": 26.79,
+   "end": 26.91
+  },
+  {
+   "word": "move",
+   "start": 26.91,
+   "end": 27.3
+  },
+  {
+   "word": "in",
+   "start": 27.3,
+   "end": 27.36
+  },
+  {
+   "word": "the",
+   "start": 27.36,
+   "end": 27.45
+  },
+  {
+   "word": "crystalline",
+   "start": 27.45,
+   "end": 28.05
+  },
+  {
+   "word": "light",
+   "start": 28.05,
+   "end": 28.47
+  },
+  {
+   "word": "-",
+   "start": 28.47,
+   "end": 29.04
+  },
+  {
+   "word": "depicting",
+   "start": 29.04,
+   "end": 29.52
+  },
+  {
+   "word": "the",
+   "start": 29.52,
+   "end": 29.61
+  },
+  {
+   "word": "mountain's",
+   "start": 29.61,
+   "end": 30.06
+  },
+  {
+   "word": "history",
+   "start": 30.06,
+   "end": 30.66
+  },
+  {
+   "word": "and",
+   "start": 30.99,
+   "end": 31.14
+  },
+  {
+   "word": "perhaps",
+   "start": 31.14,
+   "end": 31.59
+  },
+  {
+   "word": "its",
+   "start": 31.59,
+   "end": 31.74
+  },
+  {
+   "word": "future.",
+   "start": 31.74,
+   "end": 32.25
+  },
+  {
+   "word": "The",
+   "start": 33.24,
+   "end": 33.42
+  },
+  {
+   "word": "air",
+   "start": 33.42,
+   "end": 33.75
+  },
+  {
+   "word": "is",
+   "start": 33.75,
+   "end": 33.96
+  },
+  {
+   "word": "thick",
+   "start": 33.96,
+   "end": 34.32
+  },
+  {
+   "word": "with",
+   "start": 34.32,
+   "end": 34.47
+  },
+  {
+   "word": "magic,",
+   "start": 34.47,
+   "end": 35.13
+  },
+  {
+   "word": "and",
+   "start": 35.34,
+   "end": 35.49
+  },
+  {
+   "word": "you",
+   "start": 35.49,
+   "end": 35.58
+  },
+  {
+   "word": "can",
+   "start": 35.58,
+   "end": 35.7
+  },
+  {
+   "word": "feel",
+   "start": 35.7,
+   "end": 35.97
+  },
+  {
+   "word": "the",
+   "start": 35.97,
+   "end": 36.09
+  },
+  {
+   "word": "weight",
+   "start": 36.09,
+   "end": 36.48
+  },
+  {
+   "word": "of",
+   "start": 36.51,
+   "end": 36.66
+  },
+  {
+   "word": "your",
+   "start": 36.66,
+   "end": 36.78
+  },
+  {
+   "word": "next",
+   "start": 36.78,
+   "end": 37.14
+  },
+  {
+   "word": "choice",
+   "start": 37.14,
+   "end": 37.62
+  },
+  {
+   "word": "pressing",
+   "start": 37.62,
+   "end": 38.07
+  },
+  {
+   "word": "upon",
+   "start": 38.07,
+   "end": 38.4
+  },
+  {
+   "word": "you.",
+   "start": 38.4,
+   "end": 38.7
+  }
+ ],
+ "mystic-mountain-accept_mission": [
+  {
+   "word": "With",
+   "start": 0.03,
+   "end": 0.21
+  },
+  {
+   "word": "unwavering",
+   "start": 0.21,
+   "end": 0.81
+  },
+  {
+   "word": "resolve,",
+   "start": 0.81,
+   "end": 1.41
+  },
+  {
+   "word": "you",
+   "start": 1.65,
+   "end": 1.86
+  },
+  {
+   "word": "accept",
+   "start": 1.86,
+   "end": 2.31
+  },
+  {
+   "word": "the",
+   "start": 2.31,
+   "end": 2.4
+  },
+  {
+   "word": "sacred",
+   "start": 2.4,
+   "end": 2.82
+  },
+  {
+   "word": "duty.",
+   "start": 2.82,
+   "end": 3.24
+  },
+  {
+   "word": "The",
+   "start": 3.78,
+   "end": 3.9
+  },
+  {
+   "word": "sage's",
+   "start": 3.9,
+   "end": 4.32
+  },
+  {
+   "word": "eyes",
+   "start": 4.32,
+   "end": 4.71
+  },
+  {
+   "word": "gleam",
+   "start": 4.71,
+   "end": 5.07
+  },
+  {
+   "word": "with",
+   "start": 5.07,
+   "end": 5.22
+  },
+  {
+   "word": "approval",
+   "start": 5.22,
+   "end": 5.79
+  },
+  {
+   "word": "as",
+   "start": 5.85,
+   "end": 6.03
+  },
+  {
+   "word": "he",
+   "start": 6.03,
+   "end": 6.09
+  },
+  {
+   "word": "guides",
+   "start": 6.09,
+   "end": 6.45
+  },
+  {
+   "word": "you",
+   "start": 6.45,
+   "end": 6.6
+  },
+  {
+   "word": "toward",
+   "start": 6.6,
+   "end": 6.87
+  },
+  {
+   "word": "the",
+   "start": 6.87,
+   "end": 6.96
+  },
+  {
+   "word": "summit",
+   "start": 6.96,
+   "end": 7.32
+  },
+  {
+   "word": "path.",
+   "start": 7.32,
+   "end": 7.83
+  }
+ ],
+ "mystic-mountain-seek_wisdom": [
+  {
+   "word": "You",
+   "start": 0.06,
+   "end": 0.15
+  },
+  {
+   "word": "choose",
+   "start": 0.15,
+   "end": 0.63
+  },
+  {
+   "word": "to",
+   "start": 0.63,
+   "end": 0.75
+  },
+  {
+   "word": "seek",
+   "start": 0.75,
+   "end": 1.05
+  },
+  {
+   "word": "deeper",
+   "start": 1.05,
+   "end": 1.38
+  },
+  {
+   "word": "understanding.",
+   "start": 1.38,
+   "end": 2.19
+  },
+  {
+   "word": "The",
+   "start": 2.82,
+   "end": 2.94
+  },
+  {
+   "word": "sage",
+   "start": 2.94,
+   "end": 3.27
+  },
+  {
+   "word": "nods",
+   "start": 3.3,
+   "end": 3.6
+  },
+  {
+   "word": "approvingly",
+   "start": 3.6,
+   "end": 4.29
+  },
+  {
+   "word": "and",
+   "start": 4.32,
+   "end": 4.47
+  },
+  {
+   "word": "shares",
+   "start": 4.47,
+   "end": 4.86
+  },
+  {
+   "word": "ancient",
+   "start": 4.89,
+   "end": 5.25
+  },
+  {
+   "word": "secrets",
+   "start": 5.25,
+   "end": 5.79
+  },
+  {
+   "word": "that",
+   "start": 6.03,
+   "end": 6.18
+  },
+  {
+   "word": "will",
+   "start": 6.18,
+   "end": 6.3
+  },
+  {
+   "word": "guide",
+   "start": 6.3,
+   "end": 6.6
+  },
+  {
+   "word": "your",
+   "start": 6.6,
+   "end": 6.72
+  },
+  {
+   "word": "journey",
+   "start": 6.72,
+   "end": 7.05
+  },
+  {
+   "word": "to",
+   "start": 7.05,
+   "end": 7.2
+  },
+  {
+   "word": "the",
+   "start": 7.2,
+   "end": 7.29
+  },
+  {
+   "word": "summit.",
+   "start": 7.29,
+   "end": 7.71
+  }
+ ],
+ "mystic-mountain-crystal_path": [
+  {
+   "word": "Following",
+   "start": 0.06,
+   "end": 0.45
+  },
+  {
+   "word": "the",
+   "start": 0.45,
+   "end": 0.54
+  },
+  {
+   "word": "crystal's",
+   "start": 0.54,
+   "end": 0.96
+  },
+  {
+   "word": "pulsing",
+   "start": 0.96,
+   "end": 1.41
+  },
+  {
+   "word": "light,",
+   "start": 1.41,
+   "end": 1.71
+  },
+  {
+   "word": "you",
+   "start": 1.95,
+   "end": 2.13
+  },
+  {
+   "word": "navigate",
+   "start": 2.13,
+   "end": 2.64
+  },
+  {
+   "word": "deeper",
+   "start": 2.64,
+   "end": 3.15
+  },
+  {
+   "word": "into",
+   "start": 3.27,
+   "end": 3.48
+  },
+  {
+   "word": "the",
+   "start": 3.48,
+   "end": 3.57
+  },
+  {
+   "word": "mountain's",
+   "start": 3.57,
+   "end": 3.99
+  },
+  {
+   "word": "heart,",
+   "start": 3.99,
+   "end": 4.44
+  },
+  {
+   "word": "each",
+   "start": 4.83,
+   "end": 5.13
+  },
+  {
+   "word": "step",
+   "start": 5.13,
+   "end": 5.52
+  },
+  {
+   "word": "illuminated",
+   "start": 5.52,
+   "end": 6.18
+  },
+  {
+   "word": "by",
+   "start": 6.18,
+   "end": 6.42
+  },
+  {
+   "word": "their",
+   "start": 6.42,
+   "end": 6.69
+  },
+  {
+   "word": "ethereal",
+   "start": 6.69,
+   "end": 7.23
+  },
+  {
+   "word": "glow.",
+   "start": 7.23,
+   "end": 7.74
+  }
+ ],
+ "mystic-mountain-painting_study": [
+  {
+   "word": "The",
+   "start": 0,
+   "end": 0.18
+  },
+  {
+   "word": "ancient",
+   "start": 0.18,
+   "end": 0.51
+  },
+  {
+   "word": "paintings",
+   "start": 0.51,
+   "end": 0.99
+  },
+  {
+   "word": "reveal",
+   "start": 0.99,
+   "end": 1.32
+  },
+  {
+   "word": "a",
+   "start": 1.32,
+   "end": 1.38
+  },
+  {
+   "word": "story",
+   "start": 1.38,
+   "end": 1.8
+  },
+  {
+   "word": "of",
+   "start": 1.8,
+   "end": 1.89
+  },
+  {
+   "word": "balance",
+   "start": 1.89,
+   "end": 2.43
+  },
+  {
+   "word": "and",
+   "start": 2.49,
+   "end": 2.64
+  },
+  {
+   "word": "power,",
+   "start": 2.64,
+   "end": 3.18
+  },
+  {
+   "word": "guiding",
+   "start": 3.6,
+   "end": 3.96
+  },
+  {
+   "word": "you",
+   "start": 3.96,
+   "end": 4.08
+  },
+  {
+   "word": "toward",
+   "start": 4.08,
+   "end": 4.35
+  },
+  {
+   "word": "the",
+   "start": 4.35,
+   "end": 4.44
+  },
+  {
+   "word": "mountain's",
+   "start": 4.44,
+   "end": 5.01
+  },
+  {
+   "word": "sacred",
+   "start": 5.01,
+   "end": 5.49
+  },
+  {
+   "word": "chamber",
+   "start": 5.49,
+   "end": 6.06
+  },
+  {
+   "word": "with",
+   "start": 6.24,
+   "end": 6.45
+  },
+  {
+   "word": "newfound",
+   "start": 6.45,
+   "end": 6.93
+  },
+  {
+   "word": "understanding.",
+   "start": 6.93,
+   "end": 7.65
+  }
+ ],
+ "mystic-mountain-summit_path": [
+  {
+   "word": "The",
+   "start": 0,
+   "end": 0.15
+  },
+  {
+   "word": "path",
+   "start": 0.15,
+   "end": 0.48
+  },
+  {
+   "word": "to",
+   "start": 0.48,
+   "end": 0.6
+  },
+  {
+   "word": "the",
+   "start": 0.6,
+   "end": 0.69
+  },
+  {
+   "word": "summit",
+   "start": 0.69,
+   "end": 1.05
+  },
+  {
+   "word": "narrows,",
+   "start": 1.05,
+   "end": 1.65
+  },
+  {
+   "word": "with",
+   "start": 1.68,
+   "end": 1.89
+  },
+  {
+   "word": "swirling",
+   "start": 1.89,
+   "end": 2.46
+  },
+  {
+   "word": "mists",
+   "start": 2.46,
+   "end": 2.85
+  },
+  {
+   "word": "below",
+   "start": 2.85,
+   "end": 3.39
+  },
+  {
+   "word": "and",
+   "start": 3.69,
+   "end": 3.84
+  },
+  {
+   "word": "the",
+   "start": 3.84,
+   "end": 3.9
+  },
+  {
+   "word": "crystal's",
+   "start": 3.9,
+   "end": 4.38
+  },
+  {
+   "word": "power",
+   "start": 4.38,
+   "end": 4.77
+  },
+  {
+   "word": "growing",
+   "start": 4.77,
+   "end": 5.1
+  },
+  {
+   "word": "stronger",
+   "start": 5.1,
+   "end": 5.61
+  },
+  {
+   "word": "above.",
+   "start": 5.61,
+   "end": 6.12
+  }
+ ],
+ "mystic-mountain-sacred_chamber": [
+  {
+   "word": "You",
+   "start": 0.06,
+   "end": 0.21
+  },
+  {
+   "word": "enter",
+   "start": 0.21,
+   "end": 0.48
+  },
+  {
+   "word": "the",
+   "start": 0.48,
+   "end": 0.57
+  },
+  {
+   "word": "sacred",
+   "start": 0.57,
+   "end": 0.93
+  },
+  {
+   "word": "chamber,",
+   "start": 0.93,
+   "end": 1.47
+  },
+  {
+   "word": "where",
+   "start": 1.68,
+   "end": 1.83
+  },
+  {
+   "word": "the",
+   "start": 1.83,
+   "end": 1.95
+  },
+  {
+   "word": "very",
+   "start": 1.95,
+   "end": 2.34
+  },
+  {
+   "word": "air",
+   "start": 2.34,
+   "end": 2.61
+  },
+  {
+   "word": "thrums",
+   "start": 2.61,
+   "end": 3.12
+  },
+  {
+   "word": "with",
+   "start": 3.12,
+   "end": 3.3
+  },
+  {
+   "word": "power.",
+   "start": 3.3,
+   "end": 3.78
+  },
+  {
+   "word": "The",
+   "start": 4.23,
+   "end": 4.35
+  },
+  {
+   "word": "final",
+   "start": 4.35,
+   "end": 4.71
+  },
+  {
+   "word": "choice",
+   "start": 4.71,
+   "end": 5.07
+  },
+  {
+   "word": "lies",
+   "start": 5.07,
+   "end": 5.34
+  },
+  {
+   "word": "before",
+   "start": 5.34,
+   "end": 5.73
+  },
+  {
+   "word": "you.",
+   "start": 5.73,
+   "end": 5.94
+  }
+ ],
+ "mystic-mountain-final_choice": [
+  {
+   "word": "The",
+   "start": 0,
+   "end": 0.12
+  },
+  {
+   "word": "sacred",
+   "start": 0.12,
+   "end": 0.54
+  },
+  {
+   "word": "crystal",
+   "start": 0.54,
+   "end": 0.96
+  },
+  {
+   "word": "hovers",
+   "start": 0.96,
+   "end": 1.41
+  },
+  {
+   "word": "before",
+   "start": 1.41,
+   "end": 1.83
+  },
+  {
+   "word": "you,",
+   "start": 1.83,
+   "end": 2.16
+  },
+  {
+   "word": "its",
+   "start": 2.31,
+   "end": 2.49
+  },
+  {
+   "word": "power",
+   "start": 2.49,
+   "end": 2.82
+  },
+  {
+   "word": "palpable.",
+   "start": 2.82,
+   "end": 3.48
+  },
+  {
+   "word": "Will",
+   "start": 3.9,
+   "end": 4.05
+  },
+  {
+   "word": "you",
+   "start": 4.05,
+   "end": 4.2
+  },
+  {
+   "word": "become",
+   "start": 4.2,
+   "end": 4.5
+  },
+  {
+   "word": "its",
+   "start": 4.5,
+   "end": 4.65
+  },
+  {
+   "word": "guardian,",
+   "start": 4.65,
+   "end": 5.25
+  },
+  {
+   "word": "or",
+   "start": 5.43,
+   "end": 5.61
+  },
+  {
+   "word": "trust",
+   "start": 5.61,
+   "end": 6
+  },
+  {
+   "word": "in",
+   "start": 6,
+   "end": 6.09
+  },
+  {
+   "word": "the",
+   "start": 6.09,
+   "end": 6.18
+  },
+  {
+   "word": "mountain's",
+   "start": 6.18,
+   "end": 6.63
+  },
+  {
+   "word": "ancient",
+   "start": 6.69,
+   "end": 7.11
+  },
+  {
+   "word": "balance?",
+   "start": 7.11,
+   "end": 7.8
+  }
+ ],
+ "mystic-mountain-protect_mountain": [
+  {
+   "word": "Taking",
+   "start": 0.03,
+   "end": 0.36
+  },
+  {
+   "word": "the",
+   "start": 0.36,
+   "end": 0.45
+  },
+  {
+   "word": "crystal,",
+   "start": 0.45,
+   "end": 0.99
+  },
+  {
+   "word": "you",
+   "start": 1.2,
+   "end": 1.38
+  },
+  {
+   "word": "accept",
+   "start": 1.38,
+   "end": 1.74
+  },
+  {
+   "word": "your",
+   "start": 1.74,
+   "end": 1.86
+  },
+  {
+   "word": "role",
+   "start": 1.86,
+   "end": 2.19
+  },
+  {
+   "word": "as",
+   "start": 2.19,
+   "end": 2.37
+  },
+  {
+   "word": "the",
+   "start": 2.37,
+   "end": 2.46
+  },
+  {
+   "word": "mountain's",
+   "start": 2.46,
+   "end": 2.88
+  },
+  {
+   "word": "new",
+   "start": 2.88,
+   "end": 3.09
+  },
+  {
+   "word": "guardian.",
+   "start": 3.09,
+   "end": 3.66
+  },
+  {
+   "word": "Its",
+   "start": 4.02,
+   "end": 4.23
+  },
+  {
+   "word": "power",
+   "start": 4.23,
+   "end": 4.62
+  },
+  {
+   "word": "flows",
+   "start": 4.62,
+   "end": 5.01
+  },
+  {
+   "word": "through",
+   "start": 5.01,
+   "end": 5.28
+  },
+  {
+   "word": "you,",
+   "start": 5.28,
+   "end": 5.61
+  },
+  {
+   "word": "binding",
+   "start": 5.76,
+   "end": 6.21
+  },
+  {
+   "word": "your",
+   "start": 6.21,
+   "end": 6.33
+  },
+  {
+   "word": "fate",
+   "start": 6.33,
+   "end": 6.75
+  },
+  {
+   "word": "to",
+   "start": 6.84,
+   "end": 6.99
+  },
+  {
+   "word": "these",
+   "start": 6.99,
+   "end": 7.128
+  },
+  {
+   "word": "sacred",
+   "start": 7.128,
+   "end": 7.56
+  },
+  {
+   "word": "peaks.",
+   "start": 7.56,
+   "end": 8.07
+  }
+ ],
+ "mystic-mountain-maintain_balance": [
+  {
+   "word": "You",
+   "start": 0.03,
+   "end": 0.15
+  },
+  {
+   "word": "step",
+   "start": 0.15,
+   "end": 0.45
+  },
+  {
+   "word": "back,",
+   "start": 0.45,
+   "end": 0.9
+  },
+  {
+   "word": "choosing",
+   "start": 1.08,
+   "end": 1.47
+  },
+  {
+   "word": "to",
+   "start": 1.47,
+   "end": 1.59
+  },
+  {
+   "word": "maintain",
+   "start": 1.59,
+   "end": 2.13
+  },
+  {
+   "word": "the",
+   "start": 2.13,
+   "end": 2.28
+  },
+  {
+   "word": "ancient",
+   "start": 2.28,
+   "end": 2.64
+  },
+  {
+   "word": "balance.",
+   "start": 2.64,
+   "end": 3.3
+  },
+  {
+   "word": "The",
+   "start": 3.72,
+   "end": 3.87
+  },
+  {
+   "word": "crystal",
+   "start": 3.87,
+   "end": 4.17
+  },
+  {
+   "word": "pulses",
+   "start": 4.17,
+   "end": 4.56
+  },
+  {
+   "word": "once,",
+   "start": 4.56,
+   "end": 5.01
+  },
+  {
+   "word": "as",
+   "start": 5.01,
+   "end": 5.16
+  },
+  {
+   "word": "if",
+   "start": 5.16,
+   "end": 5.28
+  },
+  {
+   "word": "acknowledging",
+   "start": 5.28,
+   "end": 5.88
+  },
+  {
+   "word": "your",
+   "start": 5.88,
+   "end": 6.03
+  },
+  {
+   "word": "wisdom.",
+   "start": 6.03,
+   "end": 6.54
+  }
+ ]
+}

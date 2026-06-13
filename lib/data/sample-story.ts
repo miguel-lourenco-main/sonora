@@ -1,5 +1,4 @@
 import { Story } from "~/lib/types";
-import { wordTimings } from "./word-timings";
 
 export const bookData: Story[] = [
   {
@@ -19,7 +18,6 @@ export const bookData: Story[] = [
               id: "start",
               text: "Deep within the realm of ancient magic lies the Enchanted Forest, a place where every choice shapes destiny. As you step through the ethereal mist that marks its borders, you feel the forest's consciousness stirring. The very air seems alive with whispers of untold stories, and the path before you pulses with magical energy. Your journey into these mystical woods begins now.",
               nextNodeId: "path-split",
-              wordTimings: wordTimings.start,
               voiceId: 'default',
               //audioUrl: "/samples/enchanted-forest-start.mp3",
             },
@@ -30,14 +28,12 @@ export const bookData: Story[] = [
                 { text: "Take the shadowy path", nextNodeId: "shadow-path" },
                 { text: "Choose the sunlit path", nextNodeId: "sun-path" }
               ],
-              wordTimings: wordTimings["path-split"],
               voiceId: 'default',
               //audioUrl: "/samples/enchanted-forest-path-split.mp3",
             },
             "shadow-path": {
               id: "shadow-path",
               text: "You venture down the shadowy path, where ancient moss-covered trees loom overhead like silent guardians. The air grows thick with mystery as you navigate through twisted roots and hear distant echoes of forgotten magic. Strange glowing mushrooms illuminate your way, casting an otherworldly blue light that dances across your path. The whispers of the forest grow stronger here, speaking of secrets long buried in these dark depths. As you press forward, you can't shake the feeling that unseen eyes are watching your every move, judging your worthiness to witness the forest's deepest mysteries.",
-              wordTimings: wordTimings["shadow-path"],
               nextNodeId: "end-chapter",
               voiceId: 'default',
               //audioUrl: "/samples/enchanted-forest-shadow-path.mp3",
@@ -45,7 +41,6 @@ export const bookData: Story[] = [
             "sun-path": {
               id: "sun-path",
               text: "The sunlit path welcomes you with a warm embrace as golden rays filter through the swaying branches above. Butterflies with wings like stained glass dance around wildflowers that carpet the forest floor in a riot of colors. As you walk, you discover small clearings where magical creatures go about their daily lives - pixies tending to luminous flowers, and small forest spirits playing among the roots of ancient trees. The air here is sweet with the scent of blooming magic, though beneath this cheerful facade, you sense powerful forces at work, weaving spells as old as the forest itself.",
-              wordTimings: wordTimings["sun-path"],
               nextNodeId: "end-chapter",
               voiceId: 'default',
               //audioUrl: "/samples/enchanted-forest-sun-path.mp3",
@@ -53,7 +48,6 @@ export const bookData: Story[] = [
             "end-chapter": {
               id: "end-chapter",
               text: "Your choice has set in motion events that will echo through the Enchanted Forest. But this is just the beginning of your magical journey.",
-              wordTimings: wordTimings["end-chapter"],
               voiceId: 'default',
               //audioUrl: "/samples/enchanted-forest-end-chapter.mp3",
             }

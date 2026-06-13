@@ -2,9 +2,8 @@ import { useEffect, useState } from 'react';
 import { getAudioDuration } from '../utils/audio';
 import {
   alignWordTimingsToText,
-  buildLengthWeightedWordTimings,
+  buildPunctuationAwareWordTimings,
   NarrationSyncMode,
-  rescaleWordTimings,
 } from '../utils/narration-sync';
 
 export type WordTiming = {
@@ -65,22 +64,14 @@ export function useAudioTimings(props: AudioTimingsProps): AudioTimingsResult {
         setDuration(audioDuration);
 
         if (props.provider === 'elevenlabs') {
-          const aligned = alignWordTimingsToText(
-            props.text,
-            props.wordTimings,
-            audioDuration,
-          );
-          const lastEnd = aligned[aligned.length - 1]?.end ?? 0;
-          const drift =
-            audioDuration > 0
-              ? Math.abs(lastEnd - audioDuration) / audioDuration
-              : 0;
+          // alignWordTimingsToText compresses timings that overshoot the
+          // file but never stretches them into trailing silence.
           setWordTimings(
-            drift > 0.03 ? rescaleWordTimings(aligned, audioDuration) : aligned,
+            alignWordTimingsToText(props.text, props.wordTimings, audioDuration),
           );
         } else {
           setWordTimings(
-            buildLengthWeightedWordTimings(props.text, audioDuration),
+            buildPunctuationAwareWordTimings(props.text, audioDuration),
           );
         }
       } catch (err) {

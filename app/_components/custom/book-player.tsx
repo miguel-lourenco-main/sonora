@@ -4,7 +4,8 @@ import * as React from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { cn } from "@kit/ui/lib"
-import { ContentNode, ElevenLabsContentNode, Story } from "~/lib/types"
+import { ContentNode, ElevenLabsContentNode, Story, WordTiming } from "~/lib/types"
+import sampleWordTimingsData from "~/lib/data/sample-word-timings.json"
 import { useStoryPlayer } from "~/lib/hooks/use-story-player"
 import { AudioPlayer } from "./audio-player"
 import { HighlightedText } from "./highlighted-text"
@@ -292,22 +293,36 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
     audioRef
   ]);
 
-  const isElevenLabsNode = (node: ContentNode): node is ElevenLabsContentNode => 
+  const isElevenLabsNode = (node: ContentNode): node is ElevenLabsContentNode =>
     node.voiceId !== 'default';
 
-  const audioTimingsProps =
-    currentNode.voiceId === 'default' || (isElevenLabsNode(currentNode) && (!currentNode.wordTimings || currentNode.wordTimings.length === 0))
-      ? {
-          audioUrl: currentNode.audioUrl ?? '',
-          text: currentNode.text,
-          provider: 'openai' as const,
-        }
-      : {
-          audioUrl: currentNode.audioUrl ?? '',
-          text: currentNode.text,
-          provider: 'elevenlabs' as const,
-          wordTimings: (currentNode as ElevenLabsContentNode).wordTimings!,
-        };
+  // Pre-recorded samples have ASR-derived word timings shipped with the app
+  // (lib/data/sample-word-timings.json) so they sync precisely; ElevenLabs
+  // nodes carry timings from the alignment API. Anything else falls back to
+  // the estimated schedule.
+  const sampleTimings: WordTiming[] | undefined =
+    currentNode.voiceId === 'default'
+      ? (sampleWordTimingsData as Record<string, WordTiming[]>)[
+          `${story.label}-${currentNode.id}`
+        ]
+      : undefined;
+  const preciseTimings =
+    isElevenLabsNode(currentNode) && currentNode.wordTimings?.length
+      ? currentNode.wordTimings
+      : sampleTimings;
+
+  const audioTimingsProps = preciseTimings?.length
+    ? {
+        audioUrl: currentNode.audioUrl ?? '',
+        text: currentNode.text,
+        provider: 'elevenlabs' as const,
+        wordTimings: preciseTimings,
+      }
+    : {
+        audioUrl: currentNode.audioUrl ?? '',
+        text: currentNode.text,
+        provider: 'openai' as const,
+      };
 
   const {
     wordTimings,
