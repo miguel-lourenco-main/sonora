@@ -26,8 +26,10 @@ compatibility_flags = ["nodejs_compat"]
 [env.production.vars]
 EOL
 
+# .env is written first; .env.production entries below override duplicate keys in the final wrangler.toml.
 # Add variables from .env to [env.production.vars] section if it exists
 if [ -f ".env" ]; then
+    # Pipeline to while-read runs in a subshell; safe here because we only append to wrangler.toml.
     grep -v '^#' ".env" | grep -v '^$' | while read -r line; do
         key=$(echo "$line" | cut -d= -f1 | xargs)
         value=$(echo "$line" | cut -d= -f2- | xargs)
@@ -38,7 +40,7 @@ if [ -f ".env" ]; then
     echo "Added development variables from .env"
 fi
 
-# Add variables from .env.production if it exists
+# .env.production is appended second so duplicate keys override .env values.
 if [ -f ".env.production" ]; then
     grep -v '^#' ".env.production" | grep -v '^$' | while read -r line; do
         key=$(echo "$line" | cut -d= -f1 | xargs)

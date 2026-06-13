@@ -18,6 +18,7 @@ import sys
 
 from vosk import Model, KaldiRecognizer, SetLogLevel
 
+# suppress vosk progress/log noise on stderr
 SetLogLevel(-1)
 
 audio_path = sys.argv[1]
@@ -27,6 +28,7 @@ out_path = sys.argv[2] if len(sys.argv) > 2 else None
 SAMPLE_RATE = 16000
 model = Model(os.environ.get("VOSK_MODEL", "/tmp/asr-env/vosk-model-small-en-us-0.15"))
 rec = KaldiRecognizer(model, SAMPLE_RATE)
+# include per-word start/end in Result() JSON
 rec.SetWords(True)
 
 proc = subprocess.run(
@@ -38,11 +40,13 @@ data = proc.stdout
 
 words = []
 # Feed audio in small chunks; AcceptWaveform returns True when a phrase completes.
+# AcceptWaveform flushes completed phrases; FinalResult captures the tail after the last chunk.
 chunk = 4000
 for i in range(0, len(data), chunk):
     if rec.AcceptWaveform(data[i:i + chunk]):
         res = json.loads(rec.Result())
         words.extend(res.get("result", []))
+# FinalResult flushes the last partial utterance after the stream ends.
 res = json.loads(rec.FinalResult())
 words.extend(res.get("result", []))
 

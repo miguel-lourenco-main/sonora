@@ -20,6 +20,7 @@ if (!truthDir || !fs.existsSync(truthDir)) {
   process.exit(1);
 }
 
+// Bundled by the app; keys match public/samples/{storyLabel}-{nodeId}.mp3 names.
 const OUT_PATH = path.join(process.cwd(), 'lib/data/sample-word-timings.json');
 
 const output: Record<string, { word: string; start: number; end: number }[]> = {};
@@ -38,6 +39,7 @@ for (const story of bookData) {
       );
       // Align ASR tokens to the canonical narration text (handles hyphenation drift).
       const timings = mapAsrWordsToTokens(node.text, truth.words, truth.duration);
+      // Three decimal places match player timing resolution and YAML metadata.
       output[key] = timings.map(({ word, start, end }) => ({
         word,
         start: Number(start.toFixed(3)),

@@ -33,6 +33,7 @@ if (!storyLabel || !nodeId || !truthPath) {
 }
 
 const story = bookData.find((b) => b.label === storyLabel);
+// Sample stories use a single chapter per book today; extend if multi-chapter books are added.
 const node = story?.chapters[0]?.content.nodes[nodeId];
 if (!story || !node) {
   console.error(`node not found: ${storyLabel}/${nodeId}`);
@@ -50,11 +51,14 @@ const truth: { duration: number; words: TruthWord[] } = JSON.parse(
 
 const tokens = tokenizeNarrationText(node.text);
 
+// Ground-truth words aligned to display tokens; nulls are ASR/text mismatches.
 const truthByToken = matchAsrWordsToTokens(node.text, truth.words);
 const matched = truthByToken.filter(Boolean).length;
 
+/** Score one timing strategy: word-index drift at speech midpoints plus start-time error. */
 function evaluate(name: string, timings: WordTiming[], mode: 'estimated' | 'precise') {
-  // At each truth word's midpoint, which token does the app highlight?
+  // Score at each truth word's temporal midpoint — catches late/early highlights better than start-time-only checks.
+  // mode selects how resolveActiveWordIndex interpolates between word boundaries.
   let totalOff = 0;
   let maxOff = 0;
   let firstOffIndex = -1;

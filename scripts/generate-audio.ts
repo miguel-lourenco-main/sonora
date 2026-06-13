@@ -60,6 +60,7 @@ async function generateSpeech(text: string, outputFile: string): Promise<void> {
     fs.writeFileSync(outputFile, Buffer.from(buffer));
     console.log(`Audio saved to ${outputFile}`);
   } catch (error) {
+    // Log and continue so one failed node does not abort the whole story batch.
     console.error('Error generating audio for', outputFile, ':', error);
   }
 }
@@ -79,7 +80,8 @@ function createSubtitle(startTime: number, duration: number, chunks: string[]): 
  * Generates subtitles for a given text and audio duration
  */
 function generateSubtitles(text: string, duration: number): Subtitle[] {
-  // Split text into phrases using punctuation
+  // Split text into phrases using punctuation; capturing group keeps delimiters
+  // so each phrase is rejoined with its trailing . ! ?
   const phrases = text
     .split(/([.!?]+)/)
     .reduce((acc: string[], current, i, arr) => {
@@ -150,7 +152,7 @@ async function generateSpeechAndSubtitles(
   const outputBaseName = `${storyId}-${nodeId}`;
   const mp3Path = path.join(SAMPLES_DIR, `${outputBaseName}.mp3`);
 
-  // Skip if audio file already exists
+  // Reuse existing MP3s (expensive TTS); subtitles are still derived from duration.
   if (fs.existsSync(mp3Path)) {
     const duration = await getAudioDurationInSeconds(mp3Path);
     const subtitles = generateSubtitles(nodeData.text, duration);
@@ -218,7 +220,7 @@ async function generateChapterDuration(storyId: string, nodes: Record<string, Co
     const chunks = generateSubtitles(node.text, duration);
 
     if (sharedEndNodes.has(nodeId)) {
-      // Store template for shared nodes
+      // Template holds duration/chunks; path-specific keys get startTimestamp later.
       durations[`${nodeId}-template`] = {
         duration,
         chunks,
@@ -247,7 +249,7 @@ async function generateChapterDuration(storyId: string, nodes: Record<string, Co
     
     // Set timestamp for current node
     if (sharedEndNodes.has(currentNode)) {
-      // For shared nodes, create path-specific variants based on previous node
+      // Merge nodes get one entry per incoming path: "{nodeId}-{prevNodeId}".
       const prevNode = Array.from(visited).slice(-2)[0];
       if (prevNode) {
         const variantId = `${currentNode}-${prevNode}`;
@@ -351,7 +353,7 @@ async function processStoryTexts(): Promise<void> {
   for (const story of bookData) {
     for (const chapter of story.chapters) {
       const nodes = chapter.content.nodes;
-      // First generate all audio and subtitle files
+      // Pass 1: ensure every node has an MP3; pass 2 needs all files on disk.
       for (const [nodeId, nodeData] of Object.entries(nodes)) {
         await generateSpeechAndSubtitles(story.label, nodeId, nodeData);
         // Throttle OpenAI TTS calls to reduce rate-limit failures on large stories.
