@@ -23,6 +23,7 @@ SetLogLevel(-1)
 audio_path = sys.argv[1]
 out_path = sys.argv[2] if len(sys.argv) > 2 else None
 
+# Vosk expects 16 kHz mono PCM; ffmpeg resamples arbitrary input formats.
 SAMPLE_RATE = 16000
 model = Model(os.environ.get("VOSK_MODEL", "/tmp/asr-env/vosk-model-small-en-us-0.15"))
 rec = KaldiRecognizer(model, SAMPLE_RATE)
@@ -36,6 +37,7 @@ proc = subprocess.run(
 data = proc.stdout
 
 words = []
+# Feed audio in small chunks; AcceptWaveform returns True when a phrase completes.
 chunk = 4000
 for i in range(0, len(data), chunk):
     if rec.AcceptWaveform(data[i:i + chunk]):
@@ -44,6 +46,7 @@ for i in range(0, len(data), chunk):
 res = json.loads(rec.FinalResult())
 words.extend(res.get("result", []))
 
+# Duration from raw PCM byte length (16-bit samples = 2 bytes per sample).
 duration = len(data) / 2 / SAMPLE_RATE
 result = {
     "duration": round(duration, 3),

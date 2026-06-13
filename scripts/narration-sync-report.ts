@@ -110,6 +110,8 @@ console.log(`Story: ${storyLabel}/${nodeId}`);
 console.log(`Tokens: ${tokens.length}, truth words: ${truth.words.length}, matched: ${matched}`);
 console.log(`Audio duration: ${truth.duration}s`);
 
+// Compare timing strategies from cheapest estimate to ground-truth ASR mapping.
+
 // 1. Current production behavior for pre-recorded samples
 evaluate('current: length-weighted estimate', buildLengthWeightedWordTimings(node.text, truth.duration), 'estimated');
 

@@ -1,4 +1,7 @@
 #!/bin/bash
+# Generate wrangler.toml for Cloudflare Pages deploy from local env files.
+# Vercel builds static output; this script maps .env vars into Wrangler's
+# [env.production.vars] so Pages functions see the same secrets at runtime.
 
 # Check if CLOUDFLARE_PROJECT_NAME is set
 if [ -z "$CLOUDFLARE_PROJECT_NAME" ]; then
@@ -13,6 +16,7 @@ if [ ! -f ".env" ] && [ ! -f ".env.production" ]; then
 fi
 
 # Create/clear wrangler.toml with initial content
+# pages_build_output_dir matches Next.js static export via Vercel adapter output.
 cat > wrangler.toml << EOL
 name = "$CLOUDFLARE_PROJECT_NAME"
 pages_build_output_dir = ".vercel/output/static"

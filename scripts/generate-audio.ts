@@ -1,3 +1,8 @@
+/**
+ * Offline batch job: synthesize sample narration MP3s for every story node,
+ * derive subtitle chunks from audio duration, and write per-chapter
+ * duration metadata (public/samples/{story}-durations.yaml) used by the player.
+ */
 import * as dotenv from 'dotenv';
 import { resolve } from 'path';
 import fetch from 'node-fetch';
@@ -18,6 +23,7 @@ const API_KEY = process.env.OPENAI_API_KEY;
 const __filename = fileURLToPath(import.meta.url);
 const SAMPLES_DIR = path.join(process.cwd(), 'public/samples');
 const DECIMAL_DIGITS = 3;
+// Target subtitle chunk length; MAX caps how long a chunk may grow before splitting.
 const CHUNK_DURATION = 5.000;
 const MAX_CHUNK_DURATION = 7.000;
 
@@ -95,7 +101,9 @@ function generateSubtitles(text: string, duration: number): Subtitle[] {
   phrases.forEach((phrase, index) => {
     const phraseWordCount = phrase.trim().split(' ').length;
     const phraseDuration = phraseWordCount / wordsPerSecond;
-    
+
+    // Split early when a chunk would run too long; keep short trailing phrases
+    // attached so we do not emit tiny one-word subtitles at phrase boundaries.
     const wouldExceedMax = currentDuration + phraseDuration > MAX_CHUNK_DURATION;
     const isShortPhrase = phraseDuration < (CHUNK_DURATION / 2);
     const hasNextPhrase = index < phrases.length - 1;
@@ -165,6 +173,8 @@ async function generateSpeechAndSubtitles(
  * Generates duration metadata for a story chapter
  */
 async function generateChapterDuration(storyId: string, nodes: Record<string, ContentNode>): Promise<void> {
+  // Branching stories can merge paths onto the same node; those nodes need
+  // path-specific start timestamps because playback time depends on the route taken.
   function findSharedEndNodes(nodes: Record<string, ContentNode>): Set<string> {
     const nodeReferences = new Map<string, string[]>();
     
@@ -258,7 +268,8 @@ async function generateChapterDuration(storyId: string, nodes: Record<string, Co
       calculateTimestamps(nodeData.nextNodeId, nextTimestamp, visited);
     }
 
-    // Process choice paths in parallel - each with their own visited set
+    // Fork a fresh visited set per choice so converging branches can assign
+    // different timestamps to the same shared merge node.
     if (nodeData.choices) {
       for (const choice of nodeData.choices) {
         calculateTimestamps(choice.nextNodeId, nextTimestamp, new Set(visited));
@@ -270,7 +281,7 @@ async function generateChapterDuration(storyId: string, nodes: Record<string, Co
   console.log('\n=== Starting timestamp calculation ===');
   calculateTimestamps("start", 0, new Set());
 
-  // Calculate total duration through all possible paths
+  // Longest root-to-leaf path sets chapter totalDuration (progress bar denominator).
   function findMaxDuration(currentNode: string, visited: Set<string>, currentDuration: number): number {
     console.log(`\nFinding max duration for node: ${currentNode}`);
     console.log(`Current accumulated duration: ${currentDuration}`);
@@ -343,7 +354,7 @@ async function processStoryTexts(): Promise<void> {
       // First generate all audio and subtitle files
       for (const [nodeId, nodeData] of Object.entries(nodes)) {
         await generateSpeechAndSubtitles(story.label, nodeId, nodeData);
-        // Add delay between API calls
+        // Throttle OpenAI TTS calls to reduce rate-limit failures on large stories.
         await new Promise(resolve => setTimeout(resolve, 1000));
       }
       

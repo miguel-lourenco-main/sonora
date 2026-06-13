@@ -30,11 +30,13 @@ for (const story of bookData) {
     for (const [nodeId, node] of Object.entries(chapter.content.nodes)) {
       const key = `${story.label}-${nodeId}`;
       const truthPath = path.join(truthDir, `${key}.json`);
+      // ASR is run per MP3; nodes without a matching JSON were not transcribed yet.
       if (!fs.existsSync(truthPath)) continue;
 
       const truth: { duration: number; words: AsrWord[] } = JSON.parse(
         fs.readFileSync(truthPath, 'utf8'),
       );
+      // Align ASR tokens to the canonical narration text (handles hyphenation drift).
       const timings = mapAsrWordsToTokens(node.text, truth.words, truth.duration);
       output[key] = timings.map(({ word, start, end }) => ({
         word,
