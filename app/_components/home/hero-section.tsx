@@ -12,7 +12,6 @@ export function HeroSection() {
 
   return (
     <section className="relative overflow-hidden py-16 md:py-24">
-      <div className="aurora-bg aurora-bg-animated absolute inset-0" aria-hidden="true" />
       <div className="hero-scrim absolute inset-0" aria-hidden="true" />
       <PageContainer className="relative z-10 text-center">
         <StaggerGroup stagger={0.08} inView={false} className="flex flex-col items-center gap-6">
