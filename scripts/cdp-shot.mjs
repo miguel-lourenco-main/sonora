@@ -255,6 +255,15 @@ const watchdog = setTimeout(() => {
         written.push(file);
       }
     } else {
+      // Optional: scroll to a specific offset (or a selector's top) before capture.
+      if (typeof cfg.scrollY === 'number' || cfg.selector) {
+        await client.send('Runtime.evaluate', {
+          expression: cfg.selector
+            ? `(() => { const el = document.querySelector(${JSON.stringify(cfg.selector)}); const y = el ? (el.getBoundingClientRect().top + (document.scrollingElement||document.documentElement).scrollTop - ${cfg.selectorOffset ?? 40}) : ${cfg.scrollY ?? 0}; (document.scrollingElement||document.documentElement).scrollTop = y; window.scrollTo(0, y); })()`
+            : `(() => { const el = document.scrollingElement||document.documentElement; el.scrollTop = ${cfg.scrollY}; window.scrollTo(0, ${cfg.scrollY}); })()`,
+        });
+        await sleep(400);
+      }
       stage('capturing viewport');
       const { data } = await client.send('Page.captureScreenshot', { format: 'png', fromSurface: cfg.fromSurface === true });
       writeFileSync(out, Buffer.from(data, 'base64'));

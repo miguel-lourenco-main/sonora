@@ -66,7 +66,7 @@ export function StoryDetailClient({ story, related }: StoryDetailClientProps) {
           className="scale-110 object-cover opacity-40 blur-2xl saturate-150 dark:opacity-25"
           sizes="100vw"
         />
-        <div className="aurora-bg absolute inset-0 opacity-50" />
+        <div className="aurora-bg aurora-bg-animated absolute inset-0 opacity-50" />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/70 to-background" />
       </div>
 
@@ -100,7 +100,10 @@ export function StoryDetailClient({ story, related }: StoryDetailClientProps) {
               </div>
             </StaggerItem>
             <StaggerItem>
-              <h1 className="font-display-lg text-headline-lg-mobile text-primary md:text-display-lg">
+              <span className="font-label-lg text-label-lg uppercase tracking-[0.25em] text-tertiary">
+                {t('storyDetail.eyebrow', 'A Sonora tale')}
+              </span>
+              <h1 className="mt-2 font-display-lg text-headline-lg-mobile text-primary md:text-display-lg">
                 {story.title}
               </h1>
             </StaggerItem>
@@ -123,7 +126,16 @@ export function StoryDetailClient({ story, related }: StoryDetailClientProps) {
               </div>
             </StaggerItem>
             <StaggerItem>
-              <p className="max-w-2xl font-body-lg text-body-lg text-on-surface">{synopsis}</p>
+              {/* The synopsis as an aged storybook page: parchment, an illuminated
+                  drop-cap and a closing fleuron. */}
+              <div className="grain-overlay paper-texture relative max-w-2xl rounded-[20px] border border-tertiary-fixed/25 bg-storybook-cream/60 p-6 md:p-7 dark:bg-surface-container-low/60">
+                <p className="font-body-lg text-body-lg text-on-surface first-letter:float-left first-letter:mr-2.5 first-letter:mt-1 first-letter:font-display first-letter:text-[3.25rem] first-letter:font-bold first-letter:leading-[0.8] first-letter:text-tertiary">
+                  {synopsis}
+                </p>
+                <span aria-hidden="true" className="mt-3 block text-center font-display text-lg text-tertiary/70">
+                  ❦
+                </span>
+              </div>
             </StaggerItem>
             <StaggerItem>
               <div className="mt-2 flex flex-wrap items-center gap-4">
