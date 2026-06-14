@@ -9,7 +9,6 @@ import { Hero } from './hero/hero';
 import { Branching } from './sections/branching';
 import { FeaturedTale } from './sections/featured-tale';
 import { Features } from './sections/features';
-import { Prologue } from './sections/prologue';
 import { StoryLibrary } from './sections/story-library';
 import { VoicesCta } from './sections/voices-cta';
 import { SmoothScroll } from './smooth-scroll';
@@ -28,7 +27,6 @@ export function LandingPage({ stories }: LandingPageProps) {
     <SmoothScroll>
       <div className="relative flex flex-col">
         <Hero />
-        <Prologue />
         <Features />
         <Branching />
         {featuredStory ? <FeaturedTale story={featuredStory} /> : null}

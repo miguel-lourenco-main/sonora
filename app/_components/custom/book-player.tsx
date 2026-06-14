@@ -427,9 +427,6 @@ export function StoryPlayer({ story, initialVoiceId }: StoryPlayerProps) {
 
           <section className="flex flex-col gap-6 lg:col-span-7">
             <div className="glass-card paper-texture relative min-h-[280px] overflow-hidden rounded-[32px] border-outline-variant/20 p-8 shadow-sm md:min-h-[400px] md:p-10">
-              {/* Decorative page gutter — makes the reading surface feel like an open book page */}
-              <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-0 w-7 bg-gradient-to-r from-primary/10 to-transparent" />
-              <span aria-hidden="true" className="pointer-events-none absolute inset-y-8 left-[18px] w-px bg-tertiary-fixed/30" />
               {showLoadingUI && (
                 <div className="absolute inset-0 z-10 flex items-center justify-center bg-surface/80 backdrop-blur-sm">
                   <p className="flex items-center gap-2 font-body-md text-on-surface-variant">

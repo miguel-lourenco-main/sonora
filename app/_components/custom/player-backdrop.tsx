@@ -20,9 +20,6 @@ export function PlayerBackdrop({ coverUrl }: PlayerBackdropProps) {
         sizes="100vw"
       />
       <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/85 to-background" />
-      {/* Soft aurora wash for cohesion with the landing — kept static so it never
-          distracts from reading. */}
-      <div className="aurora-bg absolute inset-0 opacity-35" />
       <div className="paper-texture absolute inset-0" />
     </div>
   );
