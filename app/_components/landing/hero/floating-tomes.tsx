@@ -29,11 +29,11 @@ interface TomeConfig {
 
 // Arranged around the edges so the centre stays clear for the headline.
 const TOMES: TomeConfig[] = [
-  { id: '3', left: 2, top: 11, width: 'clamp(82px, 13vw, 200px)', rotate: -8, depth: 0.5, z: 12 },
+  { id: '3', left: 15, top: 8, width: 'clamp(82px, 13vw, 200px)', rotate: -8, depth: 0.5, z: 12 },
   { id: '4', left: 82, top: 7, width: 'clamp(86px, 14vw, 212px)', rotate: 7, depth: 0.6, z: 14 },
-  { id: '2', left: -3, top: 45, width: 'clamp(72px, 12vw, 184px)', rotate: -5, depth: 0.45, z: 10, hideMobile: true },
+  { id: '2', left: 7, top: 40, width: 'clamp(72px, 12vw, 184px)', rotate: -5, depth: 0.45, z: 10, hideMobile: true },
   { id: '8', left: 85, top: 44, width: 'clamp(74px, 12vw, 188px)', rotate: 6, depth: 0.7, z: 11, hideMobile: true },
-  { id: '1', left: 7, top: 70, width: 'clamp(84px, 13vw, 202px)', rotate: 9, depth: 0.8, z: 13 },
+  { id: '1', left: 10, top: 70, width: 'clamp(84px, 13vw, 202px)', rotate: 9, depth: 0.8, z: 13 },
   { id: '6', left: 74, top: 71, width: 'clamp(88px, 14vw, 216px)', rotate: -7, depth: 0.9, z: 15 },
 ];
 
