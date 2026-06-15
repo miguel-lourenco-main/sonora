@@ -5,7 +5,7 @@ include:
     ref: 36e1a8e00061c5f2723d1dcfbaf779d3d80e7ea9
     file:
       - ci/templates/base.gitlab-ci.yml
-      - ci/templates/jobs-quality.gitlab-ci.yml
+      - ci/templates/jobs-quality-single-package.gitlab-ci.yml
       - ci/templates/jobs-comment-mirror.gitlab-ci.yml
       - ci/templates/jobs-ai-ci-fix.gitlab-ci.yml
       - ci/templates/deploy-gitlab-pages.gitlab-ci.yml
