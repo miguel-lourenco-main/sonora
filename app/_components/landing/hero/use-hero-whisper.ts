@@ -51,7 +51,7 @@ export function useHeroWhisper() {
 
   if (wordsRef.current.length === 0) wordsRef.current = buildExcerpt();
   const words = wordsRef.current;
-  const lastEnd = words.length ? words[words.length - 1].end : 6;
+  const lastEnd = words.at(-1)?.end ?? 6;
 
   const stop = useCallback(() => {
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
@@ -132,7 +132,7 @@ export function useHeroWhisper() {
         analyser.getByteFrequencyData(data);
         const n = Math.min(data.length, 64);
         let sum = 0;
-        for (let i = 0; i < n; i++) sum += data[i];
+        for (let i = 0; i < n; i++) sum += data[i] ?? 0;
         level = Math.min(1, (sum / n / 255) * 1.7);
       } else {
         // No analyser — synthesise a gentle pulse so the aurora still reacts.
@@ -143,7 +143,8 @@ export function useHeroWhisper() {
       const ct = audio.currentTime;
       let idx = -1;
       for (let i = 0; i < words.length; i++) {
-        if (ct >= words[i].start) idx = i;
+        const w = words[i];
+        if (w && ct >= w.start) idx = i;
         else break;
       }
       setActiveIndex(idx);

@@ -14,7 +14,7 @@
  */
 import * as THREE from 'three';
 
-import { cappedDpr, getPerfTier, prefersReducedMotion, type PerfTier } from './capabilities';
+import { type PerfTier, cappedDpr, getPerfTier, prefersReducedMotion } from './capabilities';
 
 interface HeroSceneOptions {
   canvas: HTMLCanvasElement;
@@ -183,6 +183,27 @@ function toVec3(rgb: [number, number, number]) {
   return new THREE.Vector3(rgb[0] / 255, rgb[1] / 255, rgb[2] / 255);
 }
 
+// A ShaderMaterial needs a string-indexed uniform map; the named keys we read
+// every frame are spelled out so strict index access doesn't treat them as
+// possibly-undefined.
+type AuroraUniforms = Record<string, THREE.IUniform> & {
+  uTime: THREE.IUniform;
+  uPointer: THREE.IUniform;
+  uAudio: THREE.IUniform;
+  uFade: THREE.IUniform;
+  uDark: THREE.IUniform;
+  uRes: THREE.IUniform;
+};
+
+type ParticleUniforms = Record<string, THREE.IUniform> & {
+  uTime: THREE.IUniform;
+  uPointer: THREE.IUniform;
+  uAudio: THREE.IUniform;
+  uFade: THREE.IUniform;
+  uDark: THREE.IUniform;
+  uPixelRatio: THREE.IUniform;
+};
+
 export class HeroScene {
   private renderer: THREE.WebGLRenderer;
   private scene = new THREE.Scene();
@@ -190,8 +211,8 @@ export class HeroScene {
   private bg: THREE.Mesh;
   private points: THREE.Points;
   private pMaterial!: THREE.ShaderMaterial;
-  private uniforms: Record<string, THREE.IUniform>;
-  private pUniforms: Record<string, THREE.IUniform>;
+  private uniforms: AuroraUniforms;
+  private pUniforms: ParticleUniforms;
   private startTime = 0;
   private raf = 0;
   private running = false;
@@ -314,7 +335,7 @@ export class HeroScene {
 
     // Pause when the hero scrolls out of view.
     this.io = new IntersectionObserver(
-      ([entry]) => (entry.isIntersecting ? this.resume() : this.pause()),
+      ([entry]) => (entry?.isIntersecting ? this.resume() : this.pause()),
       { threshold: 0.01 },
     );
     this.io.observe(canvas);
