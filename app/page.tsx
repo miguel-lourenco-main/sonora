@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { CatalogPageClient } from "./_components/catalog-page-client";
+import { LandingPage } from "./_components/landing/landing-page";
 import { bookData } from "~/lib/data/sample-story";
 
 export const metadata: Metadata = {
@@ -9,5 +9,5 @@ export const metadata: Metadata = {
 export default function HomePage() {
   const stories = bookData.slice(0, 10);
 
-  return <CatalogPageClient stories={stories} />;
+  return <LandingPage stories={stories} />;
 }
