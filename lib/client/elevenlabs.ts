@@ -131,20 +131,50 @@ export async function previewVoice(voiceId: string, text: string): Promise<strin
   return URL.createObjectURL(blob);
 }
 
-export type ValidateResult = { ok: true } | { ok: false; status?: number; cors?: boolean };
+export type ConnectionTestResult =
+  | { ok: true }
+  | { ok: false; message: string; status?: number };
 
-export async function validateApiKey(key: string): Promise<ValidateResult> {
+function readErrorMessage(body: unknown): string | null {
+  if (!body || typeof body !== 'object') return null;
+  const { detail, message } = body as { detail?: unknown; message?: unknown };
+  if (typeof detail === 'string') return detail;
+  if (detail && typeof detail === 'object') {
+    const nested = (detail as { message?: unknown }).message;
+    if (typeof nested === 'string') return nested;
+  }
+  return typeof message === 'string' ? message : null;
+}
+
+/**
+ * Checks a key against ElevenLabs' cheapest authenticated endpoint (GET /v1/user,
+ * no credits used). The app is a static export with no server, so the request goes
+ * straight from the browser to ElevenLabs, the same path every other call here takes.
+ */
+export async function testConnection(key: string): Promise<ConnectionTestResult> {
+  let res: Response;
   try {
-    const res = await fetch('https://api.elevenlabs.io/v1/user', {
+    res = await fetch('https://api.elevenlabs.io/v1/user', {
       headers: { 'xi-api-key': key.trim() },
       cache: 'no-store',
-      // mode: 'cors' is default; keep explicit semantics clear
-      mode: 'cors',
     });
-    if (res.ok) return { ok: true };
-    return { ok: false, status: res.status };
-  } catch (e) {
-    // Likely a CORS/network error in the browser
-    return { ok: false, cors: true };
+  } catch {
+    return { ok: false, message: 'Could not reach ElevenLabs (network or CORS error).' };
   }
+
+  if (res.ok) return { ok: true };
+
+  let message: string | null = null;
+  try {
+    message = readErrorMessage(await res.json());
+  } catch {
+    // non-JSON error body
+  }
+  if (!message) {
+    if (res.status === 401) message = 'Invalid API key.';
+    else if (res.status === 429) message = 'Too many requests. Try again in a moment.';
+    else if (res.status >= 500) message = 'ElevenLabs is temporarily unavailable.';
+    else message = `Request failed (HTTP ${res.status}).`;
+  }
+  return { ok: false, status: res.status, message };
 }

@@ -5,10 +5,16 @@ import { Button } from '@kit/ui/shadcn/button'
 import { Input } from '@kit/ui/shadcn/input'
 import { Label } from '@kit/ui/shadcn/label'
 import { getElevenLabsApiKey, setElevenLabsApiKey, clearElevenLabsApiKey, clearCachedVoices } from '~/lib/local/storage'
-import { validateApiKey } from '~/lib/client/elevenlabs'
+import { testConnection } from '~/lib/client/elevenlabs'
 import { toast } from 'sonner'
-import { Key, Save, Eye, EyeOff, Cloud } from 'lucide-react'
+import { Key, Save, Eye, EyeOff, Cloud, PlugZap, Loader2, CheckCircle2, AlertCircle } from 'lucide-react'
 import { cn } from '@kit/ui/lib'
+
+type ConnectionStatus =
+  | { state: 'idle' }
+  | { state: 'testing' }
+  | { state: 'success' }
+  | { state: 'error'; message: string }
 
 interface ApiKeysSectionProps {
   onRefetchVoices?: () => Promise<void>;
@@ -19,6 +25,7 @@ export function ApiKeysSection({ onRefetchVoices }: ApiKeysSectionProps) {
   const [showKey, setShowKey] = useState(false)
   const [isValidating, setIsValidating] = useState(false)
   const [connected, setConnected] = useState(false)
+  const [status, setStatus] = useState<ConnectionStatus>({ state: 'idle' })
 
   useEffect(() => {
     const existing = getElevenLabsApiKey()
@@ -40,6 +47,7 @@ export function ApiKeysSection({ onRefetchVoices }: ApiKeysSectionProps) {
 
   const handleKeyChange = useCallback((newKey: string) => {
     setKey(newKey);
+    setStatus({ state: 'idle' });
     
     if (newKey.trim().startsWith('xi-') && newKey.trim().length > 10) {
       debouncedRefetch();
@@ -63,6 +71,7 @@ export function ApiKeysSection({ onRefetchVoices }: ApiKeysSectionProps) {
     clearCachedVoices()
     setKey('')
     setConnected(false)
+    setStatus({ state: 'idle' })
     toast.success('API key and cached voices cleared from storage')
     if (onRefetchVoices) {
       try {
@@ -73,6 +82,21 @@ export function ApiKeysSection({ onRefetchVoices }: ApiKeysSectionProps) {
     }
   }
 
+  async function runConnectionTest(value: string) {
+    setStatus({ state: 'testing' })
+    const result = await testConnection(value)
+    setStatus(result.ok ? { state: 'success' } : { state: 'error', message: result.message })
+    return result
+  }
+
+  async function testKey() {
+    if (!key.trim()) {
+      setStatus({ state: 'error', message: 'Enter an API key to test.' })
+      return
+    }
+    await runConnectionTest(key)
+  }
+
   async function saveKey() {
     if (!key.trim()) {
       toast.error('Please enter an API key to save')
@@ -81,22 +105,19 @@ export function ApiKeysSection({ onRefetchVoices }: ApiKeysSectionProps) {
 
     setIsValidating(true)
     try {
-      const result = await validateApiKey(key)
-      if (!result.ok) {
-        if (result.cors) {
-          setElevenLabsApiKey(key.trim())
-          toast.success('Saved key (could not verify due to CORS). Try fetching voices.')
-        } else {
-          toast.error(`Validation failed (${result.status ?? 'network error'})`)
-          return
-        }
-      } else {
-        setElevenLabsApiKey(key.trim())
-        toast.success('API key saved')
+      // Saving always runs the connection test, so the user gets the same inline feedback.
+      const result = await runConnectionTest(key)
+      if (!result.ok && result.status !== undefined) {
+        toast.error('Key not saved: the connection test failed')
+        return
       }
+      // No HTTP status means the request never reached ElevenLabs (network/CORS); keep the
+      // previous behaviour of saving anyway so the user can still try fetching voices.
+      setElevenLabsApiKey(key.trim())
+      toast.success(result.ok ? 'API key saved' : 'Saved key (could not verify the connection)')
       setConnected(true)
       await persistStorage()
-      
+
       if (onRefetchVoices) {
         onRefetchVoices().catch(console.error);
       }
@@ -127,24 +148,54 @@ export function ApiKeysSection({ onRefetchVoices }: ApiKeysSectionProps) {
             <Label htmlFor="el-key" className="ml-1 font-label-lg text-label-lg text-on-surface">
               ElevenLabs API Key
             </Label>
-            <div className="relative">
-              <Input
-                id="el-key"
-                type={showKey ? 'text' : 'password'}
-                value={key}
-                onChange={(e) => handleKeyChange(e.target.value)}
-                placeholder="xi-..."
-                className="h-12 rounded-xl border-none bg-surface-container px-4 font-body-md focus-visible:ring-2 focus-visible:ring-primary/20"
-              />
-              <button
+            <div className="flex flex-col gap-2 sm:flex-row">
+              <div className="relative flex-1">
+                <Input
+                  id="el-key"
+                  type={showKey ? 'text' : 'password'}
+                  value={key}
+                  onChange={(e) => handleKeyChange(e.target.value)}
+                  placeholder="xi-..."
+                  className="h-12 rounded-xl border-none bg-surface-container px-4 font-body-md focus-visible:ring-2 focus-visible:ring-primary/20"
+                />
+                <button
+                  type="button"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-outline hover:text-primary"
+                  onClick={() => setShowKey((s) => !s)}
+                  aria-label={showKey ? 'Hide key' : 'Show key'}
+                >
+                  {showKey ? <EyeOff className="size-5" /> : <Eye className="size-5" />}
+                </button>
+              </div>
+              <Button
                 type="button"
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-outline hover:text-primary"
-                onClick={() => setShowKey((s) => !s)}
-                aria-label={showKey ? 'Hide key' : 'Show key'}
+                variant="outline"
+                onClick={testKey}
+                disabled={status.state === 'testing' || isValidating}
+                className="h-12 shrink-0 gap-2 rounded-xl border-outline-variant bg-surface-container-high font-bold text-on-surface-variant hover:bg-surface-container-highest"
               >
-                {showKey ? <EyeOff className="size-5" /> : <Eye className="size-5" />}
-              </button>
+                {status.state === 'testing' ? (
+                  <Loader2 className="size-5 animate-spin" aria-hidden="true" />
+                ) : (
+                  <PlugZap className="size-5" aria-hidden="true" />
+                )}
+                {status.state === 'testing' ? 'Testing...' : 'Test connection'}
+              </Button>
             </div>
+            <p role="status" aria-live="polite" className="ml-1 min-h-5 font-body-md text-sm">
+              {status.state === 'success' && (
+                <span className="inline-flex items-center gap-1.5 text-primary">
+                  <CheckCircle2 className="size-4 shrink-0" aria-hidden="true" />
+                  Connected to ElevenLabs
+                </span>
+              )}
+              {status.state === 'error' && (
+                <span className="inline-flex items-start gap-1.5 text-error">
+                  <AlertCircle className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
+                  {status.message}
+                </span>
+              )}
+            </p>
           </div>
         </div>
         <div className="flex flex-col gap-3 md:w-64">
