@@ -5,7 +5,7 @@ import { Button } from '@kit/ui/shadcn/button'
 import { Input } from '@kit/ui/shadcn/input'
 import { Label } from '@kit/ui/shadcn/label'
 import { getElevenLabsApiKey, setElevenLabsApiKey, clearElevenLabsApiKey, clearCachedVoices } from '~/lib/local/storage'
-import { testConnection } from '~/lib/client/elevenlabs'
+import { testConnection, type CharacterCredits } from '~/lib/client/elevenlabs'
 import { toast } from 'sonner'
 import { Key, Save, Eye, EyeOff, Cloud, PlugZap, Loader2, CheckCircle2, AlertCircle } from 'lucide-react'
 import { cn } from '@kit/ui/lib'
@@ -13,7 +13,7 @@ import { cn } from '@kit/ui/lib'
 type ConnectionStatus =
   | { state: 'idle' }
   | { state: 'testing' }
-  | { state: 'success' }
+  | { state: 'success'; credits: CharacterCredits | null }
   | { state: 'error'; message: string }
 
 interface ApiKeysSectionProps {
@@ -85,7 +85,11 @@ export function ApiKeysSection({ onRefetchVoices }: ApiKeysSectionProps) {
   async function runConnectionTest(value: string) {
     setStatus({ state: 'testing' })
     const result = await testConnection(value)
-    setStatus(result.ok ? { state: 'success' } : { state: 'error', message: result.message })
+    setStatus(
+      result.ok
+        ? { state: 'success', credits: result.credits }
+        : { state: 'error', message: result.message },
+    )
     return result
   }
 
@@ -189,6 +193,9 @@ export function ApiKeysSection({ onRefetchVoices }: ApiKeysSectionProps) {
                   Connected to ElevenLabs
                 </span>
               )}
+              {status.state === 'success' && status.credits && (
+                <CreditsLine credits={status.credits} />
+              )}
               {status.state === 'error' && (
                 <span className="inline-flex items-start gap-1.5 text-error">
                   <AlertCircle className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
@@ -228,5 +235,22 @@ export function ApiKeysSection({ onRefetchVoices }: ApiKeysSectionProps) {
         </div>
       </div>
     </section>
+  )
+}
+
+function CreditsLine({ credits }: { credits: CharacterCredits }) {
+  const remaining = Math.max(credits.limit - credits.used, 0)
+  const format = (n: number) => n.toLocaleString()
+  return (
+    <span
+      className={cn(
+        'mt-1 block text-on-surface-variant',
+        remaining === 0 && 'font-bold text-error',
+      )}
+    >
+      {remaining === 0
+        ? `No ElevenLabs credits left this period (${format(credits.used)} of ${format(credits.limit)} characters used).`
+        : `${format(remaining)} of ${format(credits.limit)} characters left this period.`}
+    </span>
   )
 }

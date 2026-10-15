@@ -131,8 +131,10 @@ export async function previewVoice(voiceId: string, text: string): Promise<strin
   return URL.createObjectURL(blob);
 }
 
+export type CharacterCredits = { used: number; limit: number };
+
 export type ConnectionTestResult =
-  | { ok: true }
+  | { ok: true; credits: CharacterCredits | null }
   | { ok: false; message: string; status?: number };
 
 function readErrorMessage(body: unknown): string | null {
@@ -162,7 +164,21 @@ export async function testConnection(key: string): Promise<ConnectionTestResult>
     return { ok: false, message: 'Could not reach ElevenLabs (network or CORS error).' };
   }
 
-  if (res.ok) return { ok: true };
+  if (res.ok) {
+    // /v1/user includes the subscription's character quota; restricted keys may omit it.
+    let credits: CharacterCredits | null = null;
+    try {
+      const body = (await res.json()) as {
+        subscription?: { character_count?: unknown; character_limit?: unknown };
+      };
+      const used = body.subscription?.character_count;
+      const limit = body.subscription?.character_limit;
+      if (typeof used === 'number' && typeof limit === 'number') credits = { used, limit };
+    } catch {
+      // body is optional for the connection check
+    }
+    return { ok: true, credits };
+  }
 
   let message: string | null = null;
   try {
