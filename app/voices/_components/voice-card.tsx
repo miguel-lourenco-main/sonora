@@ -30,12 +30,6 @@ export function VoiceCard({ voice, onDelete, onRename }: VoiceCardProps) {
   const [editingName, setEditingName] = useState(voice.name);
   const [busy, setBusy] = useState(false);
 
-  const createdAt = new Date(voice.created_at).toLocaleDateString(undefined, {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  });
-
   const handleRename = async () => {
     if (!editingName.trim()) return;
     setBusy(true);
@@ -96,12 +90,9 @@ export function VoiceCard({ voice, onDelete, onRename }: VoiceCardProps) {
                 </Button>
               </div>
             ) : (
-              <>
-                <h3 className="truncate font-headline-md text-lg font-semibold text-primary">
-                  {voice.name}
-                </h3>
-                <p className="font-label-lg text-xs text-on-surface-variant">{createdAt}</p>
-              </>
+              <h3 className="truncate font-headline-md text-lg font-semibold text-primary">
+                {voice.name}
+              </h3>
             )}
           </div>
           {!editing && (
