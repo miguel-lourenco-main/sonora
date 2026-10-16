@@ -19,7 +19,6 @@ const columnClasses = {
   base: "truncate",
   flexRow: "flex gap-x-4 items-center",
   select: "w-10",
-  createdAt: "w-[12rem] min-w-[8rem] max-w-[12rem]",
   filename: "truncate w-[22rem]",
   targetLanguage: "w-1/3 min-w-[8rem] max-w-[12rem]",
   usage: "w-1/6 min-w-[8rem] max-w-[12rem]",
@@ -131,30 +130,6 @@ export function useVoicesColumns(
         )
       },
       enableSorting: false,
-      enableHiding: false,
-    },
-    {
-      accessorKey: "created_at",
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={t("voices.table.createdAt")} />
-      ),
-      cell: ({ row }) => {
-        const createdAt = new Date(row.getValue("created_at")).toLocaleString()
-
-        console.log(row.getValue("created_at"))
-        return (  
-          <TooltipComponent
-            trigger={
-            <div className={cn(columnClasses.base, columnClasses.createdAt)} style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>
-              <span className="text-base leading-relaxed">{createdAt}</span>
-            </div>
-          }
-          content={createdAt}
-        />
-        )
-      },
-      sortingFn: 'datetime',
-      enableSorting: true,
       enableHiding: false,
     },
     {
