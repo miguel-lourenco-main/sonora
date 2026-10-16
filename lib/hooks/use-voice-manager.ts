@@ -4,6 +4,8 @@ import { Tables } from "~/lib/database.types";
 
 export type Voice = Tables<'voice'> & {
   audioUrl?: string
+  /** ElevenLabs' stock sample for this voice; playing it costs no credits. */
+  preview_url?: string | null
 }
 
 type VoiceState = {

@@ -9,7 +9,7 @@ import { toast } from 'sonner';
 import { listVoices } from '~/lib/client/elevenlabs';
 import { clearCachedVoices, setCachedVoices } from '~/lib/local/storage';
 import { Button } from '@kit/ui/shadcn/button';
-import { useVoices as useAutoVoices } from '~/lib/hooks/use-voices';
+import { toUiVoice, useVoices as useAutoVoices } from '~/lib/hooks/use-voices';
 import { Mic2, RefreshCcw } from 'lucide-react';
 import {
   EmptyState,
@@ -67,14 +67,7 @@ export default function VoicesTable({
     try {
       clearCachedVoices();
       const apiVoices = await listVoices();
-      const ui = apiVoices.map(v => ({
-        id: v.voice_id,
-        voice_id: v.voice_id,
-        name: v.name,
-        is_default: false,
-        account_id: 'local',
-        created_at: new Date((v.date_unix ?? Date.now()) * 1000).toISOString(),
-      } as unknown as Voice));
+      const ui = apiVoices.map(toUiVoice) as unknown as Voice[];
       setVoices(ui);
       setCachedVoices(ui, 6 * 60 * 60 * 1000);
       toast.success(t('voices.refresh.success'));

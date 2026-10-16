@@ -139,7 +139,7 @@ export function VoiceCard({ voice, onDelete, onRename }: VoiceCardProps) {
             </DropdownMenu>
           )}
         </div>
-        <PreviewAudio voiceId={voice.voice_id} voiceName={voice.name} />
+        <PreviewAudio voiceId={voice.voice_id} voiceName={voice.name} previewUrl={voice.preview_url} />
       </div>
     </SonoraCard>
   );
