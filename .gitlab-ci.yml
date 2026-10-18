@@ -12,3 +12,10 @@ include:
 
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
+
+# comment_mirror (from infra) documents code on the separate `comment-mirror/main` branch.
+# Its default allowlist targets monorepos (apps/, packages/, tooling/, scripts/, infra/), so in
+# this single-package repo only scripts/ was ever annotated. List this repo's source folders.
+comment_mirror:
+  variables:
+    COMMENT_MIRROR_ALLOWED_PATH_PREFIXES: "app/,components/,lib/,config/,scripts/"
