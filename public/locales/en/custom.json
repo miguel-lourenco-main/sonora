@@ -29,6 +29,11 @@
             "button": "Delete voice"
         },
         "preview": "Voice preview",
+        "previewPlay": "Play sample",
+        "previewPause": "Pause sample",
+        "previewGenerate": "Generate sample (uses credits)",
+        "previewProgress": "Sample progress",
+        "previewError": "Could not play the voice sample",
         "loading": "Loading...",
         "refresh": {
             "success": "Voices refreshed successfully",
