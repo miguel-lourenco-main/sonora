@@ -35,6 +35,7 @@ const voiceReducer = (state: VoiceState, action: VoiceAction): VoiceState => {
   }
 }
 
+// Keeps the original HTTP response (when available) so callers can inspect the status.
 class ApiError extends Error {
   response?: Response;
   constructor(message: string, response?: Response) {
@@ -79,6 +80,7 @@ export const useVoiceManager = (initialVoices: Voice[] = []) => {
         console.log('Hook: Error caught:', error);
         
         // Parse error message from the string format
+        // (the API client embeds the JSON response body after "Body: " in the message)
         let errorMessage = 'Failed to create voice';
         
         if (error instanceof Error) {

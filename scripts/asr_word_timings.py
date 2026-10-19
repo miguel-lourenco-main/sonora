@@ -23,6 +23,7 @@ SetLogLevel(-1)
 audio_path = sys.argv[1]
 out_path = sys.argv[2] if len(sys.argv) > 2 else None
 
+# Vosk models expect 16 kHz audio; ffmpeg does the resampling and mono downmix below.
 SAMPLE_RATE = 16000
 model = Model(os.environ.get("VOSK_MODEL", "/tmp/asr-env/vosk-model-small-en-us-0.15"))
 rec = KaldiRecognizer(model, SAMPLE_RATE)
@@ -37,13 +38,16 @@ data = proc.stdout
 
 words = []
 chunk = 4000
+# Feed audio in small chunks; AcceptWaveform returns True when vosk finalizes an utterance.
 for i in range(0, len(data), chunk):
     if rec.AcceptWaveform(data[i:i + chunk]):
         res = json.loads(rec.Result())
         words.extend(res.get("result", []))
+# Flush whatever audio is still buffered in the recognizer.
 res = json.loads(rec.FinalResult())
 words.extend(res.get("result", []))
 
+# s16le is 2 bytes per sample, mono, so bytes / 2 / rate gives seconds.
 duration = len(data) / 2 / SAMPLE_RATE
 result = {
     "duration": round(duration, 3),

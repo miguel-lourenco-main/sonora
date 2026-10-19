@@ -44,6 +44,7 @@ export function useAudioTimings(props: AudioTimingsProps): AudioTimingsResult {
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
+    // Prevents stale async results from updating state after unmount or a props change.
     let isMounted = true;
 
     async function loadTimings() {
@@ -95,6 +96,7 @@ export function useAudioTimings(props: AudioTimingsProps): AudioTimingsResult {
       isMounted = false;
     };
   }, [
+    // wordTimings only feed the ElevenLabs path; OpenAI timings are derived from text.
     props.audioUrl,
     props.provider,
     props.text,

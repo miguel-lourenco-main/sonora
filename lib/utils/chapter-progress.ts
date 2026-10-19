@@ -1,5 +1,6 @@
 import { ContentNode } from "../types";
 
+// BFS from the start node; the first time a node is reached is its shortest depth.
 function computeMinDepths(
   nodes: Record<string, ContentNode>,
   initialNodeId: string,
@@ -45,6 +46,7 @@ export function getProgressChapterNumber(
 
   if (maxDepth === 0) return 1;
 
+  // Scale depth onto 0..totalChapters-1 so the deepest node lands on the last chapter.
   const index = Math.floor((currentDepth / maxDepth) * (totalChapters - 1));
   return Math.min(totalChapters, index + 1);
 }

@@ -19,7 +19,7 @@ export async function convertAudioToWav(audioBlob: Blob): Promise<Blob> {
     source.connect(offlineContext.destination);
     source.start();
     
-    // Render audio
+    // Render audio into a plain PCM buffer we can serialize
     const renderedBuffer = await offlineContext.startRendering();
     
     // Convert to WAV format
@@ -42,7 +42,7 @@ export async function convertAudioToWav(audioBlob: Blob): Promise<Blob> {
         writeString(view, 36, 'data');
         view.setUint32(40, length, true);
         
-        // Audio data
+        // Audio data: channels are concatenated one after another (planar layout)
         const data = new Float32Array(renderedBuffer.length * renderedBuffer.numberOfChannels);
         let offset = 0;
         for (let i = 0; i < renderedBuffer.numberOfChannels; i++) {
@@ -50,7 +50,7 @@ export async function convertAudioToWav(audioBlob: Blob): Promise<Blob> {
             offset += renderedBuffer.length;
         }
         
-        // Convert to 16-bit PCM
+        // Convert to 16-bit PCM (negative and positive ranges use different scale factors)
         const pcmData = new Int16Array(data.length);
         for (let i = 0; i < data.length; i++) {
             const s = Math.max(-1, Math.min(1, data[i] ?? 0));
@@ -68,6 +68,7 @@ export async function convertAudioToWav(audioBlob: Blob): Promise<Blob> {
     return wavBlob;
 }
 
+// Writes ASCII tags (e.g. 'RIFF', 'fmt ') into the WAV header.
 function writeString(view: DataView, offset: number, string: string) {
     for (let i = 0; i < string.length; i++) {
         view.setUint8(offset + i, string.charCodeAt(i));
